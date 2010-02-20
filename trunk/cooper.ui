@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Cooper</class>
+ <widget class="QMainWindow" name="Cooper">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Cooper</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuSystem">
+    <property name="title">
+     <string>System</string>
+    </property>
+    <addaction name="actionLogoff"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuMember">
+    <property name="title">
+     <string>Member</string>
+    </property>
+    <addaction name="actionAdd_Member"/>
+    <addaction name="actionEdit_Member"/>
+    <addaction name="actionDelete_Member"/>
+   </widget>
+   <widget class="QMenu" name="menuCommittee">
+    <property name="title">
+     <string>Committee</string>
+    </property>
+    <addaction name="actionAdd_Committee"/>
+    <addaction name="actionDelete_Committee"/>
+   </widget>
+   <widget class="QMenu" name="menuTask">
+    <property name="title">
+     <string>Task</string>
+    </property>
+    <addaction name="actionAssign_Task"/>
+    <addaction name="actionEdit_Task"/>
+    <addaction name="actionDelete_Task"/>
+   </widget>
+   <widget class="QMenu" name="menuEvent">
+    <property name="title">
+     <string>Event</string>
+    </property>
+    <addaction name="actionMove_Out"/>
+    <addaction name="actionInternal_Move"/>
+    <addaction name="actionAnnual_Task_Spec"/>
+   </widget>
+   <widget class="QMenu" name="menuPrint">
+    <property name="title">
+     <string>Print</string>
+    </property>
+    <addaction name="actionPhone_List"/>
+    <addaction name="actionCommittee_List"/>
+    <addaction name="actionTask_List"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionManual"/>
+    <addaction name="actionAbout_Cooper"/>
+   </widget>
+   <addaction name="menuSystem"/>
+   <addaction name="menuMember"/>
+   <addaction name="menuCommittee"/>
+   <addaction name="menuTask"/>
+   <addaction name="menuEvent"/>
+   <addaction name="menuPrint"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionLogoff">
+   <property name="text">
+    <string>Logoff</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionAdd_Member">
+   <property name="text">
+    <string>Add Member</string>
+   </property>
+  </action>
+  <action name="actionEdit_Member">
+   <property name="text">
+    <string>Edit Member</string>
+   </property>
+  </action>
+  <action name="actionDelete_Member">
+   <property name="text">
+    <string>Delete Member</string>
+   </property>
+  </action>
+  <action name="actionAdd_Committee">
+   <property name="text">
+    <string>Add Committee</string>
+   </property>
+  </action>
+  <action name="actionDelete_Committee">
+   <property name="text">
+    <string>Delete Committee</string>
+   </property>
+  </action>
+  <action name="actionAssign_Task">
+   <property name="text">
+    <string>Assign Task</string>
+   </property>
+  </action>
+  <action name="actionEdit_Task">
+   <property name="text">
+    <string>Edit Task</string>
+   </property>
+  </action>
+  <action name="actionDelete_Task">
+   <property name="text">
+    <string>Delete Task</string>
+   </property>
+  </action>
+  <action name="actionMove_Out">
+   <property name="text">
+    <string>Move Out</string>
+   </property>
+  </action>
+  <action name="actionInternal_Move">
+   <property name="text">
+    <string>Internal Move</string>
+   </property>
+  </action>
+  <action name="actionAnnual_Task_Spec">
+   <property name="text">
+    <string>Annual Task Spec</string>
+   </property>
+  </action>
+  <action name="actionPhone_List">
+   <property name="text">
+    <string>Phone List</string>
+   </property>
+  </action>
+  <action name="actionCommittee_List">
+   <property name="text">
+    <string>Committee List</string>
+   </property>
+  </action>
+  <action name="actionTask_List">
+   <property name="text">
+    <string>Task List</string>
+   </property>
+  </action>
+  <action name="actionManual">
+   <property name="text">
+    <string>Manual</string>
+   </property>
+  </action>
+  <action name="actionAbout_Cooper">
+   <property name="text">
+    <string>About Cooper</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
