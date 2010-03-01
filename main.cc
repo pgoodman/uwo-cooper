@@ -1,7 +1,4 @@
-#include <QtGui/QApplication>
-#include <QTranslator>
-#include <QLocale>
-#include <QLibraryInfo>
+#include <QApplication>
 
 #include "cooper.h"
 #include "initwizard.h"
