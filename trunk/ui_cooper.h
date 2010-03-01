@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'cooper.ui'
 **
-** Created: Fri Feb 26 13:17:04 2010
+** Created: Mon Mar 1 17:24:54 2010
 **      by: Qt User Interface Compiler version 4.6.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
