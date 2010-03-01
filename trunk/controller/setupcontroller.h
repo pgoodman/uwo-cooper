@@ -3,7 +3,7 @@
 
 using namespace std;
 #include <string>
-#include "datatype\user.h"
+#include "datatype/user.h"
 
 //class string;
 
