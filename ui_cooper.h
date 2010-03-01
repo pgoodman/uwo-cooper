@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'cooper.ui'
 **
-** Created: Tue Feb 16 15:25:56 2010
+** Created: Fri Feb 26 13:17:04 2010
 **      by: Qt User Interface Compiler version 4.6.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -148,6 +148,7 @@ public:
         menuHelp->addAction(actionAbout_Cooper);
 
         retranslateUi(Cooper);
+        QObject::connect(actionQuit, SIGNAL(triggered()), Cooper, SLOT(close()));
 
         QMetaObject::connectSlotsByName(Cooper);
     } // setupUi

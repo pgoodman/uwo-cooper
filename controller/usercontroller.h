@@ -15,6 +15,8 @@ public:
     static int changeUserInfo(string *attribute, string *value);
     static int userLogin(string *name, string *pwd);
     static void userLogoff();
+    static void setActiveUser(User *theUser);
+    static User *getUser(string *name);
 private:
     static User *activeUser;
 };
