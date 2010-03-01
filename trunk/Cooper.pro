@@ -39,3 +39,4 @@ HEADERS += cooper.h \
     login.h \
     cooperdb.h
 FORMS += cooper.ui
+QMAKE_MAC_SDK = /Developer/SDKs/MacOSX10.5.sdk
