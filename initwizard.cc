@@ -125,7 +125,9 @@ ConclusionPage::ConclusionPage(QWidget *parent)
     layout->addWidget(conclusionLabel);
     setLayout(layout);
 
-
+    delete name;
+    delete pwd;
+    delete filename;
 }
 
 int ConclusionPage::initAccount(std::string *name, std::string *pwd){
