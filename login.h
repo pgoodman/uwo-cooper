@@ -2,6 +2,7 @@
 #define LOGIN_H
 
 #include<QtGui>
+#include<QGridLayout>
 #include<string>
 
 class Login : public QWidget
