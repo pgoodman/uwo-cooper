@@ -19,13 +19,8 @@ SOURCES += main.cc \
     initwizard.cc \
     datatype/coordinator.cc \
     datatype/member.cc \
-    ../Cooper/main.cc \
-    ../Cooper/initwizard.cc \
-    ../Cooper/cooper.cc \
-    ../Cooper/cooper.cc \
-    main.cc \
-    initwizard.cc \
-    cooper.cc
+    login.cc \
+    cooperdb.cc
 HEADERS += cooper.h \
     datatype\committee.h \
     datatype\user.h \
@@ -41,23 +36,6 @@ HEADERS += cooper.h \
     initwizard.h \
     datatype/coordinator.h \
     datatype/member.h \
-    ../Cooper/ui_cooper.h \
-    ../Cooper/initwizard.h \
-    ../Cooper/cooper.h \
-    ../Cooper/cooper.h \
-    ui_cooper.h \
-    initwizard.h \
-    cooper.h
+    login.h \
+    cooperdb.h
 FORMS += cooper.ui
-OTHER_FILES += ../Cooper/object_script.Cooper.Release \
-    ../Cooper/object_script.Cooper.Debug \
-    ../Cooper/Makefile.Release \
-    ../Cooper/Makefile.Debug \
-    ../Cooper/Makefile \
-    ../Cooper/Cooper.pro.user \
-    object_script.Cooper.Release \
-    object_script.Cooper.Debug \
-    Makefile.Release \
-    Makefile.Debug \
-    Makefile \
-    Cooper.pro.user

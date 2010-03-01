@@ -11,7 +11,6 @@ public:
     AuthorizationController();
     ~AuthorizationController();
     static bool isValid(string *name, string *pwd);
-    static User *getUser(string *name);
 };
 
 #endif // AUTHORIZATIONCONTROLLER_H

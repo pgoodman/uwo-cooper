@@ -1,6 +1,8 @@
 #include <QtGui>
 #include "initwizard.h"
 #include "controller/setupcontroller.h"
+#include "controller/usercontroller.h"
+#include "datatype/user.h"
 
 InitWizard::InitWizard(QWidget *parent)
     : QWizard(parent)
@@ -106,6 +108,9 @@ ConclusionPage::ConclusionPage(QWidget *parent)
         conclusionLabel = new QLabel(tr("You have successfully initialized Cooper. "
                                      "You are now logged in as the coordinator."));
         conclusionLabel->setWordWrap(true);
+        //set active user
+        User *theUser = UserController::getUser(name);
+        UserController::setActiveUser(theUser);
     }
     else {
         setTitle(tr("Initialization Failed"));
