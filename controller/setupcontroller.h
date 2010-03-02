@@ -1,9 +1,10 @@
 #ifndef SETUPCONTROLLER_H
 #define SETUPCONTROLLER_H
 
-using namespace std;
 #include <string>
 #include "datatype/user.h"
+
+using namespace std;
 
 //class string;
 
