@@ -18,6 +18,12 @@ public:
     string getPassword() {return password;}
     int getID() {return id;}
 
+    //Modifiers
+    void setName(string newName);
+    void setUserName(string newUserName);
+    void setPassword(string newPassword);
+    void setID(int newID);
+
 protected:
 	//Attributes
 	string name;
