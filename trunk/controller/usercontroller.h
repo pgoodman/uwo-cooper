@@ -1,10 +1,11 @@
 #ifndef USERCONTROLLER_H
 #define USERCONTROLLER_H
 
-using namespace std;
 #include <string>
 #include "datatype/user.h"
 #include "controller/authorizationcontroller.h"
+
+using namespace std;
 
 class UserController
 {
