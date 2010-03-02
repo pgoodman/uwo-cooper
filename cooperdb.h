@@ -1,9 +1,14 @@
 #ifndef COOPERDB_H
 #define COOPERDB_H
 
+#include <stdexcept>
 #include <QSqlDatabase>
 
-//Handle all database assoicated operations
+#include "criticalerror.h"
+
+/**
+ * Handle creating, connecting, and querying the cooper database.
+ */
 class CooperDB
 {
 public:

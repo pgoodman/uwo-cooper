@@ -1,12 +1,13 @@
 
+#include <QtGui>
 #include <QApplication>
 #include <QMessageBox>
 
-#include "cooper.h"
-#include "cooperdb.h"
-
 #include "view/initwizard.h"
 #include "view/login.h"
+#include "view/cooper.h"
+
+#include "cooperdb.h"
 
 
 int main(int argc, char *argv[])
@@ -19,7 +20,7 @@ int main(int argc, char *argv[])
         CooperDB db("cooper");
 
         //if coordinator was not setup
-        if(!db->hasCoordinator()){
+        if(!db.hasCoordinator()){
             InitWizard wizard;
             wizard.show();
             cooperApp.exec();
@@ -37,6 +38,13 @@ int main(int argc, char *argv[])
         } else {
             return 0;
         }
+    } catch(CriticalError &e) {
+        QMessageBox::critical(
+            0,
+            e.header(),
+            e.what(),
+            QMessageBox::Cancel
+        );
     } catch(...) {
 
     }
