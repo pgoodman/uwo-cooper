@@ -18,12 +18,21 @@ public:
 	bool isMovedIn();
 	void addDependant(Dependant dependant);	
 
+	//Acessor methods
 	string getTelephoneNumber() {return telephoneNumber;}
 	double getMoneyOwed() {retrun moneyOwed;}
 	bool   sharedTelephone() {return shareTelephone;}
 	bool   checkMarked()	{return isMarked;}
 	string firstName() {return firstName;}
 	string lastName()  {return lastName;}
+
+	//Modifiers
+	void setTelephoneNumber(string newNumber);
+	void setMoneyOwed(double money);
+	void setSharedTelephone(bool share);
+	void setMarked(bool mark);
+	void setFirstName(string newFirstName);
+	void setLastName(string newLastName);
 
 private:
 	string telephoneNumber;
