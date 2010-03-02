@@ -12,7 +12,7 @@ public:
 	Coordinator();
 
 protected:
-	string name = "coord";
+	string name;
 };
 
 #endif // COORDINATOR_H

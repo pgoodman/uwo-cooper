@@ -23,11 +23,11 @@ public:
 
 	//Acessor methods
 	string getTelephoneNumber() {return telephoneNumber;}
-	double getMoneyOwed() {retrun moneyOwed;}
+	double getMoneyOwed() {return moneyOwed;}
 	bool   sharedTelephone() {return shareTelephone;}
-	bool   checkMarked()	{return isMarked;}
-	string firstName() {return firstName;}
-	string lastName()  {return lastName;}
+	bool   checkMarked() {return isMarked;}
+	string firstName() {return fName;}
+	string lastName()  {return lName;}
 
 	//Modifiers
 	void setTelephoneNumber(string newNumber);
@@ -39,11 +39,11 @@ public:
 
 private:
 	string telephoneNumber;
-	double moneyOwed = 0.0;
-	bool shareTelephone = true;
-	bool isMarked = false;
-	string firstName;
-	string lastName;
+	double moneyOwed;
+	bool shareTelephone;
+	bool isMarked;
+	string fName;
+	string lName;
 };
 
 #endif // MEMBER_H
