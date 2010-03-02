@@ -2,5 +2,7 @@
 
 Member::Member()
 {
-
+    moneyOwed = 0.0;
+    shareTelephone = true;
+    isMarked = false;
 }
