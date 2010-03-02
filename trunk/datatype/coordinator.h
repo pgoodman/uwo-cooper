@@ -1,10 +1,13 @@
 #ifndef COORDINATOR_H
 #define COORDINATOR_H
 
-class Coordinator
+class Coordinator : public User
 {
 public:
-    Coordinator();
+	Coordinator();
+
+protected:
+	string name = "coord";
 };
 
 #endif // COORDINATOR_H
