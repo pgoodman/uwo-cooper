@@ -12,6 +12,9 @@ class Member : public User{
 public:
 	//Constructors
 	Member();
+	Member(string newFirstName, string newLastName);
+	Member(string newFirstName, string newLastName, double newMoneyOwed, 
+		bool sharePhone, bool mark);
 
 	//Member methods
 	bool owesMoney();
