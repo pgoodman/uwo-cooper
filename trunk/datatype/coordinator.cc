@@ -32,9 +32,16 @@ bool Coordinator::exists(void) {
 }
 
 /**
+ * Update the coordinator in the db.
+ */
+void Coordinator::save(void) {
+
+}
+
+/**
  * Create a new coordinator in the database.
  */
-void Coordinator::create(string full_name, string password) {
+User *Coordinator::create(string full_name, string password) {
     assert(!Coordinator::exists());
     assert(0 == coord);
     QSqlQuery q;
@@ -48,6 +55,7 @@ void Coordinator::create(string full_name, string password) {
     if(!q.exec()) {
         CooperDB::queryError("Unable to create Coordinator", q);
     }
+    return load();
 }
 
 /**
@@ -83,4 +91,16 @@ User *Coordinator::load(void) {
     // cache the coordinator
     users.insert(users.begin() + id, u);
     return coord = u;
+}
+
+/**
+ * Load the coordinator with a given password, or return NULL.
+ */
+User *Coordinator::load(string password) {
+    User *c = Coordinator::load();
+    if(c->hasPassword(password)) {
+        return c;
+    }
+    return 0;
+
 }
