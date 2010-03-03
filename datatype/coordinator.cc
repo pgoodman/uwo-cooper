@@ -31,7 +31,9 @@ void Coordinator::create(string full_name, string password) {
     assert(0 == coord);
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO user (full_name, password, is_coordinator VALUES(?,?,1)"
+        "INSERT INTO user (name, full_name, password, is_coordinator VALUES('"
+        COORDINATOR_USER_NAME
+        "',?,?,1)"
     );
     q.bindValue(0, QString(full_name.c_str()));
     q.bindValue(1, QString(password.c_str()));
