@@ -17,10 +17,12 @@ class Coordinator : public User
 {
 public:
 	static bool exists(void);
-	static void create(string full_name, string password);
+	static User *create(string full_name, string password);
 	static User *load(void);
+	static User *load(string password);
 
 	virtual string getUserName(void);
+	virtual void save(void);
 	virtual ~Coordinator();
 
 private:

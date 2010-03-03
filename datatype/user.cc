@@ -32,3 +32,12 @@ void User::setID(int newID)
 	id = newID;
 }
 */
+
+void User::setFullName(string fullName)
+{
+    full_name = fullName;
+}
+
+bool User::hasPassword(string &pass) {
+    return password == pass;
+}

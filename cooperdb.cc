@@ -102,12 +102,12 @@ void CooperDB::makeDatabase() {
 
             // member-specific
             "telephone VARCHAR(20) NOT NULL,"
-            "move_in_time INTEGER DEFAULT 0,"
+            "move_in_time UNSIGNED INTEGER DEFAULT 0,"
             "money_owed REAL DEFAULT 0.0,"
 
 
             // index
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT ON CONFLICT REPLACE,"
             "committee_id INTEGER NOT NULL DEFAULT 0"
             //"KEY(committee_id)"
         ")",

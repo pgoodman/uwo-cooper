@@ -17,11 +17,13 @@ public:
     
     string getName();
     virtual string getUserName() = 0;
+    virtual void save(void) = 0;
 
-    string getPassword();
+    bool hasPassword(string &pass);
     int getID();
 
     //Modifiers
+    virtual void setFullName(string fullName);
     /*void setName(string newName);
     void setUserName(string newUserName);
     void setPassword(string newPassword);
@@ -32,6 +34,7 @@ public:
 protected:
 
 	//Attributes
+
 	string full_name;
 	string password;
 	int id;

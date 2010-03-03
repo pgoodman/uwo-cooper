@@ -7,38 +7,42 @@
     shareTelephone = true;
     isMarked = false;
 }*/
+
 #if 0
-Member::Member(string firstName, string lastName, string phoneNum,
-			   string uName, string password, int id)
-/*: User(firstName += lastName, userName, password, id)*/
+/**
+ * Public constructor, creates a member that isn't saved.
+ */
+Member::Member(string fullName, string phoneNum, string uName, string password)
 {
     (void) password;
     (void) id;
 
-	fName = firstName;
-	lName = lastName;
+	full_name = fullName;
 	telephoneNumber = phoneNum;
 	moneyOwed = 0.0;
     shareTelephone = true;
     isMarked = false;
-
     userName = uName;
+    isSaved = false; // not in the db
 }
 #endif
 
+/**
+ * Private Constructor, used for loading a member from the database.
+ */
 Member::Member(string fullName, double newMoneyOwed,
                string phoneNum, bool sharePhone, bool mark,
-               string userName, string password, int id)
+               string uName, string pass, Committee *comm, int userId)
 {
-    (void) userName;
-    (void) password;
-    (void) id;
-
-	_fullName = fullName;
+    full_name = fullName;
 	moneyOwed = newMoneyOwed;
 	shareTelephone = sharePhone;
 	isMarked = mark;
 	telephoneNumber = phoneNum;
+	password = pass;
+	userName = uName;
+	committee = comm;
+	id = userId;
 }
 
 void Member::setTelephoneNumber(string newNumber)
@@ -61,15 +65,68 @@ void Member::setMarked(bool mark)
 	isMarked = mark;
 }
 
-void Member::setFullName(string full_name)
-{
-	_fullName = full_name;
-}
-
 string Member::getUserName(void) {
     return userName;
 }
 
+/**
+ * Create a member.
+ */
+User *Member::create(string full_name, string telephone,
+                     const bool share_telephone, string user_name,
+                     string password, const time_t move_in_time) {
+    QSqlQuery q;
+    q.prepare(
+        "INSERT INTO user (full_name, name, password, share_telephone, "
+        "telephone, move_in_time) VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    q.bindValue(0, QVariant(full_name.c_str()));
+    q.bindValue(1, QVariant(user_name.c_str()));
+    q.bindValue(2, QVariant(password.c_str()));
+    q.bindValue(3, QVariant(share_telephone));
+    q.bindValue(4, QVariant(telephone.c_str()));
+    q.bindValue(5, QVariant(static_cast<unsigned int>(move_in_time)));
+
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Create Member", q);
+    }
+
+    return load(q.lastInsertId().toInt());
+}
+
+/**
+ * Update the user's info in the db.
+ */
+void Member::save(void) {
+    QSqlQuery q;
+    q.prepare(
+        "UPDATE user SET full_name=?,name=?,password=?,share_telephone=?,"
+        "telephone=?,move_in_time=?,is_marked=?,committee_id=? WHERE id=?"
+    );
+    q.bindValue(0, QVariant(full_name.c_str()));
+    q.bindValue(1, QVariant(userName.c_str()));
+    q.bindValue(2, QVariant(password.c_str()));
+    q.bindValue(3, QVariant(shareTelephone));
+    q.bindValue(4, QVariant(telephoneNumber.c_str()));
+    q.bindValue(5, QVariant(static_cast<unsigned int>(moveInTime)));
+    q.bindValue(6, QVariant(isMarked));
+
+    if(0 != committee) {
+        q.bindValue(7, QVariant(committee->getId()));
+    } else {
+        q.bindValue(7, QVariant(0));
+    }
+
+    q.bindValue(8, QVariant(id));
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Update Member Information.", q);
+    }
+}
+
+/**
+ * Load a user from the database given the user's id. Will return NULL if the
+ * user doesn't exist.
+ */
 User *Member::load(const int id) {
     if(0 != users[id]) {
         return users[id];
@@ -78,24 +135,40 @@ User *Member::load(const int id) {
     QSqlQuery q;
     q.prepare("SELECT * FROM user WHERE id=?");
     q.bindValue(0, QVariant(id));
-    q.exec();
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to load Member by ID", q);
+    }
     return load(q);
 }
 
+/**
+ * Load a user from the database given the user's username and password. Will
+ * return NULL if the user can't be loaded.
+ */
 User *Member::load(string &user_name, string &pass) {
     QSqlQuery q;
     q.prepare("SELECT * FROM user WHERE name=? AND password=?");
     q.bindValue(0, QVariant(user_name.c_str()));
     q.bindValue(1, QVariant(pass.c_str()));
-    q.exec();
-    return load(q);
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to load Member by user/pass", q);
+    }
+    return load(q, false);
 }
 
+/**
+ * Quickly get the variant from the query given a column name.
+ */
 static QVariant at(QSqlQuery &q, const char *index) {
     return q.value(q.record().indexOf(index));
 }
 
-User *Member::load(QSqlQuery &q) {
+/**
+ * Load a member (or coordinator) from the database given the query that
+ * fetched that user.
+ */
+User *Member::load(QSqlQuery &q, const bool checked_id) {
+
     if(!q.isValid()) {
         return NULL;
     }
@@ -105,6 +178,17 @@ User *Member::load(QSqlQuery &q) {
         return Coordinator::load(); // will already be loaded
     }
 
+    int id(at(q, "id").toInt());
+
+    // make sure we don't have two objects around for the same user
+    if(!checked_id) {
+        if(0 != users[id]) {
+            q.finish();
+            return users[id];
+        }
+    }
+
+    // load the member as an object to be used
     User *u = new Member(
         at(q, "full_name").toString().toStdString(),
         at(q, "money_owed").toDouble(),
@@ -113,9 +197,11 @@ User *Member::load(QSqlQuery &q) {
         at(q, "is_marked").toBool(),
         at(q, "name").toString().toStdString(),
         at(q, "password").toString().toStdString(),
-        at(q, "id").toInt()
+        Committee::load(at(q, "committee_id").toInt()),
+        id
     );
 
     q.finish();
+    users.insert(users.begin() + id, u);
     return u;
 }
