@@ -23,7 +23,7 @@ CooperDB::~CooperDB() {
  * Check whether or not a given query returns any rows.
  */
 bool CooperDB::hasAny(const char *query) {
-    return select(query).size() > 0;
+    return select(query).isValid();
 }
 
 /**
@@ -32,9 +32,6 @@ bool CooperDB::hasAny(const char *query) {
 QSqlQuery CooperDB::select(const char *query) {
     assert(is_connected);
     QSqlQuery q(query, db);
-    if(!q.isValid()) {
-        queryError("Database Query Error (SELECT)", q);
-    }
     return q;
 }
 
@@ -70,7 +67,7 @@ void CooperDB::connect(const char *db_name) {
  * Throw a database error from a query.
  */
 void CooperDB::queryError(string header, QSqlQuery &query) {
-    QString db_err(query.lastError().databaseText());
+    QString db_err(db.lastError().text() + query.executedQuery());
     throw CriticalError(header, db_err.toStdString());
 }
 

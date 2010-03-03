@@ -27,7 +27,7 @@ bool Coordinator::exists(void) {
         return true;
     }
     return does_exist = CooperDB::hasAny(
-        "SELECT * FROM user WHERE is_coordinator=1"
+        "SELECT id FROM user WHERE is_coordinator=1"
     );
 }
 
