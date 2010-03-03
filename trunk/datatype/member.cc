@@ -34,17 +34,17 @@ User(firstName += lastName, userName, password, id)
 	telephoneNumber = phoneNum;
 }
 
-void Member::setTelephoneNumber(string newNumber);
+void Member::setTelephoneNumber(string newNumber)
 {
 	telephoneNumber = newNumber;
 }
 
-void Member::setMoneyOwed(double money);
+void Member::setMoneyOwed(double money)
 {
 	moneyOwed = money;
 }
 
-void Member::setSharedTelephone(bool share);
+void Member::setSharedTelephone(bool share)
 {
 	shareTelephone = share;
 }

@@ -12,6 +12,8 @@
 #include "cooperdb.h"
 #include "criticalerror.h"
 
+#define D(x) x
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -21,35 +23,32 @@ int main(int argc, char *argv[])
 
     try {
         //create DB object
-        CooperDB db("cooper");
+        CooperDB::connect("cooper");
 
         //if coordinator was not setup
-        if(!db.hasCoordinator()){
+        if(!CooperDB::hasCoordinator()) {
+            D( cout << "no coordinator" << endl; )
             InitWizard wizard;
             wizard.show();
             cooperApp.exec();
         } else {
+            D( cout << "has coordinator" << endl; )
             Login login;
             login.show();
             cooperApp.exec();
         }
 
         //if UserController::activeUser is not null
-        if(true){
+        /*if(true){
             Cooper cooperUI;
             cooperUI.show();
             return cooperApp.exec();
         } else {
             return 0;
-        }
+        }*/
     } catch(CriticalError &e) {
-        cout << "Error: " << e.header() << endl << e.what() << endl;
-        QMessageBox::critical(
-            0,
-            e.header(),
-            e.what(),
-            QMessageBox::Cancel
-        );
+        D( cout << "Error: " << e.header() << endl << e.what() << endl; )
+        QMessageBox::critical(0, e.header(), e.what(), QMessageBox::Cancel);
     } catch(...) {
 
     }

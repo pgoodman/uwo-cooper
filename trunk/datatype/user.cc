@@ -22,7 +22,7 @@ void User::setName(string newName)
     
 void User::setUserName(string newUserName)
 {
-	userName = newUserNamel
+	userName = newUserName;
 }
 
 void User::setPassword(string newPassword)

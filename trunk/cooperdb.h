@@ -10,6 +10,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
+#include <assert.h>
+
 #include "criticalerror.h"
 
 /**
@@ -18,11 +20,16 @@
 class CooperDB
 {
 public:
-    CooperDB(const char *db_name);
     ~CooperDB();
+
+    static void connect(const char *);
     static bool hasCoordinator();
 private:
-    QSqlDatabase db;
+    CooperDB();
+
+    static QSqlDatabase db;
+    static void makeDatabase();
+    static bool is_connected;
 };
 
 #endif // COOPERDB_H
