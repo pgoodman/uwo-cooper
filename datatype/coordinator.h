@@ -28,6 +28,7 @@ private:
 
 	static bool does_exist;
 	static User *coord;
+
 };
 
 #endif // COORDINATOR_H

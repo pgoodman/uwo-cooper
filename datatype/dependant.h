@@ -20,11 +20,11 @@ public:
 
 	//accessor methods
 	string getName(){return fullName;}
-	time_t getBday(){return timeOf21stBirthday;}
+	time_t getBday(){return timeOf21stBday;}
 
 private:
 	string fullName;
-	time_t timeOf21stBirthday;
+	time_t timeOf21stBday;
 };
 
 #endif // DEPENDANT_H

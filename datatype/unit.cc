@@ -11,9 +11,5 @@ Unit::Unit(int roomNumber, string address, int bedrooms)
 	numBedrooms = bedrooms;
 }
 
-Unit::~Unit()
-{
-	delete number;
-	delete streetAddress;
-	delete numBedrooms;
+Unit::~Unit() {
 }
