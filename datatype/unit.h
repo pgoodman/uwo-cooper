@@ -12,6 +12,7 @@ class Unit
 	//Constructors
 	Unit();
 	Unit(int roomNumber, string address, int bedrooms);
+	~Unit();
 
 	//Attributes
 	int number;
@@ -23,6 +24,7 @@ class Unit
 	int getNumber() {return number;}
 	string getAddress() {return streetAddress;}
 	int countRooms() {return numBedrooms;}
+
 };
 
 #endif // UNIT_H
