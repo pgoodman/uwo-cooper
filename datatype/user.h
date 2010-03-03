@@ -6,6 +6,8 @@
 
 #include <QSqlQuery>
 
+#include "permission.h"
+
 using namespace std;
 
 class User
@@ -18,6 +20,7 @@ public:
     string getName();
     virtual string getUserName() = 0;
     virtual void save(void) = 0;
+    virtual bool hasPermission(const Permission p) = 0;
 
     bool hasPassword(string &pass);
     int getID();

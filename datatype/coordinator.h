@@ -9,7 +9,9 @@
 
 #include "conf.h"
 #include "cooperdb.h"
-#include "datatype/user.h"
+
+#include "user.h"
+#include "permission.h"
 
 using namespace std;
 
@@ -23,6 +25,7 @@ public:
 
 	virtual string getUserName(void);
 	virtual void save(void);
+	virtual bool hasPermission(const Permission p);
 	virtual ~Coordinator();
 
 private:
