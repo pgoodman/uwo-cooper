@@ -12,9 +12,10 @@ class Member : public User{
 public:
 	//Constructors
 	Member();
-	Member(string newFirstName, string newLastName);
-	Member(string newFirstName, string newLastName, double newMoneyOwed, 
-		bool sharePhone, bool mark);
+	Member(string firstName, string lastName, string phoneNum, string userName, string password,
+		   int id);
+	Member(string firstName, string lastName, double newMoneyOwed, string phoneNum,
+		bool sharePhone, bool mark, string userName, string password, int id);
 
 	//Member methods
 	bool owesMoney();

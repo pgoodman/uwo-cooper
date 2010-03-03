@@ -10,7 +10,7 @@ class User
 public:
     //Constructors
     User();
-    User(string name, string userName, string password, int id);
+    User(string newName, string newUserName, string newPassword, int newID);
     
     //Accessors
     string getName() {return name;}
