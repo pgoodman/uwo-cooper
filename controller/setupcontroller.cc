@@ -7,13 +7,11 @@ SetupController::SetupController()
 SetupController::~SetupController(){
 }
 
-int SetupController::addCoordinator(string *name, string *pwd) {
-    (void) name;
-    (void) pwd;
+int SetupController::addCoordinator() {
     return 0;
 }
 
-int SetupController::loadData(string *filename) {
-    (void) filename;
+int SetupController::loadData(string file_name) {
+    (void) file_name;
     return 0;
 }

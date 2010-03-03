@@ -1,20 +1,17 @@
-#include <string>
+
 #include "user.h"
 
-using namespace std;
+vector<User *> User::users;
 
 User::User()
 {
-}
-
-User::User(string newName, string newUserName, string newPassword, int newID)
-{
-	name = newName;
+	/*full_name = newName;
 	userName = newUserName;
 	password = newPassword;
-	id = newID;
+	id = newID;*/
 }
 
+/*
 void User::setName(string newName)
 {
 	name = newName;
@@ -33,4 +30,18 @@ void User::setPassword(string newPassword)
 void User::setID(int newID)
 {
 	id = newID;
+}
+*/
+
+User *User::load(const unsigned int id) {
+    if(0 != users[id]) {
+        return users[id];
+    }
+    return 0;
+}
+
+User *User::load(string &user_name, string &pass) {
+    (void) user_name;
+    (void) pass;
+    return 0;
 }

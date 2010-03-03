@@ -14,10 +14,8 @@ public:
     SetupController();
     ~SetupController();
 
-    static int addCoordinator(string *name,string *pwd);
-    static int loadData(string *filename);
-
-
+    static int addCoordinator();
+    static int loadData(string file_name);
 };
 
 #endif // SETUPCONTROLLER_H

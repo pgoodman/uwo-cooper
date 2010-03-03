@@ -15,18 +15,27 @@ CooperDB::CooperDB() {
 /**
  * Disconnect from the database.
  */
-CooperDB::~CooperDB(){
-    db.close();
+CooperDB::~CooperDB() {
+    //db.close();
 }
 
 /**
  * Check whether or not a given query returns any rows.
  */
+bool CooperDB::hasAny(const char *query) {
+    return select(query).size() > 0;
+}
 
-bool CooperDB::hasCoordinator(){
+/**
+ * Return the result from a simple query.
+ */
+QSqlQuery CooperDB::select(const char *query) {
     assert(is_connected);
-    QSqlQuery q("SELECT * FROM user WHERE is_coordinator=1", db);
-    return q.size() > 0;
+    QSqlQuery q(query, db);
+    if(!q.isValid()) {
+        queryError("Database Query Error (SELECT)", q);
+    }
+    return q;
 }
 
 /**
@@ -38,6 +47,9 @@ void CooperDB::connect(const char *db_name) {
     }
 
     db = QSqlDatabase::addDatabase("QSQLITE");
+    if(!db.isValid()) {
+        throw CriticalError("Cannot open database.", "Unable to load SQLite.");
+    }
     db.setDatabaseName(db_name);
     if(!db.open()) {
         throw CriticalError(
@@ -55,6 +67,22 @@ void CooperDB::connect(const char *db_name) {
 }
 
 /**
+ * Throw a database error from a query.
+ */
+void CooperDB::queryError(string header, QSqlQuery &query) {
+    QString db_err(query.lastError().databaseText());
+    throw CriticalError(header, db_err.toStdString());
+}
+
+void CooperDB::queryError(stringstream &header, QSqlQuery &query) {
+    queryError(header.str(), query);
+}
+
+void CooperDB::queryError(const char *header, QSqlQuery &query) {
+    queryError(string(header), query);
+}
+
+/**
  * Make the database.
  */
 void CooperDB::makeDatabase() {
@@ -63,15 +91,15 @@ void CooperDB::makeDatabase() {
     };
     const char tables[][500] = {
         "CREATE TABLE user ("
-            "first_name VARCHAR(50) NOT NULL,"
-            "last_name VARCHAR(50) NOT NULL,"
+            "full_name VARCHAR(50) NOT NULL,"
+            //"last_name VARCHAR(50) NOT NULL,"
 
             // login info
             "name VARCHAR(50) NOT NULL,"
             "password VARCHAR(32) NOT NULL,"
 
             // bools
-            "TINYINTEGER(1) NOT NULL DEFAULT 0,"
+            "is_coordinator TINYINTEGER(1) NOT NULL DEFAULT 0,"
             "share_telephone TINYINTEGER(1) DEFAULT 0,"
             "is_marked TINYINTEGER(1) DEFAULT 0,"
 
@@ -111,8 +139,7 @@ void CooperDB::makeDatabase() {
             error << "Error creating table '"
                   << table_names[num_tables]
                   << "'.";
-            QString db_err(q.lastError().databaseText());
-            throw CriticalError(error.str(), db_err.toStdString());
+            queryError(error, q);
         }
     }
 }

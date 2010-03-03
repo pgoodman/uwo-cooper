@@ -20,19 +20,11 @@ int UserController::changeUserInfo(string *attribute, string *value) {
     (void) value;
     return 0;
 }
-int UserController::userLogin(string *name, string *pwd){
-    if (AuthorizationController::isValid(name, pwd)) {
-        activeUser=UserController::getUser(name);
-    }
-    return 0;
+int UserController::login(string name, string pwd){
+    activeUser = User::load(name, pwd);
+    return 0 != activeUser;
 }
-void UserController::userLogoff(){
+void UserController::logout() {
+    activeUser = 0;
+}
 
-}
-void UserController::setActiveUser(User *theUser){
-    activeUser=theUser;
-}
-User *UserController::getUser(string *name){
-    (void) name;
-    return new User();
-}

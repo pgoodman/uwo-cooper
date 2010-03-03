@@ -2,12 +2,13 @@
 #define MEMBER_H
 
 #include <string>
-#include "user.h"
-#include "dependant.h"
+
+#include "datatype/user.h"
+#include "datatype/dependant.h"
 
 using namespace std;
 
-class Member : public User{
+class Member : public User {
 
 public:
 	//Constructors
@@ -45,6 +46,7 @@ private:
 	bool isMarked;
 	string fName;
 	string lName;
+	string userName;
 };
 
 #endif // MEMBER_H
