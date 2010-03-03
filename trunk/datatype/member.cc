@@ -35,15 +35,32 @@ Member::Member(string fullName, double newMoneyOwed,
                string uName, string pass, Committee *comm, int userId)
 {
     full_name = fullName;
-	moneyOwed = newMoneyOwed;
-	shareTelephone = sharePhone;
-	isMarked = mark;
-	telephoneNumber = phoneNum;
+	money_owed = newMoneyOwed;
+	share_telephone = sharePhone;
+	is_marked = mark;
+	telephone_num = phoneNum;
 	password = pass;
-	userName = uName;
+	user_name = uName;
 	committee = comm;
 	id = userId;
 }
+
+/**
+ * Check whether or not a coodinator has a permission.
+ */
+bool Member::hasPermission(const Permission p) {
+    (void) p;
+    return true;
+}
+
+/**
+ * Get this user's login name.
+ */
+string Member::getUserName(void) {
+    return user_name;
+}
+
+#if 0
 
 void Member::setTelephoneNumber(string newNumber)
 {
@@ -65,9 +82,7 @@ void Member::setMarked(bool mark)
 	isMarked = mark;
 }
 
-string Member::getUserName(void) {
-    return userName;
-}
+#endif
 
 /**
  * Create a member.
@@ -101,8 +116,17 @@ void Member::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE user SET full_name=?,name=?,password=?,share_telephone=?,"
-        "telephone=?,move_in_time=?,is_marked=?,committee_id=? WHERE id=?"
+        "telephone=?,move_in_time=?,is_marked=?,committee_id=? WHERE id=? "
+        "AND is_coordinator=0"
     );
+    qbind(q, full_name);
+    qbind(q, user_name);
+    qbind(q, password);
+    qbind(q, share_telephone);
+    qbind(q, telephone_num);
+    qbind(q, move_in_time);
+    qbind(q, is_marked);
+    /*
     q.bindValue(0, QVariant(full_name.c_str()));
     q.bindValue(1, QVariant(userName.c_str()));
     q.bindValue(2, QVariant(password.c_str()));
@@ -110,7 +134,7 @@ void Member::save(void) {
     q.bindValue(4, QVariant(telephoneNumber.c_str()));
     q.bindValue(5, QVariant(static_cast<unsigned int>(moveInTime)));
     q.bindValue(6, QVariant(isMarked));
-
+    */
     if(0 != committee) {
         q.bindValue(7, QVariant(committee->getId()));
     } else {
@@ -118,7 +142,7 @@ void Member::save(void) {
     }
 
     q.bindValue(8, QVariant(id));
-    if(!q.exec()) {
+    if(!q.exec() || 0 == q.numRowsAffected()) {
         CooperDB::queryError("Unable to Update Member Information.", q);
     }
 }
@@ -157,13 +181,6 @@ User *Member::load(string &user_name, string &pass) {
 }
 
 /**
- * Quickly get the variant from the query given a column name.
- */
-static QVariant at(QSqlQuery &q, const char *index) {
-    return q.value(q.record().indexOf(index));
-}
-
-/**
  * Load a member (or coordinator) from the database given the query that
  * fetched that user.
  */
@@ -173,12 +190,12 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
         return NULL;
     }
 
-    if(at(q, "is_coord").toBool()) {
+    if(qcol(q, "is_coord").toBool()) {
         q.finish();
         return Coordinator::load(); // will already be loaded
     }
 
-    int id(at(q, "id").toInt());
+    int id(qcol(q, "id").toInt());
 
     // make sure we don't have two objects around for the same user
     if(!checked_id) {
@@ -190,14 +207,14 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
 
     // load the member as an object to be used
     User *u = new Member(
-        at(q, "full_name").toString().toStdString(),
-        at(q, "money_owed").toDouble(),
-        at(q, "telephone").toString().toStdString(),
-        at(q, "share_telephone").toBool(),
-        at(q, "is_marked").toBool(),
-        at(q, "name").toString().toStdString(),
-        at(q, "password").toString().toStdString(),
-        Committee::load(at(q, "committee_id").toInt()),
+        qcol_str(q, "full_name"),
+        qcol(q, "money_owed").toDouble(),
+        qcol_str(q, "telephone"),
+        qcol(q, "share_telephone").toBool(),
+        qcol(q, "is_marked").toBool(),
+        qcol_str(q, "name"),
+        qcol_str(q, "password"),
+        Committee::load(qcol(q, "committee_id").toInt()),
         id
     );
 

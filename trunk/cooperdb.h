@@ -3,14 +3,16 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <assert.h>
+#include <time.h>
 
 #include <QSqlDatabase>
 #include <QString>
 #include <QStringList>
 #include <QSqlQuery>
 #include <QSqlError>
-
-#include <assert.h>
+#include <QVariant>
+#include <QSqlRecord>
 
 #include "criticalerror.h"
 
@@ -37,5 +39,14 @@ private:
     static void makeDatabase();
     static bool is_connected;
 };
+
+/* helper functions for dealing with db stuff */
+QVariant qcol(QSqlQuery &q, const char *index);
+string qcol_str(QSqlQuery &q, const char *index);
+
+template <typename T> void qbind(QSqlQuery &q, T val);
+template <> void qbind<string &>(QSqlQuery &q, string &val);
+template <> void qbind<string>(QSqlQuery &q, string val);
+template <> void qbind<time_t>(QSqlQuery &q, time_t val);
 
 #endif // COOPERDB_H

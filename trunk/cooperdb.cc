@@ -140,3 +140,33 @@ void CooperDB::makeDatabase() {
         }
     }
 }
+
+/**
+ * Quickly get the variant from the query given a column name.
+ */
+QVariant qcol(QSqlQuery &q, const char *index) {
+    return q.value(q.record().indexOf(index));
+}
+
+string qcol_str(QSqlQuery &q, const char *index) {
+    return qcol(q, index).toString().toStdString();
+}
+
+template <typename T> void qbind(QSqlQuery &q, T val) {
+    q.addBindValue(QVariant(val));
+}
+template <> void qbind<string &>(QSqlQuery &q, string &val) {
+    q.addBindValue(QVariant(QString(val.c_str())));
+}
+template <> void qbind<string>(QSqlQuery &q, string val) {
+    q.addBindValue(QVariant(QString(val.c_str())));
+}
+template <> void qbind<time_t>(QSqlQuery &q, time_t val) {
+    q.addBindValue(QVariant(static_cast<unsigned int>(val)));
+}
+
+// tell the compiler which template instantiations to make
+template void qbind<bool>(QSqlQuery &q, bool val);
+template void qbind<int>(QSqlQuery &q, int val);
+template void qbind<unsigned int>(QSqlQuery &q, unsigned int val);
+

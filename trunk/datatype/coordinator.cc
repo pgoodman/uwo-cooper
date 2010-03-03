@@ -20,6 +20,14 @@ Coordinator::Coordinator(int _id, string _full_name, string _password)
 Coordinator::~Coordinator() { }
 
 /**
+ * Check whether or not a coodinator has a permission.
+ */
+bool Coordinator::hasPermission(const Permission p) {
+    (void) p;
+    return true;
+}
+
+/**
  * Check if the coordinator exists.
  */
 bool Coordinator::exists(void) {
@@ -35,7 +43,16 @@ bool Coordinator::exists(void) {
  * Update the coordinator in the db.
  */
 void Coordinator::save(void) {
-
+    QSqlQuery q;
+    q.prepare(
+        "UPDATE user SET full_name=?,password=? WHERE id=? AND is_coordinator=1"
+    );
+    q.bindValue(0, QVariant(full_name.c_str()));
+    q.bindValue(1, QVariant(password.c_str()));
+    q.bindValue(2, QVariant(id));
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Update Coordinator Information.", q);
+    }
 }
 
 /**

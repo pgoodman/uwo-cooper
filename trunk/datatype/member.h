@@ -21,6 +21,7 @@ class Member : public User {
 public:
 
 	//Member methods
+    /*
 	bool owesMoney();
 	bool isMovedIn();
 	void addDependant(Dependant dependant);	
@@ -38,8 +39,11 @@ public:
 	void setMoneyOwed(double money);
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
+    */
 
 	virtual void save(void);
+	virtual bool hasPermission(const Permission p);
+	virtual string getUserName(void);
 
 	static User *load(const int id);
     static User *load(string &uname, string &pass);
@@ -52,12 +56,12 @@ private:
 
     static User *load(QSqlQuery &q, const bool checked_id=true);
 
-	string telephoneNumber;
-	double moneyOwed;
-	bool shareTelephone;
-	bool isMarked;
-	string userName;
-	time_t moveInTime;
+	string telephone_num;
+	double money_owed;
+	bool share_telephone;
+	bool is_marked;
+	string user_name;
+	time_t move_in_time;
 	Committee *committee;
 
     Member(string fullName, double newMoneyOwed,
