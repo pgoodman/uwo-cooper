@@ -2,10 +2,41 @@
 #include "cooperdb.h"
 #include "criticalerror.h"
 
+bool CooperDB::is_connected(false);
+QSqlDatabase CooperDB::db;
+
 /**
  * Connect to the database if it exists, and if it does not exist, create it.
  */
-CooperDB::CooperDB(const char *db_name){
+CooperDB::CooperDB() {
+
+}
+
+/**
+ * Disconnect from the database.
+ */
+CooperDB::~CooperDB(){
+    db.close();
+}
+
+/**
+ * Check whether or not a given query returns any rows.
+ */
+
+bool CooperDB::hasCoordinator(){
+    assert(is_connected);
+    QSqlQuery q("SELECT * FROM user WHERE is_coordinator=1", db);
+    return q.size() > 0;
+}
+
+/**
+ * Connect to the database, or make it if it doesn't exist.
+ */
+void CooperDB::connect(const char *db_name) {
+    if(is_connected) {
+        return;
+    }
+
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(db_name);
     if(!db.open()) {
@@ -17,75 +48,71 @@ CooperDB::CooperDB(const char *db_name){
 
     // create the db tables
     if(!db.tables().count()) {
-        const char table_names[][20] = {
-            "user", "committee",
-        };
-        const char tables[][500] = {
-            "CREATE TABLE user ("
-                "first_name VARCHAR(50) NOT NULL,"
-                "last_name VARCHAR(50) NOT NULL,"
-
-                // login info
-                "name VARCHAR(50) NOT NULL,"
-                "password VARCHAR(32) NOT NULL,"
-
-                // bools
-                "is_coordinator TINYINT(1) NOT NULL DEFAULT 0,"
-                "share_telephone TINYINT(1) DEFAULT 0,"
-                "is_marked TINYINT(1) DEFAULT 0,"
-
-                // member-specific
-                "telephone VARCHAR(20) NOT NULL,"
-                "move_in_time INT DEFAULT 0,"
-                "money_owed REAL DEFAULT 0.0,"
-
-
-                // index
-                "id INT NOT NULL DEFAULT 0 PRIMARY KEY AUTOINCREMENT,"
-                "committee_id INT NOT NULL DEFAULT 0,"
-                "INDEX(committee_id)"
-            ")",
-
-            "CREATE TABLE committee ("
-                "name VARCHAR(30) NOT NULL,"
-                "can_delete TINYINT(1) DEFAULT 1,"
-                "chair_id INT NOT NULL DEFAULT 0,"
-                "secretary_id INT NOT NULL DEFAULT 0,"
-                "id INT NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                "member_perms INT,"
-                "chair_perms INT,"
-
-                "INDEX(chair_id),"
-                "INDEX(secretary_id)"
-            ")",
-
-        };
-
-        size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);
-        stringstream error;
-        QSqlQuery q(db);
-
-        for(; num_tables--; ) {
-            if(!q.exec(tables[num_tables])) {
-                error << "Error creating table '"
-                      << table_names[num_tables]
-                      << "'.";
-                QString db_err(q.lastError().databaseText());
-                throw CriticalError(error.str(), db_err.toStdString());
-            }
-        }
+        makeDatabase();
     }
+
+    is_connected = true;
 }
 
 /**
- * Disconnect from the database.
+ * Make the database.
  */
-CooperDB::~CooperDB(){
-    db.close();
-}
+void CooperDB::makeDatabase() {
+    const char table_names[][20] = {
+        "user", "committee",
+    };
+    const char tables[][500] = {
+        "CREATE TABLE user ("
+            "first_name VARCHAR(50) NOT NULL,"
+            "last_name VARCHAR(50) NOT NULL,"
 
-bool CooperDB::hasCoordinator(){
+            // login info
+            "name VARCHAR(50) NOT NULL,"
+            "password VARCHAR(32) NOT NULL,"
 
-    return false;
-    //return true;
+            // bools
+            "TINYINTEGER(1) NOT NULL DEFAULT 0,"
+            "share_telephone TINYINTEGER(1) DEFAULT 0,"
+            "is_marked TINYINTEGER(1) DEFAULT 0,"
+
+            // member-specific
+            "telephone VARCHAR(20) NOT NULL,"
+            "move_in_time INTEGER DEFAULT 0,"
+            "money_owed REAL DEFAULT 0.0,"
+
+
+            // index
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "committee_id INTEGER NOT NULL DEFAULT 0"
+            //"KEY(committee_id)"
+        ")",
+
+        "CREATE TABLE committee ("
+            "name VARCHAR(30) NOT NULL,"
+            "can_delete TINYINTEGER(1) DEFAULT 1,"
+            "chair_id INTEGER NOT NULL DEFAULT 0,"
+            "secretary_id INTEGER NOT NULL DEFAULT 0,"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "member_perms INTEGER,"
+            "chair_perms INTEGER"
+
+            //"KEY(chair_id),"
+            //"KEY(secretary_id)"
+        ")",
+
+    };
+
+    size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);
+    stringstream error;
+    QSqlQuery q(db);
+
+    for(; num_tables--; ) {
+        if(!q.exec(tables[num_tables])) {
+            error << "Error creating table '"
+                  << table_names[num_tables]
+                  << "'.";
+            QString db_err(q.lastError().databaseText());
+            throw CriticalError(error.str(), db_err.toStdString());
+        }
+    }
 }
