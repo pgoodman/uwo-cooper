@@ -2,7 +2,7 @@
 #define SETUPCONTROLLER_H
 
 #include <string>
-#include "datatype/user.h"
+#include "../datatype/user.h"
 
 using namespace std;
 
