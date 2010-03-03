@@ -2,8 +2,8 @@
 #define USERCONTROLLER_H
 
 #include <string>
-#include "datatype/user.h"
-#include "controller/authorizationcontroller.h"
+#include "../datatype/user.h"
+#include "authorizationcontroller.h"
 
 using namespace std;
 
