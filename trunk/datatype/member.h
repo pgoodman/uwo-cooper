@@ -30,16 +30,15 @@ public:
 	double getMoneyOwed() {return moneyOwed;}
 	bool   sharedTelephone() {return shareTelephone;}
 	bool   checkMarked() {return isMarked;}
-	string firstName() {return fName;}
-	string lastName()  {return lName;}
+	string fullName() {return _fullName;}
+	string getUserName(void);
 
 	//Modifiers
 	void setTelephoneNumber(string newNumber);
 	void setMoneyOwed(double money);
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
-	void setFirstName(string newFirstName);
-	void setLastName(string newLastName);
+	void setFullName(string full_name);
 
 	static User *load(const int id);
     static User *load(string &uname, string &pass);
@@ -52,14 +51,12 @@ private:
 	double moneyOwed;
 	bool shareTelephone;
 	bool isMarked;
-	string fName;
-	string lName;
+	string _fullName;
 	string userName;
 
 
-	Member();
     //Member(string firstName, string lastName, string phoneNum, string userName, string password, int id);
-    Member(string firstName, string lastName, double newMoneyOwed,
+    Member(string fullName, double newMoneyOwed,
            string phoneNum, bool sharePhone, bool mark, string userName,
            string password, int id);
 };

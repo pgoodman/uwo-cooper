@@ -16,8 +16,5 @@ bool Dependant::isUnderAge(time_t currentTime)
 	return (timeOf21stBday < currentTime);
 }
 
-Dependant::~Dependant()
-{
-	delete fullName;
-	delete timeOf21stBday;
+Dependant::~Dependant() {
 }

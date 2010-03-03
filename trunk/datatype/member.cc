@@ -1,12 +1,12 @@
 
 #include "member.h"
 
-Member::Member()
+/*Member::Member()
 {
     moneyOwed = 0.0;
     shareTelephone = true;
     isMarked = false;
-}
+}*/
 #if 0
 Member::Member(string firstName, string lastName, string phoneNum,
 			   string uName, string password, int id)
@@ -26,17 +26,15 @@ Member::Member(string firstName, string lastName, string phoneNum,
 }
 #endif
 
-Member::Member(string firstName, string lastName, double newMoneyOwed,
+Member::Member(string fullName, double newMoneyOwed,
                string phoneNum, bool sharePhone, bool mark,
                string userName, string password, int id)
-/*: User(firstName += lastName, userName, password, id)*/
 {
     (void) userName;
     (void) password;
     (void) id;
 
-	fName = firstName;
-	lName = lastName;
+	_fullName = fullName;
 	moneyOwed = newMoneyOwed;
 	shareTelephone = sharePhone;
 	isMarked = mark;
@@ -63,14 +61,13 @@ void Member::setMarked(bool mark)
 	isMarked = mark;
 }
 
-void Member::setFirstName(string newFirstName)
+void Member::setFullName(string full_name)
 {
-	fName = newFirstName;
+	_fullName = full_name;
 }
 
-void Member::setLastName(string newLastName)
-{
-	lName = newLastName;
+string Member::getUserName(void) {
+    return userName;
 }
 
 User *Member::load(const int id) {
@@ -94,14 +91,27 @@ User *Member::load(string &user_name, string &pass) {
     return load(q);
 }
 
+static QVariant at(QSqlQuery &q, const char *index) {
+    return q.value(q.record().indexOf(index));
+}
+
 User *Member::load(QSqlQuery q) {
-    int is_coord = q.record().indexOf("id");
-    if(q.value(is_coord).toBool()) {
+    if(at(q, "is_coord").toBool()) {
         q.finish();
         return Coordinator::load(); // will already be loaded
     }
 
-    User *u(Member::load(q));
+    User *u = new Member(
+        at(q, "full_name").toString().toStdString(),
+        at(q, "money_owed").toDouble(),
+        at(q, "telephone").toString().toStdString(),
+        at(q, "share_telephone").toBool(),
+        at(q, "is_marked").toBool(),
+        at(q, "name").toString().toStdString(),
+        at(q, "password").toString().toStdString(),
+        at(q, "id").toInt()
+    );
+
     q.finish();
     return u;
 }
