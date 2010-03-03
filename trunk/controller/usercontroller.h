@@ -2,7 +2,7 @@
 #define USERCONTROLLER_H
 
 #include <string>
-#include "../datatype/user.h"
+#include "datatype/user.h"
 #include "authorizationcontroller.h"
 
 using namespace std;
@@ -14,10 +14,8 @@ public:
     ~UserController();
     static int addUserAccount(string *name, string *pwd);
     static int changeUserInfo(string *attribute, string *value);
-    static int userLogin(string *name, string *pwd);
-    static void userLogoff();
-    static void setActiveUser(User *theUser);
-    static User *getUser(string *name);
+    static int login(string name, string pwd);
+    static void logout();
 private:
     static User *activeUser;
 };

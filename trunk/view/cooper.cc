@@ -31,7 +31,7 @@ void Cooper::on_actionLogoff_triggered()
 {
     //user logoff
     //set avtive user to 0
-    UserController::setActiveUser(0);
+    UserController::logout();
 }
 
 void Cooper::on_actionAdd_Member_triggered()

@@ -1,9 +1,12 @@
 #ifndef INITWIZARD_H
 #define INITWIZARD_H
 
-#include<QtGui>
 #include<string>
 
+#include <QtGui>
+#include <QWizard>
+
+#include "datatype/coordinator.h"
 
  class InitWizard : public QWizard
  {
@@ -53,8 +56,8 @@
  public:
      ConclusionPage(QWidget *parent = 0);
      int nextId() const;
-     int initAccount(std::string *name, std::string *pwd);
-     int initData(std::string *filename);
+     int initAccount(std::string name, std::string pwd);
+     int initData(std::string filename);
 
   private:
      QLabel *conclusionLabel;

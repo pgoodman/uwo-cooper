@@ -9,23 +9,31 @@ Member::Member()
 }
 
 Member::Member(string firstName, string lastName, string phoneNum,
-			   string userName, string password, int id)
-:
-User(firstName += lastName, userName, password, id)
+			   string uName, string password, int id)
+/*: User(firstName += lastName, userName, password, id)*/
 {
+    (void) password;
+    (void) id;
+
 	fName = firstName;
 	lName = lastName;
 	telephoneNumber = phoneNum;
 	moneyOwed = 0.0;
     shareTelephone = true;
     isMarked = false;
+
+    userName = uName;
 }
 
-Member::Member(string firstName, string lastName, double newMoneyOwed, string phoneNum, 
-			   bool sharePhone, bool mark, std::string userName, std::string password, int id) 
-: 
-User(firstName += lastName, userName, password, id)
+Member::Member(string firstName, string lastName, double newMoneyOwed,
+               string phoneNum, bool sharePhone, bool mark,
+               string userName, string password, int id)
+/*: User(firstName += lastName, userName, password, id)*/
 {
+    (void) userName;
+    (void) password;
+    (void) id;
+
 	fName = firstName;
 	lName = lastName;
 	moneyOwed = newMoneyOwed;

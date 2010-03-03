@@ -94,11 +94,11 @@ ConclusionPage::ConclusionPage(QWidget *parent)
     int _accDone;
     int _dataDone;
 
-    std::string *name= new std::string(this->field("coordinator.name").toString().toStdString());
-    std::string *pwd=new std::string(this->field("coordinator.pwd").toString().toStdString());
+    std::string name= std::string(this->field("coordinator.name").toString().toStdString());
+    std::string pwd= std::string(this->field("coordinator.pwd").toString().toStdString());
     _accDone=ConclusionPage::initAccount(name,pwd);
 
-    std::string *filename =new std::string(this->field("datafile.name").toString().toStdString());
+    std::string filename = std::string(this->field("datafile.name").toString().toStdString());
     _dataDone=ConclusionPage::initData(filename);
 
     if(_accDone==0&&_dataDone==0){
@@ -109,8 +109,8 @@ ConclusionPage::ConclusionPage(QWidget *parent)
                                      "You are now logged in as the coordinator."));
         conclusionLabel->setWordWrap(true);
         //set active user
-        User *theUser = UserController::getUser(name);
-        UserController::setActiveUser(theUser);
+        //User *theUser = UserController::getUser(name);
+        UserController::login(name, pwd);
     }
     else {
         setTitle(tr("Initialization Failed"));
@@ -124,18 +124,17 @@ ConclusionPage::ConclusionPage(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(conclusionLabel);
     setLayout(layout);
-
-    delete name;
-    delete pwd;
-    delete filename;
 }
 
-int ConclusionPage::initAccount(std::string *name, std::string *pwd){
-    return SetupController::addCoordinator(name,pwd);
+int ConclusionPage::initAccount(std::string name, std::string pwd){
+    //return SetupController::addCoordinator(name,pwd);
+    Coordinator::create(name, pwd);
+    return 1;
 }
 
-int ConclusionPage::initData(std::string *filename) {
-    return SetupController::loadData(filename);
+int ConclusionPage::initData(std::string filename) {
+    SetupController::loadData(filename);
+    return 1;
 }
 
 int ConclusionPage::nextId() const

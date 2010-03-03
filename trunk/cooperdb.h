@@ -23,7 +23,13 @@ public:
     ~CooperDB();
 
     static void connect(const char *);
-    static bool hasCoordinator();
+    static bool hasAny(const char *);
+    static QSqlQuery select(const char *query);
+
+    static void queryError(const char *, QSqlQuery &);
+    static void queryError(string, QSqlQuery &);
+    static void queryError(stringstream &, QSqlQuery &);
+
 private:
     CooperDB();
 
