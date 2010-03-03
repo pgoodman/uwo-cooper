@@ -1,5 +1,6 @@
 
 #include "cooperdb.h"
+#include "criticalerror.h"
 
 /**
  * Connect to the database if it exists, and if it does not exist, create it.
