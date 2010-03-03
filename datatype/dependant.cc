@@ -1,4 +1,5 @@
 #include "dependant.h"
+#include <time.h>
 
 Dependant::Dependant()
 {
