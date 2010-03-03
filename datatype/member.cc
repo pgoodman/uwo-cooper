@@ -95,7 +95,11 @@ static QVariant at(QSqlQuery &q, const char *index) {
     return q.value(q.record().indexOf(index));
 }
 
-User *Member::load(QSqlQuery q) {
+User *Member::load(QSqlQuery &q) {
+    if(!q.isValid()) {
+        return NULL;
+    }
+
     if(at(q, "is_coord").toBool()) {
         q.finish();
         return Coordinator::load(); // will already be loaded

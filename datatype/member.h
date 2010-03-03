@@ -45,7 +45,7 @@ public:
 
 private:
 
-    static User *load(QSqlQuery q);
+    static User *load(QSqlQuery &q);
 
 	string telephoneNumber;
 	double moneyOwed;
