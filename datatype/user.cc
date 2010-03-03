@@ -14,3 +14,23 @@ User::User(string newName, string newUserName, string newPassword, int newID)
 	password = newPassword;
 	id = newID;
 }
+
+void User::setName(string newName)
+{
+	name = newName;
+}
+    
+void User::setUserName(string newUserName)
+{
+	userName = newUserNamel
+}
+
+void User::setPassword(string newPassword)
+{
+	password = newPassword;
+}
+
+void User::setID(int newID)
+{
+	id = newID;
+}

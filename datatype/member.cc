@@ -1,3 +1,4 @@
+#include <string>
 #include "member.h"
 
 Member::Member()
@@ -31,4 +32,34 @@ User(firstName += lastName, userName, password, id)
 	shareTelephone = sharePhone;
 	isMarked = mark;
 	telephoneNumber = phoneNum;
+}
+
+void Member::setTelephoneNumber(string newNumber);
+{
+	telephoneNumber = newNumber;
+}
+
+void Member::setMoneyOwed(double money);
+{
+	moneyOwed = money;
+}
+
+void Member::setSharedTelephone(bool share);
+{
+	shareTelephone = share;
+}
+
+void Member::setMarked(bool mark)
+{
+	isMarked = mark;
+}
+
+void Member::setFirstName(string newFirstName)
+{
+	fName = newFirstName;
+}
+
+void Member::setLastName(string newLastName)
+{
+	lName = newLastName;
 }
