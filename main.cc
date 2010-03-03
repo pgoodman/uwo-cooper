@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include <QtGui>
 #include <QApplication>
 #include <QMessageBox>
@@ -10,6 +12,7 @@
 #include "cooperdb.h"
 #include "criticalerror.h"
 
+using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -40,6 +43,7 @@ int main(int argc, char *argv[])
             return 0;
         }
     } catch(CriticalError &e) {
+        cout << "Error: " << e.header() << endl << e.what() << endl;
         QMessageBox::critical(
             0,
             e.header(),

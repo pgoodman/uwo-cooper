@@ -2,7 +2,13 @@
 #define COOPERDB_H
 
 #include <stdexcept>
+#include <sstream>
+
 #include <QSqlDatabase>
+#include <QString>
+#include <QStringList>
+#include <QSqlQuery>
+#include <QSqlError>
 
 #include "criticalerror.h"
 
