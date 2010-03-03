@@ -29,6 +29,8 @@ public:
     static User *load(const unsigned int id=0);
     static User *load(string &uname, string &pass);
 
+    virtual ~User() { };
+
 protected:
 	//Attributes
 	string full_name;

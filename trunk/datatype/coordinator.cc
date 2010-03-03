@@ -4,12 +4,20 @@
 bool Coordinator::does_exist(false);
 User *Coordinator::coord(0);
 
+/**
+ * Constructor, note: private.
+ */
 Coordinator::Coordinator(int _id, string _full_name, string _password)
  : User() {
     full_name = _full_name;
     id = _id;
     password = _password;
 }
+
+/**
+ * Destructor.
+ */
+Coordinator::~Coordinator() { }
 
 /**
  * Check if the coordinator exists.
