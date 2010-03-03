@@ -21,6 +21,7 @@ public:
 	static User *load(void);
 
 	virtual string getUserName(void);
+	virtual ~Coordinator();
 
 private:
 	Coordinator(int, string, string);
