@@ -1,5 +1,5 @@
 #include "coordinator.h"
 
-Coordinator::Coordinator() {
+Coordinator::Coordinator():User() {
     name.assign("coord");
 }

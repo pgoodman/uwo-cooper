@@ -1,6 +1,4 @@
 #include "cooper.h"
-#include "ui_cooper.h"
-#include "controller/usercontroller.h"
 
 Cooper::Cooper(QWidget *parent) :
     QMainWindow(parent),

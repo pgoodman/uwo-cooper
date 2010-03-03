@@ -8,6 +8,7 @@
 #include "view/cooper.h"
 
 #include "cooperdb.h"
+#include "criticalerror.h"
 
 
 int main(int argc, char *argv[])
@@ -48,7 +49,5 @@ int main(int argc, char *argv[])
     } catch(...) {
 
     }
-
-
-
+return 0;
 }

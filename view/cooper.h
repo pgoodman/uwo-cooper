@@ -2,6 +2,8 @@
 #define COOPER_H
 
 #include <QMainWindow>
+#include "view/ui_cooper.h"
+#include "controller/usercontroller.h"
 
 namespace Ui {
     class Cooper;

@@ -2,7 +2,7 @@
 #define COORDINATOR_H
 
 #include <string>
-#include "user.h"
+#include "datatype/user.h"
 
 using namespace std;
 
