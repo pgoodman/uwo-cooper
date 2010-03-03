@@ -12,16 +12,17 @@ public:
 	//Constructors
 	Dependant();
 	Dependant(string name, time_t bday);
+	~Dependant();	
 
 	//methods
-	bool isUnderAge();
+	bool isUnderAge(time_t currentTime);
 
 	//accessor methods
-	string getName(){return name;}
+	string getName(){return fullName;}
 	time_t getBday(){return timeOf21stBirthday;}
 
 private:
-	string name;
+	string fullName;
 	time_t timeOf21stBirthday;
 };
 
