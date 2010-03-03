@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <QSqlQuery>
+
 using namespace std;
 
 class User
@@ -25,13 +27,10 @@ public:
     void setPassword(string newPassword);
     void setID(int newID);*/
 
-    // get a user from the database
-    static User *load(const unsigned int id=0);
-    static User *load(string &uname, string &pass);
-
     virtual ~User() { };
 
 protected:
+
 	//Attributes
 	string full_name;
 	string password;

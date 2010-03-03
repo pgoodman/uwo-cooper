@@ -1,3 +1,4 @@
+
 #include "usercontroller.h"
 
 User *UserController::activeUser;
@@ -21,7 +22,10 @@ int UserController::changeUserInfo(string *attribute, string *value) {
     return 0;
 }
 int UserController::login(string name, string pwd){
-    activeUser = User::load(name, pwd);
+    activeUser = (name == COORDINATOR_USER_NAME)
+               ? Coordinator::load()
+               : Member::load(name, pwd);
+
     return 0 != activeUser;
 }
 void UserController::logout() {

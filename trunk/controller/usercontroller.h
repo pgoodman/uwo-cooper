@@ -3,7 +3,10 @@
 
 #include <string>
 #include "datatype/user.h"
+#include "datatype/member.h"
+#include "datatype/coordinator.h"
 #include "authorizationcontroller.h"
+#include "conf.h"
 
 using namespace std;
 
