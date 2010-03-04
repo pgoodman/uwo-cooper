@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QString>
 
-//#include "view/login.h"
+#include "view/login.h"
 #include "view/cooper.h"
 
 #include "conf.h"
@@ -31,25 +31,31 @@ int main(int argc, char *argv[]) {
         CooperDB::connect("cooper");
 
         //if coordinator was not setup
-        if(!Coordinator::exists()) {
+       if(!Coordinator::exists()) {
             //D( cout << "no coordinator" << endl; )
             InitWizard wizard;
             wizard.show();
-            //SetupController::addCoordinator();
+            SetupController::addCoordinator();
+            return app.exec();
+
+           /*Cooper cooperUI;
+           cooperUI.show();
+           return app.exec();*/
 
         } else {
             //D( cout << "has coordinator" << endl; )
             Login login;
             login.show();
+            return app.exec();
         }
 
         //if UserController::activeUser is not null
-        /*if(!UserController::activeUser){
+        if(!UserController::activeUser){
 
             return app.exec();
         } else {
             return 0;
-        }*/
+        }
 
         /*
         pair<Member::iterator, Member::iterator> its(Member::findAll());
