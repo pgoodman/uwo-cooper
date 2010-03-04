@@ -46,7 +46,7 @@ AccountPage::AccountPage(QWidget *parent)
     layout->addWidget(pwdLabel, 1, 0);
     layout->addWidget(pwdLineEdit, 1, 1);
 
-    registerField("coordinator.name*",nameLineEdit);
+    registerField("coordinator.name",nameLineEdit);
     registerField("coordinator.pwd",pwdLineEdit);
 
     setLayout(layout);
