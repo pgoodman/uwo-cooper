@@ -86,14 +86,12 @@ ModelIterator<T, L>::~ModelIterator() { }
  */
 template <typename T, typename L>
 T *ModelIterator<T, L>::operator*() {
-    //is_used = true;
     return L::load(curr_id);
 }
 
 template <typename T, typename L>
 ModelIterator<T, L> &ModelIterator<T, L>::operator++ () {
     ++i;
-    //is_used = true;
     if(i < size) {
         query.next();
         setCurrId();
@@ -113,13 +111,11 @@ ModelIterator<T, L> ModelIterator<T, L>::operator++ (int) {
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator!=(const ModelIterator<T, L> &other) {
     //D( cout << query << "!=" << other.query << " || " << i << " != " << other.i << endl; )
-    //is_used = true;
     return id != other.id || i != other.i;
 }
 
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator==(const ModelIterator<T, L> &other) {
-    //is_used = true;
     return id == other.id && i == other.i;
 }
 

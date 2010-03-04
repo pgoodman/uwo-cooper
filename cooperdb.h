@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+#include <utility>
 #include <assert.h>
 #include <time.h>
 
@@ -17,6 +18,7 @@
 
 #include "conf.h"
 #include "criticalerror.h"
+#include "modeliterator.h"
 
 /**
  * Handle creating, connecting, and querying the cooper database.
@@ -29,6 +31,11 @@ public:
     static void connect(const char *);
     static bool hasAny(const char *);
     static QSqlQuery select(const char *query);
+    static bool remove(const char *table, const int id);
+
+    template <typename T, typename L>
+    static pair<ModelIterator<T,L>, ModelIterator<T,L> >
+    selectAll(const char *table, const char *cond="1=1");
 
     static void queryError(const char *, QSqlQuery &);
     static void queryError(string, QSqlQuery &);
@@ -64,5 +71,22 @@ template <> QSqlQuery &operator<< <string &>(QSqlQuery &q, string &val);
 template <> QSqlQuery &operator<< <string>(QSqlQuery &q, string val);
 template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val);
 template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
+
+/**
+ * Linkage stuff.
+ */
+template <typename T, typename L>
+pair<ModelIterator<T,L>, ModelIterator<T,L> >
+CooperDB::selectAll(const char *table, const char *conditions) {
+    stringstream ss;
+    ss << "SELECT COUNT(id) as c FROM " << table << " WHERE " << conditions;
+    QSqlQuery count = QSqlQuery(ss.str().c_str());
+    int size((count.next() && count.isValid()) ? qcol<int>(count, "c") : 0);
+    count.finish();
+    ss.str(string(""));
+    ss << "SELECT id FROM " << table << " WHERE " << conditions;
+    return ModelIterator<T,L>::make(QSqlQuery(ss.str().c_str()), size);
+}
+
 
 #endif // COOPERDB_H

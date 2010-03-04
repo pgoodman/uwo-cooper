@@ -38,11 +38,12 @@ public:
 	string getUserName(void);
 
 	//Modifiers
+	*/
 	void setTelephoneNumber(string newNumber);
 	void setMoneyOwed(double money);
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
-    */
+
 
     typedef class ModelIterator<User, Member> iterator;
 
@@ -57,7 +58,7 @@ public:
                         const bool share_telephone, string user_name,
                         string password, const time_t move_in_time);
 
-    static pair<iterator, iterator> find();
+    static pair<iterator, iterator> findAll();
 
 private:
 
