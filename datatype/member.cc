@@ -197,13 +197,8 @@ pair<Member::iterator, Member::iterator> Member::find() {
     );
     int size((count.next() && count.isValid()) ? qcol<int>(count, "c") : 0);
     count.finish();
-
-    QSqlQuery *query = new QSqlQuery(
-        "SELECT id FROM user WHERE is_coordinator=0"
-    );
-
-    query->next();
-    iterator start(query, size, 0);
-    iterator end(query, size, size + 1);
-    return make_pair(start, end);
+    return iterator::make(
+        QSqlQuery("SELECT id FROM user WHERE is_coordinator=0"),
+        size
+    ); //make_pair(start, end);
 }
