@@ -51,10 +51,16 @@ int main(int argc, char *argv[]) {
             return 0;
         }*/
 
+        /*
         pair<Member::iterator, Member::iterator> its(Member::findAll());
         for(Member::iterator it(its.first); it != its.second; it++) {
             cout << (*it)->getFullName() << endl;
-        }
+        }*/
+        Member *peter = Member::load(1);
+        peter->setFullName("Peter A Goodman");
+        peter->setMoneyOwed(25.00);
+        peter->save();
+
 
     } catch(CriticalError &e) {
         D( cout << "Error: " << e.header() << endl << e.what() << endl; )

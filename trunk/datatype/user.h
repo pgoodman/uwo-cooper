@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 
 #include "permission.h"
+#include "cooperdb.h"
 //#include "model.h"
 
 using namespace std;
@@ -21,6 +22,7 @@ public:
     virtual string getUserName() = 0;
     virtual void save(void) = 0;
     virtual bool hasPermission(const Permission p) = 0;
+    virtual bool remove(void);
 
     bool hasPassword(string &pass);
     int getID();

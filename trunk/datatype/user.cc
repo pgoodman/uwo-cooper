@@ -62,3 +62,7 @@ User *User::recall(const int id) {
 bool User::remembered(const int id) {
     return elms.end() != elms.find(id);
 }
+
+bool User::remove(void) {
+    return CooperDB::remove("user", id);
+}

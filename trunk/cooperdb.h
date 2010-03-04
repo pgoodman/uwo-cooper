@@ -71,6 +71,7 @@ template <> QSqlQuery &operator<< <string &>(QSqlQuery &q, string &val);
 template <> QSqlQuery &operator<< <string>(QSqlQuery &q, string val);
 template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val);
 template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
+//template <> QSqlQuery &operator<< <double>(QSqlQuery &q, double val);
 
 /**
  * Linkage stuff.

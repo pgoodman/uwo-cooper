@@ -256,5 +256,6 @@ const QVariant &operator>>(const QVariant &v, QString &x) {
 // tell the compiler which template instantiations to make
 template QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
 template QSqlQuery &operator<< <int>(QSqlQuery &q, int val);
+template QSqlQuery &operator<< <double>(QSqlQuery &q, double val);
 template QSqlQuery &operator<< <unsigned int>(QSqlQuery &q, unsigned int val);
 
