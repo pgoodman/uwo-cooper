@@ -30,12 +30,9 @@ bool Coordinator::hasPermission(const Permission p) {
  * Check if the coordinator exists.
  */
 bool Coordinator::exists(void) {
-    if(does_exist) {
-        return true;
-    }
-    return does_exist = CooperDB::hasAny(
+    return does_exist || (does_exist = CooperDB::hasAny(
         "SELECT id FROM user WHERE is_coordinator=1"
-    );
+    ));
 }
 
 /**
@@ -60,7 +57,7 @@ User *Coordinator::create(QString password) {
     assert(0 == coord);
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO user (name, password, is_coordinator VALUES('"
+        "INSERT INTO user (name, password, is_coordinator) VALUES ('"
         COORDINATOR_USER_NAME
         "',?,1)"
     );
@@ -68,6 +65,7 @@ User *Coordinator::create(QString password) {
     if(!q.exec()) {
         CooperDB::queryError("Unable to create Coordinator", q);
     }
+    does_exist = true;
     return load();
 }
 
@@ -88,21 +86,14 @@ User *Coordinator::load(void) {
         return coord;
     }
 
-    QSqlQuery q = CooperDB::select(
-        "SELECT id, password FROM user "
-        "WHERE is_coordinator=1 LIMIT 1"
-    );
-
-    // turn the sql record into an object
+    QSqlQuery q(CooperDB::select("user", "is_coordinator=1"));
     int id(qcol<int>(q, "id"));
-    User *u = new Coordinator(
-        id,
-        qcol<QString>(q, "password")
-    );
+    User *u = new Coordinator(id, qcol<QString>(q, "password"));
 
     // cache the coordinator
     User::remember(id, u);
-    return coord = u;
+    coord = u;
+    return u;
 }
 
 /**

@@ -31,6 +31,7 @@ public:
     static void connect(const char *);
     static bool hasAny(const char *);
     static QSqlQuery select(const char *query);
+    static QSqlQuery select(const char *table, const char *cond);
     static bool remove(const char *table, const int id);
 
     template <typename T, typename L>

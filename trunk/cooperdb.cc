@@ -22,7 +22,7 @@ CooperDB::~CooperDB() {
  * Check whether or not a given query returns any rows.
  */
 bool CooperDB::hasAny(const char *query) {
-    return select(query).isValid();
+    return select(query).first();
 }
 
 /**
@@ -30,7 +30,22 @@ bool CooperDB::hasAny(const char *query) {
  */
 QSqlQuery CooperDB::select(const char *query) {
     assert(is_connected);
-    QSqlQuery q(query, db);
+    QSqlQuery q(db);
+    if(!q.exec(query)) {
+        queryError("Invalid Query", q);
+    }
+    return q;
+}
+
+QSqlQuery CooperDB::select(const char *table, const char *cond) {
+    assert(is_connected);
+    stringstream ss;
+    ss << "SELECT * FROM " << table << " WHERE " << cond;
+    QSqlQuery q(db);
+    if(!q.exec(ss.str().c_str())) {
+        queryError("Invalid Query", q);
+    }
+    q.first();
     return q;
 }
 
@@ -111,7 +126,7 @@ void CooperDB::makeDatabase() {
             "is_marked INTEGER DEFAULT 0,"
 
             // member-specific
-            "telephone TEXT NOT NULL,"
+            "telephone TEXT,"
             "move_in_time INTEGER DEFAULT 0,"
             "money_owed REAL DEFAULT 0.0,"
 
@@ -154,7 +169,7 @@ void CooperDB::makeDatabase() {
     }
 
     // add in the the committees
-    q.exec("");
+    //q.exec("");
 
     D(
         q.exec(
@@ -218,6 +233,7 @@ template<typename T> T qcol(const QSqlQuery &q, const char *index) {
     throw 0;
 }
 template <> QVariant qcol(const QSqlQuery &q, const char *index) {
+    //cout << q.executedQuery().toStdString() << endl;
     return q.value(q.record().indexOf(index));
 }
 template <> int qcol(const QSqlQuery &q, const char *index) {
