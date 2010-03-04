@@ -36,7 +36,7 @@ void Cooper::on_actionLogoff_triggered()
 
 void Cooper::on_actionAdd_Member_triggered()
 {
-    TestAdd *test = new TestAdd(ui->centralWidget);
+    //TestAdd *test = new TestAdd(ui->centralWidget);
 }
 
 void Cooper::on_actionEdit_Member_triggered()

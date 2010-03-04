@@ -33,10 +33,10 @@ int getId(void) {
     // UNSURE WHAT THIS IS RETURNING EXACTLY
     return 0;
 }
-
+/*
 static Committee *load(int id) {
     (void) id; return 0;
-}
+}*/
 
 /*
 Permission Committee::getPermissions(Member member) {

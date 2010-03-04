@@ -34,7 +34,7 @@ AccountPage::AccountPage(QWidget *parent)
     nameLabel = new QLabel(tr("Account &Name: "));
     pwdLabel=new QLabel(tr("&Password"));
     nameLineEdit=new QLineEdit;
-    nameLineEdit->setText(new QString(COORDINATOR_USER_NAME));
+    nameLineEdit->insert(QString(COORDINATOR_USER_NAME));
     nameLineEdit->setReadOnly(true);
     pwdLineEdit=new QLineEdit;
     nameLabel->setBuddy(nameLineEdit);

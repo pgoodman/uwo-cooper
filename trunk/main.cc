@@ -53,6 +53,11 @@ int main(int argc, char *argv[]) {
 
         window->show();
 
+        pair<Member::iterator, Member::iterator> its(Member::find());
+        for(Member::iterator it(its.first); it != its.second; it++) {
+            cout << (*it)->getFullName() << endl;
+        }
+
     } catch(CriticalError &e) {
         D( cout << "Error: " << e.header() << endl << e.what() << endl; )
         QMessageBox::critical(

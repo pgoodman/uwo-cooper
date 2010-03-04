@@ -9,7 +9,7 @@ class Committee
 public:
     Committee();
     int getId(void) { return 0; }
-    static Committee *load(int id) { (void) id; return 0; }
+    //static Committee *load(int id) { (void) id; return 0; }
    /* Permission getPermissions(Member member);
     void addMember(Member member);
     void removeMember(Member member);
@@ -17,7 +17,7 @@ public:
    // void removeTask(Task task);
 
 private:
-    //name: std::string[1]
+    //name: std::string
     bool can_delete;
     Member chair;
     Member secretary;
