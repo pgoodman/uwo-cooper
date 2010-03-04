@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#include <string>
+#include <QString>
 #include <map>
 
 #include <QSqlQuery>
@@ -14,25 +14,19 @@ using namespace std;
 
 class User {
 public:
-    //Constructors
     User();
-    User(string newName, string newUserName, string newPassword, int newID);
+    User(QString newName, QString newUserName, QString newPassword, int newID);
     
-    virtual string getFullName();
-    virtual string getUserName() = 0;
+
+    virtual QString getUserName() = 0;
     virtual void save(void) = 0;
     virtual bool hasPermission(const Permission p) = 0;
     virtual bool remove(void);
 
-    bool hasPassword(string &pass);
+    bool hasPassword(QString &pass);
     int getID();
 
-    //Modifiers
-    virtual void setFullName(string fullName);
-    /*void setName(string newName);
-    void setUserName(string newUserName);
-    void setPassword(string newPassword);
-    void setID(int newID);*/
+
 
     virtual ~User() { }
 
@@ -44,8 +38,8 @@ protected:
 
 	//Attributes
 
-	string full_name;
-	string password;
+
+	QString password;
 	int id;
 
 	static map<int, User *> elms;

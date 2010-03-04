@@ -21,7 +21,8 @@ int UserController::changeUserInfo(string *attribute, string *value) {
     (void) value;
     return 0;
 }
-int UserController::login(string name, string pwd){
+
+int UserController::login(QString name, QString pwd){
     activeUser = (name == COORDINATOR_USER_NAME)
                ? Coordinator::load()
                : Member::load(name, pwd);

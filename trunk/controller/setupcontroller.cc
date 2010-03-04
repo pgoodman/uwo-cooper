@@ -1,4 +1,6 @@
+
 #include <iostream>
+#include <QString>
 #include <fstream>
 #include <string>
 #include <locale>
@@ -18,13 +20,13 @@ int SetupController::addCoordinator() {
     return 0;
 }
 
-int SetupController::loadData(string filename) {
+int SetupController::loadData(QString filename) {
         string userInfo;
         int unitNo;
         string address = "";
         int noOfRooms;
         string tenantSurname = "";
-        ifstream myfile(filename.c_str());
+        ifstream myfile(filename.toStdString().c_str());
 
         if (myfile.is_open()) {
                 while(!myfile.eof()) {
@@ -32,8 +34,8 @@ int SetupController::loadData(string filename) {
                         string information = "";        // Hold the next piece of info
                         getline (myfile, userInfo);             // Get next line
                         int whichInfo = 0;                      // Keeps track of which information were parsing out
-                        for (int i = 0; i <= userInfo.size(); i++) {
-                                if ((i == int(userInfo.size())) || (userInfo.substr(i,1) == ",")) {
+                        for (unsigned int i = 0; i <= userInfo.size(); i++) {
+                                if ((i == userInfo.size()) || (userInfo.substr(i,1) == ",")) {
                                         switch (whichInfo) {
                                                 case 0: if (information == "") {
                                                                 cout << "Error parsing: No unit number given" << endl;

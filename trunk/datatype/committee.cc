@@ -4,18 +4,7 @@
 
 map<int, Committee *> Committee::elms;
 
-/*
-string name;
-//name std::string[1]
-bool can_delete;
-Member chair;
-Member secretary;
-Permission chair_perms;
-Permission member_perms;
-list<Member> memberList;
-*/
-
-Committee::Committee(string n, const bool canDelete,
+Committee::Committee(QString n, const bool canDelete,
                      const perm_set_t chairPerms, const perm_set_t memberPerms,
                      const int chairId, const int secretaryId,
                      const int committeeId)
@@ -45,7 +34,7 @@ Committee *Committee::load(const int id) {
     }
 
     Committee *c = new Committee(
-        qcol<string>(q, "name"),
+        qcol<QString>(q, "name"),
         qcol<bool>(q, "can_delete"),
         qcol<perm_set_t>(q, "chair_perms"),
         qcol<perm_set_t>(q, "member_perms"),
@@ -60,7 +49,7 @@ Committee *Committee::load(const int id) {
 /**
  * Save a committee to the database.
  */
-bool Committee::save(void) {
+void Committee::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE committee set name=?,can_delete=?,chair_perms=?,member_perms=?,"
@@ -68,8 +57,36 @@ bool Committee::save(void) {
     );
     q << name << can_delete << chair_perms << member_perms << chair_id
       << secretary_id << id;
-    return q.exec();
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Save Committee", q);
+    }
 }
+
+/**
+ * Create an return a committee.
+ */
+void Committee::create(QString n, const bool canDelete,
+                       const perm_set_t chairPerms, const perm_set_t memberPerms,
+                       const int chairId, const int secretaryId,
+                       const int committeeId) {
+    QSqlQuery q;
+    q.prepare(
+        "INSERT INTO committee (name,can_delete,chair_perms,member_perms,"
+        "chair_id,secretary_id) VALUES (?,?,?,?,?,?)"
+    );
+    q << n << canDelete << chairPerms << memberPerms << chairId << secretaryId
+      << committeeId;
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Add Committee", q);
+    }
+}
+
+/**
+ * Add a member to the committee.
+ */
+//void Committee::addMember(const int member_id) {
+
+//}
 
 /**
  * Return all committees.
@@ -104,7 +121,7 @@ bool Committee::remembered(const int id) {
 }
 
 /*
-Committee::Committee(string committeeName, Member committeeChair, Member committeeSecretary)
+Committee::Committee(QString committeeName, Member committeeChair, Member committeeSecretary)
 {
         name = committeeName;
         chair = committeeChair;

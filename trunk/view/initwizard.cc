@@ -106,40 +106,45 @@ ConclusionPage::ConclusionPage(QWidget *parent)
     //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
 }
 void ConclusionPage::initializePage(){
-    std::string name= std::string(this->field("coordinator.name").toString().toStdString());
-    std::string pwd= std::string(this->field("coordinator.pwd").toString().toStdString());
+    //std::string name= std::string(this->field("coordinator.name").toString().toStdString());
+    //std::string pwd= std::string(this->field("coordinator.pwd").toString().toStdString());
     //creating coordinator account
-    if(!ConclusionPage::initAccount(name,pwd)){
-        std::string filename = std::string(this->field("datafile.name").toString().toStdString());
+    QString pwd(this->field("coordinator.pwd").toString());
+    QString uname(COORDINATOR_USER_NAME);
 
-        if(!ConclusionPage::initData(filename)){
+    //if(!ConclusionPage::initAccount(name,pwd)){
+    try {
+        Coordinator::create(pwd);
+
+        try {
+            SetupController::loadData(this->field("datafile.name").toString());
+
             setTitle(tr("Initialization Completed"));
             conclusionLabel->setText(tr("You have successfully initialized Cooper. "
                                          "You are now logged in as the coordinator."));
             //set active user
-            UserController::login(name, pwd);
-        }
-        else{
+            UserController::login(uname, pwd);
+        } catch(...) {
             setTitle(tr("Initialization Failed"));
             conclusionLabel->setText(tr("The data file cannot be loaded. Please try again."));
         }
 
-    }
-    else {
+    } catch(...) {
         setTitle(tr("Initialization Failed"));
         conclusionLabel->setText(tr("The account creation failed. Please try again."));
     }
 }
+/*
 int ConclusionPage::initAccount(std::string name, std::string pwd){
     //return SetupController::addCoordinator(name,pwd);
     Coordinator::create(name, pwd);
     return 1;
-}
-
+}*/
+/*
 int ConclusionPage::initData(std::string filename) {
     SetupController::loadData(filename);
     return 1;
-}
+}*/
 
 int ConclusionPage::nextId() const
 {

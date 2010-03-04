@@ -2,7 +2,7 @@
 #ifndef COORDINATOR_H
 #define COORDINATOR_H
 
-#include <string>
+#include <QString>
 
 #include <QSqlQuery>
 #include <QVariant>
@@ -19,21 +19,20 @@ class Coordinator : public User
 {
 public:
 	static bool exists(void);
-	static User *create(string full_name, string password);
+	static User *create(QString password);
 	static User *load(void);
-	static User *load(string password);
+	static User *load(QString password);
 
-	virtual string getUserName(void);
+	virtual QString getUserName(void);
 	virtual void save(void);
 	virtual bool hasPermission(const Permission p);
 	virtual ~Coordinator();
 
 private:
-	Coordinator(int, string, string);
+	Coordinator(int, QString);
 
 	static bool does_exist;
 	static User *coord;
-
 };
 
 #endif // COORDINATOR_H

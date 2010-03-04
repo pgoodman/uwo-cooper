@@ -60,6 +60,7 @@ template <> unsigned int qcol(const QSqlQuery &q, const char *index);
 template <> double qcol(const QSqlQuery &q, const char *index);
 template <> bool qcol(const QSqlQuery &q, const char *index);
 template <> string qcol(const QSqlQuery &q, const char *index);
+template <> QString qcol(const QSqlQuery &q, const char *index);
 
 const QVariant &operator>>(const QVariant &v, int &x);
 const QVariant &operator>>(const QVariant &v, bool &x);
