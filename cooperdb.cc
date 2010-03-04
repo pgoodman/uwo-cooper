@@ -118,7 +118,9 @@ void CooperDB::makeDatabase() {
 
             // index
             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "committee_id INTEGER DEFAULT 0"
+            "committee_id INTEGER DEFAULT 0,"
+
+            "UNIQUE(name)"
             //"KEY(committee_id)"
         ")",
 
@@ -150,6 +152,9 @@ void CooperDB::makeDatabase() {
             queryError(error, q);
         }
     }
+
+    // add in the the committees
+    q.exec("");
 
     D(
         q.exec(
@@ -230,7 +235,9 @@ template <> bool qcol(const QSqlQuery &q, const char *index) {
 template <> string qcol(const QSqlQuery &q, const char *index) {
     return qcol<QVariant>(q, index).toString().toStdString();
 }
-
+template <> QString qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toString();
+}
 
 /**
  * Extract thigns from the variants.
@@ -261,4 +268,5 @@ template QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
 template QSqlQuery &operator<< <int>(QSqlQuery &q, int val);
 template QSqlQuery &operator<< <double>(QSqlQuery &q, double val);
 template QSqlQuery &operator<< <unsigned int>(QSqlQuery &q, unsigned int val);
+template QSqlQuery &operator<< <QString>(QSqlQuery &q, QString val);
 

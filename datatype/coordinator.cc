@@ -7,9 +7,8 @@ User *Coordinator::coord(0);
 /**
  * Constructor, note: private.
  */
-Coordinator::Coordinator(int _id, string _full_name, string _password)
+Coordinator::Coordinator(int _id, QString _password)
  : User() {
-    full_name = _full_name;
     id = _id;
     password = _password;
 }
@@ -45,9 +44,9 @@ bool Coordinator::exists(void) {
 void Coordinator::save(void) {
     QSqlQuery q;
     q.prepare(
-        "UPDATE user SET full_name=?,password=? WHERE id=? AND is_coordinator=1"
+        "UPDATE user SET password=? WHERE id=? AND is_coordinator=1"
     );
-    q << full_name << password << id;
+    q << password << id;
     if(!q.exec()) {
         CooperDB::queryError("Unable to Update Coordinator Information.", q);
     }
@@ -56,16 +55,16 @@ void Coordinator::save(void) {
 /**
  * Create a new coordinator in the database.
  */
-User *Coordinator::create(string full_name, string password) {
+User *Coordinator::create(QString password) {
     assert(!Coordinator::exists());
     assert(0 == coord);
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO user (name, full_name, password, is_coordinator VALUES('"
+        "INSERT INTO user (name, password, is_coordinator VALUES('"
         COORDINATOR_USER_NAME
-        "',?,?,1)"
+        "',?,1)"
     );
-    q << full_name << password;
+    q << password;
     if(!q.exec()) {
         CooperDB::queryError("Unable to create Coordinator", q);
     }
@@ -75,8 +74,8 @@ User *Coordinator::create(string full_name, string password) {
 /**
  * Coordinator user name.
  */
-string Coordinator::getUserName(void) {
-    return string(COORDINATOR_USER_NAME);
+QString Coordinator::getUserName(void) {
+    return QString(COORDINATOR_USER_NAME);
 }
 
 /**
@@ -90,7 +89,7 @@ User *Coordinator::load(void) {
     }
 
     QSqlQuery q = CooperDB::select(
-        "SELECT id, full_name, password FROM user "
+        "SELECT id, password FROM user "
         "WHERE is_coordinator=1 LIMIT 1"
     );
 
@@ -98,8 +97,7 @@ User *Coordinator::load(void) {
     int id(qcol<int>(q, "id"));
     User *u = new Coordinator(
         id,
-        qcol<string>(q, "full_name"),
-        qcol<string>(q, "password")
+        qcol<QString>(q, "password")
     );
 
     // cache the coordinator
@@ -110,7 +108,7 @@ User *Coordinator::load(void) {
 /**
  * Load the coordinator with a given password, or return NULL.
  */
-User *Coordinator::load(string password) {
+User *Coordinator::load(QString password) {
     User *c = Coordinator::load();
     if(c->hasPassword(password)) {
         return c;

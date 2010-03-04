@@ -1,20 +1,12 @@
 
 #include "member.h"
 
-/*Member::Member()
-{
-    moneyOwed = 0.0;
-    shareTelephone = true;
-    isMarked = false;
-}*/
-
-
 /**
  * Private Constructor, used for loading a member from the database.
  */
-Member::Member(string fullName, double newMoneyOwed,
-               string phoneNum, bool sharePhone, bool mark,
-               string uName, string pass, int committeeId, int userId)
+Member::Member(QString fullName, double newMoneyOwed,
+               QString phoneNum, bool sharePhone, bool mark,
+               QString uName, QString pass, int committeeId, int userId)
 {
     full_name = fullName;
 	money_owed = newMoneyOwed;
@@ -38,11 +30,11 @@ bool Member::hasPermission(const Permission p) {
 /**
  * Get this user's login name.
  */
-string Member::getUserName(void) {
+QString Member::getUserName(void) {
     return user_name;
 }
 
-void Member::setTelephoneNumber(string newNumber)
+void Member::setTelephoneNumber(QString newNumber)
 {
 	telephone_num = newNumber;
 }
@@ -62,12 +54,21 @@ void Member::setMarked(bool mark)
 	is_marked = mark;
 }
 
+QString Member::getFullName(void) {
+    return full_name;
+}
+
+void Member::setFullName(QString fullName)
+{
+    full_name = fullName;
+}
+
 /**
  * Create a member.
  */
-Member *Member::create(string full_name, string telephone,
-                     const bool share_telephone, string user_name,
-                     string password, const time_t move_in_time) {
+Member *Member::create(QString full_name, QString telephone,
+                     const bool share_telephone, QString user_name,
+                     QString password, const time_t move_in_time) {
     QSqlQuery q;
     q.prepare(
         "INSERT INTO user (full_name, name, password, share_telephone, "
@@ -129,7 +130,7 @@ Member *Member::load(const int id) {
  * Load a user from the database given the user's username and password. Will
  * return NULL if the user can't be loaded.
  */
-Member *Member::load(string &user_name, string &pass) {
+Member *Member::load(QString &user_name, QString &pass) {
     QSqlQuery q;
     q.prepare("SELECT * FROM user WHERE name=? AND password=?");
     q << user_name << pass;
@@ -167,13 +168,13 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
 
     // load the member as an object to be used
     Member *u = new Member(
-        qcol<string>(q, "full_name"),
+        qcol<QString>(q, "full_name"),
         qcol<double>(q, "money_owed"),
-        qcol<string>(q, "telephone"),
+        qcol<QString>(q, "telephone"),
         qcol<bool>(q, "share_telephone"),
         qcol<bool>(q, "is_marked"),
-        qcol<string>(q, "name"),
-        qcol<string>(q, "password"),
+        qcol<QString>(q, "name"),
+        qcol<QString>(q, "password"),
         qcol<int>(q, "committee_id"),
         id
     );

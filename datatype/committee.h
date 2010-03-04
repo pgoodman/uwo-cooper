@@ -2,7 +2,7 @@
 #define COMMITTEE_H
 
 #include <utility>
-#include <string>
+#include <QString>
 
 #include <QSqlQuery>
 
@@ -23,10 +23,14 @@ public:
     static Committee *load(const int id);
     static pair<iterator, iterator> findAll(void);
     bool remove(void);
-    bool save(void);
+    void save(void);
+    void create(QString n, const bool canDelete,
+                const perm_set_t chairPerms, const perm_set_t memberPerms,
+                const int chairId, const int secretaryId,
+                const int committeeId);
 
 private:
-    Committee(string n, const bool canDelete, const perm_set_t chairPerms,
+    Committee(QString n, const bool canDelete, const perm_set_t chairPerms,
               const perm_set_t memberPerms, const int chair_id,
               const int secretary_id, const int committeeId);
 
@@ -36,15 +40,7 @@ private:
     static Committee *recall(const int id);
     static bool remembered(const int id);
 
-    //static Committee *load(int id) { (void) id; return 0; }
-   /* Permission getPermissions(Member member);
-    void addMember(Member member);
-    void removeMember(Member member);
-   // void addTask(Task task);
-   // void removeTask(Task task);
-    */
-
-    string name;
+    QString name;
     bool can_delete;
 
     Member *chair;

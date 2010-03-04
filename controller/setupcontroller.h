@@ -1,7 +1,7 @@
 #ifndef SETUPCONTROLLER_H
 #define SETUPCONTROLLER_H
 
-#include <string>
+#include <QString>
 #include "../datatype/user.h"
 
 using namespace std;
@@ -15,7 +15,7 @@ public:
     ~SetupController();
 
     static int addCoordinator();
-    static int loadData(string file_name);
+    static int loadData(QString file_name);
 };
 
 #endif // SETUPCONTROLLER_H

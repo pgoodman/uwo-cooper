@@ -17,7 +17,7 @@ public:
     ~UserController();
     static int addUserAccount(string *name, string *pwd);
     static int changeUserInfo(string *attribute, string *value);
-    static int login(string name, string pwd);
+    static int login(QString name, QString pwd);
     static void logout();
     static User *activeUser;
 };

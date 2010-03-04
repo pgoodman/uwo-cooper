@@ -5,7 +5,7 @@ Dependant::Dependant()
 {
 }
 
-Dependant::Dependant(string name, time_t bday)
+Dependant::Dependant(QString name, time_t bday)
 {
 	fullName = name;
 	timeOf21stBday = bday;

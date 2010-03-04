@@ -17,17 +17,17 @@ bool User::remove(void) {
 }
 
 /*
-void User::setName(string newName)
+void User::setName(QString newName)
 {
 	name = newName;
 }
     
-void User::setUserName(string newUserName)
+void User::setUserName(QString newUserName)
 {
 	userName = newUserName;
 }
 
-void User::setPassword(string newPassword)
+void User::setPassword(QString newPassword)
 {
 	password = newPassword;
 }
@@ -38,16 +38,7 @@ void User::setID(int newID)
 }
 */
 
-string User::getFullName(void) {
-    return full_name;
-}
-
-void User::setFullName(string fullName)
-{
-    full_name = fullName;
-}
-
-bool User::hasPassword(string &pass) {
+bool User::hasPassword(QString &pass) {
     return password == pass;
 }
 

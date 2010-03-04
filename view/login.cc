@@ -29,11 +29,7 @@ Login::Login():QWidget(){
 void Login::on_loginPushButton_clicked(){
     //handle login operation.
     //set proper active user in usercontroller class
-    string name;
-    string pwd;
-    name.assign(nameLineEdit->text().toStdString());
-    pwd.assign(pwdLineEdit->text().toStdString());
-    if(UserController::login(name,pwd)){
+    if(UserController::login(nameLineEdit->text(), pwdLineEdit->text())){
         //login failed
         titleLabel->setText("Login name and password don't match. Please try again.");
     }
