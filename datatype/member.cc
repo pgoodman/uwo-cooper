@@ -14,7 +14,7 @@
  */
 Member::Member(string fullName, double newMoneyOwed,
                string phoneNum, bool sharePhone, bool mark,
-               string uName, string pass, Committee *comm, int userId)
+               string uName, string pass, bool hasCommittee, int userId)
 {
     full_name = fullName;
 	money_owed = newMoneyOwed;
@@ -23,7 +23,7 @@ Member::Member(string fullName, double newMoneyOwed,
 	telephone_num = phoneNum;
 	password = pass;
 	user_name = uName;
-	committee = comm;
+	has_committee = hasCommittee;
 	id = userId;
 }
 
@@ -179,7 +179,7 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
         qcol<bool>(q, "is_marked"),
         qcol<string>(q, "name"),
         qcol<string>(q, "password"),
-        Committee::load(qcol<int>(q, "committee_id")),
+        qcol<int>(q, "committee_id") != 0, // has committee?
         id
     );
 
