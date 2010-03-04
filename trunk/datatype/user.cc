@@ -1,7 +1,7 @@
 
 #include "user.h"
 
-vector<User *> User::users;
+map<int, User *> User::elms;
 
 User::User()
 {
@@ -33,6 +33,10 @@ void User::setID(int newID)
 }
 */
 
+string User::getFullName(void) {
+    return full_name;
+}
+
 void User::setFullName(string fullName)
 {
     full_name = fullName;
@@ -40,4 +44,21 @@ void User::setFullName(string fullName)
 
 bool User::hasPassword(string &pass) {
     return password == pass;
+}
+
+void User::remember(const int id, User *val) {
+    if(!remembered(id)) {
+        elms[id] = val;
+    }
+}
+
+User *User::recall(const int id) {
+    if(!remembered(id)) {
+        throw 0;
+    }
+    return elms[id];
+}
+
+bool User::remembered(const int id) {
+    return elms.end() != elms.find(id);
 }

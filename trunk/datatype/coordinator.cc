@@ -90,7 +90,7 @@ User *Coordinator::load(void) {
     }
 
     QSqlQuery q = CooperDB::select(
-        "SELECT id, full_name, password FROM users "
+        "SELECT id, full_name, password FROM user "
         "WHERE is_coordinator=1 LIMIT 1"
     );
 
@@ -103,7 +103,7 @@ User *Coordinator::load(void) {
     );
 
     // cache the coordinator
-    users.insert(users.begin() + id, u);
+    User::remember(id, u);
     return coord = u;
 }
 

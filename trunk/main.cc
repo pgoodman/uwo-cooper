@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <utility>
 
 #include <QtGui>
 #include <QApplication>
@@ -13,6 +14,8 @@
 #include "cooperdb.h"
 #include "criticalerror.h"
 #include "datatype/coordinator.h"
+#include "datatype/member.h"
+#include "datatype/user.h"
 #include "controller/setupcontroller.h"
 
 using namespace std;

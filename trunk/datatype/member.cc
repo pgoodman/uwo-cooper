@@ -118,8 +118,8 @@ void Member::save(void) {
  * user doesn't exist.
  */
 User *Member::load(const int id) {
-    if(0 != users[id]) {
-        return users[id];
+    if(User::remembered(id)) {
+        return User::recall(id);
     }
 
     QSqlQuery q;
@@ -150,12 +150,12 @@ User *Member::load(string &user_name, string &pass) {
  * fetched that user.
  */
 User *Member::load(QSqlQuery &q, const bool checked_id) {
-
+    q.first();
     if(!q.isValid()) {
         return NULL;
     }
 
-    if(qcol<bool>(q, "is_coord")) {
+    if(qcol<bool>(q, "is_coordinator")) {
         q.finish();
         return Coordinator::load(); // will already be loaded
     }
@@ -164,9 +164,9 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
 
     // make sure we don't have two objects around for the same user
     if(!checked_id) {
-        if(0 != users[id]) {
+        if(User::remembered(id)) {
             q.finish();
-            return users[id];
+            return User::recall(id);
         }
     }
 
@@ -184,7 +184,7 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
     );
 
     q.finish();
-    users.insert(users.begin() + id, u);
+    User::remember(id, u);
     return u;
 }
 
@@ -192,10 +192,18 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
  * Find a sequence of members.
  */
 pair<Member::iterator, Member::iterator> Member::find() {
-    QSqlQuery q("SELECT id FROM user WHERE is_coordinator=0");
-    q.setForwardOnly(true);
-    QSqlQuery *query = new QSqlQuery(q);
-    iterator start(query, q.size(), 0);
-    iterator end(query, q.size(), q.size() + 1);
+    QSqlQuery count = QSqlQuery(
+        "SELECT COUNT(id) AS c FROM user WHERE is_coordinator=0 LIMIT 1"
+    );
+    int size((count.next() && count.isValid()) ? qcol<int>(count, "c") : 0);
+    count.finish();
+
+    QSqlQuery *query = new QSqlQuery(
+        "SELECT id FROM user WHERE is_coordinator=0"
+    );
+
+    query->next();
+    iterator start(query, size, 0);
+    iterator end(query, size, size + 1);
     return make_pair(start, end);
 }
