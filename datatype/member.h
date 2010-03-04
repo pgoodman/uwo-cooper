@@ -45,16 +45,16 @@ public:
 	void setMarked(bool mark);
 
 
-    typedef class ModelIterator<User, Member> iterator;
+    typedef class ModelIterator<Member, Member> iterator;
 
 	virtual void save(void);
 	virtual bool hasPermission(const Permission p);
 	virtual string getUserName(void);
 
-	static User *load(const int id);
-    static User *load(string &uname, string &pass);
+	static Member *load(const int id);
+    static Member *load(string &uname, string &pass);
 
-    static User *create(string full_name, string telephone,
+    static Member *create(string full_name, string telephone,
                         const bool share_telephone, string user_name,
                         string password, const time_t move_in_time);
 
@@ -62,7 +62,7 @@ public:
 
 private:
 
-    static User *load(QSqlQuery &q, const bool checked_id=true);
+    static Member *load(QSqlQuery &q, const bool checked_id=true);
 
 	string telephone_num;
 	double money_owed;

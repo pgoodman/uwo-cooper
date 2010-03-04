@@ -65,7 +65,7 @@ void Member::setMarked(bool mark)
 /**
  * Create a member.
  */
-User *Member::create(string full_name, string telephone,
+Member *Member::create(string full_name, string telephone,
                      const bool share_telephone, string user_name,
                      string password, const time_t move_in_time) {
     QSqlQuery q;
@@ -91,8 +91,8 @@ void Member::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE user SET full_name=?,name=?,password=?,share_telephone=?,"
-        "telephone=?,move_in_time=?,is_marked=?,committee_id=? WHERE id=? "
-        "AND is_coordinator=0"
+        "telephone=?,move_in_time=?,is_marked=?,committee_id=?,money_owed=? "
+        "WHERE id=? AND is_coordinator=0"
     );
     q << full_name << user_name << password << share_telephone
       << telephone_num << move_in_time << is_marked;
@@ -102,7 +102,7 @@ void Member::save(void) {
     } else {
         q << NULL;
     }
-    q << id;
+    q << money_owed << id;
 
     if(!q.exec() || 0 == q.numRowsAffected()) {
         CooperDB::queryError("Unable to Update Member Information.", q);
@@ -113,9 +113,13 @@ void Member::save(void) {
  * Load a user from the database given the user's id. Will return NULL if the
  * user doesn't exist.
  */
-User *Member::load(const int id) {
+Member *Member::load(const int id) {
     if(User::remembered(id)) {
-        return User::recall(id);
+        User *u(User::recall(id));
+        if(u == Coordinator::load()) {
+            return 0;
+        }
+        return static_cast<Member *>(u);
     }
 
     QSqlQuery q;
@@ -131,7 +135,7 @@ User *Member::load(const int id) {
  * Load a user from the database given the user's username and password. Will
  * return NULL if the user can't be loaded.
  */
-User *Member::load(string &user_name, string &pass) {
+Member *Member::load(string &user_name, string &pass) {
     QSqlQuery q;
     q.prepare("SELECT * FROM user WHERE name=? AND password=?");
     q << user_name << pass;
@@ -145,15 +149,16 @@ User *Member::load(string &user_name, string &pass) {
  * Load a member (or coordinator) from the database given the query that
  * fetched that user.
  */
-User *Member::load(QSqlQuery &q, const bool checked_id) {
+Member *Member::load(QSqlQuery &q, const bool checked_id) {
     q.first();
     if(!q.isValid()) {
-        return NULL;
+        return 0;
     }
 
     if(qcol<bool>(q, "is_coordinator")) {
         q.finish();
-        return Coordinator::load(); // will already be loaded
+        //return Coordinator::load(); // will already be loaded
+        return 0;
     }
 
     int id(qcol<int>(q, "id"));
@@ -162,12 +167,12 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
     if(!checked_id) {
         if(User::remembered(id)) {
             q.finish();
-            return User::recall(id);
+            return static_cast<Member *>(User::recall(id));
         }
     }
 
     // load the member as an object to be used
-    User *u = new Member(
+    Member *u = new Member(
         qcol<string>(q, "full_name"),
         qcol<double>(q, "money_owed"),
         qcol<string>(q, "telephone"),
@@ -188,5 +193,5 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
  * Find a sequence of members.
  */
 pair<Member::iterator, Member::iterator> Member::findAll() {
-    return CooperDB::selectAll<User,Member>("user", "is_coordinator=0");
+    return CooperDB::selectAll<Member,Member>("user", "is_coordinator=0");
 }
