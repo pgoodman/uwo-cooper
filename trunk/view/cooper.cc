@@ -2,9 +2,9 @@
 
 Cooper::Cooper(QWidget *parent) :
     QMainWindow(parent),
-    ui(new /*Ui::*/Cooper)
+    ui(new Ui::Cooper)
 {
-    //ui->setupUi(this);
+   ui->setupUi(this);
 
 }
 
@@ -18,13 +18,12 @@ void Cooper::changeEvent(QEvent *e)
     QMainWindow::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
-        //ui->retranslateUi(this);
+        ui->retranslateUi(this);
         break;
     default:
         break;
     }
 }
-
 
 
 void Cooper::on_actionLogoff_triggered()
