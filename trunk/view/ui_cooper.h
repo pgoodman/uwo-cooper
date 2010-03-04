@@ -1,14 +1,14 @@
 /********************************************************************************
-** Form generated from reading UI file 'cooperxb3568.ui'
+** Form generated from reading UI file 'cooperXs2808.ui'
 **
-** Created: Thu Mar 4 00:17:43 2010
+** Created: Thu Mar 4 12:02:16 2010
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef COOPERXB3568_H
-#define COOPERXB3568_H
+#ifndef COOPERXS2808_H
+#define COOPERXS2808_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
@@ -30,7 +30,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Cooper : public QObject
+        class Ui_Cooper : public QObject
 {
 Q_OBJECT
 public:
@@ -62,10 +62,15 @@ public:
     QPushButton *actionDelete_Member;
     QListView *listView;
     QWidget *committeeTab;
+    QWidget *formLayoutWidget_2;
+    QFormLayout *formLayout;
+    QListView *committeeList;
+    QVBoxLayout *verticalLayout_2;
+    QPushButton *viewCommittee;
+    QPushButton *addCommittee;
+    QPushButton *deleteCommittee;
     QMenuBar *menuBar;
     QMenu *menuSystem;
-    QMenu *menuMember;
-    QMenu *menuCommittee;
     QMenu *menuTask;
     QMenu *menuEvent;
     QMenu *menuPrint;
@@ -147,7 +152,6 @@ public:
         actionEdit_Member = new QPushButton(formLayoutWidget);
         actionEdit_Member->setObjectName(QString::fromUtf8("actionEdit_Member"));
         connect(actionEdit_Member, SIGNAL(clicked()), this, SLOT(on_actionEdit_Member_triggered()));
-
         verticalLayout->addWidget(actionEdit_Member);
 
         actionDelete_Member = new QPushButton(formLayoutWidget);
@@ -166,6 +170,41 @@ public:
         tabWidget->addTab(memberTab, QString());
         committeeTab = new QWidget();
         committeeTab->setObjectName(QString::fromUtf8("committeeTab"));
+        formLayoutWidget_2 = new QWidget(committeeTab);
+        formLayoutWidget_2->setObjectName(QString::fromUtf8("formLayoutWidget_2"));
+        formLayoutWidget_2->setGeometry(QRect(10, 10, 461, 191));
+        formLayout = new QFormLayout(formLayoutWidget_2);
+        formLayout->setSpacing(6);
+        formLayout->setContentsMargins(11, 11, 11, 11);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        formLayout->setContentsMargins(0, 0, 0, 0);
+        committeeList = new QListView(formLayoutWidget_2);
+        committeeList->setObjectName(QString::fromUtf8("committeeList"));
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, committeeList);
+
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        viewCommittee = new QPushButton(formLayoutWidget_2);
+        viewCommittee->setObjectName(QString::fromUtf8("viewCommittee"));
+
+        verticalLayout_2->addWidget(viewCommittee);
+
+        addCommittee = new QPushButton(formLayoutWidget_2);
+        addCommittee->setObjectName(QString::fromUtf8("addCommittee"));
+
+        verticalLayout_2->addWidget(addCommittee);
+
+        deleteCommittee = new QPushButton(formLayoutWidget_2);
+        deleteCommittee->setObjectName(QString::fromUtf8("deleteCommittee"));
+
+        verticalLayout_2->addWidget(deleteCommittee);
+
+
+        formLayout->setLayout(0, QFormLayout::FieldRole, verticalLayout_2);
+
         tabWidget->addTab(committeeTab, QString());
 
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
@@ -176,10 +215,6 @@ public:
         menuBar->setGeometry(QRect(0, 0, 600, 21));
         menuSystem = new QMenu(menuBar);
         menuSystem->setObjectName(QString::fromUtf8("menuSystem"));
-        menuMember = new QMenu(menuBar);
-        menuMember->setObjectName(QString::fromUtf8("menuMember"));
-        menuCommittee = new QMenu(menuBar);
-        menuCommittee->setObjectName(QString::fromUtf8("menuCommittee"));
         menuTask = new QMenu(menuBar);
         menuTask->setObjectName(QString::fromUtf8("menuTask"));
         menuEvent = new QMenu(menuBar);
@@ -194,16 +229,12 @@ public:
         Cooper->setStatusBar(statusBar);
 
         menuBar->addAction(menuSystem->menuAction());
-        menuBar->addAction(menuMember->menuAction());
-        menuBar->addAction(menuCommittee->menuAction());
         menuBar->addAction(menuTask->menuAction());
         menuBar->addAction(menuEvent->menuAction());
         menuBar->addAction(menuPrint->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuSystem->addAction(actionLogoff);
         menuSystem->addAction(actionQuit);
-        menuCommittee->addAction(actionAdd_Committee);
-        menuCommittee->addAction(actionDelete_Committee);
         menuTask->addAction(actionAssign_Task);
         menuTask->addAction(actionEdit_Task);
         menuTask->addAction(actionDelete_Task);
@@ -219,7 +250,7 @@ public:
         retranslateUi(Cooper);
         QObject::connect(actionQuit, SIGNAL(triggered()), Cooper, SLOT(close()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(Cooper);
@@ -250,29 +281,22 @@ public:
         actionEdit_Member->setText(QApplication::translate("Cooper", "Edit Member", 0, QApplication::UnicodeUTF8));
         actionDelete_Member->setText(QApplication::translate("Cooper", "Delete Member", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(memberTab), QApplication::translate("Cooper", "Member", 0, QApplication::UnicodeUTF8));
+        viewCommittee->setText(QApplication::translate("Cooper", "View Committee", 0, QApplication::UnicodeUTF8));
+        addCommittee->setText(QApplication::translate("Cooper", "Add Committee", 0, QApplication::UnicodeUTF8));
+        deleteCommittee->setText(QApplication::translate("Cooper", "Delete Committee", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(committeeTab), QApplication::translate("Cooper", "Committee", 0, QApplication::UnicodeUTF8));
         menuSystem->setTitle(QApplication::translate("Cooper", "System", 0, QApplication::UnicodeUTF8));
-        menuMember->setTitle(QApplication::translate("Cooper", "Member", 0, QApplication::UnicodeUTF8));
-        menuCommittee->setTitle(QApplication::translate("Cooper", "Committee", 0, QApplication::UnicodeUTF8));
         menuTask->setTitle(QApplication::translate("Cooper", "Task", 0, QApplication::UnicodeUTF8));
         menuEvent->setTitle(QApplication::translate("Cooper", "Event", 0, QApplication::UnicodeUTF8));
         menuPrint->setTitle(QApplication::translate("Cooper", "Print", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("Cooper", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
-<<<<<<< .mine
+
 public slots:
     void on_actionAdd_Member_triggered(){return;}
     void on_actionEdit_Member_triggered(){return;}
     void on_actionDelete_Member_triggered(){return;}
-
-=======
-public slots:
-        void on_actionAdd_Member_triggered();
-        void on_actionEdit_Member_triggered();
-        void on_actionDelete_Member_triggered();
-
->>>>>>> .r58
 };
 
 namespace Ui {
@@ -281,4 +305,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // COOPERXB3568_H
+#endif // COOPERXS2808_H
