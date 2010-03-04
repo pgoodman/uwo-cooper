@@ -12,6 +12,7 @@
 #include <iterator>
 #include <iostream>
 #include <assert.h>
+#include <utility>
 
 #include <QSqlQuery>
 #include <QSqlResult>
@@ -27,7 +28,6 @@ template <typename T, typename L>
 class ModelIterator : public iterator<input_iterator_tag, T> {
 
 public:
-    explicit ModelIterator(QSqlQuery *q, const int s, const int off);
     ~ModelIterator();
 
     T *operator*();
@@ -36,15 +36,24 @@ public:
     bool operator!=(const ModelIterator<T,L> &other);
     bool operator==(const ModelIterator<T,L> &other);
 
+    static pair<ModelIterator<T,L>, ModelIterator<T,L> >
+    make(QSqlQuery q, const int size);
+
 private:
+    explicit ModelIterator(QSqlQuery q,
+                           const int size,
+                           const int off,
+                           const int query_id);
 
     void setCurrId(void);
 
-    QSqlQuery *query;
+    QSqlQuery query;
     const int size;
     int i;
     int curr_id;
     bool is_used;
+
+    int id;
 };
 
 /**
@@ -55,9 +64,12 @@ private:
  * Constructor.
  */
 template <typename T, typename L>
-ModelIterator<T, L>::ModelIterator(QSqlQuery *q, const int s, const int off)
- : query(q), size(s), i(off), is_used(false) {
-    assert(query->isSelect());
+ModelIterator<T, L>::ModelIterator(QSqlQuery q,
+                                   const int s,
+                                   const int off,
+                                   const int query_id)
+ : query(q), size(s), i(off), is_used(false), id(query_id) {
+    assert(query.isSelect());
     if(off >= 0 && off < size) {
         setCurrId();
     }
@@ -67,31 +79,23 @@ ModelIterator<T, L>::ModelIterator(QSqlQuery *q, const int s, const int off)
  * Destructor.
  */
 template <typename T, typename L>
-ModelIterator<T, L>::~ModelIterator() {
-    if(is_used) {
-        if(!query->isActive()) {
-            delete query;
-        } else {
-            query->finish();
-        }
-    }
-}
+ModelIterator<T, L>::~ModelIterator() { }
 
 /**
  *
  */
 template <typename T, typename L>
 T *ModelIterator<T, L>::operator*() {
-    is_used = true;
+    //is_used = true;
     return L::load(curr_id);
 }
 
 template <typename T, typename L>
 ModelIterator<T, L> &ModelIterator<T, L>::operator++ () {
     ++i;
-    is_used = true;
+    //is_used = true;
     if(i < size) {
-        query->next();
+        query.next();
         setCurrId();
     } else {
         i = size + 1;
@@ -109,14 +113,14 @@ ModelIterator<T, L> ModelIterator<T, L>::operator++ (int) {
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator!=(const ModelIterator<T, L> &other) {
     //D( cout << query << "!=" << other.query << " || " << i << " != " << other.i << endl; )
-    is_used = true;
-    return query != other.query || i != other.i;
+    //is_used = true;
+    return id != other.id || i != other.i;
 }
 
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator==(const ModelIterator<T, L> &other) {
-    is_used = true;
-    return query == other.query && i == other.i;
+    //is_used = true;
+    return id == other.id && i == other.i;
 }
 
 /**
@@ -124,8 +128,18 @@ bool ModelIterator<T, L>::operator==(const ModelIterator<T, L> &other) {
  */
 template <typename T, typename L>
 void ModelIterator<T, L>::setCurrId(void) {
-    curr_id = query->value(0).toInt();
+    curr_id = query.value(0).toInt();
     //D( cout << "ModelIterator, current id is " << curr_id << endl; )
+}
+
+template <typename T, typename L>
+pair<ModelIterator<T,L>, ModelIterator<T,L> >
+ModelIterator<T, L>::make(QSqlQuery query, const int size) {
+    static int id = 0;
+    query.first();
+    ModelIterator<T, L> start(query, size, 0, id);
+    ModelIterator<T, L> end(query, size, size + 1, id++);
+    return make_pair(start, end);
 }
 
 #endif
