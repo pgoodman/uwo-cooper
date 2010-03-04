@@ -41,12 +41,25 @@ private:
 };
 
 /* helper functions for dealing with db stuff */
-QVariant qcol(QSqlQuery &q, const char *index);
-string qcol_str(QSqlQuery &q, const char *index);
+//QVariant qcol(QSqlQuery &q, const char *index);
+template <typename T> T qcol(const QSqlQuery &q, const char *index);
 
-template <typename T> void qbind(QSqlQuery &q, T val);
-template <> void qbind<string &>(QSqlQuery &q, string &val);
-template <> void qbind<string>(QSqlQuery &q, string val);
-template <> void qbind<time_t>(QSqlQuery &q, time_t val);
+template <> QVariant qcol(const QSqlQuery &q, const char *index);
+template <> int qcol(const QSqlQuery &q, const char *index);
+template <> double qcol(const QSqlQuery &q, const char *index);
+template <> bool qcol(const QSqlQuery &q, const char *index);
+template <> string qcol(const QSqlQuery &q, const char *index);
+
+const QVariant &operator>>(const QVariant &v, int &x);
+const QVariant &operator>>(const QVariant &v, bool &x);
+const QVariant &operator>>(const QVariant &v, double &x);
+const QVariant &operator>>(const QVariant &v, string &x);
+const QVariant &operator>>(const QVariant &v, QString &x);
+
+template <typename T> QSqlQuery &operator<<(QSqlQuery &q, T val);
+template <> QSqlQuery &operator<< <string &>(QSqlQuery &q, string &val);
+template <> QSqlQuery &operator<< <string>(QSqlQuery &q, string val);
+template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val);
+template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
 
 #endif // COOPERDB_H

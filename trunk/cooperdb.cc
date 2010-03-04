@@ -142,31 +142,85 @@ void CooperDB::makeDatabase() {
 }
 
 /**
+ * Bind a value to a prepared statement.
+ */
+template <typename T> QSqlQuery &operator<< (QSqlQuery &q, T val) {
+    q.addBindValue(QVariant(val));
+    return q;
+}
+template <> QSqlQuery &operator<< <string &>(QSqlQuery &q, string &val) {
+    q.addBindValue(QVariant(QString(val.c_str())));
+    return q;
+}
+template <> QSqlQuery &operator<< <string>(QSqlQuery &q, string val) {
+    q.addBindValue(QVariant(QString(val.c_str())));
+    return q;
+}
+template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val) {
+    q.addBindValue(QVariant(static_cast<unsigned int>(val)));
+    return q;
+}
+template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val) {
+    (void) val;
+    q.addBindValue(QVariant());
+    return q;
+}
+
+/**
  * Quickly get the variant from the query given a column name.
  */
-QVariant qcol(QSqlQuery &q, const char *index) {
+
+/*QVariant qcol(const QSqlQuery &q, const char *index) {
     return q.value(q.record().indexOf(index));
 }
-
-string qcol_str(QSqlQuery &q, const char *index) {
-    return qcol(q, index).toString().toStdString();
+*/
+template<typename T> T qcol(const QSqlQuery &q, const char *index) {
+    (void) q; (void) index;
+    throw 0;
+}
+template <> QVariant qcol(const QSqlQuery &q, const char *index) {
+    return q.value(q.record().indexOf(index));
+}
+template <> int qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toInt();
+}
+template <> double qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toDouble();
+}
+template <> bool qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toBool();
+}
+template <> string qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toString().toStdString();
 }
 
-template <typename T> void qbind(QSqlQuery &q, T val) {
-    q.addBindValue(QVariant(val));
+
+/**
+ * Extract thigns from the variants.
+ */
+const QVariant &operator>>(const QVariant &v, int &x) {
+    x = v.toInt();
+    return v;
 }
-template <> void qbind<string &>(QSqlQuery &q, string &val) {
-    q.addBindValue(QVariant(QString(val.c_str())));
+const QVariant &operator>>(const QVariant &v, double &x) {
+    x = v.toDouble();
+    return v;
 }
-template <> void qbind<string>(QSqlQuery &q, string val) {
-    q.addBindValue(QVariant(QString(val.c_str())));
+const QVariant &operator>>(const QVariant &v, bool &x) {
+    x = v.toBool();
+    return v;
 }
-template <> void qbind<time_t>(QSqlQuery &q, time_t val) {
-    q.addBindValue(QVariant(static_cast<unsigned int>(val)));
+const QVariant &operator>>(const QVariant &v, string &x) {
+    x.assign(v.toString().toStdString());
+    return v;
+}
+const QVariant &operator>>(const QVariant &v, QString &x) {
+    x = v.toString();
+    return v;
 }
 
 // tell the compiler which template instantiations to make
-template void qbind<bool>(QSqlQuery &q, bool val);
-template void qbind<int>(QSqlQuery &q, int val);
-template void qbind<unsigned int>(QSqlQuery &q, unsigned int val);
+template QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
+template QSqlQuery &operator<< <int>(QSqlQuery &q, int val);
+template QSqlQuery &operator<< <unsigned int>(QSqlQuery &q, unsigned int val);
 

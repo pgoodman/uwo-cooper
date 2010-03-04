@@ -1,7 +1,10 @@
 #ifndef MEMBER_H
 #define MEMBER_H
 
+#include <istream>
+#include <sstream>
 #include <string>
+#include <utility>
 #include <time.h>
 
 #include <QVariant>
@@ -11,12 +14,11 @@
 #include "coordinator.h"
 #include "dependant.h"
 #include "committee.h"
+#include "modeliterator.h"
 
 using namespace std;
 
 class Member : public User {
-
-    friend class User;
 
 public:
 
@@ -41,6 +43,8 @@ public:
 	void setMarked(bool mark);
     */
 
+    typedef class ModelIterator<User, Member> iterator;
+
 	virtual void save(void);
 	virtual bool hasPermission(const Permission p);
 	virtual string getUserName(void);
@@ -51,6 +55,8 @@ public:
     static User *create(string full_name, string telephone,
                         const bool share_telephone, string user_name,
                         string password, const time_t move_in_time);
+
+    static pair<iterator, iterator> find();
 
 private:
 

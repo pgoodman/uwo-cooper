@@ -32,7 +32,7 @@ public:
     void setPassword(string newPassword);
     void setID(int newID);*/
 
-    virtual ~User() { };
+    virtual ~User() { }
 
 protected:
 

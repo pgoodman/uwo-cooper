@@ -47,9 +47,7 @@ void Coordinator::save(void) {
     q.prepare(
         "UPDATE user SET full_name=?,password=? WHERE id=? AND is_coordinator=1"
     );
-    q.bindValue(0, QVariant(full_name.c_str()));
-    q.bindValue(1, QVariant(password.c_str()));
-    q.bindValue(2, QVariant(id));
+    q << full_name << password << id;
     if(!q.exec()) {
         CooperDB::queryError("Unable to Update Coordinator Information.", q);
     }
@@ -67,8 +65,7 @@ User *Coordinator::create(string full_name, string password) {
         COORDINATOR_USER_NAME
         "',?,?,1)"
     );
-    q.bindValue(0, QString(full_name.c_str()));
-    q.bindValue(1, QString(password.c_str()));
+    q << full_name << password;
     if(!q.exec()) {
         CooperDB::queryError("Unable to create Coordinator", q);
     }
@@ -92,17 +89,17 @@ User *Coordinator::load(void) {
         return coord;
     }
 
-    QSqlQuery r = CooperDB::select(
+    QSqlQuery q = CooperDB::select(
         "SELECT id, full_name, password FROM users "
         "WHERE is_coordinator=1 LIMIT 1"
     );
 
     // turn the sql record into an object
-    int id = r.value(0).toInt();
+    int id(qcol<int>(q, "id"));
     User *u = new Coordinator(
         id,
-        r.value(1).toString().toStdString(),
-        r.value(2).toString().toStdString()
+        qcol<string>(q, "full_name"),
+        qcol<string>(q, "password")
     );
 
     // cache the coordinator
