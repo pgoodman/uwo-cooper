@@ -6,7 +6,7 @@
 #include <QtGui>
 #include <QWizard>
 
-#include "datatype/coordinator.h"
+#include "../datatype/coordinator.h"
 
  class InitWizard : public QWizard
  {
