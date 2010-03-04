@@ -260,11 +260,19 @@ public:
         menuHelp->setTitle(QApplication::translate("Cooper", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
+<<<<<<< .mine
+public slots:
+    void on_actionAdd_Member_triggered(){return;}
+    void on_actionEdit_Member_triggered(){return;}
+    void on_actionDelete_Member_triggered(){return;}
+
+=======
 public slots:
         void on_actionAdd_Member_triggered();
         void on_actionEdit_Member_triggered();
         void on_actionDelete_Member_triggered();
 
+>>>>>>> .r58
 };
 
 namespace Ui {
