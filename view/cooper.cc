@@ -36,7 +36,7 @@ void Cooper::on_actionLogoff_triggered()
 
 void Cooper::on_actionAdd_Member_triggered()
 {
-    //add member
+    TestAdd *test = new TestAdd(ui->centralWidget);
 }
 
 void Cooper::on_actionEdit_Member_triggered()
@@ -47,16 +47,6 @@ void Cooper::on_actionEdit_Member_triggered()
 void Cooper::on_actionDelete_Member_triggered()
 {
     //delete member
-}
-
-void Cooper::on_actionAdd_Committee_triggered()
-{
-    //add committee
-}
-
-void Cooper::on_actionDelete_Committee_triggered()
-{
-    //delete committee
 }
 
 void Cooper::on_actionAssign_Task_triggered()
