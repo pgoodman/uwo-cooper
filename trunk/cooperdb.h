@@ -2,6 +2,7 @@
 #define COOPERDB_H
 
 #include <stdexcept>
+#include <iostream>
 #include <sstream>
 #include <assert.h>
 #include <time.h>
@@ -14,6 +15,7 @@
 #include <QVariant>
 #include <QSqlRecord>
 
+#include "conf.h"
 #include "criticalerror.h"
 
 /**

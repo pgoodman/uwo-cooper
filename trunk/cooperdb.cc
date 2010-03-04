@@ -88,35 +88,35 @@ void CooperDB::makeDatabase() {
     };
     const char tables[][500] = {
         "CREATE TABLE user ("
-            "full_name VARCHAR(50) NOT NULL,"
+            "full_name TEXT,"
             //"last_name VARCHAR(50) NOT NULL,"
 
             // login info
-            "name VARCHAR(50) NOT NULL,"
-            "password VARCHAR(32) NOT NULL,"
+            "name TEXT,"
+            "password TEXT,"
 
             // bools
-            "is_coordinator TINYINTEGER(1) NOT NULL DEFAULT 0,"
-            "share_telephone TINYINTEGER(1) DEFAULT 0,"
-            "is_marked TINYINTEGER(1) DEFAULT 0,"
+            "is_coordinator INTEGER DEFAULT 0,"
+            "share_telephone INTEGER DEFAULT 0,"
+            "is_marked INTEGER DEFAULT 0,"
 
             // member-specific
-            "telephone VARCHAR(20) NOT NULL,"
-            "move_in_time UNSIGNED INTEGER DEFAULT 0,"
+            "telephone TEXT NOT NULL,"
+            "move_in_time INTEGER DEFAULT 0,"
             "money_owed REAL DEFAULT 0.0,"
 
 
             // index
-            "id INTEGER PRIMARY KEY AUTOINCREMENT ON CONFLICT REPLACE,"
-            "committee_id INTEGER NOT NULL DEFAULT 0"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "committee_id INTEGER DEFAULT 0"
             //"KEY(committee_id)"
         ")",
 
         "CREATE TABLE committee ("
-            "name VARCHAR(30) NOT NULL,"
-            "can_delete TINYINTEGER(1) DEFAULT 1,"
-            "chair_id INTEGER NOT NULL DEFAULT 0,"
-            "secretary_id INTEGER NOT NULL DEFAULT 0,"
+            "name TEXT,"
+            "can_delete INTEGER DEFAULT 1,"
+            "chair_id INTEGER DEFAULT 0,"
+            "secretary_id INTEGER DEFAULT 0,"
             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             "member_perms INTEGER,"
             "chair_perms INTEGER"
@@ -128,6 +128,7 @@ void CooperDB::makeDatabase() {
     };
 
     size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);
+    D( cout << "Num Tables: " << num_tables << endl; )
     stringstream error;
     QSqlQuery q(db);
 
@@ -139,6 +140,17 @@ void CooperDB::makeDatabase() {
             queryError(error, q);
         }
     }
+
+    q.exec(
+        "INSERT INTO user (full_name, name, password, share_telephone, "
+        "telephone, move_in_time) VALUES ('Peter Goodman','peter','peter',"
+        "0,'519-933-0204',0)"
+    );
+    q.exec(
+        "INSERT INTO user (full_name, name, password, share_telephone, "
+        "telephone, move_in_time) VALUES ('Stephan Beltran','stephan','stephan',"
+        "1,'',0)"
+    );
 }
 
 /**

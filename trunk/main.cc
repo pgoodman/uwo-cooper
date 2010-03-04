@@ -9,14 +9,11 @@
 //#include "view/login.h"
 #include "view/cooper.h"
 
+#include "conf.h"
 #include "cooperdb.h"
 #include "criticalerror.h"
-
 #include "datatype/coordinator.h"
-
 #include "controller/setupcontroller.h"
-
-#define D(x) x
 
 using namespace std;
 
