@@ -2,7 +2,7 @@
 
 Cooper::Cooper(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Cooper)
+    ui(new Ui_Cooper)
 {
    ui->setupUi(this);
 

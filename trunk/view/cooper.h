@@ -5,9 +5,9 @@
 #include "ui_cooper.h"
 #include "../controller/usercontroller.h"
 
-namespace Ui {
-    class Cooper;
-}
+//namespace Ui {
+//    class Cooper;
+//}
 
 class Cooper : public QMainWindow {
     Q_OBJECT
@@ -19,7 +19,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui::Cooper *ui;
+    Ui_Cooper *ui;
 
 private slots:
     void on_actionAbout_Cooper_triggered();
