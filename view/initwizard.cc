@@ -134,17 +134,6 @@ void ConclusionPage::initializePage(){
         conclusionLabel->setText(tr("The account creation failed. Please try again."));
     }
 }
-/*
-int ConclusionPage::initAccount(std::string name, std::string pwd){
-    //return SetupController::addCoordinator(name,pwd);
-    Coordinator::create(name, pwd);
-    return 1;
-}*/
-/*
-int ConclusionPage::initData(std::string filename) {
-    SetupController::loadData(filename);
-    return 1;
-}*/
 
 int ConclusionPage::nextId() const
 {
