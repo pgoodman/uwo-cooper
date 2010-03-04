@@ -2,8 +2,9 @@
 #define COOPER_H
 
 #include <QMainWindow>
-#include "view/ui_cooper.h"
-#include "controller/usercontroller.h"
+#include "ui_cooper.h"
+#include "../controller/usercontroller.h"
+#include "testAdd.h"
 
 namespace Ui {
     class Cooper;
@@ -33,8 +34,6 @@ private slots:
     void on_actionDelete_Task_triggered();
     void on_actionEdit_Task_triggered();
     void on_actionAssign_Task_triggered();
-    void on_actionDelete_Committee_triggered();
-    void on_actionAdd_Committee_triggered();
     void on_actionDelete_Member_triggered();
     void on_actionEdit_Member_triggered();
     void on_actionAdd_Member_triggered();

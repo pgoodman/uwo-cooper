@@ -189,16 +189,19 @@ public:
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         viewCommittee = new QPushButton(formLayoutWidget_2);
         viewCommittee->setObjectName(QString::fromUtf8("viewCommittee"));
+        connect(viewCommittee, SIGNAL(clicked()), this, SLOT(on_actionView_Committee_triggered()));
 
         verticalLayout_2->addWidget(viewCommittee);
 
         addCommittee = new QPushButton(formLayoutWidget_2);
         addCommittee->setObjectName(QString::fromUtf8("addCommittee"));
+        connect(addCommittee, SIGNAL(clicked()), this, SLOT(on_actionAdd_Committee_triggered()));
 
         verticalLayout_2->addWidget(addCommittee);
 
         deleteCommittee = new QPushButton(formLayoutWidget_2);
         deleteCommittee->setObjectName(QString::fromUtf8("deleteCommittee"));
+        connect(deleteCommittee, SIGNAL(clicked()), this, SLOT(on_actionDelete_Committee_triggered()));
 
         verticalLayout_2->addWidget(deleteCommittee);
 
@@ -297,6 +300,9 @@ public slots:
     void on_actionAdd_Member_triggered(){return;}
     void on_actionEdit_Member_triggered(){return;}
     void on_actionDelete_Member_triggered(){return;}
+    void on_actionEdit_Committee_triggered(){return;}
+    void on_actionAdd_Committee_triggered(){return;}
+    void on_actionDelete_Committee_triggered(){return;}
 };
 
 namespace Ui {
