@@ -9,6 +9,8 @@
 #ifndef PERMISSION_H_
 #define PERMISSION_H_
 
+typedef unsigned int perm_set_t;
+
 enum Permission {
 
 };

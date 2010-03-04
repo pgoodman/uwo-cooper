@@ -11,6 +11,11 @@ User::User()
 	id = newID;*/
 }
 
+bool User::remove(void) {
+    elms.erase(id);
+    return CooperDB::remove("user", id);
+}
+
 /*
 void User::setName(string newName)
 {
@@ -61,8 +66,4 @@ User *User::recall(const int id) {
 
 bool User::remembered(const int id) {
     return elms.end() != elms.find(id);
-}
-
-bool User::remove(void) {
-    return CooperDB::remove("user", id);
 }

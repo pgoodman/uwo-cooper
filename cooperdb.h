@@ -56,6 +56,7 @@ template <typename T> T qcol(const QSqlQuery &q, const char *index);
 
 template <> QVariant qcol(const QSqlQuery &q, const char *index);
 template <> int qcol(const QSqlQuery &q, const char *index);
+template <> unsigned int qcol(const QSqlQuery &q, const char *index);
 template <> double qcol(const QSqlQuery &q, const char *index);
 template <> bool qcol(const QSqlQuery &q, const char *index);
 template <> string qcol(const QSqlQuery &q, const char *index);

@@ -68,14 +68,14 @@ private:
 	double money_owed;
 	bool share_telephone;
 	bool is_marked;
-	bool has_committee;
+	int committee_id;
 	string user_name;
 	time_t move_in_time;
 	Committee *committee;
 
     Member(string fullName, double newMoneyOwed,
            string phoneNum, bool sharePhone, bool mark, string userName,
-           string password, bool has_committee, int id);
+           string password, int committeeId, int id);
 };
 
 #endif // MEMBER_H
