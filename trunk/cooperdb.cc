@@ -1,6 +1,5 @@
 
 #include "cooperdb.h"
-#include "criticalerror.h"
 
 bool CooperDB::is_connected(false);
 QSqlDatabase CooperDB::db;
@@ -33,6 +32,17 @@ QSqlQuery CooperDB::select(const char *query) {
     assert(is_connected);
     QSqlQuery q(query, db);
     return q;
+}
+
+/**
+ * Return the result from a simple query.
+ */
+bool CooperDB::remove(const char *table, const int id) {
+    assert(is_connected);
+    stringstream ss;
+    ss << "DELETE FROM " << table << " WHERE id=" << id;
+    QSqlQuery q(ss.str().c_str());
+    return q.exec();
 }
 
 /**

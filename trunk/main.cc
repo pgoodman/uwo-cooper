@@ -25,7 +25,6 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
-    QWidget *window = new QWidget;
 
     try {
         //create DB object
@@ -34,30 +33,25 @@ int main(int argc, char *argv[]) {
         //if coordinator was not setup
         if(!Coordinator::exists()) {
             //D( cout << "no coordinator" << endl; )
-            InitWizard wizard(window);
+            InitWizard wizard;
             wizard.show();
-            app.exec();
             //SetupController::addCoordinator();
 
         } else {
             //D( cout << "has coordinator" << endl; )
             Login login;
             login.show();
-            app.exec();
         }
 
         //if UserController::activeUser is not null
-        if(!UserController::activeUser){
-            Cooper cooperUI;
-            cooperUI.show();
+        /*if(!UserController::activeUser){
+
             return app.exec();
         } else {
             return 0;
-        }
+        }*/
 
-        //window->show();
-
-        pair<Member::iterator, Member::iterator> its(Member::find());
+        pair<Member::iterator, Member::iterator> its(Member::findAll());
         for(Member::iterator it(its.first); it != its.second; it++) {
             cout << (*it)->getFullName() << endl;
         }

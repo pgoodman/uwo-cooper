@@ -42,29 +42,25 @@ string Member::getUserName(void) {
     return user_name;
 }
 
-#if 0
-
 void Member::setTelephoneNumber(string newNumber)
 {
-	telephoneNumber = newNumber;
+	telephone_num = newNumber;
 }
 
 void Member::setMoneyOwed(double money)
 {
-	moneyOwed = money;
+	money_owed = money;
 }
 
 void Member::setSharedTelephone(bool share)
 {
-	shareTelephone = share;
+	share_telephone = share;
 }
 
 void Member::setMarked(bool mark)
 {
-	isMarked = mark;
+	is_marked = mark;
 }
-
-#endif
 
 /**
  * Create a member.
@@ -191,14 +187,6 @@ User *Member::load(QSqlQuery &q, const bool checked_id) {
 /**
  * Find a sequence of members.
  */
-pair<Member::iterator, Member::iterator> Member::find() {
-    QSqlQuery count = QSqlQuery(
-        "SELECT COUNT(id) AS c FROM user WHERE is_coordinator=0 LIMIT 1"
-    );
-    int size((count.next() && count.isValid()) ? qcol<int>(count, "c") : 0);
-    count.finish();
-    return iterator::make(
-        QSqlQuery("SELECT id FROM user WHERE is_coordinator=0"),
-        size
-    ); //make_pair(start, end);
+pair<Member::iterator, Member::iterator> Member::findAll() {
+    return CooperDB::selectAll<User,Member>("user", "is_coordinator=0");
 }
