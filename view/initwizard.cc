@@ -1,8 +1,10 @@
 #include <QtGui>
 #include "initwizard.h"
-#include "controller/setupcontroller.h"
-#include "controller/usercontroller.h"
-#include "datatype/user.h"
+#include "../controller/setupcontroller.h"
+#include "../controller/usercontroller.h"
+#include "../datatype/user.h"
+#include "../datatype/coordinator.h"
+#include "../conf.h"
 
 InitWizard::InitWizard(QWidget *parent)
     : QWizard(parent)
@@ -12,8 +14,10 @@ InitWizard::InitWizard(QWidget *parent)
     setPage(Page_Conclusion, new ConclusionPage);
     setGeometry(0,0,400,300);
     setModal(true);
-
-    setStartId(Page_Account);
+    if(!Coordinator::exists())
+        setStartId(Page_Account);
+    else
+        setStartId(Page_Datafile);
 
     //setPixmap(QWizard::LogoPixmap, QPixmap(":/images/logo.png"));
 
@@ -30,6 +34,8 @@ AccountPage::AccountPage(QWidget *parent)
     nameLabel = new QLabel(tr("Account &Name: "));
     pwdLabel=new QLabel(tr("&Password"));
     nameLineEdit=new QLineEdit;
+    nameLineEdit->setText(new QString(COORDINATOR_USER_NAME));
+    nameLineEdit->setReadOnly(true);
     pwdLineEdit=new QLineEdit;
     nameLabel->setBuddy(nameLineEdit);
     pwdLabel->setBuddy(pwdLineEdit);
@@ -91,34 +97,37 @@ int DatafilePage::nextId() const
 ConclusionPage::ConclusionPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    int _accDone;
-    int _dataDone;
-
     std::string name= std::string(this->field("coordinator.name").toString().toStdString());
     std::string pwd= std::string(this->field("coordinator.pwd").toString().toStdString());
-    _accDone=ConclusionPage::initAccount(name,pwd);
+    //creating coordinator account
+    if(!ConclusionPage::initAccount(name,pwd)){
+        std::string filename = std::string(this->field("datafile.name").toString().toStdString());
 
-    std::string filename = std::string(this->field("datafile.name").toString().toStdString());
-    _dataDone=ConclusionPage::initData(filename);
+        if(!ConclusionPage::initData(filename)){
+            setTitle(tr("Initialization Completed"));
+            //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
 
-    if(_accDone==0&&_dataDone==0){
-        setTitle(tr("Initialization Completed"));
-        //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
+            conclusionLabel = new QLabel(tr("You have successfully initialized Cooper. "
+                                         "You are now logged in as the coordinator."));
+            conclusionLabel->setWordWrap(true);
+            //set active user
+            UserController::login(name, pwd);
+        }
+        else{
+            setTitle(tr("Initialization Failed"));
+            //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
 
-        conclusionLabel = new QLabel(tr("You have successfully initialized Cooper. "
-                                     "You are now logged in as the coordinator."));
-        conclusionLabel->setWordWrap(true);
-        //set active user
-        //User *theUser = UserController::getUser(name);
-        UserController::login(name, pwd);
+            conclusionLabel = new QLabel(tr("The data file cannot be loaded. Please try again."));
+            conclusionLabel->setWordWrap(true);
+        }
+
     }
     else {
         setTitle(tr("Initialization Failed"));
         //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
 
-        conclusionLabel = new QLabel(tr("The Initialization failed. Please go back and try again."));
+        conclusionLabel = new QLabel(tr("The account creation failed. Please try again."));
         conclusionLabel->setWordWrap(true);
-
     }
 
     QVBoxLayout *layout = new QVBoxLayout;
