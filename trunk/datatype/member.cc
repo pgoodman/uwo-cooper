@@ -14,7 +14,7 @@
  */
 Member::Member(string fullName, double newMoneyOwed,
                string phoneNum, bool sharePhone, bool mark,
-               string uName, string pass, bool hasCommittee, int userId)
+               string uName, string pass, int committeeId, int userId)
 {
     full_name = fullName;
 	money_owed = newMoneyOwed;
@@ -23,7 +23,7 @@ Member::Member(string fullName, double newMoneyOwed,
 	telephone_num = phoneNum;
 	password = pass;
 	user_name = uName;
-	has_committee = hasCommittee;
+	committee_id = committeeId;
 	id = userId;
 }
 
@@ -95,14 +95,8 @@ void Member::save(void) {
         "WHERE id=? AND is_coordinator=0"
     );
     q << full_name << user_name << password << share_telephone
-      << telephone_num << move_in_time << is_marked;
-
-    if(0 != committee) {
-        q << committee->getId();
-    } else {
-        q << NULL;
-    }
-    q << money_owed << id;
+      << telephone_num << move_in_time << is_marked << committee_id
+      << money_owed << id;
 
     if(!q.exec() || 0 == q.numRowsAffected()) {
         CooperDB::queryError("Unable to Update Member Information.", q);
@@ -180,7 +174,7 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
         qcol<bool>(q, "is_marked"),
         qcol<string>(q, "name"),
         qcol<string>(q, "password"),
-        qcol<int>(q, "committee_id") != 0, // has committee?
+        qcol<int>(q, "committee_id"),
         id
     );
 

@@ -218,6 +218,9 @@ template <> QVariant qcol(const QSqlQuery &q, const char *index) {
 template <> int qcol(const QSqlQuery &q, const char *index) {
     return qcol<QVariant>(q, index).toInt();
 }
+template <> unsigned int qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toUInt();
+}
 template <> double qcol(const QSqlQuery &q, const char *index) {
     return qcol<QVariant>(q, index).toDouble();
 }
