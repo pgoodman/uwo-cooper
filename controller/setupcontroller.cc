@@ -4,8 +4,7 @@
 #include <fstream>
 #include <string>
 #include <locale>
-
-using namespace std;
+#include <QMessageBox>
 
 #include "setupcontroller.h"
 
@@ -21,6 +20,7 @@ int SetupController::addCoordinator() {
 }
 
 int SetupController::loadData(QString filename) {
+        QMessageBox msgBox;
         string userInfo;
         int unitNo;
         string address = "";
@@ -38,27 +38,31 @@ int SetupController::loadData(QString filename) {
                                 if ((i == userInfo.size()) || (userInfo.substr(i,1) == ",")) {
                                         switch (whichInfo) {
                                                 case 0: if (information == "") {
-                                                                cout << "Error parsing: No unit number given" << endl;
+                                                                msgBox.setText("Error parsing: No unit number given");
+                                                                msgBox.exec();
                                                                 return 0;
                                                         }
                                                         unitNo = atoi(information.c_str());
                                                         break;
 
                                                 case 1:  if (information == "") {
-                                                                cout << "Error parsing: No address given" << endl;
+                                                                msgBox.setText("Error parsing: No address given");
+                                                                msgBox.exec();
                                                                 return 0;
                                                         }
                                                         address = information;
                                                         break;
 
                                                 case 2:  if (information == "") {
-                                                                cout << "Error parsing: No rooms given" << endl;
+                                                                msgBox.setText("Error parsing: No rooms given");
+                                                                msgBox.exec();
                                                                 return 0;
                                                         }
 
                                                         noOfRooms = atoi(information.c_str());
                                                         if ((noOfRooms == 0) || (noOfRooms > 3)) {
-                                                                cout << "Error parsing: Invalid number of rooms! (1, 2, or 3)" << endl;
+                                                                msgBox.setText("Error parsing: Invalid number of rooms! (1, 2, or 3)");
+                                                                msgBox.exec();
                                                                 return 0;
                                                         }
                                                         break;
@@ -72,7 +76,8 @@ int SetupController::loadData(QString filename) {
                                 else {
                                         if ((whichInfo == 0) || (whichInfo == 2)) {             // If were checking for digits
                                                 if (!isdigit(userInfo[i], loc)) {               // If its not a digit
-                                                        cout << "Error parsing: Invalid number entered" << endl;
+                                                        msgBox.setText("Error parsing: Invalid number entered");
+                                                        msgBox.exec();
                                                         return 0;
                                                 }
                                         }
