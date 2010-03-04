@@ -10,6 +10,8 @@
 #define MODEL_ITERATOR_H_
 
 #include <iterator>
+#include <iostream>
+#include <assert.h>
 
 #include <QSqlQuery>
 #include <QSqlResult>
@@ -38,9 +40,6 @@ private:
 
     void setCurrId(void);
 
-    //typedef T *reference;
-    //typedef ModelIterator<T, L> iterator;
-
     QSqlQuery *query;
     const int size;
     int i;
@@ -57,7 +56,7 @@ private:
 template <typename T, typename L>
 ModelIterator<T, L>::ModelIterator(QSqlQuery *q, const int s, const int off)
  : query(q), size(s), i(off) {
-    q->setForwardOnly(true);
+    assert(query->isSelect());
     if(off >= 0 && off < size) {
         setCurrId();
     }
@@ -69,9 +68,9 @@ ModelIterator<T, L>::ModelIterator(QSqlQuery *q, const int s, const int off)
 template <typename T, typename L>
 ModelIterator<T, L>::~ModelIterator() {
     if(!query->isActive()) {
-        delete query;
+        //delete query;
     } else {
-        query->finish();
+        //query->finish();
     }
 }
 
@@ -86,10 +85,10 @@ T *ModelIterator<T, L>::operator*() {
 template <typename T, typename L>
 ModelIterator<T, L> &ModelIterator<T, L>::operator++ () {
     ++i;
-    if(query->nextResult()) {
+    if(i < size) {
+        query->next();
         setCurrId();
-    }
-    if(i > size) {
+    } else {
         i = size + 1;
     }
     return *this;
@@ -104,12 +103,13 @@ ModelIterator<T, L> ModelIterator<T, L>::operator++ (int) {
 
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator!=(const ModelIterator<T, L> &other) {
-    return this != &other || query != other.query || i != other.i;
+    //D( cout << query << "!=" << other.query << " || " << i << " != " << other.i << endl; )
+    return query != other.query || i != other.i;
 }
 
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator==(const ModelIterator<T, L> &other) {
-    return this == &other && query == other.query && i == other.i;
+    return query == other.query && i == other.i;
 }
 
 /**
@@ -117,8 +117,8 @@ bool ModelIterator<T, L>::operator==(const ModelIterator<T, L> &other) {
  */
 template <typename T, typename L>
 void ModelIterator<T, L>::setCurrId(void) {
-    QVariant var = query->value(0);
-    curr_id = var.toInt();
+    curr_id = query->value(0).toInt();
+    //D( cout << "ModelIterator, current id is " << curr_id << endl; )
 }
 
 #endif

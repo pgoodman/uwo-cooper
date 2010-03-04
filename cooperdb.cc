@@ -141,16 +141,28 @@ void CooperDB::makeDatabase() {
         }
     }
 
-    q.exec(
-        "INSERT INTO user (full_name, name, password, share_telephone, "
-        "telephone, move_in_time) VALUES ('Peter Goodman','peter','peter',"
-        "0,'519-933-0204',0)"
-    );
-    q.exec(
-        "INSERT INTO user (full_name, name, password, share_telephone, "
-        "telephone, move_in_time) VALUES ('Stephan Beltran','stephan','stephan',"
-        "1,'',0)"
-    );
+    D(
+        q.exec(
+            "INSERT INTO user (full_name, name, password, share_telephone, "
+            "telephone, move_in_time) VALUES ('Peter Goodman','peter','peter',"
+            "0,'519-933-0204',0)"
+        );
+        q.exec(
+            "INSERT INTO user (full_name, name, password, share_telephone, "
+            "telephone, move_in_time) VALUES ('Stephan Beltran','stephan',"
+            "'stephan', 1,'',0)"
+        );
+        q.exec(
+            "INSERT INTO user (full_name, name, password, share_telephone, "
+            "telephone, move_in_time) VALUES ('Nick Perreault','nick',"
+            "'nick', 1,'',0)"
+        );
+        q.exec(
+            "INSERT INTO user (full_name, name, password, share_telephone, "
+            "telephone, move_in_time) VALUES ('Jason','jason',"
+            "'jason', 0,'',0)"
+        );
+    )
 }
 
 /**

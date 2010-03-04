@@ -34,10 +34,11 @@ public:
     static void queryError(string, QSqlQuery &);
     static void queryError(stringstream &, QSqlQuery &);
 
+    static QSqlDatabase db;
+
 private:
     CooperDB();
 
-    static QSqlDatabase db;
     static void makeDatabase();
     static bool is_connected;
 };

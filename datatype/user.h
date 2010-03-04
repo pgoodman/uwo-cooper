@@ -2,22 +2,22 @@
 #define USER_H
 
 #include <string>
-#include <vector>
+#include <map>
 
 #include <QSqlQuery>
 
 #include "permission.h"
+//#include "model.h"
 
 using namespace std;
 
-class User
-{
+class User {
 public:
     //Constructors
     User();
     User(string newName, string newUserName, string newPassword, int newID);
     
-    string getName();
+    virtual string getFullName();
     virtual string getUserName() = 0;
     virtual void save(void) = 0;
     virtual bool hasPermission(const Permission p) = 0;
@@ -36,13 +36,17 @@ public:
 
 protected:
 
+    static void remember(const int id, User *val);
+    static User *recall(const int id);
+    static bool remembered(const int id);
+
 	//Attributes
 
 	string full_name;
 	string password;
 	int id;
 
-	static vector<User *> users;
+	static map<int, User *> elms;
 };
 
 #endif // USER_H

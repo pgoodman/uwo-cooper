@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <time.h>
+#include <vector>
 
 #include <QVariant>
 #include <QSqlRecord>
