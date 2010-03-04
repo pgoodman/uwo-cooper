@@ -34,7 +34,7 @@ AccountPage::AccountPage(QWidget *parent)
     nameLabel = new QLabel(tr("Account &Name: "));
     pwdLabel=new QLabel(tr("&Password"));
     nameLineEdit=new QLineEdit;
-    nameLineEdit->insert(QString(COORDINATOR_USER_NAME));
+    nameLineEdit->setText(QString(COORDINATOR_USER_NAME));
     nameLineEdit->setReadOnly(true);
     pwdLineEdit=new QLineEdit;
     nameLabel->setBuddy(nameLineEdit);
@@ -97,6 +97,15 @@ int DatafilePage::nextId() const
 ConclusionPage::ConclusionPage(QWidget *parent)
     : QWizardPage(parent)
 {
+
+    conclusionLabel = new QLabel("");
+    conclusionLabel->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(conclusionLabel);
+    setLayout(layout);
+    //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
+}
+void ConclusionPage::initializePage(){
     std::string name= std::string(this->field("coordinator.name").toString().toStdString());
     std::string pwd= std::string(this->field("coordinator.pwd").toString().toStdString());
     //creating coordinator account
@@ -105,36 +114,22 @@ ConclusionPage::ConclusionPage(QWidget *parent)
 
         if(!ConclusionPage::initData(filename)){
             setTitle(tr("Initialization Completed"));
-            //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
-
-            conclusionLabel = new QLabel(tr("You have successfully initialized Cooper. "
+            conclusionLabel->setText(tr("You have successfully initialized Cooper. "
                                          "You are now logged in as the coordinator."));
-            conclusionLabel->setWordWrap(true);
             //set active user
             UserController::login(name, pwd);
         }
         else{
             setTitle(tr("Initialization Failed"));
-            //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
-
-            conclusionLabel = new QLabel(tr("The data file cannot be loaded. Please try again."));
-            conclusionLabel->setWordWrap(true);
+            conclusionLabel->setText(tr("The data file cannot be loaded. Please try again."));
         }
 
     }
     else {
         setTitle(tr("Initialization Failed"));
-        //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
-
-        conclusionLabel = new QLabel(tr("The account creation failed. Please try again."));
-        conclusionLabel->setWordWrap(true);
+        conclusionLabel->setText(tr("The account creation failed. Please try again."));
     }
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(conclusionLabel);
-    setLayout(layout);
 }
-
 int ConclusionPage::initAccount(std::string name, std::string pwd){
     //return SetupController::addCoordinator(name,pwd);
     Coordinator::create(name, pwd);

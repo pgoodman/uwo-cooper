@@ -61,6 +61,7 @@
 
   private:
      QLabel *conclusionLabel;
+     void initializePage();
 
  };
 
