@@ -69,9 +69,10 @@ private:
 	time_t move_in_time;
 	Committee *committee;
 
-    Member(QString firstName, QString lastName, double newMoneyOwed,
-           QString phoneNum, bool sharePhone, bool mark, QString userName,
-           QString password, int committeeId, int id);
+    explicit Member(QString firstName, QString lastName, double newMoneyOwed,
+                    QString phoneNum, bool sharePhone, bool mark,
+                    QString userName, QString password, int committeeId,
+                    int id);
 };
 
 

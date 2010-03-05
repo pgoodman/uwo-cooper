@@ -22,7 +22,7 @@ void Unit::save(void)
 {
     QSqlQuery q;
     q.prepare("UPDATE unit set address=?,num_rooms=? WHERE id=?");
-    q << streetAddress << numBedrooms << id;
+    q << address << num_bedrooms << id;
     if(!q.exec()) {
         CooperDB::queryError("Unable to Save Unit", q);
     }
@@ -34,23 +34,23 @@ void Unit::save(void)
 Unit *Unit::create(int rNumber, QString address, int nRooms, int id) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO unit (number,address,num_rooms)"
+        "INSERT INTO unit (id,number,address,num_rooms)"
         "VALUES (?,?,?,?)"
     );
-    q << rNumber << address << nRooms;
+    q << id << rNumber << address << nRooms;
 
     if(!q.exec()) {
         CooperDB::queryError("Unable to Add Committee", q);
     }
 
-    return Unit::load(q.lastInsertId().toInt());
+    return Unit::load(id);
 }
 
 /**
  * Load a unit from the databse by its id.
  */
 Unit *Unit::load(const int id) {
-    if(remembered(id)) {
+    /*if(remembered(id)) {
         return recall(id);
     }
 
@@ -68,7 +68,9 @@ Unit *Unit::load(const int id) {
     );
 
     remember(id, c);
-    return c;
+    return c;*/
+    (void) id;
+    return 0;
 }
 
 

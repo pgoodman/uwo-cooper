@@ -30,7 +30,7 @@ public:
 	virtual ~Coordinator();
 
 private:
-	Coordinator(int, QString);
+	explicit Coordinator(int, QString);
 
 	static bool does_exist;
 	static User *coord;
