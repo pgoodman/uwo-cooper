@@ -25,6 +25,7 @@
 #include <QtGui/QTextEdit>
 #include <QLayout>
 #include "datatype/member.h"
+#include <time.h>
 
 class Ui_AddMember : public QDialog
 {
@@ -366,7 +367,7 @@ public slots:
             return;
         }
 
-        Member::create(namme, lastname, telephone, false, userid, password, time(null));
+        Member::create(name, lastname, telephone, false, userid, password, time(NULL));
 
         hide();
         accept();
