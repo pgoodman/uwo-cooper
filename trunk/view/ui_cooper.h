@@ -306,6 +306,7 @@ public slots:
     void on_actionDelete_Committee_triggered(){return;}
     void on_actionView_Committee_triggered(){return;}
 
+	void populateMembers(){return;}
 private:
     Ui_AddMember *addMember;
 };
