@@ -1,14 +1,12 @@
 
 #include "usercontroller.h"
 
-User *UserController::activeUser;
-
 UserController::UserController()
 {
 }
 
 UserController::~UserController() {
-    delete activeUser;
+
 }
 
 void UserController::home(void) {
@@ -19,10 +17,15 @@ void UserController::home(void) {
 bool UserController::authorize(QString name, QString pwd) {
     bool match(name == COORDINATOR_USER_NAME);
     cout << "name is coord? " << match << endl;
-    activeUser = (name == COORDINATOR_USER_NAME)
-               ? Coordinator::load(pwd)
-               : Member::load(name, pwd);
-    return 0 != activeUser;
+    User* active(
+        (name == COORDINATOR_USER_NAME) ? Coordinator::load(pwd)
+                                        : Member::load(name, pwd)
+    );
+    if(active->isSoftDeleted()) {
+        return false;
+    }
+    User::setActive(active);
+    return 0 != active;
 }
 
 int UserController::login(QApplication &app) {
@@ -32,6 +35,6 @@ int UserController::login(QApplication &app) {
 }
 
 void UserController::logout() {
-    activeUser = 0;
+    User::setActive(0);
 }
 

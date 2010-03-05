@@ -332,17 +332,18 @@ public:
 
 
 public slots:
-void on_actionAdd_Member_triggered()
-{
-    addMember->show();
-
-    if(addMember->exec() == QDialog::Accepted)
+    void on_actionAdd_Member_triggered()
     {
-        populateMembers();
+        addMember->show();
+        if(addMember->exec() == QDialog::Accepted)
+        {
+            populateMembers();
+        }
     }
-}
     void on_actionEdit_Member_triggered(){return;}
-    void on_actionDelete_Member_triggered(){return;}
+    void on_actionDelete_Member_triggered(){
+        memberList->getModel()->softDelete();
+    }
     void on_actionEdit_Committee_triggered(){return;}
     void on_actionAdd_Committee_triggered(){return;}
     void on_actionDelete_Committee_triggered(){return;}

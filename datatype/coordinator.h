@@ -26,6 +26,7 @@ public:
 	virtual QString getUserName(void);
 	virtual void save(void);
 	virtual bool hasPermission(const Permission p);
+	virtual bool isSoftDeleted(void);
 	virtual ~Coordinator();
 
 private:

@@ -2,6 +2,7 @@
 #include "user.h"
 
 map<int, User *> User::elms;
+User *User::active = 0;
 
 User::User()
 {
@@ -11,9 +12,20 @@ User::User()
 	id = newID;*/
 }
 
-bool User::remove(void) {
-    elms.erase(id);
-    return CooperDB::remove("user", id);
+void User::setActive(User *u) {
+    active = u;
+}
+
+bool User::canDo(const Permission p) {
+    return (0 == active) ? false : active->hasPermission(p);
+}
+
+void User::softDelete(void) {
+    return;
+}
+
+void User::hardDelete(void) {
+    return;
 }
 
 /*
