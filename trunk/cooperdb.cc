@@ -207,6 +207,14 @@ static void install_tables(QSqlQuery &q) {
             //"KEY(secretary_id)"
         ")",
 
+        "CREATE TABLE unit ("
+            "number INTEGER,"
+            "streetAddress TEXT,"
+            "numBedrooms INTEGER"
+
+            //"KEY(id)"
+        ")",
+
     };
 
     size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);
