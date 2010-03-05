@@ -7,11 +7,11 @@
 #include <QWizard>
 
 #include "conf.h"
-#include "initwizard.h"
 #include "controller/setupcontroller.h"
 #include "controller/usercontroller.h"
 #include "datatype/user.h"
 #include "datatype/coordinator.h"
+#include "window.h"
 
  class InitWizard : public QWizard
  {

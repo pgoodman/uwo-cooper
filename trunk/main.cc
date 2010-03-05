@@ -6,8 +6,10 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QString>
+#include <QWidget>
 
 #include "view/login.h"
+#include "view/window.h"
 
 #include "conf.h"
 #include "cooperdb.h"
@@ -24,17 +26,18 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
+    QMainWindow *window(Window::create());
 
     try {
         CooperDB::connect("cooper");
 
         if(!Coordinator::exists()) {
-            return SetupController::install(app);
+            SetupController::install();
         } else {
-            return UserController::login(app);
+            UserController::login();
         }
-
-
+        window->show();
+        return app.exec();
 
     } catch(CriticalError &e) {
         D( cout << "Error: " << e.header() << endl << e.what() << endl; )

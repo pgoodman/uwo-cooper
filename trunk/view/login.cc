@@ -1,6 +1,6 @@
 #include "login.h"
 
-Login::Login():QWidget(){
+Login::Login() : QWidget(0) {
     titleLabel=new QLabel("Please enter login name and password.");
     nameLabel=new QLabel("Login Name: ");
     pwdLabel=new QLabel("Password: ");
@@ -10,7 +10,7 @@ Login::Login():QWidget(){
     okPushButton=new QPushButton("Login");
     cancelPushButton=new QPushButton("Cancel");
 
-    QGridLayout *layout=new QGridLayout;
+    QGridLayout *layout(new QGridLayout);
     layout->addWidget(titleLabel,0,0,1,2);
     layout->addWidget(nameLabel,1,0);
     layout->addWidget(nameLineEdit,1,1);
@@ -18,24 +18,35 @@ Login::Login():QWidget(){
     layout->addWidget(pwdLineEdit,2,1);
     layout->addWidget(okPushButton,3,0);
     layout->addWidget(cancelPushButton,3,1);
-    this->setLayout(layout);
+
+    setLayout(layout);
+
     QObject::connect(okPushButton, SIGNAL(clicked()),
-                    this, SLOT(on_loginPushButton_clicked()));
+                    this, SLOT(tryLogin()));
     QObject::connect(cancelPushButton, SIGNAL(clicked()),
                     this, SLOT(close()));
+
+    Window::setTitle("Log In to Cooper");
 }
 
 /**
- * Handle cliking the login button.
+ * Handle clicking the login button.
  */
-void Login::on_loginPushButton_clicked() {
+void Login::tryLogin() {
     if(!UserController::authorize(nameLineEdit->text(), pwdLineEdit->text())) {
+        cout << "Failed to log in. " << endl;
         titleLabel->setText(
             "Login name and password don't match. Please try again."
         );
     } else {
-
         UserController::home();
-        this->close();
+        //this->close();
     }
+}
+
+/**
+ * Handle pressing cancel.
+ */
+void Login::close() {
+    qApp->quit();
 }
