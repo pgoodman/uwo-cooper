@@ -24,6 +24,7 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QTextEdit>
 #include <QLayout>
+#include "datatype/member.h"
 
 class Ui_AddMember : public QDialog
 {
@@ -298,7 +299,78 @@ public:
     } // retranslateUi
 
 public slots:
-    void addMember(){ return;}
+    void addMember(){
+
+        QString lastname = LastNameEdit->text();
+        QString name = GivenNameEdit->text();
+        QString telephone = NumberEdit->text();
+        QString unit = UnitEdit->text();
+        QString committee = CommitteeEdit->text();
+        QString userid = UserIDEdit->text();
+        QString password = PasswordEdit->text();
+        QString date = lineEdit->text();
+
+        if(lastname.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a name."));
+            return;
+        }
+
+        if(name.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a name."));
+            return;
+        }
+
+        if(telephone.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a phone number."));
+            return;
+        }
+
+        if(unit.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a unit number."));
+            return;
+        }
+
+        if(committee.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a committee."));
+            return;
+        }
+
+        if(userid.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a userid."));
+            return;
+        }
+
+        if(password.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a password."));
+            return;
+        }
+
+        if(date.isEmpty())
+        {
+            QMessageBox::information(this, tr("Empty Field"),
+                         tr("Please enter a move-in date."));
+            return;
+        }
+
+        Member::create(namme, lastname, telephone, false, userid, password, time(null));
+
+        hide();
+        accept();
+    }
 };
 
 
