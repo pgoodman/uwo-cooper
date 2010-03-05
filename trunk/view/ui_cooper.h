@@ -315,40 +315,10 @@ public:
         menuPrint->setTitle(QApplication::translate("Cooper", "Print", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("Cooper", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
-    /*
-    class MemberListItem : public QListWidgetItem {
-    public:
-        const Member *user;
-        MemberListItem(QListWidget *parent, Member *member)
-        : QListWidgetItem(parent), user(member) {
-            setData(Qt::DisplayRole, (QString) member);
-        }
-    };*/
-    /*
-    class MemberList : public QListWidget {
-
-    };*/
 
 void populateMembers()
 {
-    //pair<Member::iterator, Member::iterator> its(Member::findAll());
-    //int i(0);
-    /*for(Member::iterator it(its.first); it != its.second; it++) {
-        memberList->insertItem(
-            i++,
-            new MemberListItem(memberList, *it)
-        );
-
-        //memberList->insertItem
-       //cursor = textEdit->textCursor();
-       //cursor.movePosition(QTextCursor::StartOfWord);
-       //cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-
-       //textEdit->setText(cursor.selectedText() + (*it)->getFullName());
-    }*/
-
-    pair<Member::iterator, Member::iterator> its(Member::findAll());
-    memberList->fill(its);
+    memberList->fill(&Member::findAll);
 
 }
 
