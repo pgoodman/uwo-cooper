@@ -78,7 +78,9 @@ public:
     void setupUi(QMainWindow *Cooper)
     {
 		addMember = new Ui_AddMember;
-
+        
+        if (Cooper->objectName().isEmpty())
+            Cooper->setObjectName(QString::fromUtf8("Cooper"));
         
         Cooper->resize(600, 400);
         actionLogoff = new QAction(Cooper);
