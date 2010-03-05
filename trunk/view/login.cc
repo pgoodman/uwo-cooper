@@ -34,7 +34,8 @@ void Login::on_loginPushButton_clicked() {
             "Login name and password don't match. Please try again."
         );
     } else {
-        this->close();
+
         UserController::home();
+        this->close();
     }
 }
