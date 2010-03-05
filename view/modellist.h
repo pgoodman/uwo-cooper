@@ -21,6 +21,8 @@
 template <typename T>
 class ModelList : public QListWidget {
     typedef ModelIterator<T,T> iterator;
+    typedef pair<iterator,iterator> iterator_pair;
+    typedef iterator_pair (iterator_pair_func)(void);
 
 public:
 
@@ -57,6 +59,10 @@ public:
     /**
      * Fill the list.
      */
+    void fill(iterator_pair_func *f) {
+        iterator_pair its(f());
+        return fill(its.first, its.second);
+    }
     void fill(pair<iterator,iterator> &its) {
         fill(its.first, its.second);
     }
