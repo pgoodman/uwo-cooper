@@ -32,9 +32,10 @@
 
 //QT_BEGIN_NAMESPACE
 
-class Ui_Cooper
+class Ui_Cooper : QObject
 {
 public:
+	Q_OBJECT
     QAction *actionLogoff;
     QAction *actionQuit;
     QAction *actionAdd_Committee;
