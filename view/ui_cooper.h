@@ -26,6 +26,9 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include "datatype/member.h"
+#include "cooperdb.h"
+#include "ui_addmember.h"
 
 //QT_BEGIN_NAMESPACE
 
@@ -72,8 +75,9 @@ public:
 
     void setupUi(QMainWindow *Cooper)
     {
-        if (Cooper->objectName().isEmpty())
-            Cooper->setObjectName(QString::fromUtf8("Cooper"));
+		addMember = new Ui_AddMember;
+
+        
         Cooper->resize(600, 400);
         actionLogoff = new QAction(Cooper);
         actionLogoff->setObjectName(QString::fromUtf8("actionLogoff"));
@@ -133,6 +137,7 @@ public:
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         actionAdd_Member_2 = new QPushButton(formLayoutWidget);
         actionAdd_Member_2->setObjectName(QString::fromUtf8("actionAdd_Member_2"));
+        connect(actionAdd_Member_2, SIGNAL(clicked()), this, SLOT(on_actionAdd_Member_triggered()));
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -141,28 +146,66 @@ public:
 
         verticalLayout->addWidget(actionAdd_Member_2);
 
-        pushButton_2 = new QPushButton(formLayoutWidget);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        actionEdit_Member = new QPushButton(formLayoutWidget);
+        actionEdit_Member->setObjectName(QString::fromUtf8("actionEdit_Member"));
+        connect(actionEdit_Member, SIGNAL(clicked()), this, SLOT(on_actionEdit_Member_triggered()));
+        verticalLayout->addWidget(actionEdit_Member);
 
-        verticalLayout->addWidget(pushButton_2);
-
-        pushButton_3 = new QPushButton(formLayoutWidget);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-
-        verticalLayout->addWidget(pushButton_3);
+        actionDelete_Member = new QPushButton(formLayoutWidget);
+        actionDelete_Member->setObjectName(QString::fromUtf8("actionDelete_Member"));
+        connect(actionDelete_Member, SIGNAL(clicked()), this, SLOT(on_actionDelete_Member_triggered()));
+        verticalLayout->addWidget(actionDelete_Member);
 
 
         formLayout_2->setLayout(0, QFormLayout::FieldRole, verticalLayout);
 
-        listView = new QListView(formLayoutWidget);
-        listView->setObjectName(QString::fromUtf8("listView"));
+        textEdit = new QTextEdit(formLayoutWidget);
+        textEdit->setObjectName(QString::fromUtf8("textEdit"));
 
-        formLayout_2->setWidget(0, QFormLayout::LabelRole, listView);
+        formLayout_2->setWidget(0, QFormLayout::LabelRole, textEdit);
 
         tabWidget->addTab(memberTab, QString());
-        tab_2 = new QWidget();
-        tab_2->setObjectName(QString::fromUtf8("tab_2"));
-        tabWidget->addTab(tab_2, QString());
+        committeeTab = new QWidget();
+        committeeTab->setObjectName(QString::fromUtf8("committeeTab"));
+        formLayoutWidget_2 = new QWidget(committeeTab);
+        formLayoutWidget_2->setObjectName(QString::fromUtf8("formLayoutWidget_2"));
+        formLayoutWidget_2->setGeometry(QRect(10, 10, 461, 191));
+        formLayout = new QFormLayout(formLayoutWidget_2);
+        formLayout->setSpacing(6);
+        formLayout->setContentsMargins(11, 11, 11, 11);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        formLayout->setContentsMargins(0, 0, 0, 0);
+        committeeList = new QTextEdit(formLayoutWidget_2);
+        committeeList->setObjectName(QString::fromUtf8("committeeList"));
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, committeeList);
+
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        viewCommittee = new QPushButton(formLayoutWidget_2);
+        viewCommittee->setObjectName(QString::fromUtf8("viewCommittee"));
+        connect(viewCommittee, SIGNAL(clicked()), this, SLOT(on_actionView_Committee_triggered()));
+
+        verticalLayout_2->addWidget(viewCommittee);
+
+        addCommittee = new QPushButton(formLayoutWidget_2);
+        addCommittee->setObjectName(QString::fromUtf8("addCommittee"));
+        connect(addCommittee, SIGNAL(clicked()), this, SLOT(on_actionAdd_Committee_triggered()));
+
+        verticalLayout_2->addWidget(addCommittee);
+
+        deleteCommittee = new QPushButton(formLayoutWidget_2);
+        deleteCommittee->setObjectName(QString::fromUtf8("deleteCommittee"));
+        connect(deleteCommittee, SIGNAL(clicked()), this, SLOT(on_actionDelete_Committee_triggered()));
+
+        verticalLayout_2->addWidget(deleteCommittee);
+
+
+        formLayout->setLayout(0, QFormLayout::FieldRole, verticalLayout_2);
+
+        tabWidget->addTab(committeeTab, QString());
 
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
 
@@ -172,10 +215,6 @@ public:
         menuBar->setGeometry(QRect(0, 0, 600, 21));
         menuSystem = new QMenu(menuBar);
         menuSystem->setObjectName(QString::fromUtf8("menuSystem"));
-        menuMember = new QMenu(menuBar);
-        menuMember->setObjectName(QString::fromUtf8("menuMember"));
-        menuCommittee = new QMenu(menuBar);
-        menuCommittee->setObjectName(QString::fromUtf8("menuCommittee"));
         menuTask = new QMenu(menuBar);
         menuTask->setObjectName(QString::fromUtf8("menuTask"));
         menuEvent = new QMenu(menuBar);
@@ -190,16 +229,12 @@ public:
         Cooper->setStatusBar(statusBar);
 
         menuBar->addAction(menuSystem->menuAction());
-        menuBar->addAction(menuMember->menuAction());
-        menuBar->addAction(menuCommittee->menuAction());
         menuBar->addAction(menuTask->menuAction());
         menuBar->addAction(menuEvent->menuAction());
         menuBar->addAction(menuPrint->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuSystem->addAction(actionLogoff);
         menuSystem->addAction(actionQuit);
-        menuCommittee->addAction(actionAdd_Committee);
-        menuCommittee->addAction(actionDelete_Committee);
         menuTask->addAction(actionAssign_Task);
         menuTask->addAction(actionEdit_Task);
         menuTask->addAction(actionDelete_Task);
@@ -212,11 +247,13 @@ public:
         menuHelp->addAction(actionManual);
         menuHelp->addAction(actionAbout_Cooper);
 
+
+        populateMembers();
+
         retranslateUi(Cooper);
         QObject::connect(actionQuit, SIGNAL(triggered()), Cooper, SLOT(close()));
 
-        tabWidget->setCurrentIndex(1);
-
+        tabWidget->setCurrentIndex(0);
 
         QMetaObject::connectSlotsByName(Cooper);
     } // setupUi
@@ -256,6 +293,17 @@ public:
         menuHelp->setTitle(QApplication::translate("Cooper", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
+public slots:
+	void on_actionAdd_Member_triggered(){addMember->show();}
+    void on_actionEdit_Member_triggered(){return;}
+    void on_actionDelete_Member_triggered(){return;}
+    void on_actionEdit_Committee_triggered(){return;}
+    void on_actionAdd_Committee_triggered(){return;}
+    void on_actionDelete_Committee_triggered(){return;}
+    void on_actionView_Committee_triggered(){return;}
+
+private:
+    Ui_AddMember *addMember;
 };
 
 namespace Ui {
