@@ -29,7 +29,7 @@ public:
     /**
      * Constructor.
      */
-    ModelList(QWidget *parent) : QListWidget(parent) { }
+    ModelList(QWidget *parent=0) : QListWidget(parent) { }
 
     /**
      * Destructor, free the list items.

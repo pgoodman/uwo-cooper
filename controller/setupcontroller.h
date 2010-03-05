@@ -21,7 +21,7 @@ class SetupController
 public:
     ~SetupController();
 
-    static int install(QApplication &app);
+    static void install();
     static bool loadData(QString file_name);
 private:
     SetupController();

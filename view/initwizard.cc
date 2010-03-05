@@ -16,7 +16,8 @@ InitWizard::InitWizard(QWidget *parent)
 
     //setPixmap(QWizard::LogoPixmap, QPixmap(":/images/logo.png"));
 
-    setWindowTitle(tr("Cooper Initialization Wizard"));
+    //setWindowTitle(tr("Cooper Initialization Wizard"));
+    Window::setTitle("Cooper Initialization Wizard");
 }
 
 AccountPage::AccountPage(QWidget *parent)
@@ -44,7 +45,7 @@ AccountPage::AccountPage(QWidget *parent)
     registerField("coordinator.name",nameLineEdit);
     registerField("coordinator.pwd",pwdLineEdit);
 
-    setLayout(layout);
+    //Window::setLayout(layout);
 }
 
 int AccountPage::nextId() const
@@ -69,7 +70,7 @@ DatafilePage::DatafilePage(QWidget *parent)
     layout->addWidget(fileNameLabel, 0, 0);
     layout->addWidget(fileNameLineEdit, 1, 0);
     layout->addWidget(browseFileButton, 1, 1);
-    setLayout(layout);
+    //Window::setLayout(layout);
     connect(browseFileButton,SIGNAL(clicked()),this,SLOT(browseDataFile()));
 
 }
@@ -97,7 +98,7 @@ ConclusionPage::ConclusionPage(QWidget *parent)
     conclusionLabel->setWordWrap(true);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(conclusionLabel);
-    setLayout(layout);
+    //Window::setLayout(layout);
     //setPixmap(QWizard::WatermarkPixmap, QPixmap(":/images/watermark.png"));
 }
 void ConclusionPage::initializePage(){

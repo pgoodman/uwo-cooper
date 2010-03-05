@@ -164,7 +164,7 @@ static void install_committees(QSqlQuery &q) {
  */
 static void install_tables(QSqlQuery &q) {
     const char table_names[][20] = {
-        "user", "committee",
+        "user", "committee", "unit"
     };
     const char tables[][500] = {
         "CREATE TABLE user ("
@@ -208,13 +208,10 @@ static void install_tables(QSqlQuery &q) {
         ")",
 
         "CREATE TABLE unit ("
-            "number INTEGER,"
-            "streetAddress TEXT,"
-            "numBedrooms INTEGER"
-
-            //"KEY(id)"
-        ")",
-
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "address TEXT,"
+            "num_rooms INTEGER"
+        ")"
     };
 
     size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);

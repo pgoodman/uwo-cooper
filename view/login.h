@@ -1,9 +1,12 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include<QtGui>
-#include<QGridLayout>
-#include<string>
+#include <string>
+
+#include <QtGui>
+#include <QGridLayout>
+
+#include "window.h"
 #include "controller/authorizationcontroller.h"
 #include "controller/usercontroller.h"
 
@@ -21,7 +24,8 @@ private:
     QPushButton *okPushButton;
     QPushButton *cancelPushButton;
 private slots:
-    void on_loginPushButton_clicked();
+    void tryLogin();
+    void close();
 };
 
 #endif // LOGIN_H

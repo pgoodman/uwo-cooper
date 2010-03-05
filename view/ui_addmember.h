@@ -302,9 +302,9 @@ public:
     } // retranslateUi
 
 public slots:
-    void addMember(){
+    void addMember(void) {
         cout << "blah blah" << endl;
-
+#if 0
         QString lastname = LastNameEdit->text();
         QString name = GivenNameEdit->text();
         QString telephone = NumberEdit->text();
@@ -374,6 +374,8 @@ public slots:
         Member::create(name, lastname, telephone, false, userid, password, time(0));
         cout << "blah after create" << endl;
       //  hide();
+#endif
+        hide();
     }
 };
 

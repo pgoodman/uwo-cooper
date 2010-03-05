@@ -9,10 +9,9 @@ SetupController::SetupController()
 SetupController::~SetupController(){
 }
 
-int SetupController::install(QApplication &app) {
+void SetupController::install() {
     InitWizard wizard;
     wizard.show();
-    return app.exec();
 }
 
 bool SetupController::loadData(QString filename) {
