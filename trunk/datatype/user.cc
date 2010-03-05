@@ -4,12 +4,9 @@
 map<int, User *> User::elms;
 User *User::active = 0;
 
-User::User()
+User::User(const int userId, const bool isCoordinator, QString pwd)
+ : id(userId), is_coordinator(isCoordinator), password(pwd)
 {
-	/*full_name = newName;
-	userName = newUserName;
-	password = newPassword;
-	id = newID;*/
 }
 
 void User::setActive(User *u) {

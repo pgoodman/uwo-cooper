@@ -32,17 +32,16 @@ public:
 
 protected:
 
-    explicit User(QString newName, QString newUserName,
-                  QString newPassword, int newID);
+
+    explicit User(const int userId, const bool isCoordinator, QString pwd);
 
     static void remember(const int id, User *val);
     static User *recall(const int id);
     static bool remembered(const int id);
 
+    const int id;
 	bool is_coordinator;
-
 	QString password;
-	int id;
 
 	static map<int, User *> elms;
 

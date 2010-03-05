@@ -7,6 +7,7 @@
 Member::Member(QString firstName, QString lastName, double newMoneyOwed,
                QString phoneNum, bool sharePhone, bool mark,
                QString uName, QString pass, int committeeId, int userId)
+ : User(userId, false, pass)
 {
     first_name = firstName;
     last_name = lastName;
@@ -14,11 +15,8 @@ Member::Member(QString firstName, QString lastName, double newMoneyOwed,
 	share_telephone = sharePhone;
 	is_marked = mark;
 	telephone_num = phoneNum;
-	password = pass;
 	user_name = uName;
 	committee_id = committeeId;
-	id = userId;
-	is_coordinator = false;
 }
 
 /**

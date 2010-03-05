@@ -33,9 +33,10 @@ public:
     QString toString(void);
 
 private:
-    Committee(QString n, const bool canDelete, const PermissionSet chairPerms,
-              const PermissionSet memberPerms, const int chair_id,
-              const int secretary_id, const int committeeId);
+    explicit Committee(QString n, const bool canDelete,
+                       const PermissionSet chairPerms,
+                       const PermissionSet memberPerms, const int chair_id,
+                       const int secretary_id, const int committeeId);
 
     ~Committee();
 

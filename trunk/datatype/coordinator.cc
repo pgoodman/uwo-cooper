@@ -7,11 +7,8 @@ User *Coordinator::coord(0);
 /**
  * Constructor, note: private.
  */
-Coordinator::Coordinator(int _id, QString _password)
- : User() {
-    id = _id;
-    password = _password;
-    is_coordinator = true;
+Coordinator::Coordinator(int coordId, QString pass)
+ : User(coordId, true, pass) {
 }
 
 /**
