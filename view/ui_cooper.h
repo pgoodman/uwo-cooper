@@ -342,7 +342,8 @@ public slots:
     }
     void on_actionEdit_Member_triggered(){return;}
     void on_actionDelete_Member_triggered(){
-        memberList->getModel()->softDelete();
+        Member *m(memberList->getModel());
+        m->softDelete(!m->isSoftDeleted());
     }
     void on_actionEdit_Committee_triggered(){return;}
     void on_actionAdd_Committee_triggered(){return;}

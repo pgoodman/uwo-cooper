@@ -1,14 +1,5 @@
 
-#include <iostream>
-#include <QString>
-#include <fstream>
-#include <string>
-#include <locale>
-#include <QMessageBox>
-
 #include "setupcontroller.h"
-
-#include "view/initwizard.h"
 
 SetupController::SetupController()
 {
@@ -24,80 +15,93 @@ int SetupController::install(QApplication &app) {
 }
 
 bool SetupController::loadData(QString filename) {
-        QMessageBox msgBox;
-        string userInfo;
-        int unitNo;
-        string address = "";
-        int noOfRooms;
-        string tenantSurname = "";
-        ifstream myfile(filename.toStdString().c_str());
+    QMessageBox msgBox;
+    string userInfo;
+    int unitNo(0);
+    string address = "";
+    int noOfRooms(0);
+    string tenantSurname = "";
+    ifstream myfile(filename.toStdString().c_str());
 
-        if (myfile.is_open()) {
-                while(!myfile.eof()) {
-                        locale loc;                     // For digit checking
-                        string information = "";        // Hold the next piece of info
-                        getline (myfile, userInfo);             // Get next line
-                        int whichInfo = 0;                      // Keeps track of which information were parsing out
-                        for (unsigned int i = 0; i <= userInfo.size(); i++) {
-                                if ((i == userInfo.size()) || (userInfo.substr(i,1) == ",")) {
-                                        switch (whichInfo) {
-                                                case 0: if (information == "") {
-                                                                msgBox.setText("Error parsing: No unit number given");
-                                                                msgBox.exec();
-                                                                return 0;
-                                                        }
-                                                        unitNo = atoi(information.c_str());
-                                                        break;
+    if (!myfile.is_open()) {
+        cout << "Unable to open file";
+        return false;
+    }
 
-                                                case 1:  if (information == "") {
-                                                                msgBox.setText("Error parsing: No address given");
-                                                                msgBox.exec();
-                                                                return 0;
-                                                        }
-                                                        address = information;
-                                                        break;
+    while(!myfile.eof()) {
+        locale loc; // For digit checking
+        string information = ""; // Hold the next piece of info
+        getline (myfile, userInfo); // Get next line
+        int whichInfo = 0;
 
-                                                case 2:  if (information == "") {
-                                                                msgBox.setText("Error parsing: No rooms given");
-                                                                msgBox.exec();
-                                                                return 0;
-                                                        }
+        // Keeps track of which information we're parsing out
+        for (unsigned int i = 0; i <= userInfo.size(); i++) {
 
-                                                        noOfRooms = atoi(information.c_str());
-                                                        if ((noOfRooms == 0) || (noOfRooms > 3)) {
-                                                                msgBox.setText("Error parsing: Invalid number of rooms! (1, 2, or 3)");
-                                                                msgBox.exec();
-                                                                return 0;
-                                                        }
-                                                        break;
+            if ((i != userInfo.size()) && (userInfo.substr(i,1) != ",")) {
 
-                                                case 3: tenantSurname = information;
-                                                        break;
-                                        }
-                                        whichInfo++;
-                                        information = "";
-                                }
-                                else {
-                                        if ((whichInfo == 0) || (whichInfo == 2)) {             // If were checking for digits
-                                                if (!isdigit(userInfo[i], loc)) {               // If its not a digit
-                                                        msgBox.setText("Error parsing: Invalid number entered");
-                                                        msgBox.exec();
-                                                        return 0;
-                                                }
-                                        }
-                                        information += userInfo.at(i);                          // Else, we have valid info so far
-                                }
-                        }
-
-                        // KEEP TRACK OF THEM IN A LIST??
-                        cout << unitNo << "," << address << "," << noOfRooms << "," << tenantSurname << endl;
+                // If were checking for digits and we don't see a digit
+                if(((whichInfo == 0) || (whichInfo == 2))
+                && !isdigit(userInfo[i], loc)) {
+                    msgBox.setText("Error parsing: Invalid number entered");
+                    msgBox.exec();
+                    return 0;
                 }
-                myfile.close();
+
+                // Else, we have valid info so far
+                information += userInfo.at(i);
+                continue;
+            }
+
+            switch (whichInfo) {
+
+                case 0:
+                    if (information == "") {
+                        msgBox.setText("Error parsing: No unit number given");
+                        msgBox.exec();
+                        return 0;
+                    }
+                    unitNo = atoi(information.c_str());
+                    break;
+
+                case 1:
+                    if (information == "") {
+                        msgBox.setText("Error parsing: No address given");
+                        msgBox.exec();
+                        return 0;
+                    }
+                    address = information;
+                    break;
+
+                case 2:
+                    if (information == "") {
+                        msgBox.setText("Error parsing: No rooms given");
+                        msgBox.exec();
+                        return 0;
+                    }
+
+                    noOfRooms = atoi(information.c_str());
+                    if ((noOfRooms == 0) || (noOfRooms > 3)) {
+                        msgBox.setText(
+                            "Error parsing: Invalid number of rooms! "
+                            "(1, 2, or 3)"
+                        );
+                        msgBox.exec();
+                        return 0;
+                    }
+                    break;
+
+                case 3:
+                    tenantSurname = information;
+                    break;
+            }
+            whichInfo++;
+            information = "";
         }
 
-        else {
-                cout << "Unable to open file";
-        }
+        // KEEP TRACK OF THEM IN A LIST??
+        cout << unitNo << "," << address << "," << noOfRooms << "," << tenantSurname << endl;
+    }
+    myfile.close();
 
     return 0;
 }
