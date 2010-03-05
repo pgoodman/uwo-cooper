@@ -4,11 +4,12 @@
 /**
  * Private Constructor, used for loading a member from the database.
  */
-Member::Member(QString fullName, double newMoneyOwed,
+Member::Member(QString firstName, QString lastName, double newMoneyOwed,
                QString phoneNum, bool sharePhone, bool mark,
                QString uName, QString pass, int committeeId, int userId)
 {
-    full_name = fullName;
+    first_name = firstName;
+    last_name = lastName;
 	money_owed = newMoneyOwed;
 	share_telephone = sharePhone;
 	is_marked = mark;
@@ -23,8 +24,28 @@ Member::Member(QString fullName, double newMoneyOwed,
  * Check whether or not a coodinator has a permission.
  */
 bool Member::hasPermission(const Permission p) {
-    (void) p;
-    return true;
+    if(0 == committee_id) {
+        return false;
+    }
+    Committee *c = getCommittee();
+    if(0 == c) {
+        committee_id = 0;
+        return false;
+    }
+    return 0 != (p & c->getPermissions(id));
+}
+
+/**
+ * Get a member's committee.
+ */
+Committee *Member::getCommittee(void) {
+    if(0 == committee_id) {
+        return 0;
+    } else if(0 != committee) {
+        return committee;
+    }
+    committee = Committee::load(committee_id);
+    return committee;
 }
 
 /**
@@ -55,28 +76,29 @@ void Member::setMarked(bool mark)
 }
 
 QString Member::getFullName(void) {
-    return full_name;
+    return first_name + last_name;
 }
 
-void Member::setFullName(QString fullName)
+void Member::setFullName(QString firstName, QString lastName)
 {
-    full_name = fullName;
+    first_name = firstName;
+    last_name = lastName;
 }
 
 /**
  * Create a member.
  */
-Member *Member::create(QString full_name, QString telephone,
-                     const bool share_telephone, QString user_name,
-                     QString password, const time_t move_in_time) {
+Member *Member::create(QString firstName, QString lastName, QString telephone,
+                     const bool shareTelephone, QString userName,
+                     QString password, const time_t moveInTime) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO user (full_name, name, password, share_telephone, "
+        "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
         "telephone, move_in_time) VALUES (?, ?, ?, ?, ?, ?)"
     );
 
-    q << full_name << user_name << password << share_telephone
-      << telephone << move_in_time;
+    q << firstName << lastName << userName << password << shareTelephone
+      << telephone << moveInTime;
 
     if(!q.exec()) {
         CooperDB::queryError("Unable to Create Member", q);
@@ -91,11 +113,11 @@ Member *Member::create(QString full_name, QString telephone,
 void Member::save(void) {
     QSqlQuery q;
     q.prepare(
-        "UPDATE user SET full_name=?,name=?,password=?,share_telephone=?,"
-        "telephone=?,move_in_time=?,is_marked=?,committee_id=?,money_owed=? "
-        "WHERE id=? AND is_coordinator=0"
+        "UPDATE user SET first_name=?,last_name=?,name=?,password=?,"
+        "share_telephone=?,telephone=?,move_in_time=?,is_marked=?,"
+        "committee_id=?,money_owed=? WHERE id=? AND is_coordinator=0"
     );
-    q << full_name << user_name << password << share_telephone
+    q << first_name << last_name << user_name << password << share_telephone
       << telephone_num << move_in_time << is_marked << committee_id
       << money_owed << id;
 
@@ -168,7 +190,8 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
 
     // load the member as an object to be used
     Member *u = new Member(
-        qcol<QString>(q, "full_name"),
+        qcol<QString>(q, "first_name"),
+        qcol<QString>(q, "last_name"),
         qcol<double>(q, "money_owed"),
         qcol<QString>(q, "telephone"),
         qcol<bool>(q, "share_telephone"),

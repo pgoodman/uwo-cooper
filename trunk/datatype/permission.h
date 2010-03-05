@@ -9,9 +9,9 @@
 #ifndef PERMISSION_H_
 #define PERMISSION_H_
 
-typedef unsigned int perm_set_t;
+typedef unsigned int PermissionSet;
 
-enum Permission {
+typedef enum {
     ADD_MEMBER              =(1<<0),
     MOVE_MEMBER             =(1<<1),
     EDIT_MEMBER_INFO        =(1<<2),
@@ -30,7 +30,14 @@ enum Permission {
     PRINT_TASK_LIST         =(1<<15),
     ADD_TASK_SPEC           =(1<<16),
     DELETE_TASK_SPEC        =(1<<17),
-    ACTIVATE_TASK_SPEC      =(1<<18)
-};
+    ACTIVATE_TASK_SPEC      =(1<<18),
+
+    EDIT_COMMITTEE_CHAIR    =(1<<19),
+    EDIT_COMMITTEE_SECRETARY=(1<<20),
+
+    VIEW_SELF_INFO          =(1<<21),
+    VIEW_OTHER_INFO         =(1<<22),
+    EDIT_SELF_PASS          =(1<<23)
+} Permission;
 
 #endif /* PERMISSION_H_ */

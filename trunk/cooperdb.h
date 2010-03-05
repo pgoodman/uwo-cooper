@@ -19,6 +19,7 @@
 #include "conf.h"
 #include "criticalerror.h"
 #include "modeliterator.h"
+#include "permission.h"
 
 /**
  * Handle creating, connecting, and querying the cooper database.

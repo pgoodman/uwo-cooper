@@ -28,7 +28,7 @@ public:
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
 	virtual QString getFullName();
-    virtual void setFullName(QString fullName);
+    virtual void setFullName(QString firstName, QString lastName);
 
 
     typedef class ModelIterator<Member, Member> iterator;
@@ -37,12 +37,15 @@ public:
 	virtual bool hasPermission(const Permission p);
 	virtual QString getUserName(void);
 
+	Committee *getCommittee(void);
+
 	static Member *load(const int id);
     static Member *load(QString &uname, QString &pass);
 
-    static Member *create(QString full_name, QString telephone,
-                        const bool share_telephone, QString user_name,
-                        QString password, const time_t move_in_time);
+    static Member *create(QString firstName, QString lastName,
+                          QString telephone,
+                          const bool share_telephone, QString user_name,
+                          QString password, const time_t move_in_time);
 
     static pair<iterator, iterator> findAll();
 
@@ -56,11 +59,12 @@ private:
 	bool is_marked;
 	int committee_id;
 	QString user_name;
-	QString full_name;
+	QString first_name;
+	QString last_name;
 	time_t move_in_time;
 	Committee *committee;
 
-    Member(QString fullName, double newMoneyOwed,
+    Member(QString firstName, QString lastName, double newMoneyOwed,
            QString phoneNum, bool sharePhone, bool mark, QString userName,
            QString password, int committeeId, int id);
 };
