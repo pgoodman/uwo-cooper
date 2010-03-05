@@ -18,7 +18,6 @@
 #include <QFormLayout>
 #include <QGridLayout>
 #include <QHeaderView>
-#include <QTextEdit>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
@@ -42,6 +41,12 @@ class MemberList : public ModelList<Member> {
     Q_OBJECT
 public:
     MemberList(QWidget *w) : ModelList<Member>(w) { }
+};
+
+class CommitteeList : public ModelList<Committee> {
+    Q_OBJECT
+public:
+    CommitteeList(QWidget *w) : ModelList<Committee>(w) { }
 };
 
 class Ui_Cooper : public QObject
@@ -79,7 +84,7 @@ public:
     QWidget *committeeTab;
     QWidget *formLayoutWidget_2;
     QFormLayout *formLayout;
-    QTextEdit *committeeList;
+    CommitteeList *committeeList;
     QVBoxLayout *verticalLayout_2;
     QPushButton *viewCommittee;
     QPushButton *addCommittee;
@@ -197,7 +202,8 @@ public:
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
         formLayout->setContentsMargins(0, 0, 0, 0);
-        committeeList = new QTextEdit(formLayoutWidget_2);
+
+        committeeList = new CommitteeList(formLayoutWidget_2);
         committeeList->setObjectName(QString::fromUtf8("committeeList"));
 
         formLayout->setWidget(0, QFormLayout::LabelRole, committeeList);
@@ -270,6 +276,7 @@ public:
 
 
         populateMembers();
+        populateCommittees();
 
         retranslateUi(Cooper);
         QObject::connect(actionQuit, SIGNAL(triggered()), Cooper, SLOT(close()));
@@ -279,6 +286,13 @@ public:
 
         QMetaObject::connectSlotsByName(Cooper);
     } // setupUi
+
+    void populateMembers() {
+        memberList->fill(&Member::findAll);
+    }
+    void populateCommittees() {
+        committeeList->fill(&Committee::findAll);
+    }
 
     void retranslateUi(QMainWindow *Cooper)
     {
@@ -316,11 +330,6 @@ public:
         menuHelp->setTitle(QApplication::translate("Cooper", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
-void populateMembers()
-{
-    memberList->fill(&Member::findAll);
-
-}
 
 public slots:
 void on_actionAdd_Member_triggered()

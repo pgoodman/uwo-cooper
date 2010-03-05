@@ -2,8 +2,8 @@
 #define COMMITTEE_H
 
 #include <utility>
-#include <QString>
 
+#include <QString>
 #include <QSqlQuery>
 
 #include "cooperdb.h"
