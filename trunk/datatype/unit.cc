@@ -1,16 +1,54 @@
+
 #include "unit.h"
 #include "cooperdb.h"
-Unit::Unit()
-{
+
+/**
+ * Constructor
+ */
+Unit::Unit(int unitId, QString streetAddress, int bedrooms)
+: id(unitId), address(streetAddress), num_bedrooms(bedrooms)
+{ }
+
+/**
+ * Destructor.
+ */
+Unit::~Unit() {
 }
 
-Unit::Unit(int roomNumber, QString address, int bedrooms)
+/**
+ * Save a unit to the database.
+ */
+void Unit::save(void)
 {
-	number = roomNumber;
-	streetAddress = address;
-	numBedrooms = bedrooms;
+    QSqlQuery q;
+    q.prepare("UPDATE unit set address=?,num_rooms=? WHERE id=?");
+    q << streetAddress << numBedrooms << id;
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Save Unit", q);
+    }
 }
 
+/**
+ * Create a new unit.
+ */
+Unit *Unit::create(int rNumber, QString address, int nRooms, int id) {
+    QSqlQuery q;
+    q.prepare(
+        "INSERT INTO unit (number,address,num_rooms)"
+        "VALUES (?,?,?,?)"
+    );
+    q << rNumber << address << nRooms;
+
+    if(!q.exec()) {
+        CooperDB::queryError("Unable to Add Committee", q);
+    }
+
+    return Unit::load(q.lastInsertId().toInt());
+}
+
+/**
+ * Load a unit from the databse by its id.
+ */
 Unit *Unit::load(const int id) {
     if(remembered(id)) {
         return recall(id);
@@ -24,48 +62,19 @@ Unit *Unit::load(const int id) {
     }
     q.first();
     Unit *c = new Unit(
-        qcol<QString>(q, "streetAddress"),
-        qcol<int>(q, "roomNumber"),
-        qcol<int>(q, "numBedrooms"),
-        qcol<int>(q, "id"),
-        id
+        id,
+        qcol<QString>(q, "address"),
+        qcol<int>(q, "num_rooms")
     );
 
     remember(id, c);
     return c;
 }
 
-Unit::save(void)
-{
-    QSqlQuery q;
-    q.prepare(
-            "UPDATE unit set number=?,streetAddress=?,numBedrooms=?,id=?");
-    q << number << streetAddress << numBedrooms << id;
-
-    if(!q.exec()) {
-        CooperDB::queryError("Unable to Save Unit", q);
-    }
-}
-
-void Unit::create(int rNumber, QString address, int nRooms, int id) {
-    QSqlQuery q;
-    q.prepare(
-        "INSERT INTO unit (number,streetAddress,numBedrooms,id)"
-        "VALUES (?,?,?,?)"
-    );
-    q << rNumber << address << nRooms << id;
-
-    if(!q.exec()) {
-        CooperDB::queryError("Unable to Add Committee", q);
-    }
-}
 
 /**
  * Return all committees.
  */
 pair<Unit::iterator, Unit::iterator> Unit::findAll(void) {
     return CooperDB::selectAll<Unit>("unit", "1=1");
-}
-
-Unit::~Unit() {
 }

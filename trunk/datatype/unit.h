@@ -9,33 +9,28 @@ using namespace std;
 
 class Unit
 {
-    public:
+public:
 	
-        typedef class ModelIterator<Unit, Unit> iterator;
-        static Unit *load(const int id);
-        static pair<iterator, iterator> findAll(void);
-        bool remove(void);
-        void save(void);
-        void create(const int uNumber, QString address, const int numRooms, const int id);
+    typedef class ModelIterator<Unit, Unit> iterator;
+    static Unit *load(const int id);
+    static pair<iterator, iterator> findAll(void);
 
+    bool remove(void);
+    void save(void);
+    bool isEmpty();
 
-	//Constructors
-	Unit();
-	Unit(int roomNumber, QString address, int bedrooms);
+    static Unit *create(const int uNumber, QString address,
+                       const int numRooms, const int id);
+
+    static Unit *load(const int id);
+
+    const QString address;
+    const int num_bedrooms;
+    const int id;
+
+private:
+	explicit Unit(int roomNumber, QString address, int bedrooms);
 	~Unit();
-
-	//Attributes
-	int number;
-	QString streetAddress;
-        int numBedrooms;
-        int id;
-	bool isEmpty();
-
-	//Accessor Methods
-	int getNumber() {return number;}
-	QString getAddress() {return streetAddress;}
-	int countRooms() {return numBedrooms;}
-
 };
 
 #endif // UNIT_H

@@ -14,9 +14,6 @@ using namespace std;
 
 class User {
 public:
-    User();
-    User(QString newName, QString newUserName, QString newPassword, int newID);
-    
 
     virtual QString getUserName() = 0;
     virtual void save(void) = 0;
@@ -34,6 +31,9 @@ public:
     static bool canDo(Permission); // can't re-declare hasPermission :/
 
 protected:
+
+    explicit User(QString newName, QString newUserName,
+                  QString newPassword, int newID);
 
     static void remember(const int id, User *val);
     static User *recall(const int id);
