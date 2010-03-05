@@ -15,7 +15,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 
-#include "modeliterator.h"
+#include "datatype/modeliterator.h"
 #include "modellistitem.h"
 
 template <typename T>
@@ -41,7 +41,17 @@ public:
      */
     T *currentItem(void) {
         ModelListItem<T> *row = currentItem();
+        if(0 == row) {
+            return 0;
+        }
         return row->getModel();
+    }
+
+    /**
+     * Activate some widget when items in this list are selected.
+     */
+    void activateOnSelect(QWidget *w) {
+        (void) w;
     }
 
     /**
@@ -51,8 +61,16 @@ public:
         fill(its.first, its.second);
     }
     void fill(iterator &it, iterator &end) {
-        for(int i = count(); it != end; it++) {
-            insertItem(i++, new ModelListItem<T>(*it));
+        clear();
+        for(int i = 0; it != end; it++) {
+            ModelListItem<T> *item(new ModelListItem<T>(*it));
+            insertItem(i++, item);
+
+            // connect the signals
+            /*connect(
+                item, SIGNAL(itemActivated()),
+                this, SLOT(activateWidgets())
+            );*/
         }
     }
 };
