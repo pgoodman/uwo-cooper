@@ -28,7 +28,6 @@
 #include <QtGui/QWidget>
 #include <QtGui>
 #include <QListWidget>
-#include <QListView>
 #include "datatype/member.h"
 #include "cooperdb.h"
 #include "ui_addmember.h"
@@ -66,7 +65,7 @@ public:
     QPushButton *actionAdd_Member_2;
     QPushButton *actionEdit_Member;
     QPushButton *actionDelete_Member;
-    QListView *memberList;
+    QTextEdit *textEdit;
     QWidget *committeeTab;
     QWidget *formLayoutWidget_2;
     QFormLayout *formLayout;
