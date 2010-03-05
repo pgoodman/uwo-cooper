@@ -123,3 +123,10 @@ bool Committee::remembered(const int id) {
 PermissionSet Committee::getPermissions(const int member_id) {
     return member_id == chair_id ? chair_perms : member_perms;
 }
+
+/**
+ * Get the name of a committee.
+ */
+QString Committee::toString(void) {
+    return name;
+}

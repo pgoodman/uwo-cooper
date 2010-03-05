@@ -10,29 +10,39 @@
 #ifndef UI_COOPER_H
 #define UI_COOPER_H
 
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QFormLayout>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QTextEdit>
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QPushButton>
-#include <QtGui/QStatusBar>
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
+#include <Qt>
+#include <QVariant>
+#include <QAction>
+#include <QApplication>
+#include <QButtonGroup>
+#include <QFormLayout>
+#include <QGridLayout>
+#include <QHeaderView>
+#include <QTextEdit>
+#include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
+#include <QPushButton>
+#include <QStatusBar>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QWidget>
 #include <QtGui>
 #include <QListWidget>
+#include <QListWidgetItem>
+
 #include "datatype/member.h"
 #include "cooperdb.h"
 #include "ui_addmember.h"
 
+#include "modellist.h"
+#include "modellistitem.h"
 
+class MemberList : public ModelList<Member> {
+    Q_OBJECT
+public:
+    MemberList(QWidget *w) : ModelList<Member>(w) { }
+};
 
 class Ui_Cooper : public QObject
 {
@@ -65,7 +75,7 @@ public:
     QPushButton *actionAdd_Member_2;
     QPushButton *actionEdit_Member;
     QPushButton *actionDelete_Member;
-    QTextEdit *textEdit;
+    MemberList *memberList;
     QWidget *committeeTab;
     QWidget *formLayoutWidget_2;
     QFormLayout *formLayout;
@@ -170,10 +180,10 @@ public:
 
         formLayout_2->setLayout(0, QFormLayout::FieldRole, verticalLayout);
 
-        textEdit = new QTextEdit(formLayoutWidget);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        memberList = new MemberList(formLayoutWidget);
+        memberList->setObjectName(QString::fromUtf8("memberList"));
 
-        formLayout_2->setWidget(0, QFormLayout::LabelRole, textEdit);
+        formLayout_2->setWidget(0, QFormLayout::LabelRole, memberList);
 
         tabWidget->addTab(memberTab, QString());
         committeeTab = new QWidget();
@@ -305,20 +315,40 @@ public:
         menuPrint->setTitle(QApplication::translate("Cooper", "Print", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("Cooper", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
+    /*
+    class MemberListItem : public QListWidgetItem {
+    public:
+        const Member *user;
+        MemberListItem(QListWidget *parent, Member *member)
+        : QListWidgetItem(parent), user(member) {
+            setData(Qt::DisplayRole, (QString) member);
+        }
+    };*/
+    /*
+    class MemberList : public QListWidget {
+
+    };*/
 
 void populateMembers()
 {
-    QTextCursor cursor = textEdit->textCursor();
+    //pair<Member::iterator, Member::iterator> its(Member::findAll());
+    //int i(0);
+    /*for(Member::iterator it(its.first); it != its.second; it++) {
+        memberList->insertItem(
+            i++,
+            new MemberListItem(memberList, *it)
+        );
+
+        //memberList->insertItem
+       //cursor = textEdit->textCursor();
+       //cursor.movePosition(QTextCursor::StartOfWord);
+       //cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+
+       //textEdit->setText(cursor.selectedText() + (*it)->getFullName());
+    }*/
+
     pair<Member::iterator, Member::iterator> its(Member::findAll());
-
-    for(Member::iterator it(its.first); it != its.second; it++) {
-
-       cursor = textEdit->textCursor();
-       cursor.movePosition(QTextCursor::StartOfWord);
-       cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-
-       textEdit->setText(cursor.selectedText() + (*it)->getFullName());
-    }
+    memberList->fill(its);
 
 }
 

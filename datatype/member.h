@@ -27,7 +27,8 @@ public:
 	void setMoneyOwed(double money);
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
-	virtual QString getFullName();
+
+	virtual QString toString();
     virtual void setFullName(QString firstName, QString lastName);
 
 
@@ -68,5 +69,6 @@ private:
            QString phoneNum, bool sharePhone, bool mark, QString userName,
            QString password, int committeeId, int id);
 };
+
 
 #endif // MEMBER_H
