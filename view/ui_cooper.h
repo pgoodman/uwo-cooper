@@ -34,8 +34,9 @@
 
 class Ui_Cooper : QObject
 {
+Q_OBJECT
 public:
-	Q_OBJECT
+	
     QAction *actionLogoff;
     QAction *actionQuit;
     QAction *actionAdd_Committee;
