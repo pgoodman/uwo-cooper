@@ -1,3 +1,4 @@
+#!/usr/bin/env tcsh
 
 BIN_DIR=bin
 DEST_DIR=dir
