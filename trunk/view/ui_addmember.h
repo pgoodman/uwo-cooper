@@ -10,6 +10,7 @@
 #ifndef ADDMEMBERLJ2808_H
 #define ADDMEMBERLJ2808_H
 
+#include <QtGui>
 #include <QDialog>
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
@@ -247,11 +248,13 @@ public:
 
         addNewButton = new QPushButton();
         addNewButton->setObjectName(QString::fromUtf8("addNewButton"));
+        connect(addNewButton, SIGNAL(clicked()), this, SLOT(addMember()));
 
         layout->addWidget(addNewButton, 11, 2, 1, 3);
 
         cancelButton = new QPushButton();
         cancelButton->setObjectName(QString::fromUtf8("cancelButton"));
+        connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
         layout->addWidget(cancelButton, 11, 5, 1, 1);
 
@@ -294,7 +297,10 @@ public:
         Under21YesButton->setText(QApplication::translate("", "Yes (Please enter name and age):", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
+public slots:
+    void addMember(){ return;}
 };
+
 
 
 #endif // ADDMEMBERLJ2808_H
