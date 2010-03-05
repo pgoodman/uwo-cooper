@@ -359,10 +359,7 @@ void on_actionAdd_Member_triggered()
 
     if(addMember->exec() == QDialog::Accepted)
     {
-        //Code to update the list ie call populateMembers
-
-        QMessageBox::information(this, tr("Congratz"),
-                         tr("Member Added!"));
+        populateMembers();
     }
 }
     void on_actionEdit_Member_triggered(){return;}
