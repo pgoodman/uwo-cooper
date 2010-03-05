@@ -12,8 +12,8 @@ UserController::~UserController() {
 }
 
 void UserController::home(void) {
-    Cooper cooperUI;
-    cooperUI.show();
+    Cooper *ui(new Cooper);
+    ui->show();
 }
 
 bool UserController::authorize(QString name, QString pwd) {
