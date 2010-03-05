@@ -8,6 +8,8 @@
 
 #include "setupcontroller.h"
 
+#include "view/initwizard.h"
+
 SetupController::SetupController()
 {
 }
@@ -15,11 +17,13 @@ SetupController::SetupController()
 SetupController::~SetupController(){
 }
 
-int SetupController::addCoordinator() {
-    return 0;
+int SetupController::install(QApplication &app) {
+    InitWizard wizard;
+    wizard.show();
+    return app.exec();
 }
 
-int SetupController::loadData(QString filename) {
+bool SetupController::loadData(QString filename) {
         QMessageBox msgBox;
         string userInfo;
         int unitNo;

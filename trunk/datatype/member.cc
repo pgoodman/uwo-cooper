@@ -211,5 +211,5 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
  * Find a sequence of members.
  */
 pair<Member::iterator, Member::iterator> Member::findAll() {
-    return CooperDB::selectAll<Member,Member>("user", "is_coordinator=0");
+    return CooperDB::selectAll<Member>("user", "is_coordinator=0");
 }

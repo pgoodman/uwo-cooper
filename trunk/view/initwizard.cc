@@ -123,7 +123,7 @@ void ConclusionPage::initializePage(){
             conclusionLabel->setText(tr("You have successfully initialized Cooper. "
                                          "You are now logged in as the coordinator."));
             //set active user
-            UserController::login(uname, pwd);
+            UserController::authorize(uname, pwd);
         } catch(...) {
             setTitle(tr("Initialization Failed"));
             conclusionLabel->setText(tr("The data file cannot be loaded. Please try again."));

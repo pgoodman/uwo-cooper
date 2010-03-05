@@ -89,7 +89,7 @@ void Committee::create(QString n, const bool canDelete,
  * Return all committees.
  */
 pair<Committee::iterator, Committee::iterator> Committee::findAll(void) {
-    return CooperDB::selectAll<Committee,Committee>("committee", "1=1");
+    return CooperDB::selectAll<Committee>("committee", "1=1");
 }
 
 bool Committee::remove(void) {

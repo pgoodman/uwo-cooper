@@ -39,6 +39,7 @@ void User::setID(int newID)
 */
 
 bool User::hasPassword(QString &pass) {
+    cout << "actual: " << password.toStdString() << " got: " << pass.toStdString() << endl;
     return password == pass;
 }
 

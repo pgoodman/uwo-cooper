@@ -11,24 +11,26 @@ UserController::~UserController() {
     delete activeUser;
 }
 
-int UserController::addUserAccount(string *name, string *pwd) {
-    (void) name; (void) pwd;
-    return 0;
+void UserController::home(void) {
+    Cooper cooperUI;
+    cooperUI.show();
 }
 
-int UserController::changeUserInfo(string *attribute, string *value) {
-    (void) attribute;
-    (void) value;
-    return 0;
-}
-
-int UserController::login(QString name, QString pwd){
+bool UserController::authorize(QString name, QString pwd) {
+    bool match(name == COORDINATOR_USER_NAME);
+    cout << "name is coord? " << match << endl;
     activeUser = (name == COORDINATOR_USER_NAME)
-               ? Coordinator::load()
+               ? Coordinator::load(pwd)
                : Member::load(name, pwd);
-
     return 0 != activeUser;
 }
+
+int UserController::login(QApplication &app) {
+    Login login;
+    login.show();
+    return app.exec();
+}
+
 void UserController::logout() {
     activeUser = 0;
 }
