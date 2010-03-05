@@ -75,8 +75,8 @@ void Member::setMarked(bool mark)
 	is_marked = mark;
 }
 
-QString Member::getFullName(void) {
-    return first_name + last_name;
+QString Member::toString(void) {
+    return first_name + " " + last_name;
 }
 
 void Member::setFullName(QString firstName, QString lastName)

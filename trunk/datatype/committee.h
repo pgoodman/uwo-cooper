@@ -28,7 +28,10 @@ public:
                 const PermissionSet chairPerms, const PermissionSet memberPerms,
                 const int chairId, const int secretaryId,
                 const int committeeId);
+
     PermissionSet getPermissions(const int member_id);
+    QString toString(void);
+
 private:
     Committee(QString n, const bool canDelete, const PermissionSet chairPerms,
               const PermissionSet memberPerms, const int chair_id,
@@ -55,6 +58,5 @@ private:
 
     static map<int, Committee *> elms;
 };
-
 
 #endif // COMMITTEE_H
