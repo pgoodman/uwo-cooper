@@ -1,5 +1,5 @@
 /********************************************************************************
-** Form generated from reading UI file 'cooper.ui'
+** Form generated from reading UI file 'cooper--ui'
 **
 ** Created: Thu Mar 4 17:05:15 2010
 **      by: Qt User Interface Compiler version 4.6.2
@@ -58,12 +58,21 @@ public:
     QTabWidget *tabWidget;
     QWidget *memberTab;
     QWidget *formLayoutWidget;
+    QWidget *formLayoutWidget_2;
+    QVBoxLayout *verticalLayout_2;
     QFormLayout *formLayout_2;
+    QFormLayout *formLayout;
     QVBoxLayout *verticalLayout;
     QPushButton *actionAdd_Member_2;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
+    QPushButton *actionEdit_Member;
+    QPushButton *actionDelete_Member;
+    QPushButton *viewCommittee;
+    QPushButton *addCommittee;
+    QPushButton *deleteCommittee;
     QListView *listView;
+    QTextEdit *textEdit;
+    QTextEdit *committeeList;
+    QWidget *committeeTab;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menuSystem;
@@ -284,8 +293,8 @@ public:
         actionAdd_Member_2->setToolTip(QApplication::translate("Cooper", "Add Member", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         actionAdd_Member_2->setText(QApplication::translate("Cooper", "Add Member", 0, QApplication::UnicodeUTF8));
-        pushButton_2->setText(QApplication::translate("Cooper", "Edit Member", 0, QApplication::UnicodeUTF8));
-        pushButton_3->setText(QApplication::translate("Cooper", "Delete Member", 0, QApplication::UnicodeUTF8));
+        actionEdit_Member->setText(QApplication::translate("Cooper", "Edit Member", 0, QApplication::UnicodeUTF8));
+        actionDelete_Member->setText(QApplication::translate("Cooper", "Delete Member", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(memberTab), QApplication::translate("Cooper", "Member", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("Cooper", "Tab 2", 0, QApplication::UnicodeUTF8));
         menuSystem->setTitle(QApplication::translate("Cooper", "System", 0, QApplication::UnicodeUTF8));
@@ -311,9 +320,9 @@ private:
     Ui_AddMember *addMember;
 };
 
-namespace Ui {
-    class Cooper: public Ui_Cooper {};
-} // namespace Ui
+//namespace Ui {
+//    class Cooper: public Ui_Cooper {};
+//} // namespace Ui
 
 //QT_END_NAMESPACE
 
