@@ -4,8 +4,11 @@
 
 map<int, Committee *> Committee::elms;
 
+/**
+ * Private constructor, initialize a new committee from db info.
+ */
 Committee::Committee(QString n, const bool canDelete,
-                     const perm_set_t chairPerms, const perm_set_t memberPerms,
+                     const PermissionSet chairPerms, const PermissionSet memberPerms,
                      const int chairId, const int secretaryId,
                      const int committeeId)
 : name(n), can_delete(canDelete), chair_perms(chairPerms),
@@ -36,8 +39,8 @@ Committee *Committee::load(const int id) {
     Committee *c = new Committee(
         qcol<QString>(q, "name"),
         qcol<bool>(q, "can_delete"),
-        qcol<perm_set_t>(q, "chair_perms"),
-        qcol<perm_set_t>(q, "member_perms"),
+        qcol<PermissionSet>(q, "chair_perms"),
+        qcol<PermissionSet>(q, "member_perms"),
         qcol<int>(q, "chair_id"),
         qcol<int>(q, "secretary_id"),
         id
@@ -66,7 +69,8 @@ void Committee::save(void) {
  * Create an return a committee.
  */
 void Committee::create(QString n, const bool canDelete,
-                       const perm_set_t chairPerms, const perm_set_t memberPerms,
+                       const PermissionSet chairPerms,
+                       const PermissionSet memberPerms,
                        const int chairId, const int secretaryId,
                        const int committeeId) {
     QSqlQuery q;
@@ -80,13 +84,6 @@ void Committee::create(QString n, const bool canDelete,
         CooperDB::queryError("Unable to Add Committee", q);
     }
 }
-
-/**
- * Add a member to the committee.
- */
-//void Committee::addMember(const int member_id) {
-
-//}
 
 /**
  * Return all committees.
@@ -120,46 +117,9 @@ bool Committee::remembered(const int id) {
     return elms.end() != elms.find(id);
 }
 
-/*
-Committee::Committee(QString committeeName, Member committeeChair, Member committeeSecretary)
-{
-        name = committeeName;
-        chair = committeeChair;
-        secretary = committeeSecretary;
-        memberList = new list<Member>;
-        // Initiate chair perms and member perms
+/**
+ * Get the permissions for a member id.
+ */
+PermissionSet Committee::getPermissions(const int member_id) {
+    return member_id == chair_id ? chair_perms : member_perms;
 }
-*/
-
-
-/*
-static Committee *load(int id) {
-    (void) id; return 0;
-}*/
-
-/*
-Permission Committee::getPermissions(Member member) {
-    if (member.getID() == chair.getID()) {
-        return chair_perms;
-    }
-    else
-        return member_perms;
-}
-
-void Committee::addMember(Member member) {
-    //Add a member to the committees member list.
-    // NOTE: USING LIST AS EXAMPLE, DONT KNOW HOW WERE GOING TO STORE THIS!!!
-
-    memberList.insert(member);
-}
-
-void Committee::removeMember(Member member) {
-    // Remove a member from a committees member list.
-    //NOTE: USING LIST AS EXAMPLE, DONT KNOW HOW WERE GOING TO STORE THIS!!!
-
-    memberList.remove(member);
-}
-
-//void Committee::addTask(Task task);
-//void Committee::removeTask(Task task);
-*/

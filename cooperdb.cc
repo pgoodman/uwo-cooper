@@ -105,16 +105,71 @@ void CooperDB::queryError(const char *header, QSqlQuery &query) {
 }
 
 /**
- * Make the database.
+ * Add in the committees.
  */
-void CooperDB::makeDatabase() {
+static void install_committees(QSqlQuery &q) {
+    PermissionSet chair_perms(0
+        | EDIT_COMMITTEE_CHAIR
+        | EDIT_COMMITTEE_SECRETARY
+        | ADD_TASK
+        | PRINT_TASK_LIST
+    );
+    PermissionSet member_perms(0
+        | PRINT_PUBLIC_LIST
+        | PRINT_COMMITTEE_LIST
+    );
+    PermissionSet education_chair_perms(chair_perms
+        | INIT_MEMBER_COMMITTEE
+    );
+
+    // chair can: everything
+    q.prepare(
+        "INSERT INTO committee (name,can_delete,member_perms,chair_perms) "
+        "VALUES ('Board',0,?,33554431)"
+    );
+    q << member_perms;
+    q.exec();
+
+    q.prepare(
+        "INSERT INTO committee (name,can_delete,member_perms,chair_perms) "
+        "VALUES ('Inspections',0,?,?)"
+    );
+    q << member_perms << chair_perms;
+    q.exec();
+
+    q.prepare(
+        "INSERT INTO committee (name,can_delete,member_perms,chair_perms) "
+        "VALUES ('Membership',0,?,?)"
+    );
+    q << member_perms << chair_perms;
+    q.exec();
+
+    q.prepare(
+        "INSERT INTO committee (name,can_delete,member_perms,chair_perms) "
+        "VALUES ('Education',0,?,?)"
+    );
+    q << member_perms << education_chair_perms;
+    q.exec();
+
+    q.prepare(
+        "INSERT INTO committee (name,can_delete,member_perms,chair_perms) "
+        "VALUES ('Member Relations',0,?,?)"
+    );
+    q << member_perms << chair_perms;
+    q.exec();
+}
+
+/**
+ * Install tables.
+ */
+static void install_tables(QSqlQuery &q) {
     const char table_names[][20] = {
         "user", "committee",
     };
     const char tables[][500] = {
         "CREATE TABLE user ("
-            "full_name TEXT,"
-            //"last_name VARCHAR(50) NOT NULL,"
+            "first_name TEXT,"
+            "last_name TEXT,"
 
             // login info
             "name TEXT,"
@@ -157,40 +212,46 @@ void CooperDB::makeDatabase() {
     size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);
     D( cout << "Num Tables: " << num_tables << endl; )
     stringstream error;
-    QSqlQuery q(db);
 
     for(; num_tables--; ) {
         if(!q.exec(tables[num_tables])) {
             error << "Error creating table '"
                   << table_names[num_tables]
                   << "'.";
-            queryError(error, q);
+            CooperDB::queryError(error, q);
         }
     }
+}
 
-    // add in the the committees
-    //q.exec("");
+/**
+ * Make the database.
+ */
+void CooperDB::makeDatabase() {
+    QSqlQuery q(db);
+
+    install_tables(q);
+    install_committees(q);
 
     D(
         q.exec(
-            "INSERT INTO user (full_name, name, password, share_telephone, "
-            "telephone, move_in_time) VALUES ('Peter Goodman','peter','peter',"
-            "0,'519-933-0204',0)"
+            "INSERT INTO user (first_name,last_name,name, password, "
+            "share_telephone,telephone, move_in_time) VALUES ('Peter',"
+            "'Goodman','peter','peter',0,'519-933-0204',0)"
         );
         q.exec(
-            "INSERT INTO user (full_name, name, password, share_telephone, "
-            "telephone, move_in_time) VALUES ('Stephan Beltran','stephan',"
-            "'stephan', 1,'',0)"
+            "INSERT INTO user (first_name,last_name, name, password, "
+            "share_telephone, telephone, move_in_time) VALUES ('Stephan',"
+            "'Beltran','stephan','stephan', 1,'',0)"
         );
         q.exec(
-            "INSERT INTO user (full_name, name, password, share_telephone, "
-            "telephone, move_in_time) VALUES ('Nick Perreault','nick',"
-            "'nick', 1,'',0)"
+            "INSERT INTO user (first_name,last_name, name, password, "
+            "share_telephone, telephone, move_in_time) VALUES ('Nick',"
+            "'Perreault','nick','nick', 1,'',0)"
         );
         q.exec(
-            "INSERT INTO user (full_name, name, password, share_telephone, "
-            "telephone, move_in_time) VALUES ('Jason','jason',"
-            "'jason', 0,'',0)"
+            "INSERT INTO user (first_name,last_name, name, password, "
+            "share_telephone, telephone, move_in_time) VALUES ('Jason','X',"
+            "'jason','jason', 0,'',0)"
         );
     )
 }

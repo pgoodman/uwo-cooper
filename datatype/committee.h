@@ -25,13 +25,13 @@ public:
     bool remove(void);
     void save(void);
     void create(QString n, const bool canDelete,
-                const perm_set_t chairPerms, const perm_set_t memberPerms,
+                const PermissionSet chairPerms, const PermissionSet memberPerms,
                 const int chairId, const int secretaryId,
                 const int committeeId);
-
+    PermissionSet getPermissions(const int member_id);
 private:
-    Committee(QString n, const bool canDelete, const perm_set_t chairPerms,
-              const perm_set_t memberPerms, const int chair_id,
+    Committee(QString n, const bool canDelete, const PermissionSet chairPerms,
+              const PermissionSet memberPerms, const int chair_id,
               const int secretary_id, const int committeeId);
 
     ~Committee();
@@ -46,8 +46,8 @@ private:
     Member *chair;
     Member *secretary;
 
-    perm_set_t chair_perms;
-    perm_set_t member_perms;
+    PermissionSet chair_perms;
+    PermissionSet member_perms;
 
     int chair_id;
     int secretary_id;
