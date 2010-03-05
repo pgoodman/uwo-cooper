@@ -353,7 +353,18 @@ void populateMembers()
 }
 
 public slots:
-void on_actionAdd_Member_triggered(){addMember->show();}
+void on_actionAdd_Member_triggered()
+{
+    addMember->show();
+
+    if(addMember->exec() == QDialog::Accepted)
+    {
+        //Code to update the list ie call populateMembers
+
+        QMessageBox::information(this, tr("Congratz"),
+                         tr("Member Added!"));
+    }
+}
     void on_actionEdit_Member_triggered(){return;}
     void on_actionDelete_Member_triggered(){return;}
     void on_actionEdit_Committee_triggered(){return;}
