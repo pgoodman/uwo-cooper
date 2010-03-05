@@ -35,7 +35,7 @@ Committee *Committee::load(const int id) {
     if(!q.exec()) {
         return 0;
     }
-
+    q.first();
     Committee *c = new Committee(
         qcol<QString>(q, "name"),
         qcol<bool>(q, "can_delete"),
@@ -45,6 +45,7 @@ Committee *Committee::load(const int id) {
         qcol<int>(q, "secretary_id"),
         id
     );
+
     remember(id, c);
     return c;
 }
