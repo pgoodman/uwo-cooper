@@ -28,15 +28,19 @@ public:
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
 
-	virtual QString toString();
+
+
     virtual void setFullName(QString firstName, QString lastName);
 
 
     typedef class ModelIterator<Member, Member> iterator;
-
 	virtual void save(void);
 	virtual bool hasPermission(const Permission p);
+	virtual bool isSoftDeleted(void);
+	virtual void softDelete(void);
+    virtual void hardDelete(void);
 	virtual QString getUserName(void);
+	virtual QString toString();
 
 	Committee *getCommittee(void);
 

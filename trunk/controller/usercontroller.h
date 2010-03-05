@@ -26,7 +26,6 @@ public:
     static bool authorize(QString name, QString pwd);
     static int login(QApplication &);
     static void logout();
-    static User *activeUser;
 private:
     UserController();
 };

@@ -11,12 +11,20 @@ Coordinator::Coordinator(int _id, QString _password)
  : User() {
     id = _id;
     password = _password;
+    is_coordinator = true;
 }
 
 /**
  * Destructor.
  */
 Coordinator::~Coordinator() { }
+
+/**
+ * Coordinators are never marked deleted.
+ */
+bool Coordinator::isSoftDeleted(void) {
+    return false;
+}
 
 /**
  * Check whether or not a coodinator has a permission.

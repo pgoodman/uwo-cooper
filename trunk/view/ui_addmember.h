@@ -250,7 +250,7 @@ public:
         layout->addWidget(Under21List, 10, 6, 1, 1);
 
         addNewButton = new QPushButton();
-        addNewButton->setObjectName(QString::fromUtf8("addNewButton"));
+        addNewButton->setObjectName(QString::fromUtf8("addMember"));
         connect(addNewButton, SIGNAL(clicked()), this, SLOT(addMember()));
         connect(addNewButton, SIGNAL(clicked()), this, SLOT(accept()));
 
@@ -286,7 +286,7 @@ public:
         PrivateYesButton->setText(QApplication::translate("", "Yes", 0, QApplication::UnicodeUTF8));
         InArrearsLabel->setText(QApplication::translate("", "In Arrears?", 0, QApplication::UnicodeUTF8));
         PasswordLabel->setText(QApplication::translate("", "Password:", 0, QApplication::UnicodeUTF8));
-        addNewButton->setText(QApplication::translate("", "Add New Member", 0, QApplication::UnicodeUTF8));
+        addNewButton->setText(QApplication::translate("addMember", "Add New Member", 0, QApplication::UnicodeUTF8));
         GivenNameLabel->setText(QApplication::translate("", "Given Name(s):", 0, QApplication::UnicodeUTF8));
         NumberLabel->setText(QApplication::translate("", "Telephone Number:", 0, QApplication::UnicodeUTF8));
         UnitLabel->setText(QApplication::translate("", "Unit Number:", 0, QApplication::UnicodeUTF8));

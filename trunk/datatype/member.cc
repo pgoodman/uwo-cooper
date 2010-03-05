@@ -18,6 +18,7 @@ Member::Member(QString firstName, QString lastName, double newMoneyOwed,
 	user_name = uName;
 	committee_id = committeeId;
 	id = userId;
+	is_coordinator = false;
 }
 
 /**
@@ -25,7 +26,7 @@ Member::Member(QString firstName, QString lastName, double newMoneyOwed,
  */
 bool Member::hasPermission(const Permission p) {
     if(0 == committee_id) {
-        return false;
+        return (EDIT_SELF_PASS == p);
     }
     Committee *c = getCommittee();
     if(0 == c) {
@@ -33,6 +34,31 @@ bool Member::hasPermission(const Permission p) {
         return false;
     }
     return 0 != (p & c->getPermissions(id));
+}
+
+/**
+ * Check if this member has been soft deleted.
+ */
+bool Member::isSoftDeleted(void) {
+    return is_marked;
+}
+
+/**
+ * Mark a member as deleted.
+ */
+void Member::softDelete(void) {
+    is_marked = true;
+    save();
+}
+
+/**
+ * Remove a member from the database iff they are already marked deleted.
+ */
+void Member::hardDelete(void) {
+    if(isSoftDeleted()) {
+        elms.erase(id);
+        CooperDB::remove("user", id);
+    }
 }
 
 /**

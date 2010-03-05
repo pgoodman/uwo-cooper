@@ -41,8 +41,8 @@ public:
     /**
      * Get the currently selected item.
      */
-    T *currentItem(void) {
-        ModelListItem<T> *row = currentItem();
+    T *getModel(void) {
+        ModelListItem<T> *row = static_cast<ModelListItem<T> *>(currentItem());
         if(0 == row) {
             return 0;
         }

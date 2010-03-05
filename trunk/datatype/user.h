@@ -7,9 +7,8 @@
 
 #include <QSqlQuery>
 
-#include "datatype/permission.h"
 #include "cooperdb.h"
-//#include "model.h"
+#include "datatype/permission.h"
 
 using namespace std;
 
@@ -22,12 +21,17 @@ public:
     virtual QString getUserName() = 0;
     virtual void save(void) = 0;
     virtual bool hasPermission(const Permission p) = 0;
-    virtual bool remove(void);
+    virtual void softDelete(void);
+    virtual void hardDelete(void);
+    virtual bool isSoftDeleted(void) = 0;
 
     bool hasPassword(QString &pass);
     int getID();
 
     virtual ~User() { }
+
+    static void setActive(User *);
+    static bool canDo(Permission); // can't re-declare hasPermission :/
 
 protected:
 
@@ -35,13 +39,15 @@ protected:
     static User *recall(const int id);
     static bool remembered(const int id);
 
-	//Attributes
-
+	bool is_coordinator;
 
 	QString password;
 	int id;
 
 	static map<int, User *> elms;
+
+private:
+	static User *active;
 };
 
 #endif // USER_H
