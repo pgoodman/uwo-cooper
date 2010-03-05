@@ -28,6 +28,7 @@
 #include <QtGui/QWidget>
 #include <QtGui>
 #include <QListWidget>
+#include <QListView>
 #include "datatype/member.h"
 #include "cooperdb.h"
 #include "ui_addmember.h"
@@ -65,7 +66,7 @@ public:
     QPushButton *actionAdd_Member_2;
     QPushButton *actionEdit_Member;
     QPushButton *actionDelete_Member;
-    QTextEdit *textEdit;
+    QListView *memberList;
     QWidget *committeeTab;
     QWidget *formLayoutWidget_2;
     QFormLayout *formLayout;
@@ -317,7 +318,7 @@ void populateMembers()
        cursor.movePosition(QTextCursor::StartOfWord);
        cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
 
-     //  textEdit->setText(cursor.selectedText() + (*it)->getFullName());
+       textEdit->setText(cursor.selectedText() + (*it)->getFullName());
     }
 
 }
