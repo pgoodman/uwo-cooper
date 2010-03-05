@@ -10,6 +10,7 @@
 #ifndef ADDMEMBERLJ2808_H
 #define ADDMEMBERLJ2808_H
 
+#include <iostream>
 #include <QtGui>
 #include <QDialog>
 #include <QtCore/QVariant>
@@ -251,6 +252,7 @@ public:
         addNewButton = new QPushButton();
         addNewButton->setObjectName(QString::fromUtf8("addNewButton"));
         connect(addNewButton, SIGNAL(clicked()), this, SLOT(addMember()));
+        connect(addNewButton, SIGNAL(clicked()), this, SLOT(accept()));
 
         layout->addWidget(addNewButton, 11, 2, 1, 3);
 
@@ -311,6 +313,7 @@ public slots:
         QString password = PasswordEdit->text();
         QString date = lineEdit->text();
 
+            cout << "blAH" << endl;
         if(lastname.isEmpty())
         {
             QMessageBox::information(this, tr("Empty Field"),
@@ -366,11 +369,10 @@ public slots:
                          tr("Please enter a move-in date."));
             return;
         }
-
-        Member::create(name, lastname, telephone, false, userid, password, time(NULL));
-
-        hide();
-        accept();
+        cout << "blah371" << endl;
+        Member::create(name, lastname, telephone, false, userid, password, time(0));
+        cout << "blah after create" << endl;
+      //  hide();
     }
 };
 
