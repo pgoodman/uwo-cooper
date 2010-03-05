@@ -35,8 +35,8 @@ public:
     static QSqlQuery select(const char *table, const char *cond);
     static bool remove(const char *table, const int id);
 
-    template <typename T, typename L>
-    static pair<ModelIterator<T,L>, ModelIterator<T,L> >
+    template <typename T>
+    static pair<ModelIterator<T,T>, ModelIterator<T,T> >
     selectAll(const char *table, const char *cond="1=1");
 
     static void queryError(const char *, QSqlQuery &);
@@ -80,8 +80,8 @@ template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
 /**
  * Linkage stuff.
  */
-template <typename T, typename L>
-pair<ModelIterator<T,L>, ModelIterator<T,L> >
+template <typename T>
+pair<ModelIterator<T,T>, ModelIterator<T,T> >
 CooperDB::selectAll(const char *table, const char *conditions) {
     stringstream ss;
     ss << "SELECT COUNT(id) as c FROM " << table << " WHERE " << conditions;
@@ -90,7 +90,7 @@ CooperDB::selectAll(const char *table, const char *conditions) {
     count.finish();
     ss.str(string(""));
     ss << "SELECT id FROM " << table << " WHERE " << conditions;
-    return ModelIterator<T,L>::make(QSqlQuery(ss.str().c_str()), size);
+    return ModelIterator<T,T>::make(QSqlQuery(ss.str().c_str()), size);
 }
 
 

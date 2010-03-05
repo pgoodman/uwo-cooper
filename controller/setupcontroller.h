@@ -2,6 +2,8 @@
 #define SETUPCONTROLLER_H
 
 #include <QString>
+#include <QApplication>
+
 #include "../datatype/user.h"
 
 using namespace std;
@@ -14,8 +16,8 @@ public:
     SetupController();
     ~SetupController();
 
-    static int addCoordinator();
-    static int loadData(QString file_name);
+    static int install(QApplication &app);
+    static bool loadData(QString file_name);
 };
 
 #endif // SETUPCONTROLLER_H

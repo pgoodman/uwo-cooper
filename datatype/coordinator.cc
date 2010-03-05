@@ -102,6 +102,7 @@ User *Coordinator::load(void) {
 User *Coordinator::load(QString password) {
     User *c = Coordinator::load();
     if(c->hasPassword(password)) {
+        cout << "good!" << endl;
         return c;
     }
     return 0;

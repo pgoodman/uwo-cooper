@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <map>
+#include <iostream>
 
 #include <QSqlQuery>
 
@@ -25,8 +26,6 @@ public:
 
     bool hasPassword(QString &pass);
     int getID();
-
-
 
     virtual ~User() { }
 

@@ -5,7 +5,6 @@ Login::Login():QWidget(){
     nameLabel=new QLabel("Login Name: ");
     pwdLabel=new QLabel("Password: ");
     nameLineEdit=new QLineEdit;
-
     pwdLineEdit=new QLineEdit;
     pwdLineEdit->setEchoMode(QLineEdit::Password);
     okPushButton=new QPushButton("Login");
@@ -26,14 +25,16 @@ Login::Login():QWidget(){
                     this, SLOT(close()));
 }
 
-void Login::on_loginPushButton_clicked(){
-    //handle login operation.
-    //set proper active user in usercontroller class
-    if(UserController::login(nameLineEdit->text(), pwdLineEdit->text())){
-        //login failed
-        titleLabel->setText("Login name and password don't match. Please try again.");
-    }
-    else
+/**
+ * Handle cliking the login button.
+ */
+void Login::on_loginPushButton_clicked() {
+    if(!UserController::authorize(nameLineEdit->text(), pwdLineEdit->text())) {
+        titleLabel->setText(
+            "Login name and password don't match. Please try again."
+        );
+    } else {
         this->close();
-
+        UserController::home();
+    }
 }
