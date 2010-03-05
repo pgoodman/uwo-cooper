@@ -7,7 +7,7 @@
 
 #include <QSqlQuery>
 
-#include "permission.h"
+#include "datatype/permission.h"
 #include "cooperdb.h"
 //#include "model.h"
 

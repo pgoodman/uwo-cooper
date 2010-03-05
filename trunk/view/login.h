@@ -4,8 +4,8 @@
 #include<QtGui>
 #include<QGridLayout>
 #include<string>
-#include "../controller/authorizationcontroller.h"
-#include "../controller/usercontroller.h"
+#include "controller/authorizationcontroller.h"
+#include "controller/usercontroller.h"
 
 class Login : public QWidget
 {
