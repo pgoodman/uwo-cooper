@@ -46,8 +46,8 @@ bool Member::isSoftDeleted(void) {
 /**
  * Mark a member as deleted.
  */
-void Member::softDelete(void) {
-    is_marked = true;
+void Member::softDelete(bool yes_or_no) {
+    is_marked = yes_or_no;
     save();
 }
 

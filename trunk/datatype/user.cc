@@ -20,7 +20,8 @@ bool User::canDo(const Permission p) {
     return (0 == active) ? false : active->hasPermission(p);
 }
 
-void User::softDelete(void) {
+void User::softDelete(bool x) {
+    (void) x;
     return;
 }
 

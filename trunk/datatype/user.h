@@ -21,7 +21,7 @@ public:
     virtual QString getUserName() = 0;
     virtual void save(void) = 0;
     virtual bool hasPermission(const Permission p) = 0;
-    virtual void softDelete(void);
+    virtual void softDelete(bool);
     virtual void hardDelete(void);
     virtual bool isSoftDeleted(void) = 0;
 

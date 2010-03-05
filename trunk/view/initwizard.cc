@@ -1,10 +1,5 @@
-#include <QtGui>
+
 #include "initwizard.h"
-#include "../controller/setupcontroller.h"
-#include "../controller/usercontroller.h"
-#include "../datatype/user.h"
-#include "../datatype/coordinator.h"
-#include "../conf.h"
 
 InitWizard::InitWizard(QWidget *parent)
     : QWizard(parent)
@@ -113,23 +108,21 @@ void ConclusionPage::initializePage(){
     QString uname(COORDINATOR_USER_NAME);
 
     //if(!ConclusionPage::initAccount(name,pwd)){
-    try {
-        Coordinator::create(pwd);
+    if(0 != Coordinator::create(pwd)) {
 
-        try {
-            SetupController::loadData(this->field("datafile.name").toString());
+        if(SetupController::loadData(this->field("datafile.name").toString())) {
 
             setTitle(tr("Initialization Completed"));
             conclusionLabel->setText(tr("You have successfully initialized Cooper. "
                                          "You are now logged in as the coordinator."));
             //set active user
             UserController::authorize(uname, pwd);
-        } catch(...) {
+        } else {
             setTitle(tr("Initialization Failed"));
             conclusionLabel->setText(tr("The data file cannot be loaded. Please try again."));
         }
 
-    } catch(...) {
+    } else {
         setTitle(tr("Initialization Failed"));
         conclusionLabel->setText(tr("The account creation failed. Please try again."));
     }

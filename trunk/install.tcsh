@@ -44,6 +44,6 @@ endif
 # copy the executable into the destination dir
 echo
 echo "Copying files..."
-cp ./$BIN_DIR/uwo-cooper ./$DEST_DIR/cooper
+cp -f ./$BIN_DIR/uwo-cooper ./$DEST_DIR/cooper
 
 # TODO: InstallFiles.txt and ReqsSatisfied.txt
