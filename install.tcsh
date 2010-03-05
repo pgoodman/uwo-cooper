@@ -18,7 +18,7 @@ endif
 
 # make the project file
 echo
-echo "Making Project File...
+echo "Making Project File..."
 qmake -project -o uwo-cooper.pro
 
 # go and make the makefile
