@@ -1,5 +1,6 @@
 
 #include "setupcontroller.h"
+#include "datatype/unit.h"
 
 SetupController::SetupController()
 {
@@ -16,8 +17,10 @@ int SetupController::install(QApplication &app) {
 
 bool SetupController::loadData(QString filename) {
     QMessageBox msgBox;
+    QString qAddress;
     string userInfo;
     int unitNo(0);
+    int idNo = 0;
     string address = "";
     int noOfRooms(0);
     string tenantSurname = "";
@@ -94,10 +97,13 @@ bool SetupController::loadData(QString filename) {
                     tenantSurname = information;
                     break;
             }
+            qAddress = QString(address.c_str());
             whichInfo++;
             information = "";
         }
 
+        Unit::create(unitNo, qAddress, noOfRooms, idNo);
+        idNo++;
         // KEEP TRACK OF THEM IN A LIST??
         cout << unitNo << "," << address << "," << noOfRooms << "," << tenantSurname << endl;
     }

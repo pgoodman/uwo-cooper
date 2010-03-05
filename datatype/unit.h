@@ -16,7 +16,7 @@ class Unit
         static pair<iterator, iterator> findAll(void);
         bool remove(void);
         void save(void);
-        void create(const int uNumber, QString address, const int numRooms, const int id);
+        static void create(const int uNumber, QString address, const int numRooms, const int id);
 
 	//Constructors
 	Unit();
