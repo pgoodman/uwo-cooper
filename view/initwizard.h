@@ -1,12 +1,17 @@
 #ifndef INITWIZARD_H
 #define INITWIZARD_H
 
-#include<string>
+#include <string>
 
 #include <QtGui>
 #include <QWizard>
 
-#include "../datatype/coordinator.h"
+#include "conf.h"
+#include "initwizard.h"
+#include "controller/setupcontroller.h"
+#include "controller/usercontroller.h"
+#include "datatype/user.h"
+#include "datatype/coordinator.h"
 
  class InitWizard : public QWizard
  {

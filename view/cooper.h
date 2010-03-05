@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "ui_cooper.h"
 #include "ui_addmember.h"
-#include "../controller/usercontroller.h"
+#include "controller/usercontroller.h"
 
 //namespace Ui {
 //    class Cooper;

@@ -44,7 +44,7 @@ bool SetupController::loadData(QString filename) {
                 && !isdigit(userInfo[i], loc)) {
                     msgBox.setText("Error parsing: Invalid number entered");
                     msgBox.exec();
-                    return 0;
+                    return false;
                 }
 
                 // Else, we have valid info so far
@@ -58,7 +58,7 @@ bool SetupController::loadData(QString filename) {
                     if (information == "") {
                         msgBox.setText("Error parsing: No unit number given");
                         msgBox.exec();
-                        return 0;
+                        return false;
                     }
                     unitNo = atoi(information.c_str());
                     break;
@@ -67,7 +67,7 @@ bool SetupController::loadData(QString filename) {
                     if (information == "") {
                         msgBox.setText("Error parsing: No address given");
                         msgBox.exec();
-                        return 0;
+                        return false;
                     }
                     address = information;
                     break;
@@ -76,7 +76,7 @@ bool SetupController::loadData(QString filename) {
                     if (information == "") {
                         msgBox.setText("Error parsing: No rooms given");
                         msgBox.exec();
-                        return 0;
+                        return false;
                     }
 
                     noOfRooms = atoi(information.c_str());
@@ -86,7 +86,7 @@ bool SetupController::loadData(QString filename) {
                             "(1, 2, or 3)"
                         );
                         msgBox.exec();
-                        return 0;
+                        return false;
                     }
                     break;
 
@@ -103,5 +103,5 @@ bool SetupController::loadData(QString filename) {
     }
     myfile.close();
 
-    return 0;
+    return true;
 }
