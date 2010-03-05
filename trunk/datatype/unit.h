@@ -9,27 +9,40 @@ using namespace std;
 
 class Unit
 {
-public:
-    ~Unit();
+    public:
+	
+        typedef class ModelIterator<Unit, Unit> iterator;
+        static Unit *load(const int id);
+        static pair<iterator, iterator> findAll(void);
+        bool remove(void);
+        void save(void);
+        void create(const int uNumber, QString address, const int numRooms, const int id);
 
-    typedef class ModelIterator<Unit, Unit> iterator;
+	//Constructors
+	Unit();
+        Unit(int roomNumber, QString address, int bedrooms);
+	~Unit();
 
+	//Attributes
+	int number;
+	QString streetAddress;
+        int numBedrooms;
+        int id;
+	bool isEmpty();
 
-    bool remove(void);
-    void save(void);
-    bool isEmpty();
+	//Accessor Methods
+	int getNumber() {return number;}
+	QString getAddress() {return streetAddress;}
+	int countRooms() {return numBedrooms;}
 
-    static Unit *load(const int id);
-    static pair<iterator, iterator> findAll(void);
-    static Unit *create(const int uNumber, QString address,
-                        const int numRooms, const int id);
+    private:
+        Unit(int roomNumber, QString streetAddress, int nRooms, const int id);
 
-    const int id;
-    const QString address;
-    const int num_bedrooms;
+        static void remember(const int id, Unit *val);
+        static Unit *recall(const int id);
+        static bool remembered(const int id);
 
-private:
-	explicit Unit(int roomNumber, QString address, int bedrooms);
+        static map<int, Unit *> elms;
 
 };
 
