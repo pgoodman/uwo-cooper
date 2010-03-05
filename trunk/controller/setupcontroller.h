@@ -12,6 +12,7 @@
 
 #include "datatype/user.h"
 #include "view/initwizard.h"
+#include "datatype/unit.h"
 
 using namespace std;
 
