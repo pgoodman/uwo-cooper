@@ -252,7 +252,7 @@ public:
         addNewButton = new QPushButton();
         addNewButton->setObjectName(QString::fromUtf8("addMember"));
         connect(addNewButton, SIGNAL(clicked()), this, SLOT(addMember()));
-        connect(addNewButton, SIGNAL(clicked()), this, SLOT(accept()));
+     //   connect(addNewButton, SIGNAL(clicked()), this, SLOT(accept()));
 
         layout->addWidget(addNewButton, 11, 2, 1, 3);
 
@@ -303,6 +303,7 @@ public:
 
 public slots:
     void addMember(){
+        cout << "blah blah" << endl;
 
         QString lastname = LastNameEdit->text();
         QString name = GivenNameEdit->text();
