@@ -1,0 +1,5 @@
+
+TO COMPILE ON GAUL:
+
+Run the installer, it will do the compiling for you. SQLite needs to be
+properly linked.

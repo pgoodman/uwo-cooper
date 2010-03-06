@@ -1,7 +1,7 @@
 #!/usr/bin/env tcsh
 
 set BIN_DIR=bin
-set DEST_DIR=dir
+set DEST_DIR=$1
 
 # make sure environment vars are set
 echo
@@ -47,3 +47,6 @@ echo "Copying files..."
 cp -f ./$BIN_DIR/uwo-cooper ./$DEST_DIR/cooper
 
 # TODO: InstallFiles.txt and ReqsSatisfied.txt
+cp -f ./ReqsSatisfied.txt ./$DEST_DIR
+cp -f ./InstallFiles.txt ./$DEST_DIR
+
