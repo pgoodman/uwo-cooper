@@ -23,6 +23,7 @@ Login::Login() : QWidget(0) {
 
     QObject::connect(okPushButton, SIGNAL(clicked()),
                     this, SLOT(tryLogin()));
+
     QObject::connect(cancelPushButton, SIGNAL(clicked()),
                     this, SLOT(cancelLogin()));
 

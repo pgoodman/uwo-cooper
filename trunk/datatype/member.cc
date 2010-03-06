@@ -114,15 +114,16 @@ void Member::setFullName(QString firstName, QString lastName)
  */
 Member *Member::create(QString firstName, QString lastName, QString telephone,
                      const bool shareTelephone, QString userName,
-                     QString password, const time_t moveInTime) {
+                     QString password, const time_t moveInTime,
+                     const int committee_id) {
     QSqlQuery q;
     q.prepare(
         "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
-        "telephone, move_in_time) VALUES (?, ?, ?, ?, ?, ?)"
+        "telephone, move_in_time, committee_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
     );
 
     q << firstName << lastName << userName << password << shareTelephone
-      << telephone << moveInTime;
+      << telephone << moveInTime << committee_id;
 
     if(!q.exec()) {
         CooperDB::queryError("Unable to Create Member", q);
