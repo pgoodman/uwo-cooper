@@ -10,13 +10,13 @@ SetupController::~SetupController(){
 
 int SetupController::install() {
 
-    QDialog*_setup=new Setup;
-    Window::setDialog(_setup);
+    Setup *_setup=new Setup;
+
+    //Window::setWidget(_setup);
     //extern QApplication app;
-    //_setup->show();
-    //return qApp->exec();
+    _setup->show();
+    return qApp->exec();
     //QObject::connect()
-    return 1;
 }
 
 bool SetupController::loadData(QString filename) {
