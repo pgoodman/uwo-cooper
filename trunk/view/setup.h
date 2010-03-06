@@ -19,10 +19,14 @@
 #include <QString>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 
 #include "datatype/coordinator.h"
 #include "controller/setupcontroller.h"
 
+/**
+ * A Wizard to go through and initialize the system.
+ */
 class Setup : public QWizard {
     Q_OBJECT
 public:

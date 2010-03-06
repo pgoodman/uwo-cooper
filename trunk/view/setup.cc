@@ -103,7 +103,11 @@ bool Setup::validateCurrentPage(void) {
     if(page1 == currentPage()) {
         QString password(coord_pass->text());
         if(password.isEmpty()) {
-            //page1_error
+            QMessageBox::warning(
+                this,
+                "Empty Form Field",
+                "Please insert a password."
+            );
             return false;
         }
 
@@ -112,9 +116,23 @@ bool Setup::validateCurrentPage(void) {
     } else {
         QString path(file_name->text());
         if(path.isEmpty()) {
+            QMessageBox::warning(
+                this,
+                "Empty Form Field",
+                "Please choose a file to load."
+            );
             return false;
         }
-        return SetupController::loadData(path);
+        try {
+            SetupController::loadData(path);
+        } catch(CriticalError &e) {
+            QMessageBox::warning(
+                this,
+                "Invalid Data File",
+                QString(e.what())
+            );
+            return false;
+        }
     }
 
     return true;
