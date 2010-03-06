@@ -29,6 +29,7 @@ public:
 
     static void setActive(User *);
     static bool canDo(Permission); // can't re-declare hasPermission :/
+    static bool nameExists(QString userName);
 
 protected:
 

@@ -28,6 +28,7 @@
 #include <QTextEdit>
 #include <QLayout>
 
+#include "datatype/user.h"
 #include "datatype/member.h"
 #include "datatype/committee.h"
 #include "view/modellist.h"
@@ -282,7 +283,7 @@ public:
     {
     
        // ->setWindowTitle(QApplication::translate("", "", 0, QApplication::UnicodeUTF8));
-        UserIDLabel->setText(QApplication::translate("", "UserID:", 0, QApplication::UnicodeUTF8));
+        UserIDLabel->setText(QApplication::translate("", "Login Name:", 0, QApplication::UnicodeUTF8));
         LastNameLabel->setText(QApplication::translate("", "Last Name:", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("", "Move-in Date:", 0, QApplication::UnicodeUTF8));
         ArrearYesButton->setText(QApplication::translate("", "Yes:", 0, QApplication::UnicodeUTF8));
@@ -356,7 +357,13 @@ public slots:
         if(userid.isEmpty())
         {
             QMessageBox::information(this, tr("Empty Field"),
-                         tr("Please enter a userid."));
+                         tr("Please enter a login name."));
+            return;
+        } else if(User::nameExists(userid)) {
+            QMessageBox::information(this, tr("Bad Field"), tr(
+                "That login name is already in use. Please choose "
+                "another one."
+            ));
             return;
         }
 
@@ -374,17 +381,23 @@ public slots:
             return;
         }
 
+        cout << "getting committee id." << endl;
+
         int committee_id(0);
         if(CommitteeYesButton->isDown()) {
             committee_id = committee_list->getModel()->getId();
         }
 
+        cout << "adding member." << endl;
+
         Member::create(
             name, lastname, telephone, PrivateYesButton->isDown(),
             userid, password, time(0), committee_id
         );
-        hide();
-        accepted();
+
+        cout << "done." << endl;
+
+        done(QDialog::Accepted);
     }
 };
 

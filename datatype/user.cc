@@ -72,3 +72,14 @@ User *User::recall(const int id) {
 bool User::remembered(const int id) {
     return elms.end() != elms.find(id);
 }
+
+/**
+ * Figure out whether or not someone exists with a particular user name.
+ */
+bool User::nameExists(QString userName) {
+    QSqlQuery q;
+    q.prepare("SELECT id FROM user WHERE name=?");
+    q << userName;
+    return q.exec() && q.first();
+}
+
