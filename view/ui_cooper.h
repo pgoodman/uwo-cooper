@@ -24,6 +24,7 @@
 
 #include "datatype/user.h"
 #include "datatype/member.h"
+#include "datatype/permission.h"
 #include "cooperdb.h"
 #include "ui_addmember.h"
 
@@ -80,7 +81,7 @@ private:
         QWidget *controls = new QWidget;
         QFormLayout *layout = new QFormLayout(controls);
         QVBoxLayout *column = new QVBoxLayout();
-         addMemberDialog = new Ui_AddMember;
+        addMemberDialog = new Ui_AddMember;
 
         controls->setGeometry(QRect(20, 20, 441, 231));
 
@@ -91,22 +92,38 @@ private:
 
         column->setSpacing(0);
 
+        QLabel *help(new QLabel(
+            "Select a member from the list\nto toggle the controls"
+        ));
+
+
         QPushButton *add_button = new QPushButton("Add Member", controls);
         QPushButton *edit_button = new QPushButton("Edit Member", controls);
+        QPushButton *mark_button = new QPushButton(
+            "Mark Member As Deleted", controls
+        );
         QPushButton *del_button = new QPushButton("Delete Member", controls);
 
         connect(add_button, SIGNAL(clicked()), this, SLOT(addMember()));
         connect(edit_button, SIGNAL(clicked()), this, SLOT(editMember()));
+        connect(mark_button, SIGNAL(clicked()), this, SLOT(markMember()));
         connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
 
-        column->addWidget(add_button);
-        column->addWidget(edit_button);
-        column->addWidget(del_button);
+        if(User::canDo(ADD_MEMBER)) column->addWidget(add_button);
+        if(User::canDo(EDIT_MEMBER_INFO)) column->addWidget(edit_button);
+        if(User::canDo(EDIT_MEMBER_STATUS)) column->addWidget(mark_button);
+        if(User::canDo(DELETE_MEMBER)) column->addWidget(del_button);
+
+        mark_button->setDisabled(true);
+        del_button->setDisabled(true);
 
         layout->setLayout(0, QFormLayout::FieldRole, column);
         layout->setWidget(0, QFormLayout::LabelRole, member_list);
 
         populateMembers();
+
+        column->addWidget(help);
+
 
         return controls;
     }

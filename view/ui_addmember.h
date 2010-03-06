@@ -10,23 +10,27 @@
 #ifndef ADDMEMBERLJ2808_H
 #define ADDMEMBERLJ2808_H
 
+#include <time.h>
+
 #include <iostream>
 #include <QtGui>
 #include <QDialog>
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QDialog>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
-#include <QtGui/QTextEdit>
+#include <QVariant>
+#include <QAction>
+#include <QApplication>
+#include <QButtonGroup>
+#include <QDialog>
+#include <QHeaderView>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QTextEdit>
 #include <QLayout>
+
 #include "datatype/member.h"
-#include <time.h>
+#include "datatype/committee.h"
+#include "view/modellist.h"
 
 class Ui_AddMember : public QDialog
 {
@@ -36,7 +40,7 @@ public:
     QLabel *UserIDLabel;
     QLabel *LastNameLabel;
     QLineEdit *UnitEdit;
-    QLineEdit *CommitteeEdit;
+    ModelList<Committee> *committee_list;
     QLabel *label;
     QLineEdit *GivenNameEdit;
     QRadioButton *ArrearYesButton;
@@ -140,11 +144,10 @@ public:
 
         layout->addWidget(CommitteeYesButton, 4, 2, 1, 1);
 
-        CommitteeEdit = new QLineEdit();
-        CommitteeEdit->setObjectName(QString::fromUtf8("CommitteeEdit"));
-        CommitteeEdit->setEnabled(false);
-
-        layout->addWidget(CommitteeEdit, 4, 3, 1, 3);
+        committee_list = new ModelList<Committee>;
+        committee_list->setEnabled(false);
+        committee_list->fill(&Committee::findAll);
+        layout->addWidget(committee_list, 4, 3, 1, 3);
 
         UserIDLabel = new QLabel();
         UserIDLabel->setObjectName(QString::fromUtf8("UserIDLabel"));
@@ -268,7 +271,7 @@ public:
         retranslateUi();
         QObject::connect(Under21YesButton, SIGNAL(toggled(bool)), Under21List, SLOT(setEnabled(bool)));
         QObject::connect(ArrearYesButton, SIGNAL(toggled(bool)), ArrearsAmountEdit, SLOT(setEnabled(bool)));
-        QObject::connect(CommitteeYesButton, SIGNAL(toggled(bool)), CommitteeEdit, SLOT(setEnabled(bool)));
+        QObject::connect(CommitteeYesButton, SIGNAL(toggled(bool)), committee_list, SLOT(setEnabled(bool)));
 
     //    QMetaObject::connectSlotsByName();
     } // setupUi
@@ -303,29 +306,27 @@ public:
 
 public slots:
     void addMember(void) {
-        cout << "blah blah" << endl;
 
         QString lastname = LastNameEdit->text();
         QString name = GivenNameEdit->text();
         QString telephone = NumberEdit->text();
         QString unit = UnitEdit->text();
-        QString committee = CommitteeEdit->text();
+        //QString committee = CommitteeEdit->text();
         QString userid = UserIDEdit->text();
         QString password = PasswordEdit->text();
         QString date = lineEdit->text();
 
-            cout << "blAH" << endl;
         if(lastname.isEmpty())
         {
             QMessageBox::information(this, tr("Empty Field"),
-                         tr("Please enter a name."));
+                         tr("Please enter a surname (family name)."));
             return;
         }
 
         if(name.isEmpty())
         {
             QMessageBox::information(this, tr("Empty Field"),
-                         tr("Please enter a name."));
+                         tr("Please enter a given name (first name)."));
             return;
         }
 
@@ -343,7 +344,7 @@ public slots:
             return;
         }
 
-        if(committee.isEmpty())
+        if(CommitteeYesButton->isDown() && 0 == committee_list->getModel())
         {
             QMessageBox::information(this, tr("Empty Field"),
                          tr("Please enter a committee."));
@@ -370,9 +371,10 @@ public slots:
                          tr("Please enter a move-in date."));
             return;
         }
-        cout << "blah371" << endl;
-        Member::create(name, lastname, telephone, false, userid, password, time(0));
-        cout << "blah after create" << endl;
+        Member::create(
+            name, lastname, telephone, PrivateYesButton->isDown(),
+            userid, password, time(0)
+        );
         hide();
         accepted();
     }
