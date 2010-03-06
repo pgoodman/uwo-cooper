@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
             QString(e.what()),
             QMessageBox::Cancel
         );
+        Window::close();
         return 0;
     } catch(...) {
         cout << "Unkown Error Occured." << endl;

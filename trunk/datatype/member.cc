@@ -119,7 +119,7 @@ Member *Member::create(QString firstName, QString lastName, QString telephone,
     QSqlQuery q;
     q.prepare(
         "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
-        "telephone, move_in_time, committee_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        "telephone, move_in_time, committee_id) VALUES (?,?,?,?,?,?,?,?)"
     );
 
     q << firstName << lastName << userName << password << shareTelephone

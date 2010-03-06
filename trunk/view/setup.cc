@@ -17,7 +17,6 @@ Setup::Setup(QWidget *parent)
         coordinator();
     }
     units();
-    //Window::setSize(600, 400);
 }
 
 /**
@@ -134,6 +133,7 @@ bool Setup::validateCurrentPage(void) {
             );
             return false;
         }
+        User::setActive(Coordinator::load());
         UserController::home();
     }
 

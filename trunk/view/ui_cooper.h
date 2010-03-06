@@ -217,9 +217,8 @@ public slots:
     void addMember() {
         addMemberDialog->show();
 
-        if(addMemberDialog->exec() == QDialog::Accepted)
-        {
-             member_list->fill(&Member::findAll);
+        if(addMemberDialog->exec() == QDialog::Accepted) {
+            populateMembers();
         }
 
         cout << "show add member form." << endl;
@@ -244,6 +243,14 @@ public slots:
 
     void deleteMember() {
         cout << "delete member." << endl;
+        Member *m = member_list->getModel();
+        if(0 != m) {
+            m->hardDelete();
+            populateMembers();
+        }
+    }
+    void markMember() {
+        cout << "mark member." << endl;
         //Member *m = member_list->getModel();
         //m->softDelete(!m->isSoftDeleted());
     }
