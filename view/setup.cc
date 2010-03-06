@@ -133,6 +133,7 @@ bool Setup::validateCurrentPage(void) {
             );
             return false;
         }
+        UserController::home();
     }
 
     return true;
