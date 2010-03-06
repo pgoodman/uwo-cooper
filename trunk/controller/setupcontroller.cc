@@ -1,6 +1,5 @@
 
 #include "setupcontroller.h"
-#include "datatype/unit.h"
 
 SetupController::SetupController()
 {
@@ -10,8 +9,7 @@ SetupController::~SetupController(){
 }
 
 void SetupController::install() {
-    InitWizard wizard;
-    wizard.show();
+    Window::setWidget(new Setup);
 }
 
 bool SetupController::loadData(QString filename) {

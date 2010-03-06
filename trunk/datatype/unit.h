@@ -18,6 +18,8 @@ class Unit
         void save(void);
         static void create(const int uNumber, QString address, const int numRooms, const int id);
 
+        static bool exists(void);
+
 	//Constructors
 	Unit();
         Unit(int roomNumber, QString address, int bedrooms);
