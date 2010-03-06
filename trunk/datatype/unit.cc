@@ -53,6 +53,8 @@ void Unit::create(QString addr, int nRooms, int id) {
     if(!q.exec()) {
         CooperDB::queryError("Unable to Add Committee", q);
     }
+    q.finish();
+
 }
 
 /**

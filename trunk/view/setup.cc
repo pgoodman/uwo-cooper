@@ -29,7 +29,7 @@ Setup::~Setup(void) { }
  */
 void Setup::coordinator(void) {
 
-    page1 = new QWizardPage(this);
+    page1 = new QWizardPage;
     QGridLayout *layout = new QGridLayout;
     page1->setLayout(layout);
 
@@ -63,7 +63,7 @@ void Setup::coordinator(void) {
  */
 void Setup::units(void) {
 
-    page2 = new QWizardPage(this);
+    page2 = new QWizardPage;
     page2->setTitle("Step 2 of 2: Initial Data File");
     page2->setSubTitle("Please specify the initial data file name.");
 
@@ -112,7 +112,7 @@ bool Setup::validateCurrentPage(void) {
         }
 
         Coordinator::create(password);
-        removePage(1);
+        //removePage(1);
     } else {
         QString path(file_name->text());
         if(path.isEmpty()) {

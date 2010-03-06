@@ -41,10 +41,10 @@ protected:
     static bool remembered(const int id);
 
     const int id;
-	bool is_coordinator;
-	QString password;
+    bool is_coordinator;
+    QString password;
 
-	static map<int, User *> elms;
+    static map<int, User *> elms;
 
 private:
 	static User *active;

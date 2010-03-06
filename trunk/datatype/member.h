@@ -28,6 +28,17 @@ public:
 	void setMoneyOwed(double money);
 	void setSharedTelephone(bool share);
 	void setMarked(bool mark);
+        QString getTelephoneNum();
+        double getMoneyOwed();
+        bool isTelephoneShared();
+        bool isMarkedDeleted();
+        int getCommitteeID(void);
+        QString getLoginName(void);
+        QString getFirstName(void);
+        QString getLastName(void);
+        time_t getMoveInTime(void);
+        Committee *getCommittee(void);
+        QString getPassword(void);
 
 
 
@@ -42,8 +53,6 @@ public:
     virtual void hardDelete(void);
 	virtual QString getUserName(void);
 	virtual QString toString();
-
-	Committee *getCommittee(void);
 
 	static Member *load(const int id);
     static Member *load(QString &uname, QString &pass);
