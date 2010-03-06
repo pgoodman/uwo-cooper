@@ -17,6 +17,9 @@ int Window::resize_w(0);
 bool Window::do_resize(false);
 
 QMainWindow *Window::create() {
+
+    D( cout << "Window::create" << endl; )
+
     main_window = new QMainWindow;
     main_layout = new QGridLayout;
 
@@ -28,6 +31,7 @@ QMainWindow *Window::create() {
 }
 
 void Window::setSize(int width, int height) {
+    D( cout << "Window::setSize" << endl; )
     resize_w = width;
     resize_h = height;
     do_resize = true;
@@ -35,6 +39,7 @@ void Window::setSize(int width, int height) {
 }
 
 void Window::setWidget(QWidget *widget) {
+    D( cout << "Window::setWidget" << endl; )
     /*
     QLayout *curr(main_widget->layout());
     if(0 != curr) {
@@ -58,14 +63,22 @@ void Window::setWidget(QWidget *widget) {
     main_layout->update();
 }
 
+void Window::setDialog(QDialog *dialog) {
+    dialog->setParent(main_window);
+    main_layout->update();
+}
+
 void Window::setMenuBar(QMenuBar *menuBar) {
+    D( cout << "Window::setMenuBar" << endl; )
     main_window->setMenuBar(menuBar);
 }
 
 void Window::setTitle(const char *name) {
+    D( cout << "Window::setTitle" << endl; )
     main_window->setWindowTitle(name);
 }
 
 QAction *Window::action(void) {
+    D( cout << "Window::action" << endl; )
     return new QAction(main_window);
 }

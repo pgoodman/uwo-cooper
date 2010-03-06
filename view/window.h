@@ -9,15 +9,23 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
+#include <iostream>
+
 #include <QWidget>
 #include <QLayout>
 #include <QGridLayout>
 #include <QMainWindow>
 #include <QAction>
+#include <QDialog>
+
+#include "conf.h"
+
+using namespace std;
 
 class Window {
 public:
-    static void setWidget(QWidget *layout);
+    static void setWidget(QWidget *);
+    static void setDialog(QDialog *);
     static QMainWindow *create();
     static void setTitle(const char *name);
     static void setMenuBar(QMenuBar *menuBar);
