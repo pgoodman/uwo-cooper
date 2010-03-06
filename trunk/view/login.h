@@ -25,7 +25,7 @@ private:
     QPushButton *cancelPushButton;
 private slots:
     void tryLogin();
-    void close();
+    void cancelLogin();
 };
 
 #endif // LOGIN_H

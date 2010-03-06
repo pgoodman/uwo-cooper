@@ -43,6 +43,8 @@ public:
     static void queryError(string, QSqlQuery &);
     static void queryError(stringstream &, QSqlQuery &);
 
+    static void close(void);
+
     static QSqlDatabase db;
 
 private:

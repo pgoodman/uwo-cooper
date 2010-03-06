@@ -17,13 +17,16 @@
 #include <QMainWindow>
 #include <QAction>
 #include <QDialog>
+#include <QCloseEvent>
 
 #include "conf.h"
+#include "cooperdb.h"
 
 using namespace std;
 
-class Window {
+class Window : public QMainWindow {
 public:
+    ~Window();
     static void setWidget(QWidget *);
     static void setDialog(QDialog *);
     static QMainWindow *create();
@@ -31,6 +34,7 @@ public:
     static void setMenuBar(QMenuBar *menuBar);
     static QAction *action(void);
     static void setSize(int width, int height);
+    static void close(void);
 
 private:
     static QMainWindow *main_window;
@@ -41,7 +45,10 @@ private:
     static int resize_h;
     static int resize_w;
 
-    Window(void);
+    Window(QWidget *parent=0);
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif /* WINDOW_H_ */
