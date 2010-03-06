@@ -385,7 +385,8 @@ public slots:
 
         int committee_id(0);
         if(CommitteeYesButton->isDown()) {
-            committee_id = committee_list->getModel()->getId();
+            Committee *comm(committee_list->getModel());
+            committee_id = (0 == comm) ? 0 : comm->getId();
         }
 
         cout << "adding member." << endl;
