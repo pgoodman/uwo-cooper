@@ -371,9 +371,15 @@ public slots:
                          tr("Please enter a move-in date."));
             return;
         }
+
+        int committee_id(0);
+        if(CommitteeYesButton->isDown()) {
+            committee_id = committee_list->getModel()->getId();
+        }
+
         Member::create(
             name, lastname, telephone, PrivateYesButton->isDown(),
-            userid, password, time(0)
+            userid, password, time(0), committee_id
         );
         hide();
         accepted();
