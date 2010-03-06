@@ -8,15 +8,10 @@ SetupController::SetupController()
 SetupController::~SetupController(){
 }
 
-int SetupController::install() {
-
-    Setup *_setup=new Setup;
-
-    //Window::setWidget(_setup);
-    //extern QApplication app;
-    _setup->show();
-    return qApp->exec();
-    //QObject::connect()
+void SetupController::install() {
+    Setup *setup=new Setup;
+    setup->setModal(true);
+    setup->show();
 }
 
 bool SetupController::loadData(QString filename) {
