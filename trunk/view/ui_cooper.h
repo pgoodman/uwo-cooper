@@ -211,6 +211,7 @@ private:
     }
 
     Ui_AddMember* addMemberDialog;
+    Ui_AddMember* editMemberDialog;
 
 public slots:
     void addMember() {
@@ -224,7 +225,21 @@ public slots:
         cout << "show add member form." << endl;
     }
     void editMember() {
+        editMemberDialog->show();
+        //editMemberDialog->setWindowTitle("Edit Member Information");
+       // editMemberDialog->addNewButton->setText("Save Changes");
+      //  QPushButton *resetButton = new QPushButton(QString::fromUtf8("Reset"));
+      //  editMemberDialog->layout->addWidget(resetButton,11,3,1,1);
+      //  Member *selectedMember = member_list->getModel();
+
+        if(editMemberDialog->exec() == QDialog::Accepted)
+        {
+             member_list->fill(&Member::findAll);
+        }
+
         cout << "show edit member form." << endl;
+
+
     }
 
     void deleteMember() {
