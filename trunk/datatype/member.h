@@ -3,11 +3,12 @@
 
 #include <istream>
 #include <sstream>
-#include <QString>
 #include <utility>
 #include <time.h>
+#include <string>
 #include <vector>
 
+#include <QString>
 #include <QVariant>
 #include <QSqlRecord>
 

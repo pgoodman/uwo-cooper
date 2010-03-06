@@ -33,24 +33,12 @@
 
 #include "window.h"
 
-class MemberList : public ModelList<Member> {
-    Q_OBJECT
-public:
-    MemberList(QWidget *w) : ModelList<Member>(w) { }
-};
-
-class CommitteeList : public ModelList<Committee> {
-    Q_OBJECT
-public:
-    CommitteeList(QWidget *w) : ModelList<Committee>(w) { }
-};
-
 class Ui_Cooper : public QWidget
 {
 Q_OBJECT
 
-    MemberList *member_list;
-    CommitteeList *committee_list;
+    ModelList<Member> *member_list;
+    ModelList<Committee> *committee_list;
 
 public:
 
@@ -60,8 +48,13 @@ public:
         layout->setSpacing(6);
         layout->setContentsMargins(11, 11, 11, 11);
 
-        member_list = new MemberList(this);
-        committee_list = new CommitteeList(this);
+        member_list = new ModelList<Member>(this);
+        committee_list = new ModelList<Committee>(this);
+
+        connect(
+            member_list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
+            this, SLOT(activateMemberButtons(QListWidgetItem *, QListWidgetItem *))
+        );
 
         QTabWidget *tabs(new QTabWidget);
         tabs->addTab(makeMemberControls(), "Member");
@@ -73,6 +66,10 @@ public:
     }
 
 private:
+
+    QPushButton *mark_button;
+    QPushButton *unmark_button;
+    QPushButton *del_button;
 
     /**
      * Create the member controls.
@@ -96,26 +93,28 @@ private:
             "Select a member from the list\nto toggle the controls"
         ));
 
-
         QPushButton *add_button = new QPushButton("Add Member", controls);
         QPushButton *edit_button = new QPushButton("Edit Member", controls);
-        QPushButton *mark_button = new QPushButton(
+
+        mark_button = new QPushButton(
             "Mark Member As Deleted", controls
         );
-        QPushButton *del_button = new QPushButton("Delete Member", controls);
+        unmark_button = new QPushButton(
+            "Un-Mark Member As Deleted", controls
+        );
+        del_button = new QPushButton("Delete Member", controls);
 
         connect(add_button, SIGNAL(clicked()), this, SLOT(addMember()));
         connect(edit_button, SIGNAL(clicked()), this, SLOT(editMember()));
         connect(mark_button, SIGNAL(clicked()), this, SLOT(markMember()));
+        connect(unmark_button, SIGNAL(clicked()), this, SLOT(unmarkMember()));
         connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
 
         if(User::canDo(ADD_MEMBER)) column->addWidget(add_button);
         if(User::canDo(EDIT_MEMBER_INFO)) column->addWidget(edit_button);
         if(User::canDo(EDIT_MEMBER_STATUS)) column->addWidget(mark_button);
+        if(User::canDo(EDIT_MEMBER_STATUS)) column->addWidget(unmark_button);
         if(User::canDo(DELETE_MEMBER)) column->addWidget(del_button);
-
-        mark_button->setDisabled(true);
-        del_button->setDisabled(true);
 
         layout->setLayout(0, QFormLayout::FieldRole, column);
         layout->setWidget(0, QFormLayout::LabelRole, member_list);
@@ -213,6 +212,16 @@ private:
     Ui_AddMember* addMemberDialog;
     Ui_AddMember* editMemberDialog;
 
+    void populateMembers() {
+        member_list->fill(&Member::findAll);
+        mark_button->setDisabled(true);
+        unmark_button->setDisabled(true);
+        del_button->setDisabled(true);
+    }
+    void populateCommittees() {
+        committee_list->fill(&Committee::findAll);
+    }
+
 public slots:
     void addMember() {
         addMemberDialog->show();
@@ -242,17 +251,16 @@ public slots:
     }
 
     void deleteMember() {
-        cout << "delete member." << endl;
-        Member *m = member_list->getModel();
-        if(0 != m) {
-            m->hardDelete();
-            populateMembers();
-        }
+        member_list->getModel()->hardDelete();
+        populateMembers();
     }
     void markMember() {
-        cout << "mark member." << endl;
-        //Member *m = member_list->getModel();
-        //m->softDelete(!m->isSoftDeleted());
+        member_list->getModel()->softDelete(true);
+        populateMembers();
+    }
+    void unmarkMember() {
+        member_list->getModel()->softDelete(false);
+        populateMembers();
     }
     void editCommittee() {
         cout << "show edit committee form." << endl;
@@ -267,11 +275,23 @@ public slots:
         cout << "show view committee." << endl;
     }
 
-    void populateMembers() {
-        member_list->fill(&Member::findAll);
-    }
-    void populateCommittees() {
-        committee_list->fill(&Committee::findAll);
+    /**
+     * Change the buttons depending on whether or not members have a certain
+     * status.
+     */
+    void activateMemberButtons(QListWidgetItem *old, QListWidgetItem *curr) {
+        (void) old; (void) curr;
+
+        Member *member(member_list->getModel());
+        if(0 == member) {
+            return;
+        }
+
+        bool is_marked(member->isSoftDeleted());
+
+        mark_button->setDisabled(is_marked);
+        unmark_button->setDisabled(!is_marked);
+        del_button->setDisabled(!is_marked);
     }
 };
 

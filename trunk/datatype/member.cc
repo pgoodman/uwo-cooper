@@ -100,7 +100,12 @@ void Member::setMarked(bool mark)
 }
 
 QString Member::toString(void) {
-    return first_name + " " + last_name;
+    stringstream ss;
+    ss << first_name.toStdString() << " " << last_name.toStdString();
+    if(is_marked) {
+        ss << " [marked]";
+    }
+    return QString(ss.str().c_str());
 }
 
 void Member::setFullName(QString firstName, QString lastName)
