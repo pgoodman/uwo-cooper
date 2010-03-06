@@ -32,13 +32,13 @@ int main(int argc, char *argv[]) {
         CooperDB::connect("cooper");
 
         if(!Coordinator::exists() || !Unit::exists()) {
-            SetupController::install();
+            return SetupController::install();
         } else {
             UserController::login();
-        }
-        if(Coordinator::exists() && Unit::exists())
             window->show();
-        return app.exec();
+            return app.exec();
+        }
+
 
     } catch(CriticalError &e) {
         D( cout << "Error: " << e.header() << endl << e.what() << endl; )

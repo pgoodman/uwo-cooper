@@ -8,14 +8,14 @@ SetupController::SetupController()
 SetupController::~SetupController(){
 }
 
-void SetupController::install() {
+int SetupController::install() {
 
     Setup *_setup=new Setup;
 
     //Window::setWidget(_setup);
     //extern QApplication app;
     _setup->show();
-    qApp->exec();
+    return qApp->exec();
     //QObject::connect()
 }
 
