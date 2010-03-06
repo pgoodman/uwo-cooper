@@ -16,11 +16,15 @@ int Window::resize_h(0);
 int Window::resize_w(0);
 bool Window::do_resize(false);
 
+Window::Window(QWidget *parent) : QMainWindow(parent) { }
+Window::~Window() { }
+
+
 QMainWindow *Window::create() {
 
     D( cout << "Window::create" << endl; )
 
-    main_window = new QMainWindow;
+    main_window = new Window;
     main_layout = new QGridLayout;
 
     QWidget *central_widget(new QWidget);
@@ -81,4 +85,17 @@ void Window::setTitle(const char *name) {
 QAction *Window::action(void) {
     D( cout << "Window::action" << endl; )
     return new QAction(main_window);
+}
+
+/**
+ * Close the main window.
+ */
+void Window::close(void) {
+    main_window->close();
+}
+
+void Window::closeEvent(QCloseEvent *event) {
+    D( cout << "close event." << endl; )
+    CooperDB::close();
+    QMainWindow::closeEvent(event);
 }

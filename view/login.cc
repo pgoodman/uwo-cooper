@@ -24,7 +24,7 @@ Login::Login() : QWidget(0) {
     QObject::connect(okPushButton, SIGNAL(clicked()),
                     this, SLOT(tryLogin()));
     QObject::connect(cancelPushButton, SIGNAL(clicked()),
-                    this, SLOT(close()));
+                    this, SLOT(cancelLogin()));
 
     Window::setTitle("Log In to Cooper");
 }
@@ -40,13 +40,12 @@ void Login::tryLogin() {
         );
     } else {
         UserController::home();
-        //this->close();
     }
 }
 
 /**
  * Handle pressing cancel.
  */
-void Login::close() {
-    qApp->quit();
+void Login::cancelLogin() {
+    Window::close();
 }

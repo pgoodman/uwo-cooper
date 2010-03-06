@@ -19,6 +19,13 @@ CooperDB::~CooperDB() {
 }
 
 /**
+ * Disconnect the database.
+ */
+void CooperDB::close(void) {
+    db.close();
+}
+
+/**
  * Check whether or not a given query returns any rows.
  */
 bool CooperDB::hasAny(const char *query) {
@@ -255,7 +262,7 @@ void CooperDB::makeDatabase() {
         );
         q.exec(
             "INSERT INTO user (first_name,last_name, name, password, "
-            "share_telephone, telephone, move_in_time) VALUES ('Jason','X',"
+            "share_telephone, telephone, move_in_time) VALUES ('Jason','Lu',"
             "'jason','jason', 0,'',0)"
         );
     )
