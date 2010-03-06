@@ -22,6 +22,7 @@ public:
 
     static Committee *load(const int id);
     static pair<iterator, iterator> findAll(void);
+
     bool remove(void);
     void save(void);
     void create(QString n, const bool canDelete,
@@ -31,6 +32,8 @@ public:
 
     PermissionSet getPermissions(const int member_id);
     QString toString(void);
+
+    int getId(void);
 
 private:
     explicit Committee(QString n, const bool canDelete,

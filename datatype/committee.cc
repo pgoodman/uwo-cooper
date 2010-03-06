@@ -93,9 +93,19 @@ pair<Committee::iterator, Committee::iterator> Committee::findAll(void) {
     return CooperDB::selectAll<Committee>("committee", "1=1");
 }
 
+/**
+ * remove a committee.
+ */
 bool Committee::remove(void) {
     elms.erase(id);
     return CooperDB::remove("committee", id);
+}
+
+/**
+ * Get the committee id.
+ */
+int Committee::getId(void) {
+    return id;
 }
 
 /**
