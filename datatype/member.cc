@@ -243,3 +243,37 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
 pair<Member::iterator, Member::iterator> Member::findAll() {
     return CooperDB::selectAll<Member>("user", "is_coordinator=0");
 }
+QString Member::getTelephoneNum(){
+    return telephone_num;
+}
+double Member::getMoneyOwed(){
+    return money_owed;
+}
+bool Member::isTelephoneShared(){
+    return share_telephone;
+}
+bool Member::isMarkedDeleted(){
+    return is_marked;
+}
+int Member::getCommitteeID(){
+    return committee_id;
+}
+QString Member::getLoginName(){
+    return user_name;
+}
+QString Member::getFirstName(){
+    return first_name;
+}
+QString Member::getLastName(){
+    return last_name;
+}
+time_t Member::getMoveInTime(){
+    return move_in_time;
+}
+
+QString Member::getPassword(){
+    if(this->password==0)
+        return "";
+    else
+        return this->password;
+}

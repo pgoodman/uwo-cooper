@@ -12,6 +12,7 @@ void SetupController::install() {
     Setup *setup=new Setup;
     setup->setModal(true);
     setup->show();
+    qApp->exec();
 }
 
 bool SetupController::loadData(QString filename) {

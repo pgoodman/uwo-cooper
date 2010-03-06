@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
             SetupController::install();
         } else {
             UserController::login();
+
         }
         window->show();
         return app.exec();
