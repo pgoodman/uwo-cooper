@@ -22,6 +22,13 @@ Unit::Unit(int rNumber, QString address, int numRooms, const int ID)
     id = ID;
 }
 
+/**
+ * Return whether or not any units exist.
+ */
+bool Unit::exists(void) {
+    return CooperDB::hasAny("SELECT * FROM unit");
+}
+
 Unit *Unit::load(const int id) {
 
     QSqlQuery q;

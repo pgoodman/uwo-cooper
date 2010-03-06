@@ -10,8 +10,10 @@
 #include <QApplication>
 #include <QMessageBox>
 
+#include "view/setup.h"
+#include "view/window.h"
+
 #include "datatype/user.h"
-#include "view/initwizard.h"
 #include "datatype/unit.h"
 
 using namespace std;

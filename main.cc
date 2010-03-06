@@ -15,10 +15,10 @@
 #include "cooperdb.h"
 #include "criticalerror.h"
 #include "datatype/coordinator.h"
+#include "datatype/unit.h"
 #include "datatype/member.h"
 #include "datatype/user.h"
 #include "controller/setupcontroller.h"
-#include "view/initwizard.h"
 #include "view/login.h"
 
 using namespace std;
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     try {
         CooperDB::connect("cooper");
 
-        if(!Coordinator::exists()) {
+        if(!Coordinator::exists() || !Unit::exists()) {
             SetupController::install();
         } else {
             UserController::login();

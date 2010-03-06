@@ -50,13 +50,6 @@ public:
     }
 
     /**
-     * Activate some widget when items in this list are selected.
-     */
-    void activateOnSelect(QWidget *w) {
-        (void) w;
-    }
-
-    /**
      * Fill the list.
      */
     void fill(iterator_pair_func *f) {
@@ -71,12 +64,6 @@ public:
         for(int i = 0; it != end; it++) {
             ModelListItem<T> *item(new ModelListItem<T>(*it));
             insertItem(i++, item);
-
-            // connect the signals
-            /*connect(
-                item, SIGNAL(itemActivated()),
-                this, SLOT(activateWidgets())
-            );*/
         }
     }
 };
