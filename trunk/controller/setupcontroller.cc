@@ -9,7 +9,14 @@ SetupController::~SetupController(){
 }
 
 void SetupController::install() {
-    Window::setWidget(new Setup);
+
+    Setup *_setup=new Setup;
+
+    //Window::setWidget(_setup);
+    //extern QApplication app;
+    _setup->show();
+    qApp->exec();
+    //QObject::connect()
 }
 
 bool SetupController::loadData(QString filename) {
