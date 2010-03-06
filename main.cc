@@ -25,7 +25,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-    QApplication app(argc, argv);
+    static QApplication app(argc, argv);
     QMainWindow *window(Window::create());
 
     try {
@@ -36,7 +36,8 @@ int main(int argc, char *argv[]) {
         } else {
             UserController::login();
         }
-        window->show();
+        if(Coordinator::exists() && Unit::exists())
+            window->show();
         return app.exec();
 
     } catch(CriticalError &e) {
