@@ -3,24 +3,8 @@
 
 map<int, Unit *> Unit::elms;
 
-Unit::Unit()
-{
-}
-
-Unit::Unit(int roomNumber, QString address, int bedrooms)
-{
-	number = roomNumber;
-	streetAddress = address;
-	numBedrooms = bedrooms;
-}
-
-Unit::Unit(int rNumber, QString address, int numRooms, const int ID)
-{
-    number = rNumber;
-    streetAddress = address;
-    numBedrooms = numRooms;
-    id = ID;
-}
+Unit::Unit(QString streetAddress, int numRooms, const int unitId)
+ : id(unitId), num_rooms(numRooms), address(streetAddress) { }
 
 /**
  * Return whether or not any units exist.
@@ -39,9 +23,8 @@ Unit *Unit::load(const int id) {
     }
     q.first();
     Unit *c = new Unit(
-        qcol<int>(q, "roomNumber"),
-        qcol<QString>(q, "streetAddress"),
-        qcol<int>(q, "numBedrooms"),
+        qcol<QString>(q, "address"),
+        qcol<int>(q, "num_rooms"),
         id
     );
 
@@ -52,22 +35,20 @@ Unit *Unit::load(const int id) {
 void Unit::save(void)
 {
     QSqlQuery q;
-    q.prepare(
-            "UPDATE unit set number=?,streetAddress=?,numBedrooms=?,id=?");
-    q << number << streetAddress << numBedrooms << id;
-
+    q.prepare("UPDATE unit SET address=?,num_rooms=? WHERE id=?");
+    q << address << num_rooms << id;
     if(!q.exec()) {
         CooperDB::queryError("Unable to Save Unit", q);
     }
 }
 
-void Unit::create(int rNumber, QString address, int nRooms, int id) {
+void Unit::create(QString addr, int nRooms, int id) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO unit (number,streetAddress,numBedrooms,id)"
-        "VALUES (?,?,?,?)"
+        "INSERT INTO unit (address,num_roows,id)"
+        "VALUES (?,?,?)"
     );
-    q << rNumber << address << nRooms << id;
+    q << addr << nRooms << id;
 
     if(!q.exec()) {
         CooperDB::queryError("Unable to Add Committee", q);

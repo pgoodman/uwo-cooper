@@ -10,13 +10,13 @@ SetupController::~SetupController(){
 
 int SetupController::install() {
 
-    Setup *_setup=new Setup;
-
-    //Window::setWidget(_setup);
+    QDialog*_setup=new Setup;
+    Window::setDialog(_setup);
     //extern QApplication app;
-    _setup->show();
-    return qApp->exec();
+    //_setup->show();
+    //return qApp->exec();
     //QObject::connect()
+    return 1;
 }
 
 bool SetupController::loadData(QString filename) {
@@ -24,14 +24,14 @@ bool SetupController::loadData(QString filename) {
     QString qAddress;
     string userInfo;
     int unitNo(0);
-    int idNo = 0;
     string address = "";
     int noOfRooms(0);
     string tenantSurname = "";
     ifstream myfile(filename.toStdString().c_str());
 
     if (!myfile.is_open()) {
-        cout << "Unable to open file";
+        msgBox.setText("Unable to open file.");
+        msgBox.exec();
         return false;
     }
 
@@ -106,10 +106,7 @@ bool SetupController::loadData(QString filename) {
             information = "";
         }
 
-        Unit::create(unitNo, qAddress, noOfRooms, idNo);
-        idNo++;
-        // KEEP TRACK OF THEM IN A LIST??
-        cout << unitNo << "," << address << "," << noOfRooms << "," << tenantSurname << endl;
+        Unit::create(qAddress, noOfRooms, unitNo);
     }
     myfile.close();
 

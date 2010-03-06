@@ -32,12 +32,12 @@ int main(int argc, char *argv[]) {
         CooperDB::connect("cooper");
 
         if(!Coordinator::exists() || !Unit::exists()) {
-            return SetupController::install();
+            SetupController::install();
         } else {
             UserController::login();
-            window->show();
-            return app.exec();
         }
+        window->show();
+        return app.exec();
 
 
     } catch(CriticalError &e) {

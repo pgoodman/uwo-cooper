@@ -9,43 +9,33 @@ using namespace std;
 
 class Unit
 {
-    public:
-	
-        typedef class ModelIterator<Unit, Unit> iterator;
-        static Unit *load(const int id);
-        static pair<iterator, iterator> findAll(void);
-        bool remove(void);
-        void save(void);
-        static void create(const int uNumber, QString address, const int numRooms, const int id);
+public:
+    ~Unit();
 
-        static bool exists(void);
+    typedef class ModelIterator<Unit, Unit> iterator;
 
-	//Constructors
-	Unit();
-        Unit(int roomNumber, QString address, int bedrooms);
-	~Unit();
+    bool remove(void);
+    void save(void);
+    bool isEmpty();
 
-	//Attributes
-	int number;
-	QString streetAddress;
-        int numBedrooms;
-        int id;
-	bool isEmpty();
+    static void create(QString address, const int numRooms, const int id);
+    static bool exists(void);
+    static Unit *load(const int id);
+    static pair<iterator, iterator> findAll(void);
 
-	//Accessor Methods
-	int getNumber() {return number;}
-	QString getAddress() {return streetAddress;}
-	int countRooms() {return numBedrooms;}
+private:
+    Unit(QString streetAddress, int nRooms, const int id);
 
-    private:
-        Unit(int roomNumber, QString streetAddress, int nRooms, const int id);
+    static void remember(const int id, Unit *val);
+    static Unit *recall(const int id);
+    static bool remembered(const int id);
 
-        static void remember(const int id, Unit *val);
-        static Unit *recall(const int id);
-        static bool remembered(const int id);
+    static map<int, Unit *> elms;
 
-        static map<int, Unit *> elms;
-
+    // data
+    const int id;
+    int num_rooms;
+    QString address;
 };
 
 #endif // UNIT_H
