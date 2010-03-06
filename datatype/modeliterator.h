@@ -57,7 +57,7 @@ private:
 };
 
 /**
- *
+ * For linking purposes the definition must be in here.
  */
 
 /**
@@ -72,6 +72,9 @@ ModelIterator<T, L>::ModelIterator(QSqlQuery q,
     assert(query.isSelect());
     if(off >= 0 && off < size) {
         setCurrId();
+    }
+    if(0 == off && 0 == size) {
+        i = 1;
     }
 }
 
@@ -110,7 +113,7 @@ ModelIterator<T, L> ModelIterator<T, L>::operator++ (int) {
 
 template <typename T, typename L>
 bool ModelIterator<T, L>::operator!=(const ModelIterator<T, L> &other) {
-    //D( cout << query << "!=" << other.query << " || " << i << " != " << other.i << endl; )
+    //D( cout << id << "!=" << other.id << " || " << i << " != " << other.i << endl; )
     return id != other.id || i != other.i;
 }
 

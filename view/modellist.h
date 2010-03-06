@@ -42,10 +42,11 @@ public:
      * Get the currently selected item.
      */
     T *getModel(void) {
-        ModelListItem<T> *row = static_cast<ModelListItem<T> *>(currentItem());
-        if(0 == row) {
+        QListWidgetItem *item(currentItem());
+        if(0 == item) {
             return 0;
         }
+        ModelListItem<T> *row = static_cast<ModelListItem<T> *>(item);
         return row->getModel();
     }
 
