@@ -1,0 +1,18 @@
+3.1.1 - System starts empty
+3.1.2 - System asks for coordinator password when not initialized
+3.1.3 - System asks for units file to load
+3.1.4 - Data cannot be loaded again
+3.1.5 - Units cannot be added after data load
+
+3.2.1 - Every member + coordinator can log in.
+3.2.2 - Certain member info is stored in the db.
+3.2.5 - Mark a member as no longer in the coop.
+3.2.6 - Delete a marked member.
+
+3.3.1 - Initial committees in the system
+
+3.6.1 - Add member, Sort of.
+
+3.10.1 - The Chair of the board can do what the coordinator can
+
+3.11.1 - Data is persistent
