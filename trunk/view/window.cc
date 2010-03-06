@@ -64,7 +64,7 @@ void Window::setWidget(QWidget *widget) {
 }
 
 void Window::setDialog(QDialog *dialog) {
-    dialog->setParent(main_window);
+    dialog->setParent(main_widget);
     main_layout->update();
 }
 

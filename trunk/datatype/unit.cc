@@ -45,7 +45,7 @@ void Unit::save(void)
 void Unit::create(QString addr, int nRooms, int id) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO unit (address,num_roows,id)"
+        "INSERT INTO unit (address,num_rooms,id)"
         "VALUES (?,?,?)"
     );
     q << addr << nRooms << id;

@@ -17,7 +17,7 @@ Setup::Setup(QWidget *parent)
         coordinator();
     }
     units();
-    Window::setSize(600, 400);
+    //Window::setSize(600, 400);
 }
 
 /**
