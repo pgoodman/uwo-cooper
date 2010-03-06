@@ -273,6 +273,8 @@ public:
         QObject::connect(ArrearYesButton, SIGNAL(toggled(bool)), ArrearsAmountEdit, SLOT(setEnabled(bool)));
         QObject::connect(CommitteeYesButton, SIGNAL(toggled(bool)), committee_list, SLOT(setEnabled(bool)));
 
+        setModal(true);
+
     //    QMetaObject::connectSlotsByName();
     } // setupUi
 

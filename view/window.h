@@ -28,7 +28,6 @@ class Window : public QMainWindow {
 public:
     ~Window();
     static void setWidget(QWidget *);
-    static void setDialog(QDialog *);
     static QMainWindow *create();
     static void setTitle(const char *name);
     static void setMenuBar(QMenuBar *menuBar);

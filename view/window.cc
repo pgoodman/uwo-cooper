@@ -67,11 +67,6 @@ void Window::setWidget(QWidget *widget) {
     main_layout->update();
 }
 
-void Window::setDialog(QDialog *dialog) {
-    dialog->setParent(main_widget);
-    main_layout->update();
-}
-
 void Window::setMenuBar(QMenuBar *menuBar) {
     D( cout << "Window::setMenuBar" << endl; )
     main_window->setMenuBar(menuBar);
