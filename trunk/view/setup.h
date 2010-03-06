@@ -23,6 +23,7 @@
 
 #include "datatype/coordinator.h"
 #include "controller/setupcontroller.h"
+#include "controller/usercontroller.h"
 
 /**
  * A Wizard to go through and initialize the system.

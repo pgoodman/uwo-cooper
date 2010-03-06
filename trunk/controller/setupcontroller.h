@@ -10,6 +10,8 @@
 #include <QApplication>
 #include <QMessageBox>
 
+#include "criticalerror.h"
+
 #include "view/setup.h"
 #include "view/window.h"
 
