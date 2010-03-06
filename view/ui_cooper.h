@@ -80,6 +80,7 @@ private:
         QWidget *controls = new QWidget;
         QFormLayout *layout = new QFormLayout(controls);
         QVBoxLayout *column = new QVBoxLayout();
+         addMemberDialog = new Ui_AddMember;
 
         controls->setGeometry(QRect(20, 20, 441, 231));
 
@@ -192,13 +193,17 @@ private:
         Window::setMenuBar(menuBar);
     }
 
+    Ui_AddMember* addMemberDialog;
+
 public slots:
     void addMember() {
-        /*addMember->show();
-        if(addMember->exec() == QDialog::Accepted)
+        addMemberDialog->show();
+
+        if(addMemberDialog->exec() == QDialog::Accepted)
         {
-            populateMembers();
-        }*/
+             member_list->fill(&Member::findAll);
+        }
+
         cout << "show add member form." << endl;
     }
     void editMember() {

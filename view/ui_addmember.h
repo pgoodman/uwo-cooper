@@ -304,7 +304,7 @@ public:
 public slots:
     void addMember(void) {
         cout << "blah blah" << endl;
-#if 0
+
         QString lastname = LastNameEdit->text();
         QString name = GivenNameEdit->text();
         QString telephone = NumberEdit->text();
@@ -373,9 +373,8 @@ public slots:
         cout << "blah371" << endl;
         Member::create(name, lastname, telephone, false, userid, password, time(0));
         cout << "blah after create" << endl;
-      //  hide();
-#endif
         hide();
+        accepted();
     }
 };
 
