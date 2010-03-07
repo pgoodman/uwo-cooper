@@ -308,6 +308,15 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
         qcol<int>(q, "committee_id"),
         id
     );
+    //load move in time into the return member
+    QDateTime _qdt;
+    _qdt.fromTime_t(qcol<time_t>(q,"move_in_time"));
+    u->setMoveInTime(_qdt);
+    //load unit number into the return member
+    //u->setUnit(qcol<int>(q,"unit_no"));
+
+    //load address into the return member
+    //u->setAddress(qcol<QString>(q,"address"));
 
     q.finish();
     User::remember(id, u);

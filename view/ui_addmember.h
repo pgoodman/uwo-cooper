@@ -27,6 +27,7 @@
 #include <QRadioButton>
 #include <QTextEdit>
 #include <QLayout>
+#include <QDateEdit>
 
 #include "datatype/user.h"
 #include "datatype/member.h"
@@ -56,6 +57,7 @@ public:
     QLabel *GivenNameLabel;
     QLineEdit *NumberEdit;
     QLineEdit *lineEdit;
+    QDateEdit *dateEdit;
     QLabel *NumberLabel;
     QLabel *UnitLabel;
     QRadioButton *ArrearsNoButton;
