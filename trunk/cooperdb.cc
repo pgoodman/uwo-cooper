@@ -191,6 +191,8 @@ static void install_tables(QSqlQuery &q) {
             "telephone TEXT,"
             "move_in_time INTEGER DEFAULT 0,"
             "money_owed REAL DEFAULT 0.0,"
+            "unit_no INTEGER,"
+            "address TEXT,"
 
 
             // index
@@ -215,9 +217,10 @@ static void install_tables(QSqlQuery &q) {
         ")",
 
         "CREATE TABLE unit ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "id INTEGER,"
             "address TEXT,"
-            "num_rooms INTEGER"
+            "num_rooms INTEGER,"
+            "PRIMARY KEY (id, address)"
         ")"
     };
 

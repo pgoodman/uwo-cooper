@@ -17,7 +17,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     LastNameEdit->setObjectName(QString::fromUtf8("LastNameEdit"));
     LastNameEdit->setEnabled(true);
 
-    layout->addWidget(LastNameEdit, 0, 2, 1, 4);
+    layout->addWidget(LastNameEdit, 0, 1, 1, 1);
 
     GivenNameLabel = new QLabel();
     GivenNameLabel->setObjectName(QString::fromUtf8("GivenNameLabel"));
@@ -28,29 +28,38 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     GivenNameEdit->setObjectName(QString::fromUtf8("GivenNameEdit"));
     GivenNameEdit->setEnabled(true);
 
-    layout->addWidget(GivenNameEdit, 1, 2, 1, 4);
+    layout->addWidget(GivenNameEdit, 1, 1, 1, 1);
 
     NumberLabel = new QLabel();
     NumberLabel->setObjectName(QString::fromUtf8("NumberLabel"));
 
-    layout->addWidget(NumberLabel, 2, 0, 1, 2);
+    layout->addWidget(NumberLabel, 2, 0, 1, 1);
 
     NumberEdit = new QLineEdit();
     NumberEdit->setObjectName(QString::fromUtf8("NumberEdit"));
     NumberEdit->setEnabled(true);
 
-    layout->addWidget(NumberEdit, 2, 2, 1, 4);
+    layout->addWidget(NumberEdit, 2, 1, 1, 1);
 
     UnitLabel = new QLabel();
     UnitLabel->setObjectName(QString::fromUtf8("UnitLabel"));
 
     layout->addWidget(UnitLabel, 3, 0, 1, 1);
-
+    //unit no
     UnitEdit = new QLineEdit();
     UnitEdit->setObjectName(QString::fromUtf8("UnitEdit"));
     UnitEdit->setEnabled(true);
 
-    layout->addWidget(UnitEdit, 3, 2, 1, 4);
+    layout->addWidget(UnitEdit, 3, 1, 1, 1);
+
+    //address label
+    AddressLabel = new QLabel("Unit Address");
+    layout->addWidget(AddressLabel, 3, 2, 1, 1);
+    //address
+    AddressEdit = new QLineEdit();
+    AddressEdit->setEnabled(true);
+    layout->addWidget(AddressEdit, 3, 3, 1, 1);
+
 
     CommitteeLabel = new QLabel();
     CommitteeLabel->setObjectName(QString::fromUtf8("CommitteeLabel"));
@@ -83,7 +92,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
                                                 "selection-color: red;}"
                                  );
     committee_list->fill(&Committee::findAll);
-    layout->addWidget(committee_list, 4, 3, 1, 3);
+    layout->addWidget(committee_list, 4, 3, 1, 1);
 
     UserIDLabel = new QLabel();
     UserIDLabel->setObjectName(QString::fromUtf8("UserIDLabel"));
@@ -94,7 +103,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     UserIDEdit->setObjectName(QString::fromUtf8("UserIDEdit"));
     UserIDEdit->setEnabled(true);
 
-    layout->addWidget(UserIDEdit, 5, 2, 1, 4);
+    layout->addWidget(UserIDEdit, 5, 1, 1, 1);
 
     PasswordLabel = new QLabel();
     PasswordLabel->setObjectName(QString::fromUtf8("PasswordLabel"));
@@ -104,8 +113,8 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     PasswordEdit = new QLineEdit();
     PasswordEdit->setObjectName(QString::fromUtf8("PasswordEdit"));
 
-    layout->addWidget(PasswordEdit, 6, 2, 1, 4);
-
+    layout->addWidget(PasswordEdit, 6, 1, 1, 1);
+    //move in time label
     label = new QLabel();
     label->setObjectName(QString::fromUtf8("label"));
 
@@ -116,12 +125,12 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     lineEdit->setEnabled(true);
 
     layout->addWidget(lineEdit, 7, 2, 1, 2);*/
-
+    //move in time
     dateEdit = new QDateEdit();
     dateEdit->setObjectName(QString::fromUtf8("dateEdit"));
     dateEdit->setCalendarPopup(true);
 
-    layout->addWidget(dateEdit, 7, 2, 1, 2);
+    layout->addWidget(dateEdit, 7, 1, 1, 1);
 
     InArrearsLabel = new QLabel();
     InArrearsLabel->setObjectName(QString::fromUtf8("InArrearsLabel"));
@@ -135,13 +144,13 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     ArrearsNoButton->setObjectName(QString::fromUtf8("ArrearsNoButton"));
     ArrearsNoButton->setChecked(true);
 
-    layout->addWidget(ArrearsNoButton, 8, 2, 1, 1);
+    layout->addWidget(ArrearsNoButton, 8, 1, 1, 1);
 
     ArrearYesButton = new QRadioButton();
     buttonGroup_2->addButton(ArrearYesButton);
     ArrearYesButton->setObjectName(QString::fromUtf8("ArrearYesButton"));
 
-    layout->addWidget(ArrearYesButton, 8, 4, 1, 1);
+    layout->addWidget(ArrearYesButton, 8, 2, 1, 1);
 
     ArrearsAmountEdit = new QLineEdit();
     ArrearsAmountEdit->setObjectName(QString::fromUtf8("ArrearsAmountEdit"));
@@ -150,7 +159,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     ArrearsAmountEdit->setDragEnabled(false);
     ArrearsAmountEdit->setReadOnly(false);
 
-    layout->addWidget(ArrearsAmountEdit, 8, 5, 1, 1);
+    layout->addWidget(ArrearsAmountEdit, 8, 3, 1, 1);
 
     PrivateNoLabel = new QLabel();
     PrivateNoLabel->setObjectName(QString::fromUtf8("PrivateNoLabel"));
@@ -164,48 +173,48 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     PrivateNoButton->setObjectName(QString::fromUtf8("PrivateNoButton"));
     PrivateNoButton->setChecked(true);
 
-    layout->addWidget(PrivateNoButton, 9, 2, 1, 1);
+    layout->addWidget(PrivateNoButton, 9, 1, 1, 2);
 
     PrivateYesButton = new QRadioButton();
     buttonGroup->addButton(PrivateYesButton);
     PrivateYesButton->setObjectName(QString::fromUtf8("PrivateYesButton"));
 
-    layout->addWidget(PrivateYesButton, 9, 4, 1, 1);
-
+    layout->addWidget(PrivateYesButton, 9, 2, 1, 2);
+    //money owe label
     label_2 = new QLabel();
     label_2->setObjectName(QString::fromUtf8("label_2"));
 
-    layout->addWidget(label_2, 10, 0, 1, 4);
+    layout->addWidget(label_2, 10, 0, 1, 1);
 
     under21NoButton = new QRadioButton();
     under21NoButton->setObjectName(QString::fromUtf8("under21NoButton"));
     under21NoButton->setChecked(true);
 
-    layout->addWidget(under21NoButton, 10, 4, 1, 1);
+    layout->addWidget(under21NoButton, 10, 1, 1, 1);
 
     Under21YesButton = new QRadioButton();
     Under21YesButton->setObjectName(QString::fromUtf8("Under21YesButton"));
 
-    layout->addWidget(Under21YesButton, 10, 5, 1, 1);
+    layout->addWidget(Under21YesButton, 10, 2, 1, 1);
 
     Under21List = new QTextEdit();
     Under21List->setObjectName(QString::fromUtf8("Under21List"));
     Under21List->setEnabled(false);
 
-    layout->addWidget(Under21List, 10, 6, 1, 1);
+    layout->addWidget(Under21List, 10, 3, 1, 1);
 
     addNewButton = new QPushButton();
     addNewButton->setObjectName(QString::fromUtf8("addMember"));
     connect(addNewButton, SIGNAL(clicked()), this, SLOT(addMember()));
  //   connect(addNewButton, SIGNAL(clicked()), this, SLOT(accept()));
 
-    layout->addWidget(addNewButton, 11, 2, 1, 3);
+    layout->addWidget(addNewButton, 11, 2, 1, 1);
 
     cancelButton = new QPushButton();
     cancelButton->setObjectName(QString::fromUtf8("cancelButton"));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
-    layout->addWidget(cancelButton, 11, 5, 1, 1);
+    layout->addWidget(cancelButton, 11, 3, 1, 1);
 
     setLayout(layout);
     setWindowTitle(tr("Add Member"));
@@ -244,9 +253,9 @@ void Ui_AddMember::retranslateUi()
 {
 
    // ->setWindowTitle(QApplication::translate("", "", 0, QApplication::UnicodeUTF8));
-    UserIDLabel->setText(QApplication::translate("", "Login Name:", 0, QApplication::UnicodeUTF8));
-    LastNameLabel->setText(QApplication::translate("", "Last Name:", 0, QApplication::UnicodeUTF8));
-    label->setText(QApplication::translate("", "Move-in Date: mm/dd/yyyy", 0, QApplication::UnicodeUTF8));
+    UserIDLabel->setText(QApplication::translate("", "* Login Name:", 0, QApplication::UnicodeUTF8));
+    LastNameLabel->setText(QApplication::translate("", "* Last Name:", 0, QApplication::UnicodeUTF8));
+    label->setText(QApplication::translate("", "* Move-in Date: mm/dd/yyyy", 0, QApplication::UnicodeUTF8));
     ArrearYesButton->setText(QApplication::translate("", "Yes:", 0, QApplication::UnicodeUTF8));
     LastNameEdit->setText(QString());
     CommitteeLabel->setText(QApplication::translate("", "In Committee?:", 0, QApplication::UnicodeUTF8));
@@ -254,9 +263,9 @@ void Ui_AddMember::retranslateUi()
     InArrearsLabel->setText(QApplication::translate("", "In Arrears?", 0, QApplication::UnicodeUTF8));
     PasswordLabel->setText(QApplication::translate("", "Password:", 0, QApplication::UnicodeUTF8));
     addNewButton->setText(QApplication::translate("addMember", "Add New Member", 0, QApplication::UnicodeUTF8));
-    GivenNameLabel->setText(QApplication::translate("", "Given Name(s):", 0, QApplication::UnicodeUTF8));
+    GivenNameLabel->setText(QApplication::translate("", "* Given Name(s):", 0, QApplication::UnicodeUTF8));
     NumberLabel->setText(QApplication::translate("", "Telephone Number:", 0, QApplication::UnicodeUTF8));
-    UnitLabel->setText(QApplication::translate("", "Unit Number:", 0, QApplication::UnicodeUTF8));
+    UnitLabel->setText(QApplication::translate("", "* Unit Number:", 0, QApplication::UnicodeUTF8));
     ArrearsNoButton->setText(QApplication::translate("", "No", 0, QApplication::UnicodeUTF8));
     PrivateNoButton->setText(QApplication::translate("", "No", 0, QApplication::UnicodeUTF8));
     PrivateNoLabel->setText(QApplication::translate("", "Private Number?", 0, QApplication::UnicodeUTF8));
@@ -274,6 +283,7 @@ void Ui_AddMember::addMember(void) {
     QString name = GivenNameEdit->text();
     QString telephone = NumberEdit->text();
     QString unit = UnitEdit->text();
+    QString address = AddressEdit->text();
     //QString committee = CommitteeEdit->text();
     QString userid = UserIDEdit->text();
     QString password = PasswordEdit->text();
@@ -301,10 +311,15 @@ void Ui_AddMember::addMember(void) {
         return;
     }
 
-    if(unit.isEmpty())
+    if(unit.isEmpty()||!unit.toInt())
     {
         QMessageBox::information(this, tr("Empty Field"),
                      tr("Please enter a unit number."));
+        return;
+    }
+    if(address.isEmpty()){
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a valid street address."));
         return;
     }
 
@@ -355,7 +370,8 @@ void Ui_AddMember::addMember(void) {
 
     Member::create(
         name, lastname, telephone, PrivateYesButton->isDown(),
-        userid, password, QDateTime(date).toTime_t(), committee_id
+        userid, password, QDateTime(date).toTime_t(),
+        unit.toInt(),address,committee_id
     );
 
     cout << "done." << endl;
@@ -376,6 +392,7 @@ void Ui_AddMember::saveChanges(){
     QString name = GivenNameEdit->text();
     QString telephone = NumberEdit->text();
     QString unit = UnitEdit->text();
+    QString address = AddressEdit->text();
     QString userid = UserIDEdit->text();
     QString password = PasswordEdit->text();
     //QString date = lineEdit->text();
@@ -409,7 +426,11 @@ void Ui_AddMember::saveChanges(){
                      tr("Please enter a valid unit number."));
         return;
     }
-
+    if(address.isEmpty()){
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a valid street address."));
+        return;
+    }
     if(CommitteeYesButton->isChecked() && 0 == committee_list->getModel())
     {
         QMessageBox::information(this, tr("Empty Field"),
@@ -523,6 +544,9 @@ void Ui_AddMember::fillEditForm(){
         // time(&_t);
         //_qt.fromStdString(ctime(&_t));
         //lineEdit->setText(_qt);
+
+        UnitEdit->setText(QString::number(selectedMember->getUnit()));
+        AddressEdit->setText(selectedMember->getAddress());
 
         UserIDEdit->setText(selectedMember->getLoginName());
         if(!selectedMember->getCommittee()==0){

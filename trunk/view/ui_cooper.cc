@@ -212,11 +212,11 @@ void Ui_Cooper::editMember() {
     delete editMemberDialog->addNewButton;
 
     QPushButton *saveButton = new QPushButton(QString::fromUtf8("Save Changes"));
-    editMemberDialog->layout->addWidget(saveButton,11,1,1,1);
+    editMemberDialog->layout->addWidget(saveButton,11,0,1,1);
     connect(saveButton,SIGNAL(clicked()),editMemberDialog,SLOT(saveChanges()));
 
     QPushButton *resetButton = new QPushButton(QString::fromUtf8("Reset"));
-    editMemberDialog->layout->addWidget(resetButton,11,3,1,1);
+    editMemberDialog->layout->addWidget(resetButton,11,1,1,1);
     connect(resetButton,SIGNAL(clicked()),editMemberDialog,SLOT(resetChanges()));
 
     editMemberDialog->setSelectedMember(member);
