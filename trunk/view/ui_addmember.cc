@@ -74,6 +74,14 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
 
     committee_list = new ModelList<Committee>;
     committee_list->setEnabled(false);
+
+    committee_list->setStyleSheet("QListWidget {border: 1px solid gray;"
+                                                "border-radius: 5px;"
+                                                "padding: 0 8px;"
+                                                "background: darkgrey;"
+                                                "selection-background-color: blue;"
+                                                "selection-color: red;}"
+                                 );
     committee_list->fill(&Committee::findAll);
     layout->addWidget(committee_list, 4, 3, 1, 3);
 
