@@ -79,9 +79,16 @@ QString Member::getUserName(void) {
     return user_name;
 }
 
+QString Member::getTelephoneNum(){
+    return telephone_num;
+}
 void Member::setTelephoneNumber(QString newNumber)
 {
 	telephone_num = newNumber;
+}
+
+double Member::getMoneyOwed(){
+    return money_owed;
 }
 
 void Member::setMoneyOwed(double money)
@@ -89,11 +96,17 @@ void Member::setMoneyOwed(double money)
 	money_owed = money;
 }
 
+bool Member::isTelephoneShared(){
+    return share_telephone;
+}
 void Member::setSharedTelephone(bool share)
 {
 	share_telephone = share;
 }
 
+bool Member::isMarkedDeleted(){
+    return is_marked;
+}
 void Member::setMarked(bool mark)
 {
 	is_marked = mark;
@@ -112,6 +125,70 @@ void Member::setFullName(QString firstName, QString lastName)
 {
     first_name = firstName;
     last_name = lastName;
+}
+
+QString Member::getFirstName(){
+    return first_name;
+}
+
+void Member::setFirstName(QString firstName){
+    first_name=firstName;
+}
+
+QString Member::getLastName(){
+    return last_name;
+}
+void Member::setLastName(QString lastName){
+    last_name=lastName;
+}
+
+int Member::getUnit(){
+    return unit;
+}
+void Member::setUnit(int unitNo){
+    unit=unitNo;
+}
+
+QString Member::getAddress(){
+    return address;
+}
+void Member::setAddress(QString addr){
+    address=addr;
+}
+
+int Member::getCommitteeID(){
+    return committee_id;
+}
+
+void Member::setCommitteeID(int committeeID){
+    committee_id=committeeID;
+}
+
+QString Member::getLoginName(){
+    return user_name;
+}
+
+void Member::setLoginName(QString loginName){
+    user_name=loginName;
+}
+
+time_t Member::getMoveInTime(){
+    return move_in_time;
+}
+
+void Member::setMoveInTime(QDateTime mvTime){
+    move_in_time=mvTime.toTime_t();
+}
+
+QString Member::getPassword(){
+    if(this->password==0)
+        return "";
+    else
+        return this->password;
+}
+
+void Member::setPassword(QString pwd){
+    this->password=pwd;
 }
 
 /**
@@ -243,37 +320,5 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
 pair<Member::iterator, Member::iterator> Member::findAll() {
     return CooperDB::selectAll<Member>("user", "is_coordinator=0");
 }
-QString Member::getTelephoneNum(){
-    return telephone_num;
-}
-double Member::getMoneyOwed(){
-    return money_owed;
-}
-bool Member::isTelephoneShared(){
-    return share_telephone;
-}
-bool Member::isMarkedDeleted(){
-    return is_marked;
-}
-int Member::getCommitteeID(){
-    return committee_id;
-}
-QString Member::getLoginName(){
-    return user_name;
-}
-QString Member::getFirstName(){
-    return first_name;
-}
-QString Member::getLastName(){
-    return last_name;
-}
-time_t Member::getMoveInTime(){
-    return move_in_time;
-}
 
-QString Member::getPassword(){
-    if(this->password==0)
-        return "";
-    else
-        return this->password;
-}
+
