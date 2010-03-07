@@ -201,6 +201,7 @@ void Ui_Cooper::editMember() {
     Member *member =  member_list->getModel();
     if(member==0)
          return;
+    member=Member::load(member->getID());
 
     Ui_AddMember* editMemberDialog = new Ui_AddMember;
     editMemberDialog->show();

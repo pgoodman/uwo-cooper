@@ -202,6 +202,26 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     setLayout(layout);
     setWindowTitle(tr("Add Member"));
 
+    if(!User::canDo(EDIT_MEMBER_STATUS)){
+        LastNameEdit->setReadOnly(true);
+        GivenNameEdit->setReadOnly(true);
+        UnitEdit->setReadOnly(true);
+        CommitteeNoButton->setDisabled(true);
+        CommitteeYesButton->setDisabled(true);
+        committee_list->setDisabled(true);
+        UserIDEdit->setReadOnly(true);
+        NumberEdit->setReadOnly(true);
+        dateEdit->setReadOnly(true);
+        ArrearsNoButton->setDisabled(true);
+        ArrearYesButton->setDisabled(true);
+        ArrearsAmountEdit->setReadOnly(true);
+        Under21YesButton->setDisabled(true);
+        under21NoButton->setDisabled(true);
+        Under21List->setReadOnly(true);
+        PrivateYesButton->setDisabled(true);
+        PrivateNoButton->setDisabled(true);
+    }
+
     retranslateUi();
     QObject::connect(Under21YesButton, SIGNAL(toggled(bool)), Under21List, SLOT(setEnabled(bool)));
     QObject::connect(ArrearYesButton, SIGNAL(toggled(bool)), ArrearsAmountEdit, SLOT(setEnabled(bool)));
@@ -350,7 +370,7 @@ void Ui_AddMember::saveChanges(){
     QString unit = UnitEdit->text();
     QString userid = UserIDEdit->text();
     QString password = PasswordEdit->text();
-    QString date = lineEdit->text();
+    //QString date = lineEdit->text();
     QDate qdate = dateEdit->date();
 
     //validate fields for mandatory and format
@@ -447,11 +467,13 @@ void Ui_AddMember::saveChanges(){
         QDateTime _dt(_t);
         selectedMember->setMoveInTime(_dt);
     }*/
-    QDateTime _mit;
-    _mit.fromTime_t(selectedMember->getMoveInTime());
-    if(dateEdit->date()!=_mit.date()){
 
-        selectedMember->setMoveInTime(QDateTime(dateEdit->date()));
+    time_t _tt=selectedMember->getMoveInTime();
+    //_mit->fromTime_t(_tt);
+    if(dateEdit->date()!= QDateTime::fromTime_t(_tt).date()){
+        QDateTime *_mit = new QDateTime(dateEdit->date());
+        selectedMember->setMoveInTime(*_mit);
+        delete _mit;
     }
 
 
@@ -487,7 +509,7 @@ void Ui_AddMember::fillEditForm(){
         time_t _t = selectedMember->getMoveInTime();
 
         QDateTime _qdt;
-        _qdt.fromTime_t(_t);
+        _qdt = QDateTime::fromTime_t(_t);
         dateEdit->setDate(_qdt.date());
         //QString _qt;
         // time(&_t);
