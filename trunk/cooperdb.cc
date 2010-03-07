@@ -327,6 +327,10 @@ template <> string qcol(const QSqlQuery &q, const char *index) {
 template <> QString qcol(const QSqlQuery &q, const char *index) {
     return qcol<QVariant>(q, index).toString();
 }
+template <> long qcol(const QSqlQuery &q, const char *index) {
+    return qcol<QVariant>(q, index).toUInt();
+}
+
 
 /**
  * Extract thigns from the variants.

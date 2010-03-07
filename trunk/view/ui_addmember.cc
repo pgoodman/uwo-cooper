@@ -103,11 +103,17 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
 
     layout->addWidget(label, 7, 0, 1, 1);
 
-    lineEdit = new QLineEdit();
+    /*lineEdit = new QLineEdit();
     lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
     lineEdit->setEnabled(true);
 
-    layout->addWidget(lineEdit, 7, 2, 1, 4);
+    layout->addWidget(lineEdit, 7, 2, 1, 2);*/
+
+    dateEdit = new QDateEdit();
+    dateEdit->setObjectName(QString::fromUtf8("dateEdit"));
+    dateEdit->setCalendarPopup(true);
+
+    layout->addWidget(dateEdit, 7, 2, 1, 2);
 
     InArrearsLabel = new QLabel();
     InArrearsLabel->setObjectName(QString::fromUtf8("InArrearsLabel"));
@@ -212,7 +218,7 @@ void Ui_AddMember::retranslateUi()
    // ->setWindowTitle(QApplication::translate("", "", 0, QApplication::UnicodeUTF8));
     UserIDLabel->setText(QApplication::translate("", "Login Name:", 0, QApplication::UnicodeUTF8));
     LastNameLabel->setText(QApplication::translate("", "Last Name:", 0, QApplication::UnicodeUTF8));
-    label->setText(QApplication::translate("", "Move-in Date:", 0, QApplication::UnicodeUTF8));
+    label->setText(QApplication::translate("", "Move-in Date: mm/dd/yyyy", 0, QApplication::UnicodeUTF8));
     ArrearYesButton->setText(QApplication::translate("", "Yes:", 0, QApplication::UnicodeUTF8));
     LastNameEdit->setText(QString());
     CommitteeLabel->setText(QApplication::translate("", "In Committee?:", 0, QApplication::UnicodeUTF8));
@@ -243,7 +249,8 @@ void Ui_AddMember::addMember(void) {
     //QString committee = CommitteeEdit->text();
     QString userid = UserIDEdit->text();
     QString password = PasswordEdit->text();
-    QString date = lineEdit->text();
+    //QString date = lineEdit->text();
+    QDate date=dateEdit->date();
 
     if(lastname.isEmpty())
     {
@@ -300,10 +307,10 @@ void Ui_AddMember::addMember(void) {
         return;
     }
 
-    if(date.isEmpty())
+    if(date.isNull())
     {
         QMessageBox::information(this, tr("Empty Field"),
-                     tr("Please enter a move-in date."));
+                     tr("Please enter a valid move-in date."));
         return;
     }
 
@@ -317,9 +324,10 @@ void Ui_AddMember::addMember(void) {
 
     cout << "adding member." << endl;
 
+
     Member::create(
         name, lastname, telephone, PrivateYesButton->isDown(),
-        userid, password, time(0), committee_id
+        userid, password, QDateTime(date).toTime_t(), committee_id
     );
 
     cout << "done." << endl;
@@ -343,6 +351,7 @@ void Ui_AddMember::saveChanges(){
     QString userid = UserIDEdit->text();
     QString password = PasswordEdit->text();
     QString date = lineEdit->text();
+    QDate qdate = dateEdit->date();
 
     //validate fields for mandatory and format
     if(lastname.isEmpty())
@@ -400,10 +409,10 @@ void Ui_AddMember::saveChanges(){
         return;
     }
 
-    if(date.isEmpty())
+    if(qdate.isNull())
     {
         QMessageBox::information(this, tr("Empty Field"),
-                     tr("Please enter a move-in date."));
+                     tr("Please enter a valid move-in date."));
         return;
     }
 
@@ -432,11 +441,17 @@ void Ui_AddMember::saveChanges(){
         selectedMember->setPassword(password);
         isdirty=true;
     }
-    if(lineEdit->isModified()){
+    /*if(lineEdit->isModified()){
         QDate _t;
-        _t.fromString(date,"dd'/'MM'/'yyyy");
+        _t.fromString(date,"MM'/'dd'/'yyyy");
         QDateTime _dt(_t);
         selectedMember->setMoveInTime(_dt);
+    }*/
+    QDateTime _mit;
+    _mit.fromTime_t(selectedMember->getMoveInTime());
+    if(dateEdit->date()!=_mit.date()){
+
+        selectedMember->setMoveInTime(QDateTime(dateEdit->date()));
     }
 
 
@@ -470,10 +485,15 @@ void Ui_AddMember::fillEditForm(){
         PasswordEdit->setText(selectedMember->getPassword());
         NumberEdit->setText(selectedMember->getTelephoneNum());
         time_t _t = selectedMember->getMoveInTime();
-        time(&_t);
-        QString _qt;
-        _qt.fromStdString(ctime(&_t));
-        lineEdit->setText(_qt);
+
+        QDateTime _qdt;
+        _qdt.fromTime_t(_t);
+        dateEdit->setDate(_qdt.date());
+        //QString _qt;
+        // time(&_t);
+        //_qt.fromStdString(ctime(&_t));
+        //lineEdit->setText(_qt);
+
         UserIDEdit->setText(selectedMember->getLoginName());
         if(!selectedMember->getCommittee()==0){
             CommitteeYesButton->setChecked(true);
@@ -481,7 +501,8 @@ void Ui_AddMember::fillEditForm(){
             int _id = selectedMember->getCommitteeID();
             Committee *_committee = Committee::load(_id);
             QListWidgetItem * _qli =committee_list->findItems(_committee->toString(),Qt::MatchExactly)[0];
-            _qli->setSelected(true);
+            committee_list->setCurrentItem(_qli);
+            //_qli->setSelected(true);
 
             //_qli->setBackgroundColor(Qt::red);
         }
