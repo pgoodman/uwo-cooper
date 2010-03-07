@@ -77,8 +77,8 @@ public:
     static Member *create(QString firstName, QString lastName,
                           QString telephone,
                           const bool share_telephone, QString user_name,
-                          QString password, const time_t move_in_time,
-                          const int committee_id);
+                          QString password, const time_t move_in_time, int unit_no,
+                          QString unit_addr, const int committee_id);
 
     static pair<iterator, iterator> findAll();
 

@@ -60,6 +60,8 @@ public:
     QDateEdit *dateEdit;
     QLabel *NumberLabel;
     QLabel *UnitLabel;
+    QLabel *AddressLabel;
+    QLineEdit *AddressEdit;
     QRadioButton *ArrearsNoButton;
     QLineEdit *PasswordEdit;
     QRadioButton *PrivateNoButton;

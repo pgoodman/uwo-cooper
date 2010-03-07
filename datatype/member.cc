@@ -196,16 +196,16 @@ void Member::setPassword(QString pwd){
  */
 Member *Member::create(QString firstName, QString lastName, QString telephone,
                      const bool shareTelephone, QString userName,
-                     QString password, const time_t moveInTime,
-                     const int committee_id) {
+                     QString password, const time_t moveInTime, int unitNo,
+                     QString unitAddr, const int committee_id) {
     QSqlQuery q;
     q.prepare(
         "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
-        "telephone, move_in_time, committee_id) VALUES (?,?,?,?,?,?,?,?)"
+        "telephone, move_in_time, unit_no, address, committee_id) VALUES (?,?,?,?,?,?,?,?,?,?)"
     );
 
     q << firstName << lastName << userName << password << shareTelephone
-      << telephone << moveInTime << committee_id;
+      << telephone << moveInTime << unitNo << unitAddr << committee_id;
 
     if(!q.exec()) {
         CooperDB::queryError("Unable to Create Member", q);
@@ -221,11 +221,11 @@ void Member::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE user SET first_name=?,last_name=?,name=?,password=?,"
-        "share_telephone=?,telephone=?,move_in_time=?,is_marked=?,"
-        "committee_id=?,money_owed=? WHERE id=? AND is_coordinator=0"
+        "share_telephone=?,telephone=?,move_in_time=?,unit_no=?,address=?,"
+        "is_marked=?,committee_id=?,money_owed=? WHERE id=? AND is_coordinator=0"
     );
     q << first_name << last_name << user_name << password << share_telephone
-      << telephone_num << move_in_time << is_marked << committee_id
+      << telephone_num << move_in_time << unit << address << is_marked << committee_id
       << money_owed << id;
 
     if(!q.exec() || 0 == q.numRowsAffected()) {
@@ -309,16 +309,18 @@ Member *Member::load(QSqlQuery &q, const bool checked_id) {
         qcol<int>(q, "committee_id"),
         id
     );
+
     //load move in time into the return member
     QDateTime _qdt;
     time_t _tt=qcol<long>(q,"move_in_time");
     _qdt = QDateTime::fromTime_t(_tt);
     u->setMoveInTime(_qdt);
+
     //load unit number into the return member
-    //u->setUnit(qcol<int>(q,"unit_no"));
+    u->setUnit(qcol<int>(q,"unit_no"));
 
     //load address into the return member
-    //u->setAddress(qcol<QString>(q,"address"));
+    u->setAddress(qcol<QString>(q,"address"));
 
     q.finish();
     User::remember(id, u);
