@@ -197,19 +197,29 @@ void Ui_Cooper::addMember() {
 }
 
 void Ui_Cooper::editMember() {
+
+    Member *member =  member_list->getModel();
+    if(member==0)
+         return;
+
     Ui_AddMember* editMemberDialog = new Ui_AddMember;
     editMemberDialog->show();
+
     editMemberDialog->setWindowTitle("Edit Member Information");
+
     editMemberDialog->layout->removeWidget(editMemberDialog->addNewButton);
     delete editMemberDialog->addNewButton;
+
     QPushButton *saveButton = new QPushButton(QString::fromUtf8("Save Changes"));
     editMemberDialog->layout->addWidget(saveButton,11,1,1,1);
-    connect(saveButton,SIGNAL(clicked()),this,SLOT(saveChanges()));
+    connect(saveButton,SIGNAL(clicked()),editMemberDialog,SLOT(saveChanges()));
+
     QPushButton *resetButton = new QPushButton(QString::fromUtf8("Reset"));
     editMemberDialog->layout->addWidget(resetButton,11,3,1,1);
-    connect(resetButton,SIGNAL(clicked()),this,SLOT(resetChanges()));
+    connect(resetButton,SIGNAL(clicked()),editMemberDialog,SLOT(resetChanges()));
 
-    fillEditForm(editMemberDialog);
+    editMemberDialog->setSelectedMember(member);
+    editMemberDialog->fillEditForm();
 
     if(editMemberDialog->exec() == QDialog::Accepted)
     {
@@ -219,50 +229,6 @@ void Ui_Cooper::editMember() {
     delete editMemberDialog;
 }
 
-void Ui_Cooper::saveChanges(){
-
-}
-void Ui_Cooper::resetChanges(){
-
-}
-void Ui_Cooper::fillEditForm(Ui_AddMember* editMemberDialog){
-    Member *selectedMember =  member_list->getModel();
-    if(!selectedMember==0){
-        editMemberDialog->LastNameEdit->setText(selectedMember->getLastName());
-        editMemberDialog->GivenNameEdit->setText(selectedMember->getFirstName());
-        double _m=selectedMember->getMoneyOwed();
-        if(_m!=0) {
-            QString _mStr;
-            editMemberDialog->ArrearYesButton->setChecked(true);
-            editMemberDialog->ArrearsAmountEdit->setText(_mStr.setNum(_m));
-        }
-        else {
-            editMemberDialog->ArrearYesButton->setChecked(false);
-            editMemberDialog->ArrearsAmountEdit->setText("");
-        }
-        editMemberDialog->PrivateNoButton->setChecked(selectedMember->isTelephoneShared());
-        editMemberDialog->PasswordEdit->setText(selectedMember->getPassword());
-        editMemberDialog->NumberEdit->setText(selectedMember->getTelephoneNum());
-        time_t _t = selectedMember->getMoveInTime();
-        time(&_t);
-        QString _qt;
-        _qt.fromStdString(ctime(&_t));
-        editMemberDialog->lineEdit->setText(_qt);
-        editMemberDialog->UserIDEdit->setText(selectedMember->getLoginName());
-        if(!selectedMember->getCommittee()==0){
-            editMemberDialog->CommitteeYesButton->setChecked(true);
-            //assume committee name is unique. otherwise, have to go through all matched items
-            int _id = selectedMember->getCommitteeID();
-            Committee *_committee = Committee::load(_id);
-            QListWidgetItem * _qli =editMemberDialog->committee_list->findItems(_committee->toString(),Qt::MatchExactly)[0];
-            _qli->setSelected(true);
-            _qli->setBackgroundColor(Qt::red);
-        }
-        else
-            editMemberDialog->CommitteeYesButton->setChecked(false);
-
-    }
-}
 void Ui_Cooper::deleteMember() {
     Member *m(member_list->getModel());
     if(0 != m) {

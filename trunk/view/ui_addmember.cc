@@ -326,3 +326,167 @@ void Ui_AddMember::addMember(void) {
 
     done(QDialog::Accepted);
 }
+
+void Ui_AddMember::setSelectedMember(Member* selMem){
+    selectedMember=selMem;
+}
+
+void Ui_AddMember::saveChanges(){
+    //the sender() should be editMemberDialog.
+    //Check sender's class name is safer
+    bool isdirty=false;
+
+    QString lastname = LastNameEdit->text();
+    QString name = GivenNameEdit->text();
+    QString telephone = NumberEdit->text();
+    QString unit = UnitEdit->text();
+    QString userid = UserIDEdit->text();
+    QString password = PasswordEdit->text();
+    QString date = lineEdit->text();
+
+    //validate fields for mandatory and format
+    if(lastname.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a surname (family name)."));
+        return;
+    }
+
+    if(name.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a given name (first name)."));
+        return;
+    }
+
+    if(telephone.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a phone number."));
+        return;
+    }
+
+    if(unit.isEmpty()||!unit.toInt())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a valid unit number."));
+        return;
+    }
+
+    if(CommitteeYesButton->isChecked() && 0 == committee_list->getModel())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a committee."));
+        return;
+    }
+
+    if(userid.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a login name."));
+        return;
+    } else if(User::nameExists(userid)&&userid!=selectedMember->getLastName()) {
+        QMessageBox::information(this, tr("Bad Field"), tr(
+            "That login name is already in use. Please choose "
+            "another one."
+        ));
+        return;
+    }
+
+    if(password.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a password."));
+        return;
+    }
+
+    if(date.isEmpty())
+    {
+        QMessageBox::information(this, tr("Empty Field"),
+                     tr("Please enter a move-in date."));
+        return;
+    }
+
+    if(LastNameEdit->isModified()){
+        selectedMember->setLastName(lastname);
+        isdirty=true;
+    }
+    if(GivenNameEdit->isModified()){
+        selectedMember->setFirstName(name);
+        isdirty=true;
+    }
+
+    if(NumberEdit->isModified()){
+        selectedMember->setTelephoneNumber(telephone);
+        isdirty=true;
+    }
+    if(UnitEdit->isModified()){
+        selectedMember->setUnit(unit.toInt());
+        isdirty=true;
+    }
+    if(UserIDEdit->isModified()){
+        selectedMember->setLoginName(userid);
+        isdirty=true;
+    }
+    if(PasswordEdit->isModified()){
+        selectedMember->setPassword(password);
+        isdirty=true;
+    }
+    if(lineEdit->isModified()){
+        QDate _t;
+        _t.fromString(date,"dd'/'MM'/'yyyy");
+        QDateTime _dt(_t);
+        selectedMember->setMoveInTime(_dt);
+    }
+
+
+    if (isdirty) {
+        selectedMember->save();
+    }
+
+    done(QDialog::Accepted);
+}
+
+//reset used made changes.
+void Ui_AddMember::resetChanges(){
+    fillEditForm();
+}
+
+void Ui_AddMember::fillEditForm(){
+    if(!selectedMember==0){
+        LastNameEdit->setText(selectedMember->getLastName());
+        GivenNameEdit->setText(selectedMember->getFirstName());
+        double _m=selectedMember->getMoneyOwed();
+        if(_m!=0) {
+            QString _mStr;
+            ArrearYesButton->setChecked(true);
+            ArrearsAmountEdit->setText(_mStr.setNum(_m));
+        }
+        else {
+            ArrearYesButton->setChecked(false);
+            ArrearsAmountEdit->setText("");
+        }
+        PrivateNoButton->setChecked(selectedMember->isTelephoneShared());
+        PasswordEdit->setText(selectedMember->getPassword());
+        NumberEdit->setText(selectedMember->getTelephoneNum());
+        time_t _t = selectedMember->getMoveInTime();
+        time(&_t);
+        QString _qt;
+        _qt.fromStdString(ctime(&_t));
+        lineEdit->setText(_qt);
+        UserIDEdit->setText(selectedMember->getLoginName());
+        if(!selectedMember->getCommittee()==0){
+            CommitteeYesButton->setChecked(true);
+            //assume committee name is unique. otherwise, have to go through all matched items
+            int _id = selectedMember->getCommitteeID();
+            Committee *_committee = Committee::load(_id);
+            QListWidgetItem * _qli =committee_list->findItems(_committee->toString(),Qt::MatchExactly)[0];
+            _qli->setSelected(true);
+
+            //_qli->setBackgroundColor(Qt::red);
+        }
+        else
+            CommitteeYesButton->setChecked(false);
+
+    }
+}

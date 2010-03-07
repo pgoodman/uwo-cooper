@@ -77,8 +77,16 @@ public:
     Ui_AddMember(QWidget *parent = 0);
     void retranslateUi();
 
+    void setSelectedMember(Member* selMem);
+
 public slots:
     void addMember(void);
+    void saveChanges(void);
+    void resetChanges(void);
+    void fillEditForm(void);
+private:
+    Member* selectedMember;
+
 };
 
 
