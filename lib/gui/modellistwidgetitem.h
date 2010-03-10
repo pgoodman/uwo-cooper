@@ -9,13 +9,16 @@
 #ifndef MODELLISTITEM_H_
 #define MODELLISTITEM_H_
 
+#include <iostream>
+
+#include <QString>
 #include <QListWidget>
 #include <QListWidgetItem>
 
 template <typename T>
-class ModelListItem : public QListWidgetItem {
+class ModelListWidgetItem : public QListWidgetItem {
 public:
-    ModelListItem(T *m) : QListWidgetItem(m->toString()), model(m) { }
+    ModelListWidgetItem(T *m) : QListWidgetItem(m->toString()), model(m) { }
 
     T *getModel(void) {
         return model;

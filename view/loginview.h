@@ -5,24 +5,20 @@
 
 #include <QtGui>
 #include <QGridLayout>
+#include <QDialog>
 
-#include "window.h"
-#include "controller/authorizationcontroller.h"
+#include "lib/gui/formlayoutptr.h"
 #include "controller/usercontroller.h"
 
-class Login : public QWidget
+class LoginView : public QDialog
 {
     Q_OBJECT
 public:
-    Login();
+    LoginView();
 private:
     QLabel *titleLabel;
-    QLabel *nameLabel;
-    QLabel *pwdLabel;
     QLineEdit *nameLineEdit;
     QLineEdit *pwdLineEdit;
-    QPushButton *okPushButton;
-    QPushButton *cancelPushButton;
 private slots:
     void tryLogin();
     void cancelLogin();

@@ -6,24 +6,24 @@
  *     Version: $Id$
  */
 
-#include "ui_cooper.h"
+#include "view/homeview.h"
 
 /**
  * Constructor, make the UI.
  */
-Ui_Cooper::Ui_Cooper(void) {
+HomeView::HomeView(void) {
+    //QLayout *layout(new QGridLayout);
+    //layout->setSpacing(6);
+    //layout->setContentsMargins(11, 11, 11, 11);
 
-    Window::setSize(600, 400);
-    QLayout *layout(new QGridLayout);
-    layout->setSpacing(6);
-    layout->setContentsMargins(11, 11, 11, 11);
-
-    member_list = new ModelList<Member>(this);
-    committee_list = new ModelList<Committee>(this);
+    member_list = new ModelListWidget<MemberModel>(this);
+    committee_list = new ModelListWidget<CommitteeModel>(this);
 
     connect(
-        member_list, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-        this, SLOT(activateMemberButtons(QListWidgetItem *, QListWidgetItem *))
+        member_list,
+        SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
+        this,
+        SLOT(activateMemberButtons(QListWidgetItem *, QListWidgetItem *))
     );
 
     QTabWidget *tabs(new QTabWidget);
@@ -31,15 +31,16 @@ Ui_Cooper::Ui_Cooper(void) {
     tabs->addTab(makeCommitteeControls(), "Committee");
     makeMenuBar();
 
-    layout->addWidget(tabs);
+    //layout->addWidget(tabs);
+    //tabs->setLayout(layout);
 
-    setLayout(layout);
+    setCentralWidget(tabs);
 }
 
 /**
  * Create the member controls.
  */
-QWidget *Ui_Cooper::makeMemberControls(void) {
+QWidget *HomeView::makeMemberControls(void) {
 
     QWidget *controls = new QWidget;
     QFormLayout *layout = new QFormLayout(controls);
@@ -74,11 +75,11 @@ QWidget *Ui_Cooper::makeMemberControls(void) {
     connect(unmark_button, SIGNAL(clicked()), this, SLOT(unmarkMember()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
 
-    if(User::canDo(ADD_MEMBER)) column->addWidget(add_button);
-    if(User::canDo(EDIT_MEMBER_INFO)) column->addWidget(edit_button);
-    if(User::canDo(EDIT_MEMBER_STATUS)) column->addWidget(mark_button);
-    if(User::canDo(EDIT_MEMBER_STATUS)) column->addWidget(unmark_button);
-    if(User::canDo(DELETE_MEMBER)) column->addWidget(del_button);
+    if(UserModel::canDo(ADD_MEMBER)) column->addWidget(add_button);
+    if(UserModel::canDo(EDIT_MEMBER_INFO)) column->addWidget(edit_button);
+    if(UserModel::canDo(EDIT_MEMBER_STATUS)) column->addWidget(mark_button);
+    if(UserModel::canDo(EDIT_MEMBER_STATUS)) column->addWidget(unmark_button);
+    if(UserModel::canDo(DELETE_MEMBER)) column->addWidget(del_button);
 
     layout->setLayout(0, QFormLayout::FieldRole, column);
     layout->setWidget(0, QFormLayout::LabelRole, member_list);
@@ -94,7 +95,7 @@ QWidget *Ui_Cooper::makeMemberControls(void) {
 /**
  * Create the committee controls.
  */
-QWidget *Ui_Cooper::makeCommitteeControls(void) {
+QWidget *HomeView::makeCommitteeControls(void) {
     QWidget *controls = new QWidget;
     QFormLayout *layout = new QFormLayout(controls);
     QVBoxLayout *column = new QVBoxLayout();
@@ -131,7 +132,7 @@ QWidget *Ui_Cooper::makeCommitteeControls(void) {
 /**
  * Create the menu bar.
  */
-void Ui_Cooper::makeMenuBar(void) {
+void HomeView::makeMenuBar(void) {
 
     QMenuBar *menuBar = new QMenuBar();
     menuBar->setGeometry(QRect(0, 0, 600, 21));
@@ -146,13 +147,13 @@ void Ui_Cooper::makeMenuBar(void) {
     menuBar->addAction(menuEvent->menuAction());
     menuBar->addAction(menuPrint->menuAction());
     menuBar->addAction(menuHelp->menuAction());
-
+    /*
     QAction *actionLogoff = Window::action();
     QAction *actionQuit = Window::action();
 
     menuSystem->addAction(actionLogoff);
     menuSystem->addAction(actionQuit);
-
+    */
     /*
     menuTask->addAction(actionAssign_Task);
     menuTask->addAction(actionEdit_Task);
@@ -169,26 +170,26 @@ void Ui_Cooper::makeMenuBar(void) {
     menuHelp->addAction(actionAbout_Cooper);
     */
 
-    Window::setMenuBar(menuBar);
+    //Window::setMenuBar(menuBar);
 }
 
 /*
  * Pupulate the member list and disable some buttons.
  */
-void Ui_Cooper::populateMembers() {
-    member_list->fill(&Member::findAll);
+void HomeView::populateMembers() {
+    member_list->fill(&MemberModel::findAll);
     mark_button->setDisabled(true);
     unmark_button->setDisabled(true);
     del_button->setDisabled(true);
     edit_button->setDisabled(true);
 }
 
-void Ui_Cooper::populateCommittees() {
-    committee_list->fill(&Committee::findAll);
+void HomeView::populateCommittees() {
+    committee_list->fill(&CommitteeModel::findAll);
 }
 
-void Ui_Cooper::addMember() {
-    Ui_AddMember* addMemberDialog = new Ui_AddMember;
+void HomeView::addMember() {
+    AddMemberView *addMemberDialog = new AddMemberView;
     addMemberDialog->show();
     if(addMemberDialog->exec() == QDialog::Accepted) {
         populateMembers();
@@ -196,14 +197,14 @@ void Ui_Cooper::addMember() {
     delete addMemberDialog;
 }
 
-void Ui_Cooper::editMember() {
+void HomeView::editMember() {
 
-    Member *member =  member_list->getModel();
-    if(member==0)
+    MemberModel *member =  member_list->getModel();
+    if(member==0) {
          return;
-    member=Member::load(member->getID());
+    }
 
-    Ui_AddMember* editMemberDialog = new Ui_AddMember;
+    AddMemberView *editMemberDialog = new AddMemberView;
     editMemberDialog->show();
 
     editMemberDialog->setWindowTitle("Edit Member Information");
@@ -224,46 +225,48 @@ void Ui_Cooper::editMember() {
 
     if(editMemberDialog->exec() == QDialog::Accepted)
     {
-          populateMembers();
+        populateMembers();
     }
 
     delete editMemberDialog;
 }
 
-void Ui_Cooper::deleteMember() {
-    Member *m(member_list->getModel());
+void HomeView::deleteMember() {
+    MemberModel *m(member_list->getModel());
     if(0 != m) {
-        m->hardDelete();
+        m->remove();
         populateMembers();
     }
 }
 
-void Ui_Cooper::markMember() {
-    Member *m(member_list->getModel());
+void HomeView::markMember() {
+    MemberModel *m(member_list->getModel());
     if(0 != m) {
-        m->softDelete(true);
+        m->markDeleted(true);
+        m->save();
         populateMembers();
     }
 }
 
-void Ui_Cooper::unmarkMember() {
-    Member *m(member_list->getModel());
+void HomeView::unmarkMember() {
+    MemberModel *m(member_list->getModel());
     if(0 != m) {
-        m->softDelete(false);
+        m->markDeleted(false);
+        m->save();
         populateMembers();
     }
 }
 
-void Ui_Cooper::activateMemberButtons(QListWidgetItem *old,
-                                      QListWidgetItem *curr) {
+void HomeView::activateMemberButtons(QListWidgetItem *old,
+                                 QListWidgetItem *curr) {
     (void) old; (void) curr;
 
-    Member *member(member_list->getModel());
+    MemberModel *member(member_list->getModel());
     if(0 == member) {
         return;
     }
 
-    bool is_marked(member->isSoftDeleted());
+    bool is_marked(member->isMarkedDeleted());
 
     mark_button->setDisabled(is_marked);
     unmark_button->setDisabled(!is_marked);

@@ -1,29 +1,42 @@
 
-#include "setupcontroller.h"
+#include "controller/setupcontroller.h"
 
-SetupController::SetupController()
-{
+SetupController::SetupController() { }
+SetupController::~SetupController() { }
+
+int SetupController::install() {
+    SetupView setup;
+    return setup.exec();
 }
 
-SetupController::~SetupController(){
-}
-
-void SetupController::install() {
-    Setup *setup=new Setup;
-    setup->setModal(true);
-    setup->show();
-    qApp->exec();
-}
-
+/**
+ * Load the data from a file given the file name.
+ */
 bool SetupController::loadData(QString filename) {
     QMessageBox msgBox;
+    ifstream myfile(filename.toStdString().c_str());
+
+    if (!myfile.is_open()) {
+        msgBox.setText("Unable to open file.");
+        msgBox.exec();
+        return false;
+    }
+
+    bool ret(parseFile(myfile, msgBox));
+    myfile.close();
+    return ret;
+}
+
+/**
+ * Parse a file with unit data.
+ */
+bool SetupController::parseFile(ifstream &myfile, QMessageBox &msgBox) {
     QString qAddress;
     string userInfo;
     int unitNo(0);
     string address = "";
     int noOfRooms(0);
     string tenantSurname = "";
-    ifstream myfile(filename.toStdString().c_str());
 
     if (!myfile.is_open()) {
         msgBox.setText("Unable to open file.");
@@ -102,10 +115,8 @@ bool SetupController::loadData(QString filename) {
                 information = "";
             }
 
-            Unit::create(qAddress, noOfRooms, unitNo);
+            UnitModel::create(qAddress, noOfRooms, unitNo);
         }
     }
-    myfile.close();
-
     return true;
 }

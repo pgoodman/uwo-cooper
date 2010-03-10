@@ -17,26 +17,28 @@
 #include <QSqlRecord>
 
 #include "conf.h"
-#include "criticalerror.h"
-#include "datatype/modeliterator.h"
-#include "datatype/permission.h"
+#include "lib/criticalerror.h"
+#include "lib/imodeliterator.h"
 
 /**
  * Handle creating, connecting, and querying the cooper database.
  */
-class CooperDB
+class Database
 {
-public:
-    ~CooperDB();
+    typedef void (install_func_t)(QSqlQuery &);
 
-    static void connect(const char *);
+public:
+    ~Database();
+
+    static void connect(const char *, const char *, install_func_t *);
     static bool hasAny(const char *);
     static QSqlQuery select(const char *query);
     static QSqlQuery select(const char *table, const char *cond);
+    static QSqlQuery select(const char *table, const int id);
     static bool remove(const char *table, const int id);
 
     template <typename T>
-    static pair<ModelIterator<T,T>, ModelIterator<T,T> >
+    static pair<IModelIterator<T,T>, IModelIterator<T,T> >
     selectAll(const char *table, const char *cond="1=1");
 
     static void queryError(const char *, QSqlQuery &);
@@ -45,12 +47,12 @@ public:
 
     static void close(void);
 
-    static QSqlDatabase db;
-
 private:
-    CooperDB();
+    Database();
 
     static void makeDatabase();
+
+    static QSqlDatabase db;
     static bool is_connected;
 };
 
@@ -84,8 +86,8 @@ template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
  * Linkage stuff.
  */
 template <typename T>
-pair<ModelIterator<T,T>, ModelIterator<T,T> >
-CooperDB::selectAll(const char *table, const char *conditions) {
+pair<IModelIterator<T,T>, IModelIterator<T,T> >
+Database::selectAll(const char *table, const char *conditions) {
     stringstream ss;
     ss << "SELECT COUNT(id) as c FROM " << table << " WHERE " << conditions;
     QSqlQuery count = QSqlQuery(ss.str().c_str());
@@ -93,7 +95,7 @@ CooperDB::selectAll(const char *table, const char *conditions) {
     count.finish();
     ss.str(string(""));
     ss << "SELECT id FROM " << table << " WHERE " << conditions;
-    return ModelIterator<T,T>::make(QSqlQuery(ss.str().c_str()), size);
+    return IModelIterator<T,T>::make(QSqlQuery(ss.str().c_str()), size);
 }
 
 

@@ -11,8 +11,8 @@
 #define ADDMEMBERLJ2808_H
 
 #include <time.h>
-
 #include <iostream>
+
 #include <QtGui>
 #include <QDialog>
 #include <QVariant>
@@ -29,12 +29,14 @@
 #include <QLayout>
 #include <QDateEdit>
 
-#include "datatype/user.h"
-#include "datatype/member.h"
-#include "datatype/committee.h"
-#include "view/modellist.h"
+#include "model/usermodel.h"
+#include "model/membermodel.h"
+#include "model/committeemodel.h"
+#include "model/unitmodel.h"
 
-class Ui_AddMember : public QDialog
+#include "lib/gui/modellistwidget.h"
+
+class AddMemberView : public QDialog
 {
 Q_OBJECT
 public:
@@ -42,7 +44,8 @@ public:
     QLabel *UserIDLabel;
     QLabel *LastNameLabel;
     QLineEdit *UnitEdit;
-    ModelList<Committee> *committee_list;
+    ModelListWidget<CommitteeModel> *committee_list;
+    ModelListWidget<UnitModel> *unit_list;
     QLabel *label;
     QLineEdit *GivenNameEdit;
     QRadioButton *ArrearYesButton;
@@ -76,12 +79,11 @@ public:
     QButtonGroup *buttonGroup_2;
     QButtonGroup *buttonGroup_3;
     QButtonGroup *buttonGroup;
-  //  Q *;
 
-    Ui_AddMember(QWidget *parent = 0);
+    AddMemberView(QWidget *parent = 0);
     void retranslateUi();
 
-    void setSelectedMember(Member* selMem);
+    void setSelectedMember(MemberModel *selMem);
 
 public slots:
     void addMember(void);
@@ -89,10 +91,7 @@ public slots:
     void resetChanges(void);
     void fillEditForm(void);
 private:
-    Member* selectedMember;
-
+    MemberModel *selectedMember;
 };
-
-
 
 #endif // ADDMEMBERLJ2808_H

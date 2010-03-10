@@ -6,7 +6,7 @@
  *     Version: $Id$
  */
 
-#include "criticalerror.h"
+#include "lib/criticalerror.h"
 
 CriticalError::CriticalError(const string t, const string m)
  : runtime_error(m), title(t) {

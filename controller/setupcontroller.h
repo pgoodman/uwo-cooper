@@ -10,13 +10,10 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include "criticalerror.h"
+#include "view/setupview.h"
 
-#include "view/setup.h"
-#include "view/window.h"
-
-#include "datatype/user.h"
-#include "datatype/unit.h"
+#include "model/usermodel.h"
+#include "model/unitmodel.h"
 
 using namespace std;
 
@@ -25,10 +22,12 @@ class SetupController
 public:
     ~SetupController();
 
-    static void install();
+    static int install();
     static bool loadData(QString file_name);
 private:
     SetupController();
+
+    static bool parseFile(ifstream &file, QMessageBox &msgBox);
 };
 
 #endif // SETUPCONTROLLER_H

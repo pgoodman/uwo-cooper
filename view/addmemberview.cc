@@ -1,7 +1,7 @@
-#include "ui_addmember.h"
 
+#include "view/addmemberview.h"
 
-Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
+AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent)
 {
     layout = new QGridLayout;
     layout->setObjectName(QString::fromUtf8("layout"));
@@ -41,10 +41,12 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
 
     layout->addWidget(NumberEdit, 2, 1, 1, 1);
 
-    UnitLabel = new QLabel();
-    UnitLabel->setObjectName(QString::fromUtf8("UnitLabel"));
-
-    layout->addWidget(UnitLabel, 3, 0, 1, 1);
+    //UnitLabel = new QLabel();
+    //UnitLabel->setObjectName(QString::fromUtf8("UnitLabel"));
+    unit_list = new ModelListWidget<UnitModel>;
+    unit_list->fill(&UnitModel::findAll);
+    unit_list->selectFirst();
+    layout->addWidget(unit_list, 3, 0, 1, 1);
     //unit no
     UnitEdit = new QLineEdit();
     UnitEdit->setObjectName(QString::fromUtf8("UnitEdit"));
@@ -81,7 +83,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
 
     layout->addWidget(CommitteeYesButton, 4, 2, 1, 1);
 
-    committee_list = new ModelList<Committee>;
+    committee_list = new ModelListWidget<CommitteeModel>;
     committee_list->setEnabled(false);
 
     committee_list->setStyleSheet("QListWidget {border: 1px solid gray;"
@@ -91,7 +93,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
                                                 "selection-background-color: blue;"
                                                 "selection-color: red;}"
                                  );
-    committee_list->fill(&Committee::findAll);
+    committee_list->fill(&CommitteeModel::findAll);
     layout->addWidget(committee_list, 4, 3, 1, 1);
 
     UserIDLabel = new QLabel();
@@ -219,7 +221,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
     setLayout(layout);
     setWindowTitle(tr("Add Member"));
 
-    if(!User::canDo(EDIT_MEMBER_STATUS)){
+    if(!UserModel::canDo(EDIT_MEMBER_STATUS)){
         LastNameEdit->setReadOnly(true);
         GivenNameEdit->setReadOnly(true);
         UnitEdit->setReadOnly(true);
@@ -249,7 +251,7 @@ Ui_AddMember::Ui_AddMember(QWidget *parent) : QDialog(parent)
 //    QMetaObject::connectSlotsByName();
 } // setupUi
 
-void Ui_AddMember::retranslateUi()
+void AddMemberView::retranslateUi()
 {
 
    // ->setWindowTitle(QApplication::translate("", "", 0, QApplication::UnicodeUTF8));
@@ -277,12 +279,12 @@ void Ui_AddMember::retranslateUi()
     Under21YesButton->setText(QApplication::translate("", "Yes (Please enter name and age):", 0, QApplication::UnicodeUTF8));
 } // retranslateUi
 
-void Ui_AddMember::addMember(void) {
+void AddMemberView::addMember(void) {
 
     QString lastname = LastNameEdit->text();
     QString name = GivenNameEdit->text();
     QString telephone = NumberEdit->text();
-    QString unit = UnitEdit->text();
+    //QString unit = unit_list->getModel();
     QString address = AddressEdit->text();
     //QString committee = CommitteeEdit->text();
     QString userid = UserIDEdit->text();
@@ -310,13 +312,14 @@ void Ui_AddMember::addMember(void) {
                      tr("Please enter a phone number."));
         return;
     }
-
+    /*
     if(unit.isEmpty()||!unit.toInt())
     {
         QMessageBox::information(this, tr("Empty Field"),
                      tr("Please enter a unit number."));
         return;
-    }
+    }*/
+
     if(address.isEmpty()){
         QMessageBox::information(this, tr("Empty Field"),
                      tr("Please enter a valid street address."));
@@ -335,7 +338,7 @@ void Ui_AddMember::addMember(void) {
         QMessageBox::information(this, tr("Empty Field"),
                      tr("Please enter a login name."));
         return;
-    } else if(User::nameExists(userid)) {
+    } else if(UserModel::nameExists(userid)) {
         QMessageBox::information(this, tr("Bad Field"), tr(
             "That login name is already in use. Please choose "
             "another one."
@@ -357,33 +360,32 @@ void Ui_AddMember::addMember(void) {
         return;
     }
 
-    cout << "getting committee id." << endl;
-
-    int committee_id(0);
+    CommitteeModel *comm(0);
     if(CommitteeYesButton->isChecked()) {
-        Committee *comm(committee_list->getModel());
-        committee_id = (0 == comm) ? 0 : comm->getId();
+        comm = committee_list->getModel();
     }
 
-    cout << "adding member." << endl;
-
-
-    Member::create(
-        name, lastname, telephone, PrivateYesButton->isDown(),
-        userid, password, QDateTime(date).toTime_t(),
-        unit.toInt(),address,committee_id
+    MemberModel::create(
+        PrivateYesButton->isDown(),
+        QDateTime(date).toTime_t(),
+        telephone,
+        userid,
+        name,
+        lastname,
+        address,
+        password,
+        comm,
+        unit_list->getModel()
     );
-
-    cout << "done." << endl;
 
     done(QDialog::Accepted);
 }
 
-void Ui_AddMember::setSelectedMember(Member* selMem){
+void AddMemberView::setSelectedMember(MemberModel *selMem){
     selectedMember=selMem;
 }
 
-void Ui_AddMember::saveChanges(){
+void AddMemberView::saveChanges(){
     //the sender() should be editMemberDialog.
     //Check sender's class name is safer
     bool isdirty=false;
@@ -443,7 +445,7 @@ void Ui_AddMember::saveChanges(){
         QMessageBox::information(this, tr("Empty Field"),
                      tr("Please enter a login name."));
         return;
-    } else if(User::nameExists(userid)&&userid!=selectedMember->getLastName()) {
+    } else if(UserModel::nameExists(userid)) {
         QMessageBox::information(this, tr("Bad Field"), tr(
             "That login name is already in use. Please choose "
             "another one."
@@ -479,7 +481,8 @@ void Ui_AddMember::saveChanges(){
         isdirty=true;
     }
     if(UnitEdit->isModified()){
-        selectedMember->setUnit(unit.toInt());
+        // TODO
+        //selectedMember->setUnit(unit.toInt());
         isdirty=true;
     }
     if(UserIDEdit->isModified()){
@@ -514,11 +517,11 @@ void Ui_AddMember::saveChanges(){
 }
 
 //reset used made changes.
-void Ui_AddMember::resetChanges(){
+void AddMemberView::resetChanges(){
     fillEditForm();
 }
 
-void Ui_AddMember::fillEditForm(){
+void AddMemberView::fillEditForm(){
     if(!selectedMember==0){
         LastNameEdit->setText(selectedMember->getLastName());
         GivenNameEdit->setText(selectedMember->getFirstName());
@@ -545,15 +548,17 @@ void Ui_AddMember::fillEditForm(){
         //_qt.fromStdString(ctime(&_t));
         //lineEdit->setText(_qt);
 
-        UnitEdit->setText(QString::number(selectedMember->getUnit()));
+        // TODO
+        //UnitEdit->setText(QString::number(selectedMember->getUnit()));
         AddressEdit->setText(selectedMember->getAddress());
-
+        /*
         UserIDEdit->setText(selectedMember->getLoginName());
+        CommitteeModel *_committee = selectedMember->getCommittee();
         if(!selectedMember->getCommittee()==0){
             CommitteeYesButton->setChecked(true);
             //assume committee name is unique. otherwise, have to go through all matched items
             int _id = selectedMember->getCommitteeID();
-            Committee *_committee = Committee::load(_id);
+
             QListWidgetItem * _qli =committee_list->findItems(_committee->toString(),Qt::MatchExactly)[0];
             committee_list->setCurrentItem(_qli);
             //_qli->setSelected(true);
@@ -562,6 +567,6 @@ void Ui_AddMember::fillEditForm(){
         }
         else
             CommitteeYesButton->setChecked(false);
-
+        */
     }
 }
