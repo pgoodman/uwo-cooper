@@ -6,14 +6,19 @@
  *     Version: $Id$
  */
 
-#include "setup.h"
+#include "view/setupview.h"
 
 /**
  * Setup wizard for the co-op.
  */
-Setup::Setup(QWidget *parent)
+SetupView::SetupView(QWidget *parent)
  : QWizard(parent), page1(0), page2(0) {
-    if(!Coordinator::exists()) {
+    setWindowTitle("Cooper Setup");
+
+    setOptions(QWizard::CancelButtonOnLeft);
+    setOptions(QWizard::NoBackButtonOnLastPage);
+
+    if(!CoordinatorModel::exists()) {
         coordinator();
     }
     units();
@@ -22,12 +27,12 @@ Setup::Setup(QWidget *parent)
 /**
  * Destructor.
  */
-Setup::~Setup(void) { }
+SetupView::~SetupView(void) { }
 
 /**
  * Set up the coordinator of the co-op.
  */
-void Setup::coordinator(void) {
+void SetupView::coordinator(void) {
 
     page1 = new QWizardPage;
     QGridLayout *layout = new QGridLayout;
@@ -55,14 +60,13 @@ void Setup::coordinator(void) {
     layout->addWidget(passLabel, 1, 0);
     layout->addWidget(coord_pass, 1, 1);
 
-    setPage(1, page1);
+    addPage(page1);
 }
 
 /**
  * Set up the units in the co-op.
  */
-void Setup::units(void) {
-
+void SetupView::units(void) {
     page2 = new QWizardPage;
     page2->setTitle("Step 2 of 2: Initial Data File");
     page2->setSubTitle("Please specify the initial data file name.");
@@ -82,13 +86,13 @@ void Setup::units(void) {
 
     connect(browseFileButton, SIGNAL(clicked()), this, SLOT(browseDataFile()));
 
-    setPage(2, page2);
+    addPage(page2);
 }
 
 /**
  * Create a file browser for findind the data file.
  */
-void Setup::browseDataFile(){
+void SetupView::browseDataFile(){
     QFileDialog *fileDialog = new QFileDialog();
     fileDialog->setFileMode(QFileDialog::ExistingFile);
     if(fileDialog->exec() && !fileDialog->selectedFiles().isEmpty()) {
@@ -99,7 +103,7 @@ void Setup::browseDataFile(){
 /**
  * Validate the current page.
  */
-bool Setup::validateCurrentPage(void) {
+bool SetupView::validateCurrentPage(void) {
     if(page1 == currentPage()) {
         QString password(coord_pass->text());
         if(password.isEmpty()) {
@@ -110,9 +114,7 @@ bool Setup::validateCurrentPage(void) {
             );
             return false;
         }
-
-        Coordinator::create(password);
-        //removePage(1);
+        CoordinatorModel::create(password);
     } else {
         QString path(file_name->text());
         if(path.isEmpty()) {
@@ -123,18 +125,11 @@ bool Setup::validateCurrentPage(void) {
             );
             return false;
         }
-        try {
-            SetupController::loadData(path);
-        } catch(CriticalError &e) {
-            QMessageBox::warning(
-                this,
-                "Invalid Data File",
-                QString(e.what())
-            );
+        if(!SetupController::loadData(path)) {
             return false;
         }
-        User::setActive(Coordinator::load());
-        UserController::home();
+        
+        UserModel::setActive(CoordinatorModel::load());
     }
 
     return true;

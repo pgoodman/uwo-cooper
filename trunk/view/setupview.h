@@ -21,19 +21,19 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
-#include "datatype/coordinator.h"
+#include "model/coordinatormodel.h"
 #include "controller/setupcontroller.h"
 #include "controller/usercontroller.h"
 
 /**
  * A Wizard to go through and initialize the system.
  */
-class Setup : public QWizard {
+class SetupView : public QWizard {
     Q_OBJECT
 public:
 
-    Setup(QWidget *parent = 0);
-    ~Setup();
+    SetupView(QWidget *parent = 0);
+    ~SetupView();
 
     virtual bool validateCurrentPage(void);
 

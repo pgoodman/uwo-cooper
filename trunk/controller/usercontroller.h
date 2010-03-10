@@ -7,30 +7,27 @@
 #include <QApplication>
 #include <QWidget>
 
-#include "authorizationcontroller.h"
 #include "conf.h"
 
-#include "view/ui_cooper.h"
-#include "view/login.h"
-#include "view/window.h"
+#include "view/homeview.h"
+#include "view/loginview.h"
 
-#include "datatype/user.h"
-#include "datatype/member.h"
-#include "datatype/coordinator.h"
+#include "model/usermodel.h"
+#include "model/membermodel.h"
+#include "model/coordinatormodel.h"
 
 using namespace std;
 
-class UserController
-{
+class UserController {
 public:
     ~UserController();
     static void home(void);
     static bool authorize(QString name, QString pwd);
     static void login(QWidget *window);
-    static void login();
+    static int login();
     static void logout();
 private:
-    static QWidget *curr_ui;
+    static QMainWindow *home_view;
     UserController();
 };
 

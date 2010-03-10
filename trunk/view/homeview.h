@@ -22,29 +22,26 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 
-#include "datatype/user.h"
-#include "datatype/member.h"
-#include "datatype/permission.h"
-#include "cooperdb.h"
-#include "ui_addmember.h"
+#include "model/usermodel.h"
+#include "model/membermodel.h"
+#include "model/permissionmodel.h"
 
-#include "modellist.h"
-#include "modellistitem.h"
+#include "lib/database.h"
+#include "lib/gui/modellistwidget.h"
+#include "lib/gui/modellistwidgetitem.h"
 
-#include "window.h"
+#include "view/addmemberview.h"
 
-class Ui_Cooper : public QWidget {
-
+class HomeView : public QMainWindow {
     Q_OBJECT
 
 public:
-
-    Ui_Cooper(void);
+    HomeView(void);
 
 private:
 
-    ModelList<Member> *member_list;
-    ModelList<Committee> *committee_list;
+    ModelListWidget<MemberModel> *member_list;
+    ModelListWidget<CommitteeModel> *committee_list;
 
     QPushButton *mark_button;
     QPushButton *unmark_button;
@@ -80,11 +77,10 @@ public slots:
     }
 
     /**
-     * Change the buttons depending on whether or not members have a certain
-     * status.
+     * Change the buttons depending on whether or not members have a
+     * certain status.
      */
     void activateMemberButtons(QListWidgetItem *old, QListWidgetItem *curr);
 };
-
 
 #endif // UI_COOPER_H

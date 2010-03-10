@@ -1,52 +1,36 @@
 
-#include "usercontroller.h"
+#include "controller/usercontroller.h"
 
-QWidget *UserController::curr_ui;
-
-UserController::UserController()
-{
-}
-
-UserController::~UserController() {
-
-}
+UserController::UserController() { }
+UserController::~UserController() { }
 
 void UserController::home(void) {
-    /*curr_ui = new Cooper;
-    curr_ui->show();*/
-    cout << "changing to ui cooper layout." << endl;
-    Window::setWidget(new Ui_Cooper);
+    HomeView *view(new HomeView);
+    view->show();
 }
 
 bool UserController::authorize(QString name, QString pwd) {
-    bool match(name == COORDINATOR_USER_NAME);
-    cout << "name is coord? " << match << endl;
-    User* active(
-        (name == COORDINATOR_USER_NAME) ? Coordinator::load(pwd)
-                                        : Member::load(name, pwd)
-    );
-
-    if(0 == active || active->isSoftDeleted()) {
-        return false;
+    UserModel *active(0);
+    if(name == COORDINATOR_USER_NAME) {
+        active = CoordinatorModel::findByPassword(pwd);
+    } else {
+        MemberModel *member(MemberModel::findByLoginInfo(name, pwd));
+        if(0 != member && !member->isMarkedDeleted()) {
+            active = member;
+        }
     }
 
-    User::setActive(active);
+    UserModel::setActive(active);
+
     return 0 != active;
 }
 
-void UserController::login() {
-    //Login *login(new Login);
-    //login->show();
-    Window::setWidget(new Login);
+int UserController::login() {
+    LoginView login;
+    return login.exec();
 }
 
 void UserController::logout() {
-    User::setActive(0);
-    /*QWidget *login(new Login);
-    login->show();
-    curr_ui->hide();
-    delete curr_ui;
-    curr_ui = login;*/
-    Window::setWidget(new Login);
+    UserModel::setActive(0);
 }
 
