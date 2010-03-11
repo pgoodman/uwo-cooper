@@ -53,7 +53,7 @@ private:
     int curr_id;
     bool is_used;
 
-    int id;
+    const int id;
 };
 
 /**
@@ -68,13 +68,13 @@ IModelIterator<T, L>::IModelIterator(QSqlQuery q,
                                 const int s,
                                 const int off,
                                 const int query_id)
- : query(q), size(s), i(off), is_used(false), id(query_id) {
-    assert(query.isSelect());
-    if(off >= 0 && off < size) {
-        setCurrId();
-    }
+ : size(s), i(off), is_used(false), id(query_id) {
+    assert(q.isSelect());
     if(0 == off && 0 == size) {
         i = 1;
+    } else if(off >= 0 && off < size) {
+        query = q;
+        setCurrId();
     }
 }
 
@@ -107,13 +107,12 @@ IModelIterator<T, L> &IModelIterator<T, L>::operator++ () {
 template <typename T, typename L>
 IModelIterator<T, L> IModelIterator<T, L>::operator++ (int) {
     IModelIterator<T, L> tmp(*this);
-    ++*this;
+    ++(*this);
     return tmp;
 }
 
 template <typename T, typename L>
 bool IModelIterator<T, L>::operator!=(const IModelIterator<T, L> &other) {
-    //D( cout << id << "!=" << other.id << " || " << i << " != " << other.i << endl; )
     return id != other.id || i != other.i;
 }
 
@@ -128,7 +127,6 @@ bool IModelIterator<T, L>::operator==(const IModelIterator<T, L> &other) {
 template <typename T, typename L>
 void IModelIterator<T, L>::setCurrId(void) {
     curr_id = query.value(0).toInt();
-    //D( cout << "IModelIterator, current id is " << curr_id << endl; )
 }
 
 template <typename T, typename L>
