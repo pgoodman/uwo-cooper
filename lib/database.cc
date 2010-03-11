@@ -22,7 +22,8 @@ Database::~Database() {
  * Disconnect the database.
  */
 void Database::disconnect(void) {
-    db.close();
+    db.close(); // disconnected current db
+    db = QSqlDatabase(); // reassigns default db to stop that annoying error
 }
 
 /**

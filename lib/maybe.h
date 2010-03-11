@@ -15,7 +15,7 @@ template <typename T> class Maybe;
 template <typename T> T *Just(Maybe<T>);
 
 /**
- * Not quite the Maybe monad, but allows one to pinpoint
+ * A boxed pointer.
  */
 template <typename T>
 class Maybe {
@@ -28,6 +28,7 @@ public:
     /**
      * Constructors.
      */
+    Maybe(void) : ptr(0) { }
     Maybe(T *ref) : ptr(ref) { }
     Maybe(const Maybe<T> &boxed_ref) : ptr(boxed_ref.ptr) { }
 
@@ -60,11 +61,29 @@ public:
     }
 
     /**
-     * Vast back to pointer.
+     * Cast back to pointer.
      */
     operator T *(void) {
         return ptr;
     }
+
+    /**
+     * Comparisons.
+     */
+    bool operator ==(T *ref) {
+        return ptr == ref;
+    }
+    bool operator ==(Maybe<T> &ref) {
+        return ptr == ref.ptr;
+    }
+    bool operator !=(T *ref) {
+        return ptr != ref;
+    }
+    bool operator !=(Maybe<T> &ref) {
+        return ptr != ref.ptr;
+    }
+
+
 };
 
 /**

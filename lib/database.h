@@ -90,7 +90,7 @@ pair<IModelIterator<T,T>, IModelIterator<T,T> >
 Database::selectAll(const char *table, const char *conditions) {
     stringstream ss;
     ss << "SELECT COUNT(id) as c FROM " << table << " WHERE " << conditions;
-    QSqlQuery count = QSqlQuery(ss.str().c_str());
+    QSqlQuery count(ss.str().c_str());
     int size((count.next() && count.isValid()) ? qcol<int>(count, "c") : 0);
     count.finish();
     ss.str(string(""));
