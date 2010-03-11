@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QCloseEvent>
 
 #include "model/usermodel.h"
 #include "model/membermodel.h"
@@ -55,6 +56,9 @@ private:
 
     void populateMembers();
     void populateCommittees();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 public slots:
     void addMember();

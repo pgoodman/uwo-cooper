@@ -12,10 +12,6 @@
  * Constructor, make the UI.
  */
 HomeView::HomeView(void) {
-    //QLayout *layout(new QGridLayout);
-    //layout->setSpacing(6);
-    //layout->setContentsMargins(11, 11, 11, 11);
-
     member_list = new ModelListWidget<MemberModel>(this);
     committee_list = new ModelListWidget<CommitteeModel>(this);
 
@@ -31,9 +27,7 @@ HomeView::HomeView(void) {
     tabs->addTab(makeCommitteeControls(), "Committee");
     makeMenuBar();
 
-    //layout->addWidget(tabs);
-    //tabs->setLayout(layout);
-
+    setContentsMargins(11, 11, 11, 11);
     setCentralWidget(tabs);
 }
 
@@ -133,44 +127,16 @@ QWidget *HomeView::makeCommitteeControls(void) {
  * Create the menu bar.
  */
 void HomeView::makeMenuBar(void) {
+    QMenu *file_menu = menuBar()->addMenu("&File");
+    (void) file_menu;
+}
 
-    QMenuBar *menuBar = new QMenuBar();
-    menuBar->setGeometry(QRect(0, 0, 600, 21));
-    QMenu *menuSystem = new QMenu(menuBar);
-    QMenu *menuTask = new QMenu("Task", menuBar);
-    QMenu *menuEvent = new QMenu("Event", menuBar);
-    QMenu *menuPrint = new QMenu("Print", menuBar);
-    QMenu *menuHelp = new QMenu("Help", menuBar);
-
-    menuBar->addAction(menuSystem->menuAction());
-    menuBar->addAction(menuTask->menuAction());
-    menuBar->addAction(menuEvent->menuAction());
-    menuBar->addAction(menuPrint->menuAction());
-    menuBar->addAction(menuHelp->menuAction());
-    /*
-    QAction *actionLogoff = Window::action();
-    QAction *actionQuit = Window::action();
-
-    menuSystem->addAction(actionLogoff);
-    menuSystem->addAction(actionQuit);
-    */
-    /*
-    menuTask->addAction(actionAssign_Task);
-    menuTask->addAction(actionEdit_Task);
-    menuTask->addAction(actionDelete_Task);
-
-    menuEvent->addAction(actionMove_Out);
-    menuEvent->addAction(actionInternal_Move);
-    menuEvent->addAction(actionAnnual_Task_Spec);
-    menuPrint->addAction(actionPhone_List);
-    menuPrint->addAction(actionCommittee_List);
-    menuPrint->addAction(actionTask_List);
-
-    menuHelp->addAction(actionManual);
-    menuHelp->addAction(actionAbout_Cooper);
-    */
-
-    //Window::setMenuBar(menuBar);
+/**
+ * Close evebt for the home window.
+ */
+void HomeView::closeEvent(QCloseEvent *event) {
+    Database::disconnect();
+    QMainWindow::closeEvent(event);
 }
 
 /*
@@ -198,7 +164,7 @@ void HomeView::addMember() {
 }
 
 void HomeView::editMember() {
-
+#if 0
     MemberModel *member =  member_list->getModel();
     if(member==0) {
          return;
@@ -229,6 +195,7 @@ void HomeView::editMember() {
     }
 
     delete editMemberDialog;
+#endif
 }
 
 void HomeView::deleteMember() {
@@ -258,7 +225,7 @@ void HomeView::unmarkMember() {
 }
 
 void HomeView::activateMemberButtons(QListWidgetItem *old,
-                                 QListWidgetItem *curr) {
+                                     QListWidgetItem *curr) {
     (void) old; (void) curr;
 
     MemberModel *member(member_list->getModel());

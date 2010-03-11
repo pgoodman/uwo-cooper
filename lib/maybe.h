@@ -9,6 +9,8 @@
 #ifndef MAYBE_H_
 #define MAYBE_H_
 
+#include <iostream>
+
 template <typename T> class Maybe;
 template <typename T> T *Just(Maybe<T>);
 
@@ -33,10 +35,16 @@ public:
      * Pointer stuff.
      */
     T &operator *(void) {
+        if(0 == ptr) {
+            std::cout << "Attempting null pointer de-reference." << std::endl;
+        }
         return *ptr;
     }
 
     T *operator ->(void) {
+        if(0 == ptr) {
+            std::cout << "Attempting null pointer de-reference." << std::endl;
+        }
         return ptr;
     }
 

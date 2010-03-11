@@ -21,7 +21,7 @@ Database::~Database() {
 /**
  * Disconnect the database.
  */
-void Database::close(void) {
+void Database::disconnect(void) {
     db.close();
 }
 

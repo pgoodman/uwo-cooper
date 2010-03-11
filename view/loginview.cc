@@ -5,18 +5,18 @@ LoginView::LoginView() : QDialog(0) {
     setModal(true);
 
     FormLayoutPtr layout(this);
-    titleLabel = layout [2] <<= "Please enter login name and password." ;
+    titleLabel = layout [2] <<= "Please enter login name and password.";
     nameLineEdit = layout << "Login Name: " |= new QLineEdit;
     pwdLineEdit = layout << "Password: " |= new QLineEdit;
     QPushButton *okPushButton(layout <<= new QPushButton("Login"));
     QPushButton *cancelPushButton(layout |= new QPushButton("Cancel"));
 
-    QObject::connect(
+    connect(
         okPushButton, SIGNAL(clicked()),
         this, SLOT(tryLogin())
     );
 
-    QObject::connect(
+    connect(
         cancelPushButton, SIGNAL(clicked()),
         this, SLOT(cancelLogin())
     );
