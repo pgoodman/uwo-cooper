@@ -1,0 +1,289 @@
+
+#include "model/membermodel.h"
+
+const char *MemberModel::table_name("user");
+
+/**
+ * Private Constructor, used for loading a member from the database.
+ */
+MemberModel::MemberModel(const int id,
+               const int committeeId,
+               const int unitId,
+               const bool sharePhone,
+               const bool isMarked,
+               const double moneyOwed,
+               const time_t moveInTime,
+               QString phoneNum,
+               QString userName,
+               QString firstName,
+               QString lastName,
+               QString addr,
+               QString pass)
+
+ : UserModel(false, pass), IModel<MemberModel>(id),
+   committee_id(committeeId),
+   unit_id(unitId), share_telephone(sharePhone), is_marked(isMarked),
+   money_owed(moneyOwed), move_in_time(moveInTime), telephone_num(phoneNum),
+   user_name(userName), first_name(firstName), last_name(lastName),
+   address(addr)
+{ }
+
+/**
+ * Destructor.
+ */
+MemberModel::~MemberModel(void) { }
+
+/**
+ * Check whether or not a coodinator has a permission.
+ */
+bool MemberModel::hasPermission(const PermissionModel p) {
+    if(0 == committee_id) {
+        return (EDIT_SELF_PASS == p);
+    }
+    CommitteeModel *c = getCommittee();
+    if(0 == c) {
+        committee_id = 0;
+        return false;
+    }
+    return 0 != (p & c->getPermissions(id));
+}
+
+/**
+ * Remove a member from the database iff they are already marked deleted.
+ */
+void MemberModel::remove(void) {
+    if(isMarkedDeleted()) {
+        IModel<MemberModel>::remove();
+    }
+}
+
+/**
+ * Get a member's committee.
+ */
+CommitteeModel *MemberModel::getCommittee(void) {
+    if(0 == committee_id) {
+        return 0;
+    } else if(0 != committee) {
+        return committee;
+    }
+    committee = CommitteeModel::findById(committee_id);
+    return committee;
+}
+
+/**
+ * Get this user's login name.
+ */
+QString MemberModel::getUserName(void) {
+    return user_name;
+}
+
+QString MemberModel::getTelephoneNum(){
+    return telephone_num;
+}
+void MemberModel::setTelephoneNumber(QString newNumber)
+{
+	telephone_num = newNumber;
+}
+
+double MemberModel::getMoneyOwed(){
+    return money_owed;
+}
+
+void MemberModel::setMoneyOwed(double money)
+{
+	money_owed = money;
+}
+
+bool MemberModel::isTelephoneShared(){
+    return share_telephone;
+}
+void MemberModel::setSharedTelephone(bool share)
+{
+	share_telephone = share;
+}
+
+bool MemberModel::isMarkedDeleted() {
+    return is_marked;
+}
+void MemberModel::markDeleted(bool mark) {
+	is_marked = mark;
+}
+
+QString MemberModel::toString(void) {
+    stringstream ss;
+    ss << first_name.toStdString() << " " << last_name.toStdString();
+    if(is_marked) {
+        ss << " [marked]";
+    }
+    return QString(ss.str().c_str());
+}
+
+void MemberModel::setFullName(QString firstName, QString lastName)
+{
+    first_name = firstName;
+    last_name = lastName;
+}
+
+QString MemberModel::getFirstName(){
+    return first_name;
+}
+
+void MemberModel::setFirstName(QString firstName){
+    first_name=firstName;
+}
+
+QString MemberModel::getLastName(){
+    return last_name;
+}
+void MemberModel::setLastName(QString lastName){
+    last_name=lastName;
+}
+
+UnitModel *MemberModel::getUnit(void) {
+    if(0 == unit_id) {
+        return 0;
+    }
+    unit = UnitModel::findById(unit_id);
+    return unit;
+}
+void MemberModel::setUnit(UnitModel *unit_to_set) {
+    unit_id = unit_to_set->id;
+    unit = unit_to_set;
+}
+
+QString MemberModel::getAddress(){
+    return address;
+}
+void MemberModel::setAddress(QString addr){
+    address=addr;
+}
+
+int MemberModel::getCommitteeId(){
+    return committee_id;
+}
+
+void MemberModel::setCommittee(CommitteeModel *comm) {
+    committee_id = comm->id;
+    committee = comm;
+}
+
+QString MemberModel::getLoginName(){
+    return user_name;
+}
+
+void MemberModel::setLoginName(QString loginName){
+    user_name = loginName;
+}
+
+time_t MemberModel::getMoveInTime(){
+    return move_in_time;
+}
+
+void MemberModel::setMoveInTime(QDateTime mvTime){
+    move_in_time = mvTime.toTime_t();
+}
+
+/**
+ * Create a member.
+ */
+MemberModel *MemberModel::create(const bool sharePhone,
+                       const time_t moveInTime,
+                       QString phoneNum,
+                       QString userName,
+                       QString firstName,
+                       QString lastName,
+                       QString addr,
+                       QString pass,
+                       CommitteeModel *committee,
+                       UnitModel *unit) {
+    QSqlQuery q;
+    q.prepare(
+        "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
+        "telephone, move_in_time, unit_id, address, committee_id) VALUES "
+        "(?,?,?,?,?,?,?,?,?,?)"
+    );
+    const int committee_id = (0 == committee) ? 0 : committee->id;
+    const int unit_id = (0 == unit) ? 0 : unit->id;
+
+    q << firstName << lastName << userName << pass << sharePhone
+      << phoneNum << moveInTime << unit_id << addr << committee_id;
+
+    if(!q.exec()) {
+        return 0;
+    }
+
+    return findById(q.lastInsertId().toInt());
+}
+
+/**
+ * Update the user's info in the db.
+ */
+void MemberModel::save(void) {
+    QSqlQuery q;
+    q.prepare(
+        "UPDATE user SET first_name=?,last_name=?,name=?,password=?,"
+        "share_telephone=?,telephone=?,move_in_time=?,unit_id=?,address=?,"
+        "is_marked=?,committee_id=?,money_owed=? "
+        "WHERE id=? AND is_coordinator=0"
+    );
+    q << first_name << last_name << user_name << password << share_telephone
+      << telephone_num << move_in_time << unit_id << address << is_marked
+      << committee_id << money_owed << id;
+
+    if(!q.exec() || 0 == q.numRowsAffected()) {
+        Database::queryError("Unable to Update Member Information.", q);
+    }
+
+}
+
+/**
+ * Load a user from the database given the user's username and password. Will
+ * return NULL if the user can't be loaded.
+ */
+MemberModel *MemberModel::findByLoginInfo(QString user_name, QString pass) {
+    QSqlQuery q;
+    q.prepare("SELECT * FROM user WHERE name=? AND password=?");
+    q << user_name << pass;
+    if(!q.exec() || !q.first()) {
+        return 0;
+    }
+    return load(q, qcol<int>(q, "id"));
+}
+
+/**
+ * Load a member (or coordinator) from the database given the query that
+ * fetched that user.
+ */
+MemberModel *MemberModel::load(QSqlQuery &q, const int id) {
+    if(qcol<bool>(q, "is_coordinator")) {
+        q.finish();
+        return 0;
+    }
+
+    // load the member as an object to be used
+    MemberModel *u = new MemberModel(
+        id,
+        qcol<int>(q, "committee_id"),
+        qcol<int>(q, "unit_id"),
+        qcol<bool>(q, "share_telephone"),
+        qcol<bool>(q, "is_marked"),
+        qcol<double>(q, "money_owed"),
+        qcol<time_t>(q, "move_in_time"),
+        qcol<QString>(q, "telephone"),
+        qcol<QString>(q, "name"),
+        qcol<QString>(q, "first_name"),
+        qcol<QString>(q, "last_name"),
+        qcol<QString>(q, "address"),
+        qcol<QString>(q, "password")
+    );
+    return u;
+}
+
+/**
+ * Find a sequence of members, overwrites IModel<MemberModel>::findAll().
+ */
+MemberModel::iterator_range MemberModel::findAll(void) {
+    return Database::selectAll<MemberModel>("user", "is_coordinator=0");
+}
+
+
