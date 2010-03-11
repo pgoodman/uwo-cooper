@@ -9,7 +9,7 @@
 #ifndef FORM_H_
 #define FORM_H_
 
-#include <assert.h>
+#include <cassert>
 
 #include <QGridLayout>
 #include <QWidget>
@@ -60,7 +60,7 @@ T *FormLayoutPtr::operator<<=(T *widget) {
 
 template <typename T>
 FormLayoutPtr &FormLayoutPtr::operator<<(T *widget) {
-    *this <<= widget;
+    (*this) <<= widget;
     return *this;
 }
 
@@ -76,7 +76,7 @@ T *FormLayoutPtr::operator|=(T *widget) {
 }
 template <typename T>
 FormLayoutPtr &FormLayoutPtr::operator|(T *widget) {
-    *this |= widget;
+    (*this) |= widget;
     return *this;
 }
 

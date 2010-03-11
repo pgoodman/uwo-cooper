@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
-#include <assert.h>
+#include <cassert>
 #include <time.h>
 
 #include <QSqlDatabase>
@@ -45,7 +45,7 @@ public:
     static void queryError(string, QSqlQuery &);
     static void queryError(stringstream &, QSqlQuery &);
 
-    static void close(void);
+    static void disconnect(void);
 
 private:
     Database();

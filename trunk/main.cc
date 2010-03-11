@@ -9,6 +9,7 @@
 
 #include "lib/database.h"
 #include "lib/criticalerror.h"
+#include "lib/maybe.h"
 
 #include "controller/setupcontroller.h"
 #include "controller/usercontroller.h"
@@ -115,7 +116,6 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     /*try {*/
-
     Database::connect(DATABASE_FILE, DATABASE_DRIVER, &install_database);
 
     int go;
