@@ -79,6 +79,9 @@ public slots:
     void viewCommittee() {
         cout << "show view committee." << endl;
     }
+    void viewTasks() {
+        cout << "show view tasks" << endl;
+    }
 
     /**
      * Change the buttons depending on whether or not members have a

@@ -106,14 +106,17 @@ QWidget *HomeView::makeCommitteeControls(void) {
     QPushButton *add_button = new QPushButton("Add Committee", controls);
     QPushButton *edit_button = new QPushButton("Edit Committee", controls);
     QPushButton *del_button = new QPushButton("Delete Committee", controls);
+    QPushButton *task_button = new QPushButton("Tasks", controls);
 
     connect(add_button, SIGNAL(clicked()), this, SLOT(addCommittee()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editCommittee()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteCommittee()));
+    connect(task_button, SIGNAL(clicked()), this, SLOT(viewTasks()));
 
     column->addWidget(add_button);
     column->addWidget(edit_button);
     column->addWidget(del_button);
+    column->addWidget(task_button);
 
     layout->setLayout(0, QFormLayout::FieldRole, column);
     layout->setWidget(0, QFormLayout::LabelRole, committee_list);
