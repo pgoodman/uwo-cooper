@@ -27,11 +27,10 @@ public:
 
     virtual bool save(void);
 
-    bool create(QString n, const bool canDelete,
+    static bool create(QString n, const bool canDelete,
                 const PermissionModelSet chairPerms,
                 const PermissionModelSet memberPerms,
-                const int chairId, const int secretaryId,
-                const int committeeId);
+                const int chairId, const int secretaryId);
 
     bool addTask(QString name, QString description, QDateTime deadline) const;
 

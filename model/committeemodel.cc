@@ -56,15 +56,14 @@ bool CommitteeModel::save(void) {
 bool CommitteeModel::create(QString n, const bool canDelete,
                             const PermissionModelSet chairPerms,
                             const PermissionModelSet memberPerms,
-                            const int chairId, const int secretaryId,
-                            const int committeeId) {
+                            const int chairId, const int secretaryId)
+{
     QSqlQuery q;
     q.prepare(
         "INSERT INTO committee (name,can_delete,chair_perms,member_perms,"
         "chair_id,secretary_id) VALUES (?,?,?,?,?,?)"
     );
-    q << n << canDelete << chairPerms << memberPerms << chairId << secretaryId
-      << committeeId;
+    q << n << canDelete << chairPerms << memberPerms << chairId << secretaryId;
     if(!q.exec()) {
         return false;
     }
