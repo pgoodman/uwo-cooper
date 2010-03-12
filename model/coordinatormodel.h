@@ -8,7 +8,7 @@
 #include <QVariant>
 
 #include "conf.h"
-#include "database.h"
+#include "lib/database.h"
 
 #include "model/usermodel.h"
 #include "model/permissionmodel.h"
