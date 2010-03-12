@@ -2,6 +2,8 @@
 #ifndef COMMITTEE_H
 #define COMMITTEE_H
 
+#include <sstream>
+
 #include <QDateTime>
 #include <QString>
 #include <QSqlQuery>
@@ -24,13 +26,16 @@ public:
     static const char *table_name;
 
     virtual bool save(void);
+
     bool create(QString n, const bool canDelete,
                 const PermissionModelSet chairPerms,
                 const PermissionModelSet memberPerms,
                 const int chairId, const int secretaryId,
                 const int committeeId);
 
-    void addTask(QString name, QString description, QDateTime deadline) const;
+    bool addTask(QString name, QString description, QDateTime deadline) const;
+
+    TaskModel::iterator_range findTasks(void);
 
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);

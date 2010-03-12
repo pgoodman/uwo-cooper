@@ -2,6 +2,7 @@
 #define TASKMODEL_H
 
 #include <sstream>
+#include <iostream>
 
 #include <QString>
 #include <QDate>

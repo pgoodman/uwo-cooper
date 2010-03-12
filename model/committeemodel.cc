@@ -81,11 +81,21 @@ PermissionModelSet CommitteeModel::getPermissions(const int member_id) {
 /**
  * Add a task to this committee.
  */
-void CommitteeModel::addTask(QString name,
+bool CommitteeModel::addTask(QString name,
                              QString description,
                              QDateTime deadline) const {
-    TaskModel::create(name, description, deadline, id);
+    return TaskModel::create(name, description, deadline, id);
 }
+
+/**
+ * Ger all of a committee's tasks.
+ */
+TaskModel::iterator_range CommitteeModel::findTasks(void) {
+    stringstream ss;
+    ss << "committee_id=" << id;
+    return TaskModel::findAll(ss.str().c_str());
+}
+
 
 /**
  * Get the name of a committee.
