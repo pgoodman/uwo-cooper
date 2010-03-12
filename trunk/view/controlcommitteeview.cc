@@ -102,3 +102,28 @@ void ControlCommitteeView::activateButtons(QListWidgetItem *old,
     task_button->setDisabled(false);
     del_button->setDisabled(!committee->canRemove());
 }
+
+void ControlCommitteeView::deleteCommittee()
+{
+    CommitteeModel *committee(committee_list->getModel());
+
+    if(committee != 0 && committee->canRemove())
+    {
+        int ret(QMessageBox::question(this,
+            "Please Confirm",
+            "Are you sure that you want to delete the committee?",
+            QMessageBox::Yes,
+            QMessageBox::No
+        ));
+        if(QMessageBox::Yes == ret) {
+           committee->remove();
+           populateCommittees();
+        }
+    }
+    else
+    {
+        QMessageBox::information(this, "Can not delete",
+                                 "The committee you have chosen doesn't exist, or cannot be deleted");
+        return;
+    }
+}
