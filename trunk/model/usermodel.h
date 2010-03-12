@@ -28,10 +28,11 @@ public:
 
     static UserModel *active;
 
+    const bool is_coordinator;
+
 protected:
     UserModel(const bool isCoordinator, QString &pwd);
     
-    const bool is_coordinator;
     QString password;
 };
 

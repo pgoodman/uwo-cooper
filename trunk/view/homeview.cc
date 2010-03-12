@@ -15,6 +15,15 @@ HomeView::HomeView(void) {
     QTabWidget *tabs(new QTabWidget);
     tabs->addTab(new ControlMemberView(tabs), "Member");
     tabs->addTab(new ControlCommitteeView(tabs), "Committee");
+
+    // such "feature testing" should not be done often
+    if(!active_user->is_coordinator) {
+        tabs->addTab(new ViewMemberView(
+            static_cast<MemberModel *>(active_user),
+            tabs
+        ), "My Info");
+    }
+
     makeMenuBar();
     setContentsMargins(11, 11, 11, 11);
     setCentralWidget(tabs);
