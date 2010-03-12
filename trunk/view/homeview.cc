@@ -243,3 +243,12 @@ void HomeView::activateMemberButtons(QListWidgetItem *old,
     del_button->setDisabled(!is_marked);
     edit_button->setDisabled(false);
 }
+
+void HomeView::addCommittee(){
+    AddCommitteeView *addCommitteeDialog = new AddCommitteeView;
+    addCommitteeDialog->show();
+    if(addCommitteeDialog->exec() == QDialog::Accepted) {
+        populateMembers();
+    }
+    delete addCommitteeDialog;
+}
