@@ -17,9 +17,9 @@
 
 using namespace std;
 
-class MemberModel;
-class MemberModel : public UserModel, public IModel<MemberModel> {
-    friend class IModel<MemberModel>;
+class MemberModel : public UserModel,
+                    public IModel<MemberModel,select_from_table_tag> {
+    MODEL_CLASS(MemberModel);
 
 public:
     static const char *table_name;

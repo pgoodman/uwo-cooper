@@ -39,6 +39,7 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     layout << "Set Committee?: " | assign_committee;
     layout << "" | dont_assign_committee;
     committee = layout << "Committee: " |= new ModelListWidget<CommitteeModel>;
+    unit = layout << "Unit: " |= new ModelListWidget<UnitModel>;
     user_name = layout << "Login Name: " |= new QLineEdit;
     password = layout << "Password: " |= new QLineEdit;
 
@@ -52,7 +53,9 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     share_phone_number->setChecked(true);
     date_moved_in->setCalendarPopup(true);
     committee->fill(&CommitteeModel::findAll);
+    unit->fill(&UnitModel::findAll);
     committee->selectFirst();
+    unit->selectFirst();
     setModal(true);
     setWindowTitle("Add Member");
 
@@ -62,7 +65,7 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
         committee, SLOT(setEnabled(bool))
     );
 
-    connect(add, SIGNAL(clicked()), this, SLOT(addMember()));
+    connect(add, SIGNAL(clicked()), this, SLOT(checkForm()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelAdd()));
 }
 
@@ -74,19 +77,82 @@ AddMemberView::~AddMemberView(void) { }
 /**
  * Attempt to add a member.
  */
-void AddMemberView::addMember(void) {
+void AddMemberView::checkForm(void) {
+
     if(!first_name->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
-            "Please enter a surname (family name)."
+            "Please enter a given name (family name / last name)."
         );
         return;
     }
-    done(QDialog::Accepted);
+
+    if(!last_name->isModified()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a surname (family name / last name)."
+        );
+        return;
+    }
+
+    if(!phone_number->isModified()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a telephone number."
+        );
+        return;
+    }
+
+    if(!address->isModified()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter an address for where the person lived before "
+            "the co-op."
+        );
+        return;
+    }
+
+    if(!user_name->isModified()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter an log in name."
+        );
+        return;
+    }
+
+    if(!password->isModified()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter an password."
+        );
+        return;
+    }
+
+    emit accept();
 }
 
 /**
- * Close the add member window.
+ * Add a member.
+ */
+void AddMemberView::accept(void) {
+
+    MemberModel::create(
+        share_phone_number->isChecked(),
+        date_moved_in->dateTime().toTime_t(),
+        phone_number->text(),
+        user_name->text(),
+        first_name->text(),
+        last_name->text(),
+        address->text(),
+        password->text(),
+        assign_committee->isChecked() ? committee->getModel() : 0,
+        unit->getModel()
+    );
+    QDialog::accept();
+}
+
+/**
+ * Close the add member window, we cancelled the form.
  */
 void AddMemberView::cancelAdd(void) {
     done(QDialog::Rejected);

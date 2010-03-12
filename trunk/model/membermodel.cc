@@ -20,7 +20,7 @@ MemberModel::MemberModel(const int id,
                QString addr,
                QString pass)
 
- : UserModel(false, pass), IModel<MemberModel>(id),
+ : UserModel(false, pass), IModel<MemberModel, select_from_table_tag>(id),
    committee_id(committeeId),
    unit_id(unitId), share_telephone(sharePhone), is_marked(isMarked),
    money_owed(moneyOwed), move_in_time(moveInTime), telephone_num(phoneNum),
@@ -53,7 +53,7 @@ bool MemberModel::hasPermission(const PermissionModel p) {
  */
 void MemberModel::remove(void) {
     if(isMarkedDeleted()) {
-        IModel<MemberModel>::remove();
+        IModel<MemberModel,select_from_table_tag>::remove();
     }
 }
 

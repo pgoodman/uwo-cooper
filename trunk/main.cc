@@ -1,4 +1,5 @@
 
+#include <iostream>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -9,7 +10,6 @@
 
 #include "lib/database.h"
 #include "lib/criticalerror.h"
-#include "lib/maybe.h"
 
 #include "controller/setupcontroller.h"
 #include "controller/usercontroller.h"
@@ -31,13 +31,12 @@ static void install_tables(QSqlQuery &q) {
     };
 
     size_t num_tables = sizeof(table_names) / sizeof(table_names[0]);
-    D( cout << "Num Tables: " << num_tables << endl; )
     stringstream error;
 
-    for(; num_tables--; ) {
-        if(!q.exec(tables[num_tables])) {
+    for(size_t i(0); i < num_tables; ++i) {
+        if(!q.exec(tables[i])) {
             error << "Error creating table '"
-                  << table_names[num_tables]
+                  << table_names[i]
                   << "'.";
             Database::queryError(error, q);
         }
@@ -130,7 +129,6 @@ int main(int argc, char *argv[]) {
     if(QDialog::Accepted == go) {
         UserController::home();
     }
-
 
     return app.exec();
 

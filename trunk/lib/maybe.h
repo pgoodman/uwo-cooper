@@ -82,8 +82,6 @@ public:
     bool operator !=(Maybe<T> &ref) {
         return ptr != ref.ptr;
     }
-
-
 };
 
 /**

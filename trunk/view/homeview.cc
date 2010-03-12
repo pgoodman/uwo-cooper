@@ -158,12 +158,10 @@ void HomeView::populateCommittees() {
 }
 
 void HomeView::addMember() {
-    AddMemberView *addMemberDialog = new AddMemberView;
-    addMemberDialog->show();
-    if(addMemberDialog->exec() == QDialog::Accepted) {
+    AddMemberView addMemberDialog(this);
+    if(addMemberDialog.exec() == QDialog::Accepted) {
         populateMembers();
     }
-    delete addMemberDialog;
 }
 
 void HomeView::editMember() {
