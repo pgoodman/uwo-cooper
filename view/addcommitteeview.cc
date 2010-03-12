@@ -44,7 +44,7 @@ void AddCommitteeView::addCommittee()
     if(!committeeName->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
-            "Please enter a surname (family name)."
+            "Please enter a surname (committee name)."
         );
         return;
     }
