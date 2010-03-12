@@ -2,6 +2,10 @@
 #include "model/committeemodel.h"
 
 const char *CommitteeModel::table_name("committee");
+//const char *CommitteeModel::column_names[20] = {
+//    "id", "name", "can_delete", "chair_id", "secretary_id", "member_perms",
+//    "chair_perms"
+//};
 
 /**
  * Private constructor, initialize a new committee from db info.

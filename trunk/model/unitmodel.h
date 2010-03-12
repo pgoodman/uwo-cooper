@@ -23,7 +23,10 @@ public:
     bool isEmpty(void);
     virtual void save(void);
 
-    static UnitModel *create(QString address, const int numRooms, const int id);
+    static UnitModel *create(QString address,
+                             const int num_rooms,
+                             const int id);
+
     static bool exists(void);
 
     QString toString(void);
@@ -34,6 +37,9 @@ public:
     const QString address;
 
 protected:
+
+
+    //static const char *column_names[20];
     static UnitModel *load(QSqlQuery &q, const int id);
 
 private:

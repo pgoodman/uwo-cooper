@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <locale>
+#include <sstream>
 
 #include <QString>
 #include <QApplication>
@@ -27,7 +28,8 @@ public:
 private:
     SetupController();
 
-    static bool parseFile(ifstream &file, QMessageBox &msgBox);
+    static bool error(const char *error);
+    static bool parseFile(ifstream &file);
 };
 
 #endif // SETUPCONTROLLER_H

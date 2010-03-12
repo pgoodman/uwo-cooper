@@ -202,8 +202,16 @@ void HomeView::editMember() {
 void HomeView::deleteMember() {
     MemberModel *m(member_list->getModel());
     if(0 != m) {
-        m->remove();
-        populateMembers();
+        int ret(QMessageBox::question(this,
+            "Please Confirm",
+            "Are you sure that you want to delete the member?",
+            QMessageBox::Yes,
+            QMessageBox::No
+        ));
+        if(QMessageBox::Yes == ret) {
+            m->remove();
+            populateMembers();
+        }
     }
 }
 

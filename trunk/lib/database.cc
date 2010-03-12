@@ -62,9 +62,14 @@ QSqlQuery Database::select(const char *table, const int id) {
  * Return the result from a simple query.
  */
 bool Database::remove(const char *table, const int id) {
+    stringstream ss;
+    ss << "id=" << id;
+    return remove(table, ss.str().c_str());
+}
+bool Database::remove(const char *table, const char *cond) {
     assert(is_connected);
     stringstream ss;
-    ss << "DELETE FROM " << table << " WHERE id=" << id;
+    ss << "DELETE FROM " << table << " WHERE " << cond;
     QSqlQuery q(ss.str().c_str());
     return q.exec();
 }

@@ -25,7 +25,6 @@ public:
     static bool nameExists(QString userName);
 
 protected:
-
     UserModel(const bool isCoordinator, QString &pwd);
     
     const bool is_coordinator;

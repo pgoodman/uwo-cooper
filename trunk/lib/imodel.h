@@ -15,6 +15,10 @@
 #include <sstream>
 #include <utility>
 
+//#include <QMap>
+//#include <QString>
+//#include <QVariant>
+
 #include "lib/imodeliterator.h"
 #include "lib/database.h"
 
@@ -29,10 +33,12 @@ class select_from_view_tag { };
  * Abstract template class for models. This template imposes the following
  * requirements on any class T being instantiated with it:
  *
+ *    T::column_names stirng literal array must exist
  *    T::table_name must exist
  *    T::load(QSqlQuery &q, const int model_id) must exist.
  *
- * Any class T extend IModel<T,S> must make IModel<T,S> its friend.
+ * Any class T extend IModel<T,S> must call the MODEL_CLASS macro somewhere in
+ * the class body.
  *
  * If the model is using the select_from_view_tag then the model must also have
  * the following defined:
@@ -41,14 +47,19 @@ class select_from_view_tag { };
  */
 template <typename T>
 class IModelBase {
-public:
 
+    //typedef QMap<QString, QVariant> column_map_t;
+
+public:
     virtual void save(void) = 0;
     virtual void remove(void);
 
     virtual ~IModelBase();
 
     const int id; // primary key
+
+    static void removeAll(void);
+    static void removeAll(const char *cond);
 
 protected:
     IModelBase(const int model_id);
@@ -60,6 +71,9 @@ protected:
 
 private:
     static std::map<int, T *> elms;
+
+    //column_map_t dirty;
+    //column_map_t saved;
 };
 
 #define IMODEL_CLASS public: \
@@ -109,6 +123,19 @@ IModel<T,select_from_view_tag>::IModel(const int model_id)
  */
 template <typename T>
 IModelBase<T>::~IModelBase() { }
+
+/**
+ * Delete everything from the table of this model.
+ */
+template <typename T>
+void IModelBase<T>::removeAll(void) {
+    Database::remove(T::table_name, "1=1");
+}
+
+template <typename T>
+void IModelBase<T>::removeAll(const char *cond) {
+    Database::remove(T::table_name, cond);
+}
 
 /**
  * Remember a loaded model.
