@@ -32,6 +32,10 @@ public:
     ControlCommitteeView(QWidget *parent = 0);
 
 private:
+    QPushButton *add_button;
+    QPushButton *edit_button;
+    QPushButton *del_button;
+    QPushButton *task_button;
     ModelListWidget<CommitteeModel> *committee_list;
     void populateCommittees();
 
@@ -50,6 +54,12 @@ public slots:
     }
     void viewTasks();
 
+
+    /**
+     * Change the buttons depending on whether or not members have a
+     * certain status.
+     */
+    void activateButtons(QListWidgetItem *old, QListWidgetItem *curr);
 };
 
 #endif /* COMMITTEECONTROLVIEW_H_ */

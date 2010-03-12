@@ -33,6 +33,7 @@ public:
                 const int chairId, const int secretaryId);
 
     bool addTask(QString name, QString description, QDateTime deadline) const;
+    bool canRemove(void) const;
 
     TaskModel::iterator_range findTasks(void);
 

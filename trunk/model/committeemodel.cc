@@ -102,3 +102,10 @@ TaskModel::iterator_range CommitteeModel::findTasks(void) {
 QString CommitteeModel::toString(void) {
     return name;
 }
+
+/**
+ * Return whether or not the committee can be removed.
+ */
+bool CommitteeModel::canRemove(void) const {
+    return can_delete;
+}

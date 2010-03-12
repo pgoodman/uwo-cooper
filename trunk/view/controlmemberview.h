@@ -49,7 +49,7 @@ public slots:
      * Change the buttons depending on whether or not members have a
      * certain status.
      */
-    void activateMemberButtons(QListWidgetItem *old, QListWidgetItem *curr);
+    void activateButtons(QListWidgetItem *old, QListWidgetItem *curr);
 };
 
 #endif /* MEMBERCONTROLVIEW_H_ */
