@@ -1,7 +1,7 @@
 
 #include "model/usermodel.h"
 
-UserModel *UserModel::active = 0;
+UserModel *UserModel::active(0);
 
 UserModel::UserModel(bool isCoordinator, QString &pwd)
  : is_coordinator(isCoordinator), password(pwd) { }
@@ -10,10 +10,6 @@ UserModel::~UserModel(void) { }
 
 void UserModel::setActive(UserModel *u) {
     active = u;
-}
-
-bool UserModel::canDo(const PermissionModel p) {
-    return (0 == active) ? false : active->hasPermission(p);
 }
 
 QString UserModel::getPassword(void) {
