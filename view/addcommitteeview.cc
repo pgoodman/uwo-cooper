@@ -28,6 +28,8 @@ AddCommitteeView::AddCommitteeView(QWidget *parent) : QDialog(parent) {
     canDelete->setChecked(true);
     setModal(true);
     setWindowTitle("Add Committee");
+    selectChair->fill(&MemberModel::findAll());
+    selectSecretary->fill(&MemberModel::findall());
 
     //Connect slots/signals
     connect(addButton, SIGNAL(clicked()), this, SLOT(addCommittee()));
