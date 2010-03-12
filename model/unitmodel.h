@@ -21,6 +21,8 @@ public:
     ~UnitModel();
 
     bool isEmpty(void);
+    void updateNumTenants(int);
+
     virtual bool save(void);
     virtual bool remove(void);
 
@@ -36,7 +38,7 @@ public:
 
     // data
     const int num_rooms;
-    const int num_members;
+    int num_members;
     const QString address;
 
 protected:

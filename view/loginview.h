@@ -21,7 +21,6 @@ private:
     QLineEdit *pwdLineEdit;
 private slots:
     void tryLogin();
-    void cancelLogin();
 };
 
 #endif // LOGIN_H

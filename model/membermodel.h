@@ -9,11 +9,13 @@
 #include <QVariant>
 #include <QSqlRecord>
 #include <QDateTime>
+#include <QTextStream>
 
 #include "model/usermodel.h"
 #include "model/dependantmodel.h"
 #include "model/committeemodel.h"
 #include "model/unitmodel.h"
+#include "model/taskmodel.h"
 
 using namespace std;
 
@@ -38,7 +40,7 @@ public:
     QString getLastName(void);
     QString getAddress(void);
 
-    time_t getMoveInTime(void);
+    QDateTime getMoveInTime(void);
     CommitteeModel *getCommittee(void);
 
     //setters
@@ -64,7 +66,7 @@ public:
 
     static MemberModel *findByLoginInfo(QString uname, QString pass);
     static MemberModel *create(const bool sharePhone,
-                          const time_t moveInTime,
+                          QDateTime moveInTime,
                           QString phoneNum,
                           QString userName,
                           QString firstName,
@@ -88,7 +90,7 @@ private:
     bool share_telephone;
     bool is_marked;
     double money_owed;
-    time_t move_in_time;
+    QDateTime move_in_time;
     QString telephone_num;
     QString user_name;
     QString first_name;
@@ -105,7 +107,7 @@ private:
                          const bool sharePhone,
                          const bool isMarked,
                          const double moneyOwed,
-                         const time_t moveInTime,
+                         QDateTime moveInTime,
                          QString phoneNum,
                          QString userName,
                          QString firstName,

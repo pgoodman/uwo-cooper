@@ -18,7 +18,7 @@ LoginView::LoginView() : QDialog(0) {
 
     connect(
         cancelPushButton, SIGNAL(clicked()),
-        this, SLOT(cancelLogin())
+        this, SLOT(reject())
     );
 
     setWindowTitle("Log In to Cooper");
@@ -40,11 +40,4 @@ void LoginView::tryLogin() {
     } else {
         done(QDialog::Accepted);
     }
-}
-
-/**
- * Handle pressing cancel.
- */
-void LoginView::cancelLogin() {
-    done(QDialog::Rejected);
 }

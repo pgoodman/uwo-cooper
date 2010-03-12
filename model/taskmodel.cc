@@ -14,9 +14,11 @@ const char *TaskModel::table_name("task");
  * Private constructor, initialize a new task from db info.
  */
 TaskModel::TaskModel(const int id, QString n, QString descript,
-                     const bool completed, QString deadlineDate)
- : IModel<TaskModel,select_from_table_tag>(id), name(n), description(descript),
-                                status(completed), deadline(deadlineDate) {
+                     const int the_status, QDateTime deadlineDate,
+                     const int committeeId)
+ : IModel<TaskModel,select_from_table_tag>(id), name(n),
+   description(descript), status(the_status), deadline(deadlineDate),
+   committee_id(committeeId) {
 }
 
 /**
@@ -32,8 +34,9 @@ TaskModel *TaskModel::load(QSqlQuery &q, const int id) {
         id,
         qcol<QString>(q, "name"),
         qcol<QString>(q, "description"),
-        qcol<bool>(q, "status"),
-        qcol<QString>(q, "deadline_date")
+        qcol<int>(q, "status"),
+        qcol<QDateTime>(q, "deadline"),
+        qcol<int>(q, "committee_id")
     );
 }
 
@@ -43,7 +46,8 @@ TaskModel *TaskModel::load(QSqlQuery &q, const int id) {
 bool TaskModel::save(void) {
     QSqlQuery q;
     q.prepare(
-        "UPDATE committee set name=?,description=?,status=?,deadline=? WHERE id=?"
+        "UPDATE task set name=?,description=?,status=?,"
+        "deadline=? WHERE id=?"
     );
     q << name << description << status << deadline << id;
     return q.exec();
@@ -52,16 +56,16 @@ bool TaskModel::save(void) {
 /**
  * Create and return a task
  */
-bool TaskModel::create(QString n, QString descript, const bool completed, QString deadlineDate) {
+bool TaskModel::create(QString name, QString descript,
+                       const QDateTime deadlineDate, const int committeeId) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO task (name,description,status,deadline) VALUES (?,?,?,?)"
+        "INSERT INTO task (name,description,status,committee_id,deadline) "
+        "VALUES (?,?,?,?,?)"
     );
-    q << n << descript << completed << deadlineDate;
-    if(!q.exec()) {
-        return false;
-    }
-    return true;
+    q << name << descript << static_cast<int>(Pending)
+      << committeeId << deadlineDate;
+    return q.exec();
 }
 
 
@@ -69,5 +73,19 @@ bool TaskModel::create(QString n, QString descript, const bool completed, QStrin
  * Get the name of a committee.
  */
 QString TaskModel::toString(void) {
-    return name;
+    stringstream ss;
+    ss << name.toStdString();
+    QDateTime now;
+    now.setTime_t(time(0));
+
+    if(Complete == status) {
+        ss << " [completed]";
+    } else {
+        if(deadline < now) {
+            ss << " [overdue]";
+        } else {
+            ss << " [pending]";
+        }
+    }
+    return QString(ss.str().c_str());
 }

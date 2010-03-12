@@ -138,7 +138,7 @@ void AddMemberView::accept(void) {
 
     MemberModel::create(
         share_phone_number->isChecked(),
-        date_moved_in->dateTime().toTime_t(),
+        date_moved_in->dateTime(),
         phone_number->text(),
         user_name->text(),
         first_name->text(),
@@ -148,6 +148,7 @@ void AddMemberView::accept(void) {
         assign_committee->isChecked() ? committee->getModel() : 0,
         unit->getModel()
     );
+
     QDialog::accept();
 }
 

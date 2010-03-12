@@ -1,10 +1,11 @@
 #ifndef TASKMODEL_H
 #define TASKMODEL_H
 
-#include <utility>
+#include <sstream>
 
 #include <QString>
 #include <QDate>
+#include <QDateTime>
 #include <QSqlQuery>
 
 #include "lib/database.h"
@@ -20,7 +21,8 @@ public:
     static const char *table_name;
 
     virtual bool save(void);
-    bool create(QString n, QString descript, const bool completed, QString deadlineDate);
+    static bool create(QString name, QString descript,
+                       const QDateTime deadlineDate, const int committee_id);
 
     QString toString(void);
 
@@ -28,17 +30,24 @@ public:
 
 protected:
 
-    //static const char *column_names[20];
     static TaskModel *load(QSqlQuery &q, const int id);
 
 private:
-    explicit TaskModel(const int id, QString n, QString descript,
-                       const bool completed, QString deadlineDate);
+
+    enum {
+        Complete=1,
+        Pending=0
+    } TaskStatus;
+
+    explicit TaskModel(const int id, QString name, QString descript,
+                       const int status, const QDateTime deadlineDate,
+                       const int committeeId);
 
     QString name;
     QString description;
-    bool status;
-    QString deadline;
+    int status;
+    QDateTime deadline;
+    int committee_id;
 };
 
 #endif // TASKMODEL_H

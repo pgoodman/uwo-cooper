@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QDialog>
+#include <QMainWindow>
 
 #include "conf.h"
 
@@ -127,6 +128,8 @@ int main(int argc, char *argv[]) {
 
     if(QDialog::Accepted == go) {
         UserController::home();
+    } else {
+        Database::disconnect();
     }
 
     return app.exec();
