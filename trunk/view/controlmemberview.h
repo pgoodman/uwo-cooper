@@ -14,7 +14,6 @@
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QListWidgetItem>
 
 #include "lib/gui/modellistwidget.h"
 
@@ -49,7 +48,7 @@ public slots:
      * Change the buttons depending on whether or not members have a
      * certain status.
      */
-    void activateButtons(QListWidgetItem *old, QListWidgetItem *curr);
+    void activateButtons();
 };
 
 #endif /* MEMBERCONTROLVIEW_H_ */

@@ -42,10 +42,8 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
 
     connect(
-        member_list,
-        SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-        this,
-        SLOT(activateButtons(QListWidgetItem *, QListWidgetItem *))
+        member_list, SIGNAL(itemSelectionChanged()),
+        this, SLOT(activateButtons())
     );
 
     if(active_user->hasPermission(ADD_MEMBER)) {
@@ -146,10 +144,7 @@ void ControlMemberView::unmarkMember() {
 /**
  * De/activate the various control buttons depending on the member selected.
  */
-void ControlMemberView::activateButtons(QListWidgetItem *old,
-                                        QListWidgetItem *curr) {
-    (void) old; (void) curr;
-
+void ControlMemberView::activateButtons() {
     MemberModel *member(member_list->getModel());
     if(0 == member) {
         return;

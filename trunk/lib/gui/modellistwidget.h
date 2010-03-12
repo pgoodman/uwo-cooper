@@ -14,6 +14,7 @@
 #include <QWidget>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QList>
 
 #include "lib/imodeliterator.h"
 #include "lib/gui/modellistwidgetitem.h"
@@ -68,7 +69,11 @@ ModelListWidget<T>::~ModelListWidget() { }
 
 template <typename T>
 T * ModelListWidget<T>::getModel(void) {
-    QListWidgetItem *item(currentItem());
+    QList<QListWidgetItem *> items(selectedItems());
+    if(0 == items.count()) {
+        return 0;
+    }
+    QListWidgetItem *item(items.front());
     if(0 == item) {
         return 0;
     }

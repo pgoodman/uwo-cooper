@@ -9,12 +9,13 @@
 #ifndef COMMITTEECONTROLVIEW_H_
 #define COMMITTEECONTROLVIEW_H_
 
+#include <iostream>
+
 #include <QWidget>
 #include <QPushButton>
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QListWidgetItem>
 
 #include "lib/gui/modellistwidget.h"
 
@@ -24,6 +25,8 @@
 
 #include "view/addcommitteeview.h"
 #include "view/tasklistview.h"
+
+using namespace std;
 
 class ControlCommitteeView : public QWidget {
     Q_OBJECT
@@ -57,7 +60,7 @@ public slots:
      * Change the buttons depending on whether or not members have a
      * certain status.
      */
-    void activateButtons(QListWidgetItem *old, QListWidgetItem *curr);
+    void activateButtons();
 };
 
 #endif /* COMMITTEECONTROLVIEW_H_ */
