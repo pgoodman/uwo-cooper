@@ -29,6 +29,8 @@ public:
                              const int id);
 
     static bool exists(void);
+    static QStringList *findAllAddrByUnitNumber(const int number);
+    static QStringList *findAllUnitNoByAddress(QString address);
 
     QString toString(void);
 
