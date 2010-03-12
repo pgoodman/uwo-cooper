@@ -13,9 +13,10 @@ AddCommitteeView::AddCommitteeView(QWidget *parent) : QDialog(parent) {
 
     //layout
     committeeName = layout << "Committee Name: " |= new QLineEdit;
-    layout << "Is this Committee deleteable?" |= canDeleteGroup;
-    selectChair << layout << "Select a Chair" |= new ModelListWidget<MemberModel>;
-    selectSecretary << layout << "Select a Secretary" |= new ModelListWidget<MemberModel>;
+    layout << "Is this Committee deleteable?" | canDelete;
+    layout << "" | cantDelete;
+    selectChair = layout << "Select a Chair" |= new ModelListWidget<MemberModel>;
+    selectSecretary = layout << "Select a Secretary" |= new ModelListWidget<MemberModel>;
 
     //Add / cancel buttons
     QPushButton *addButton = new QPushButton("Add Committee");
@@ -36,7 +37,7 @@ AddCommitteeView::AddCommitteeView(QWidget *parent) : QDialog(parent) {
 
 AddCommitteeView::~AddCommitteeView(){}
 
-AddCommitteeView::addCommittee()
+void AddCommitteeView::addCommittee()
 {
     if(!committeeName->isModified()) {
         QMessageBox::information(
@@ -48,7 +49,7 @@ AddCommitteeView::addCommittee()
     done(QDialog::Accepted);
 }
 
-AddCommitteeView::cancelCommittee()
+void AddCommitteeView::cancelCommittee()
 {
     done(QDialog::Rejected);
 }

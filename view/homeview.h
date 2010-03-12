@@ -32,6 +32,7 @@
 #include "lib/gui/modellistwidgetitem.h"
 
 #include "view/addmemberview.h"
+#include "view/addcommitteeview.h"
 
 class HomeView : public QMainWindow {
     Q_OBJECT
@@ -70,9 +71,8 @@ public slots:
     void editCommittee() {
         cout << "show edit committee form." << endl;
     }
-    void addCommittee() {
-        cout << "show add committee form." << endl;
-    }
+    void addCommittee();
+
     void deleteCommittee() {
         cout << "show delete committee form." << endl;
     }
