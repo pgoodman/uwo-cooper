@@ -23,6 +23,7 @@
 #include "model/permissionmodel.h"
 
 #include "view/addcommitteeview.h"
+#include "view/tasklistview.h"
 
 class ControlCommitteeView : public QWidget {
     Q_OBJECT
@@ -47,9 +48,8 @@ public slots:
     void viewCommittee() {
         cout << "show view committee." << endl;
     }
-    void viewTasks() {
-        cout << "show view tasks" << endl;
-    }
+    void viewTasks();
+
 };
 
 #endif /* COMMITTEECONTROLVIEW_H_ */

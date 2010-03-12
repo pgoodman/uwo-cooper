@@ -64,3 +64,10 @@ void ControlCommitteeView::addCommittee(){
         populateCommittees();
     }
 }
+
+void ControlCommitteeView::viewTasks() {
+     TaskListView viewTaskDialog;
+     if (viewTaskDialog.exec() == QDialog::Accepted) {
+         //populate tasks
+     }
+}
