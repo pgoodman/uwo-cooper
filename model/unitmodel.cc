@@ -53,8 +53,10 @@ UnitModel *UnitModel::create(QString address, int num_rooms, const int id) {
  * Save the unit.
  */
 bool UnitModel::save(void) {
-    // TODO
-    return false;
+QSqlQuery q;
+    q.prepare("UPDATE unit SET address=?, num_rooms=? WHERE id=?");
+    q << address << num_rooms << id;
+    return q.exec();
 }
 
 /**

@@ -14,6 +14,7 @@
 #include <QGridLayout>
 #include <QWidget>
 #include <QLabel>
+#include <QString>
 
 #include "lib/maybe.h"
 
@@ -31,6 +32,12 @@ public:
     FormLayoutPtr &operator|(const char *);
     QLabel *operator<<=(const char *);
     QLabel *operator|=(const char *);
+
+    FormLayoutPtr &operator<<(QString);
+    FormLayoutPtr &operator|(QString);
+    QLabel *operator<<=(QString);
+    QLabel *operator|=(QString);
+
     FormLayoutPtr &operator[](const int);
 
     /**

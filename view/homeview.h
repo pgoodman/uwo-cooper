@@ -10,8 +10,12 @@
 
 #include "lib/database.h"
 
+#include "model/usermodel.h"
+#include "model/membermodel.h"
+
 #include "view/controlmemberview.h"
 #include "view/controlcommitteeview.h"
+#include "view/viewmemberview.h"
 
 class HomeView : public QMainWindow {
     Q_OBJECT
@@ -24,7 +28,7 @@ private:
 
 protected:
     void closeEvent(QCloseEvent *event);
-
+    void logout();
 };
 
 #endif // UI_COOPER_H

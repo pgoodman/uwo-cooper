@@ -26,7 +26,7 @@ FormLayoutPtr::~FormLayoutPtr(void) { }
  * Make and add a label.
  */
 static QLabel *add_label(QGridLayout *layout,
-                         const char *text,
+                         QString(text),
                          const int voffset,
                          const int hoffset,
                          const int col_span) {
@@ -39,12 +39,25 @@ static QLabel *add_label(QGridLayout *layout,
  * Add a label to the layout.
  */
 FormLayoutPtr &FormLayoutPtr::operator<<(const char *label) {
-    add_label(ptr, label, ++voffset, 0, next_span);
+    add_label(ptr, QString(label), ++voffset, 0, next_span);
     hoffset = 1;
     next_span = 1;
     return *this;
 }
 QLabel *FormLayoutPtr::operator<<=(const char *label) {
+    QLabel *l(add_label(ptr, QString(label), ++voffset, 0, next_span));
+    hoffset = 1;
+    next_span = 1;
+    return l;
+}
+
+FormLayoutPtr &FormLayoutPtr::operator<<(QString label) {
+    add_label(ptr, label, ++voffset, 0, next_span);
+    hoffset = 1;
+    next_span = 1;
+    return *this;
+}
+QLabel *FormLayoutPtr::operator<<=(QString label) {
     QLabel *l(add_label(ptr, label, ++voffset, 0, next_span));
     hoffset = 1;
     next_span = 1;
@@ -56,12 +69,25 @@ QLabel *FormLayoutPtr::operator<<=(const char *label) {
  */
 QLabel *FormLayoutPtr::operator|=(const char *label) {
     assert(voffset >= 0);
-    QLabel *l(add_label(ptr, label, voffset, hoffset++, next_span));
+    QLabel *l(add_label(ptr, QString(label), voffset, hoffset++, next_span));
     next_span = 1;
     return l;
 }
 
 FormLayoutPtr &FormLayoutPtr::operator|(const char *label) {
+    assert(voffset >= 0);
+    add_label(ptr, QString(label), voffset, hoffset++, next_span);
+    next_span = 1;
+    return *this;
+}
+QLabel *FormLayoutPtr::operator|=(QString label) {
+    assert(voffset >= 0);
+    QLabel *l(add_label(ptr, label, voffset, hoffset++, next_span));
+    next_span = 1;
+    return l;
+}
+
+FormLayoutPtr &FormLayoutPtr::operator|(QString label) {
     assert(voffset >= 0);
     add_label(ptr, label, voffset, hoffset++, next_span);
     next_span = 1;
