@@ -48,6 +48,9 @@ void AddCommitteeView::addCommittee()
         );
         return;
     }
+    CommitteeModel::create(committeeName->text(), canDelete->isChecked(),
+                           NULL, NULL, selectChair->getModel()->id,
+                           selectSecretary->getModel()->id);
     done(QDialog::Accepted);
 }
 
