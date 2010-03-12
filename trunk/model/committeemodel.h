@@ -2,8 +2,7 @@
 #ifndef COMMITTEE_H
 #define COMMITTEE_H
 
-#include <utility>
-
+#include <QDateTime>
 #include <QString>
 #include <QSqlQuery>
 
@@ -11,6 +10,7 @@
 #include "lib/imodel.h"
 
 #include "model/permissionmodel.h"
+#include "model/taskmodel.h"
 
 using namespace std;
 
@@ -30,10 +30,18 @@ public:
                 const int chairId, const int secretaryId,
                 const int committeeId);
 
+    void addTask(QString name, QString description, QDateTime deadline) const;
+
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
     
     virtual ~CommitteeModel();
+
+    static const int BOARD_COMMITTEE_ID = 1;
+    static const int INSPECTIONS_COMMITTEE_ID = 2;
+    static const int MEMBERSHIP_COMMITTEE_ID = 3;
+    static const int EDUCATION_COMMITTEE_ID = 4;
+    static const int MEMBER_RELATIONS_COMMITTEE_ID = 5;
 
 protected:
 

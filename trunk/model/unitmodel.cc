@@ -67,6 +67,20 @@ bool UnitModel::remove(void) {
 }
 
 /**
+ * Check whether or not the unit is empty.
+ */
+bool UnitModel::isEmpty(void) {
+    return 0 == num_members;
+}
+
+/**
+ * Update the number of members in this unit but an increment.
+ */
+void UnitModel::updateNumTenants(int increment) {
+    num_members += increment;
+}
+
+/**
  * Return a string representation of this unit.
  */
 QString UnitModel::toString(void) {

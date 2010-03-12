@@ -126,6 +126,10 @@ template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val) {
     q.addBindValue(QVariant(static_cast<unsigned int>(val)));
     return q;
 }
+template <> QSqlQuery &operator<< <QDateTime>(QSqlQuery &q, QDateTime val) {
+    q.addBindValue(QVariant(val.toTime_t()));
+    return q;
+}
 template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val) {
     (void) val;
     q.addBindValue(QVariant());
@@ -167,6 +171,11 @@ template <> QString qcol(const QSqlQuery &q, const char *index) {
 }
 template <> long qcol(const QSqlQuery &q, const char *index) {
     return qcol<QVariant>(q, index).toUInt();
+}
+template <> QDateTime qcol(const QSqlQuery &q, const char *index) {
+    QDateTime time;
+    time.setTime_t(qcol<QVariant>(q, index).toUInt());
+    return time;
 }
 
 

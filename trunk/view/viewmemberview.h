@@ -10,7 +10,6 @@
 #define VIEWMEMBERVIEW_H_
 
 #include <sstream>
-#include <ctime>
 
 #include <QWidget>
 #include <QDateTime>

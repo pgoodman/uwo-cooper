@@ -81,6 +81,7 @@ private:
     typedef IModelIterator<T,T> iterator; \
     typedef std::pair<iterator, iterator > iterator_range; \
     static iterator_range findAll(void); \
+    static iterator_range findAll(const char *cond); \
     static T *findById(const int id); \
 
 /**
@@ -175,11 +176,21 @@ std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
 IModel<T,S>::findAll(void) {
     return Database::selectAll<T>(T::table_name, "1=1");
 }
+template <typename T, typename S>
+std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
+IModel<T,S>::findAll(const char *cond) {
+    return Database::selectAll<T>(T::table_name, cond);
+}
 
 template <typename T>
 std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
 IModel<T,select_from_view_tag>::findAll(void) {
     return Database::selectAll<T>(T::view_name, "1=1");
+}
+template <typename T>
+std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
+IModel<T,select_from_view_tag>::findAll(const char *cond) {
+    return Database::selectAll<T>(T::view_name, cond);
 }
 
 /**

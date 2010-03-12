@@ -12,7 +12,7 @@ MemberModel::MemberModel(const int id,
                const bool sharePhone,
                const bool isMarked,
                const double moneyOwed,
-               const time_t moveInTime,
+               const QDateTime moveInTime,
                QString phoneNum,
                QString userName,
                QString firstName,
@@ -182,19 +182,19 @@ void MemberModel::setLoginName(QString loginName){
     user_name = loginName;
 }
 
-time_t MemberModel::getMoveInTime(){
+QDateTime MemberModel::getMoveInTime(){
     return move_in_time;
 }
 
 void MemberModel::setMoveInTime(QDateTime mvTime){
-    move_in_time = mvTime.toTime_t();
+    move_in_time = mvTime;
 }
 
 /**
  * Create a member.
  */
 MemberModel *MemberModel::create(const bool sharePhone,
-                       const time_t moveInTime,
+                       QDateTime moveInTime,
                        QString phoneNum,
                        QString userName,
                        QString firstName,
@@ -217,6 +217,52 @@ MemberModel *MemberModel::create(const bool sharePhone,
 
     if(!q.exec()) {
         return 0;
+    }
+
+    // add this member to the the number of tenants for this unit.
+    if(0 != unit) {
+        bool unit_was_empty(unit->isEmpty());
+        unit->updateNumTenants(1);
+
+        QString *task_desc(new QString);
+        QTextStream ss(task_desc);
+        ss << "Member Name: " << firstName << " " << lastName << "\n";
+        if(sharePhone) {
+            ss << "Telephone Number: " << phoneNum << "\n";
+        }
+        ss << "Unit Number: " << unit->id << "\n";
+        ss << "Move-in Date: " << moveInTime.toString("MMMM d, yyyy") << "\n";
+
+        QDateTime in_30_days(moveInTime);
+        in_30_days.addDays(30);
+
+        // If a unit has a new member moving into it, and it will be empty when
+        // the new member moves into it, then a Move-In Inspection task must be
+        // added to the task list of the Inspection Committee.
+        //
+        // The description for the task must include the name(s) of the member
+        // moving in, the tele-phone number(s) of the member(s) if not
+        // confidential, and the number of the unit they are moving into. The
+        // deadline for the inspection must be one month after the memberÕs
+        // move-in date.
+        if(unit_was_empty) {
+            CommitteeModel *ic(CommitteeModel::findById(
+                CommitteeModel::INSPECTIONS_COMMITTEE_ID
+            ));
+            ic->addTask(QString("Move-in Event"), *task_desc, in_30_days);
+        }
+
+        // Every New Member event must add an Orientation task to the task
+        // list of the Education committee. The description for the task
+        // must include the name of the member, their telephone number if
+        // not confidential, the number of the unit they are moving into,
+        // and their move-in date.
+        CommitteeModel *ec(CommitteeModel::findById(
+            CommitteeModel::EDUCATION_COMMITTEE_ID
+        ));
+        ec->addTask(QString("Orientation Event"), *task_desc, in_30_days);
+
+        delete task_desc;
     }
 
     return findById(q.lastInsertId().toInt());
@@ -286,7 +332,7 @@ MemberModel *MemberModel::load(QSqlQuery &q, const int id) {
         qcol<bool>(q, "share_telephone"),
         qcol<bool>(q, "is_marked"),
         qcol<double>(q, "money_owed"),
-        qcol<time_t>(q, "move_in_time"),
+        qcol<QDateTime>(q, "move_in_time"),
         qcol<QString>(q, "telephone"),
         qcol<QString>(q, "name"),
         qcol<QString>(q, "first_name"),

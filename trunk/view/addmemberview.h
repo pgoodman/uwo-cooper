@@ -9,12 +9,11 @@
 #ifndef ADDMEMBER_H_
 #define ADDMEMBER_H_
 
-#include <ctime>
-
 #include <QWidget>
 #include <QDialog>
 #include <QLineEdit>
 #include <QDateEdit>
+#include <QDateTime>
 #include <QButtonGroup>
 #include <QRadioButton>
 #include <QPushButton>
@@ -26,6 +25,7 @@
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
 #include "model/unitmodel.h"
+#include "model/taskmodel.h"
 
 /*
  * At any time, the Co-ordinator can trigger a New Member event, giving the

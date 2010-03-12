@@ -6,6 +6,7 @@
 #include <cassert>
 #include <ctime>
 
+#include <QDateTime>
 #include <QSqlDatabase>
 #include <QString>
 #include <QStringList>
@@ -61,6 +62,7 @@ template <> bool qcol(const QSqlQuery &q, const char *index);
 template <> string qcol(const QSqlQuery &q, const char *index);
 template <> QString qcol(const QSqlQuery &q, const char *index);
 template <> long qcol(const QSqlQuery &q, const char *index);
+template <> long qcol(const QSqlQuery &q, const char *index);
 
 const QVariant &operator>>(const QVariant &v, int &x);
 const QVariant &operator>>(const QVariant &v, bool &x);
@@ -73,7 +75,7 @@ template <> QSqlQuery &operator<< <string &>(QSqlQuery &q, string &val);
 template <> QSqlQuery &operator<< <string>(QSqlQuery &q, string val);
 template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val);
 template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
-//template <> QSqlQuery &operator<< <double>(QSqlQuery &q, double val);
+template <> QSqlQuery &operator<< <QDateTime>(QSqlQuery &q, QDateTime val);
 
 /**
  * Linkage stuff.

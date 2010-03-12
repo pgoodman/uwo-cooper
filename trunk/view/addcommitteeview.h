@@ -1,12 +1,11 @@
 #ifndef ADDCOMMITTEEVIEW_H
 #define ADDCOMMITTEEVIEW_H
 
-#include <ctime>
-
 #include <QWidget>
 #include <QDialog>
 #include <QLineEdit>
 #include <QDateEdit>
+#include <QDateTime>
 #include <QButtonGroup>
 #include <QRadioButton>
 #include <QPushButton>

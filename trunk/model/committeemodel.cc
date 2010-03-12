@@ -2,10 +2,6 @@
 #include "model/committeemodel.h"
 
 const char *CommitteeModel::table_name("committee");
-//const char *CommitteeModel::column_names[20] = {
-//    "id", "name", "can_delete", "chair_id", "secretary_id", "member_perms",
-//    "chair_perms"
-//};
 
 /**
  * Private constructor, initialize a new committee from db info.
@@ -80,6 +76,15 @@ bool CommitteeModel::create(QString n, const bool canDelete,
  */
 PermissionModelSet CommitteeModel::getPermissions(const int member_id) {
     return member_id == chair_id ? chair_perms : member_perms;
+}
+
+/**
+ * Add a task to this committee.
+ */
+void CommitteeModel::addTask(QString name,
+                             QString description,
+                             QDateTime deadline) const {
+    TaskModel::create(name, description, deadline, id);
 }
 
 /**
