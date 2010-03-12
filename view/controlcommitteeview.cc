@@ -26,15 +26,22 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
 
     column->setSpacing(0);
 
-    QPushButton *add_button = new QPushButton("Add Committee");
-    QPushButton *edit_button = new QPushButton("Edit Committee");
-    QPushButton *del_button = new QPushButton("Delete Committee");
-    QPushButton *task_button = new QPushButton("Tasks");
+    add_button = new QPushButton("Add Committee");
+    edit_button = new QPushButton("Edit Committee");
+    del_button = new QPushButton("Delete Committee");
+    task_button = new QPushButton("Manage Tasks");
 
     connect(add_button, SIGNAL(clicked()), this, SLOT(addCommittee()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editCommittee()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteCommittee()));
     connect(task_button, SIGNAL(clicked()), this, SLOT(viewTasks()));
+
+    connect(
+        committee_list,
+        SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
+        this,
+        SLOT(activateButtons(QListWidgetItem *, QListWidgetItem *))
+    );
 
     column->addWidget(add_button);
     column->addWidget(edit_button);
@@ -45,7 +52,6 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     layout->setWidget(0, QFormLayout::LabelRole, committee_list);
 
     populateCommittees();
-    committee_list->selectFirst();
 }
 
 /**
@@ -53,6 +59,9 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
  */
 void ControlCommitteeView::populateCommittees() {
     committee_list->fill(&CommitteeModel::findAll);
+    edit_button->setDisabled(true);
+    del_button->setDisabled(true);
+    task_button->setDisabled(true);
 }
 
 
@@ -66,10 +75,30 @@ void ControlCommitteeView::addCommittee(){
     }
 }
 
+/**
+ * Pop up a window to manage the tasks of a committee.
+ */
 void ControlCommitteeView::viewTasks() {
     CommitteeModel *committee(committee_list->getModel());
     if(0 != committee) {
         TaskListView viewTaskDialog(committee, this);
         viewTaskDialog.exec();
     }
+}
+
+/**
+ * De/activate the various control buttons depending on the committee selected.
+ */
+void ControlCommitteeView::activateButtons(QListWidgetItem *old,
+                                           QListWidgetItem *curr) {
+    (void) old; (void) curr;
+
+    CommitteeModel *committee(committee_list->getModel());
+    if(0 == committee) {
+        return;
+    }
+
+    edit_button->setDisabled(false);
+    task_button->setDisabled(false);
+    del_button->setDisabled(!committee->canRemove());
 }
