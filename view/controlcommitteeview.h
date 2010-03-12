@@ -46,9 +46,7 @@ public slots:
     }
     void addCommittee();
 
-    void deleteCommittee() {
-        cout << "show delete committee form." << endl;
-    }
+    void deleteCommittee();
     void viewCommittee() {
         cout << "show view committee." << endl;
     }
