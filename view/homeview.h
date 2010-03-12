@@ -22,6 +22,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QCloseEvent>
+#include <QMessageBox>
 
 #include "model/usermodel.h"
 #include "model/membermodel.h"

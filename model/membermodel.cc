@@ -111,9 +111,15 @@ void MemberModel::markDeleted(bool mark) {
 
 QString MemberModel::toString(void) {
     stringstream ss;
-    ss << first_name.toStdString() << " " << last_name.toStdString();
+    if(!first_name.isEmpty()) {
+        ss << first_name.toStdString() << " ";
+    }
+    ss << last_name.toStdString();
     if(is_marked) {
         ss << " [marked]";
+    }
+    if(first_name.isEmpty()) {
+        ss << " [incomplete]";
     }
     return QString(ss.str().c_str());
 }
@@ -212,6 +218,20 @@ MemberModel *MemberModel::create(const bool sharePhone,
         return 0;
     }
 
+    return findById(q.lastInsertId().toInt());
+}
+
+/**
+ * Create an incomplete member profile.
+ */
+MemberModel *MemberModel::createIncomplete(QString last_name, UnitModel *unit) {
+    int unit_id(0 == unit ? 0 : unit->id);
+    QSqlQuery q;
+    q.prepare("INSERT INTO user (last_name,unit_id) VALUES (?,?)");
+    q << last_name << unit_id;
+    if(!q.exec()) {
+        return 0;
+    }
     return findById(q.lastInsertId().toInt());
 }
 

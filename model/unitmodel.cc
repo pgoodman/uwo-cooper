@@ -3,6 +3,9 @@
 
 const char *UnitModel::table_name("unit");
 const char *UnitModel::view_name("unit_select");
+//const char *UnitModel::column_names[20] = {
+//    "id", "address", "num_rooms"
+//};
 
 /**
  * Construct a unit.
@@ -27,7 +30,7 @@ UnitModel *UnitModel::load(QSqlQuery &q, const int id) {
         qcol<QString>(q, "address"),
         qcol<int>(q, "num_rooms"),
         id,
-        0
+        qcol<int>(q, "num_members") // synthesized through unit_select view
     );
     return c;
 }
@@ -35,15 +38,12 @@ UnitModel *UnitModel::load(QSqlQuery &q, const int id) {
 /**
  * Create a new unit.
  */
-UnitModel *UnitModel::create(QString addr, int nRooms, const int id) {
+UnitModel *UnitModel::create(QString address, int num_rooms, const int id) {
     QSqlQuery q;
-    q.prepare(
-        "INSERT INTO unit (address,num_rooms,id)"
-        "VALUES (?,?,?)"
-    );
-    q << addr << nRooms << id;
+    q.prepare("INSERT INTO unit (address,num_rooms,id) VALUES (?,?,?)");
+    q << address << num_rooms << id;
     if(!q.exec()) {
-        Database::queryError("Unable to Add Unit", q);
+        return 0;
     }
     q.finish();
     return findById(id);
@@ -57,15 +57,14 @@ void UnitModel::save(void) {
  * Return a string representation of this unit.
  */
 QString UnitModel::toString(void) {
-    /*stringstream ss;
-    ss << id << "(" << address.toStdString() << ") ";
+    stringstream ss;
+    ss << "Unit " << id << " at " << address.toStdString() << " ";
     if(0 == num_members) {
         ss << "[empty]";
     } else {
         ss << "[" << num_members << " tenants]";
     }
-    return QString(ss.str().c_str());*/
-    return address;
+    return QString(ss.str().c_str());
 }
 
 UnitModel::~UnitModel() {

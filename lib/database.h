@@ -33,6 +33,7 @@ public:
     static QSqlQuery select(const char *table, const char *cond);
     static QSqlQuery select(const char *table, const int id);
     static bool remove(const char *table, const int id);
+    static bool remove(const char *table, const char *cond);
 
     template <typename T>
     static pair<IModelIterator<T,T>, IModelIterator<T,T> >

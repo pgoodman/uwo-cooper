@@ -36,6 +36,8 @@ public:
     virtual ~CommitteeModel();
 
 protected:
+
+    //static const char *column_names[20];
     static CommitteeModel *load(QSqlQuery &q, const int id);
 
 private:

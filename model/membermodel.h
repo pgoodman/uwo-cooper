@@ -73,7 +73,7 @@ public:
                           QString pass,
                           CommitteeModel *committee,
                           UnitModel *unit);
-
+    static MemberModel *createIncomplete(QString lastName, UnitModel *unit);
     static iterator_range findAll();
     
     virtual ~MemberModel();

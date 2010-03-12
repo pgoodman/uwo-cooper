@@ -9,29 +9,40 @@ int SetupController::install() {
     return setup.exec();
 }
 
+bool SetupController::error(const char *text) {
+    QMessageBox box;
+    box.setText(text);
+    box.exec();
+    return false;
+}
+
 /**
  * Load the data from a file given the file name.
  */
 bool SetupController::loadData(QString filename) {
-    QMessageBox msgBox;
     ifstream myfile(filename.toStdString().c_str());
 
     if (!myfile.is_open()) {
-        msgBox.setText("Unable to open file.");
-        msgBox.exec();
-        return false;
+        return error("Unable to open file.");
     }
 
-    bool ret(parseFile(myfile, msgBox));
+    bool ret(parseFile(myfile));
     myfile.close();
+
+    // clear out any units added to the db and any members added to the db
+    // as a result of the unit load
+    if(!ret) {
+        UnitModel::removeAll();
+        MemberModel::removeAll("is_coordinator=0");
+    }
+
     return ret;
 }
 
 /**
  * Parse a file with unit data.
  */
-bool SetupController::parseFile(ifstream &myfile, QMessageBox &msgBox) {
-    QString qAddress;
+bool SetupController::parseFile(ifstream &myfile) {
     string userInfo;
     int unitNo(0);
     string address = "";
@@ -39,84 +50,109 @@ bool SetupController::parseFile(ifstream &myfile, QMessageBox &msgBox) {
     string tenantSurname = "";
 
     if (!myfile.is_open()) {
-        msgBox.setText("Unable to open file.");
-        msgBox.exec();
-        return false;
+        return error("Unable to open file.");
     }
 
-    while(!myfile.eof()) {
+    // main parse
+    for(bool on_first_line(true); !myfile.eof(); on_first_line = false) {
         locale loc; // For digit checking
         string information = ""; // Hold the next piece of info
         getline (myfile, userInfo); // Get next line
         int whichInfo = 0;
-        if(userInfo.size()!=0){
-            // Keeps track of which information we're parsing out
-            for (unsigned int i = 0; i <= userInfo.size(); i++) {
 
-                if ((i != userInfo.size()) && (userInfo.substr(i,1) != ",")) {
+        if(0 == userInfo.size()) {
+            if(on_first_line) {
+                return error(
+                    "The file was empty; please specify a nonempty file "
+                    "for loading the units."
+                );
+            }
+            break;
+        }
 
-                    // If were checking for digits and we don't see a digit
-                    if(((whichInfo == 0) || (whichInfo == 2))
-                    && !isdigit(userInfo[i], loc)) {
-                        msgBox.setText("Error parsing: Invalid number entered");
-                        msgBox.exec();
-                        return false;
-                    }
+        // Keeps track of which information we're parsing out
+        for (unsigned int i = 0; i <= userInfo.size(); i++) {
 
-                    // Else, we have valid info so far
-                    information += userInfo.at(i);
-                    continue;
+            if ((i != userInfo.size()) && (userInfo.substr(i,1) != ",")) {
+
+                // If were checking for digits and we don't see a digit
+                if(((whichInfo == 0) || (whichInfo == 2))
+                && !isdigit(userInfo[i], loc)) {
+                    return error("Error parsing: Invalid number entered");
                 }
 
-                switch (whichInfo) {
-
-                    case 0:
-                        if (information == "") {
-                            msgBox.setText("Error parsing: No unit number given");
-                            msgBox.exec();
-                            return false;
-                        }
-                        unitNo = atoi(information.c_str());
-                        break;
-
-                    case 1:
-                        if (information == "") {
-                            msgBox.setText("Error parsing: No address given");
-                            msgBox.exec();
-                            return false;
-                        }
-                        address = information;
-                        break;
-
-                    case 2:
-                        if (information == "") {
-                            msgBox.setText("Error parsing: No rooms given");
-                            msgBox.exec();
-                            return false;
-                        }
-
-                        noOfRooms = atoi(information.c_str());
-                        if ((noOfRooms == 0) || (noOfRooms > 3)) {
-                            msgBox.setText(
-                                "Error parsing: Invalid number of rooms! "
-                                "(1, 2, or 3)"
-                            );
-                            msgBox.exec();
-                            return false;
-                        }
-                        break;
-
-                    case 3:
-                        tenantSurname = information;
-                        break;
-                }
-                qAddress = QString(address.c_str());
-                whichInfo++;
-                information = "";
+                // Else, we have valid info so far
+                information += userInfo.at(i);
+                continue;
             }
 
-            UnitModel::create(qAddress, noOfRooms, unitNo);
+            switch (whichInfo) {
+
+                case 0:
+                    if (information == "") {
+                        return error("Error parsing: No unit number given");
+                    }
+                    unitNo = atoi(information.c_str());
+                    break;
+
+                case 1:
+                    if (information == "") {
+                        return error("Error parsing: No address given");
+                    }
+                    address = information;
+                    break;
+
+                case 2:
+                    if (information == "") {
+                        return error("Error parsing: No rooms given");
+                    }
+
+                    noOfRooms = atoi(information.c_str());
+                    if ((noOfRooms == 0) || (noOfRooms > 3)) {
+                        return error(
+                            "Error parsing: Invalid number of rooms! "
+                            "(valid numbers: 1, 2, or 3)"
+                        );
+                    }
+                    break;
+
+                case 3:
+                    tenantSurname = information;
+                    break;
+            }
+            whichInfo++;
+            information = "";
+        }
+
+        /*cout << "address: " << address
+             << "; rooms: " << noOfRooms
+             << "; number: " << unitNo
+             << "; surname: " << tenantSurname
+             << endl;*/
+
+        UnitModel *unit(UnitModel::findById(unitNo));
+        if(0 == unit) {
+            unit = UnitModel::create(
+                QString(address.c_str()),
+                noOfRooms,
+                unitNo
+            );
+        }
+
+        // unexpected error
+        if(0 == unit) {
+            stringstream ss;
+            ss << "Unable to create unit " << unitNo << " at address "
+               << address << ".";
+            return error(ss.str().c_str());
+        }
+
+        if(!tenantSurname.empty()) {
+            MemberModel::createIncomplete(
+                QString(tenantSurname.c_str()), unit
+            );
         }
     }
+
     return true;
 }
