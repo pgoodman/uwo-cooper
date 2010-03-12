@@ -37,10 +37,8 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     connect(task_button, SIGNAL(clicked()), this, SLOT(viewTasks()));
 
     connect(
-        committee_list,
-        SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-        this,
-        SLOT(activateButtons(QListWidgetItem *, QListWidgetItem *))
+        committee_list, SIGNAL(itemSelectionChanged()),
+        this, SLOT(activateButtons())
     );
 
     column->addWidget(add_button);
@@ -89,10 +87,7 @@ void ControlCommitteeView::viewTasks() {
 /**
  * De/activate the various control buttons depending on the committee selected.
  */
-void ControlCommitteeView::activateButtons(QListWidgetItem *old,
-                                           QListWidgetItem *curr) {
-    (void) old; (void) curr;
-
+void ControlCommitteeView::activateButtons() {
     CommitteeModel *committee(committee_list->getModel());
     if(0 == committee) {
         return;
