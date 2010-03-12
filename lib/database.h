@@ -14,7 +14,6 @@
 #include <QVariant>
 #include <QSqlRecord>
 
-#include "lib/criticalerror.h"
 #include "lib/imodeliterator.h"
 
 /**
@@ -22,12 +21,12 @@
  */
 class Database
 {
-    typedef void (install_func_t)(QSqlQuery &);
+    typedef bool (install_func_t)(QSqlQuery &);
 
 public:
     ~Database();
 
-    static void connect(const char *, const char *, install_func_t *);
+    static bool connect(const char *, const char *, install_func_t *);
     static bool hasAny(const char *);
     static QSqlQuery select(const char *query);
     static QSqlQuery select(const char *table, const char *cond);
@@ -38,10 +37,6 @@ public:
     template <typename T>
     static pair<IModelIterator<T,T>, IModelIterator<T,T> >
     selectAll(const char *table, const char *cond="1=1");
-
-    static void queryError(const char *, QSqlQuery &);
-    static void queryError(string, QSqlQuery &);
-    static void queryError(stringstream &, QSqlQuery &);
 
     static void disconnect(void);
 

@@ -51,15 +51,15 @@ class IModelBase {
     //typedef QMap<QString, QVariant> column_map_t;
 
 public:
-    virtual void save(void) = 0;
-    virtual void remove(void);
+    virtual bool save(void) = 0;
+    virtual bool remove(void);
 
     virtual ~IModelBase();
 
     const int id; // primary key
 
-    static void removeAll(void);
-    static void removeAll(const char *cond);
+    static bool removeAll(void);
+    static bool removeAll(const char *cond);
 
 protected:
     IModelBase(const int model_id);
@@ -128,13 +128,13 @@ IModelBase<T>::~IModelBase() { }
  * Delete everything from the table of this model.
  */
 template <typename T>
-void IModelBase<T>::removeAll(void) {
-    Database::remove(T::table_name, "1=1");
+bool IModelBase<T>::removeAll(void) {
+    return Database::remove(T::table_name, "1=1");
 }
 
 template <typename T>
-void IModelBase<T>::removeAll(const char *cond) {
-    Database::remove(T::table_name, cond);
+bool IModelBase<T>::removeAll(const char *cond) {
+    return Database::remove(T::table_name, cond);
 }
 
 /**
@@ -217,9 +217,9 @@ T *IModel<T,select_from_view_tag>::findById(const int model_id) {
  * Remove an acrive model from the database.
  */
 template <typename T>
-void IModelBase<T>::remove(void) {
-    Database::remove(T::table_name, id);
+bool IModelBase<T>::remove(void) {
     elms.erase(id);
+    return Database::remove(T::table_name, id);
 }
 
 #endif /* MODEL_H_ */

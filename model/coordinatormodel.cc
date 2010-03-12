@@ -36,15 +36,13 @@ bool CoordinatorModel::exists(void) {
 /**
  * Update the coordinator in the db.
  */
-void CoordinatorModel::save(void) {
+bool CoordinatorModel::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE user SET password=? WHERE id=? AND is_coordinator=1"
     );
     q << password << id;
-    if(!q.exec()) {
-        Database::queryError("Unable to Update Coordinator Information.", q);
-    }
+    return q.exec();
 }
 
 /**
@@ -61,7 +59,7 @@ UserModel *CoordinatorModel::create(QString password) {
     );
     q << password;
     if(!q.exec()) {
-        Database::queryError("Unable to create Coordinator", q);
+        return 0;
     }
     does_exist = true;
     return load();

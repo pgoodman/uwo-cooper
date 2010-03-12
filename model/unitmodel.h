@@ -21,7 +21,8 @@ public:
     ~UnitModel();
 
     bool isEmpty(void);
-    virtual void save(void);
+    virtual bool save(void);
+    virtual bool remove(void);
 
     static UnitModel *create(QString address,
                              const int num_rooms,

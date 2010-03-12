@@ -24,7 +24,7 @@ public:
     static UserModel *findByPassword(QString password);
 
     virtual QString getUserName(void);
-    virtual void save(void);
+    virtual bool save(void);
     virtual bool hasPermission(const PermissionModel p);
     virtual ~CoordinatorModel();
 

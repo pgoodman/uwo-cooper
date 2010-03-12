@@ -55,9 +55,9 @@ public:
     void setCommittee(CommitteeModel *committee);
     void setFullName(QString firstName, QString lastName);
 
-    virtual void save(void);
+    virtual bool save(void);
     virtual bool hasPermission(const PermissionModel p);
-    virtual void remove(void);
+    virtual bool remove(void);
 
     virtual QString getUserName(void);
     virtual QString toString();

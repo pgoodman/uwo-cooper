@@ -49,8 +49,19 @@ UnitModel *UnitModel::create(QString address, int num_rooms, const int id) {
     return findById(id);
 }
 
-void UnitModel::save(void) {
+/**
+ * Save the unit.
+ */
+bool UnitModel::save(void) {
     // TODO
+    return false;
+}
+
+/**
+ * Units cannot be removed so do nothing.
+ */
+bool UnitModel::remove(void) {
+    return false;
 }
 
 /**

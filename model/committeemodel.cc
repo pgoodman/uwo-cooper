@@ -43,7 +43,7 @@ CommitteeModel *CommitteeModel::load(QSqlQuery &q, const int id) {
 /**
  * Save a committee to the database.
  */
-void CommitteeModel::save(void) {
+bool CommitteeModel::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE committee set name=?,can_delete=?,chair_perms=?,member_perms=?,"
@@ -51,9 +51,7 @@ void CommitteeModel::save(void) {
     );
     q << name << can_delete << chair_perms << member_perms << chair_id
       << secretary_id << id;
-    if(!q.exec()) {
-        Database::queryError("Unable to Save Committee", q);
-    }
+    return q.exec();
 }
 
 /**

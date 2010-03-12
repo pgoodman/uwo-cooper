@@ -9,21 +9,20 @@
 #ifndef SETUP_H_
 #define SETUP_H_
 
+#include <QWidget>
 #include <QWizard>
 #include <QWizardPage>
-#include <QWidget>
 #include <QGridLayout>
-#include <QPushButton>
-#include <QLabel>
-#include <QFileDialog>
-#include <QString>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
+#include <QString>
+#include <QFileDialog>
 #include <QMessageBox>
 
 #include "model/coordinatormodel.h"
+
 #include "controller/setupcontroller.h"
-#include "controller/usercontroller.h"
 
 /**
  * A Wizard to go through and initialize the system.

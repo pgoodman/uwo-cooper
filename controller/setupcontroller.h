@@ -13,7 +13,7 @@
 
 #include "view/setupview.h"
 
-#include "model/usermodel.h"
+#include "model/membermodel.h"
 #include "model/unitmodel.h"
 
 using namespace std;
