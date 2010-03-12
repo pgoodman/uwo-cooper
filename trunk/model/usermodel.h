@@ -7,6 +7,8 @@
 #include "lib/database.h"
 #include "model/permissionmodel.h"
 
+#define active_user UserModel::active
+
 class UserModel {
 public:
 
@@ -24,14 +26,13 @@ public:
     static bool canDo(PermissionModel); // can't re-declare hasPermission :/
     static bool nameExists(QString userName);
 
+    static UserModel *active;
+
 protected:
     UserModel(const bool isCoordinator, QString &pwd);
     
     const bool is_coordinator;
     QString password;
-
-private:
-    static UserModel *active;
 };
 
 #endif // MODEL_USER_H
