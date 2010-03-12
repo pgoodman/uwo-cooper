@@ -2,33 +2,21 @@
 #include "model/unitmodel.h"
 
 const char *UnitModel::table_name("unit");
+const char *UnitModel::view_name("unit_select");
 
 /**
  * Construct a unit.
  */
-UnitModel::UnitModel(QString streetAddress, int numRooms, 
-                     const int unitId, const int num)
- : IModel<UnitModel>(unitId), number(num),
-   num_rooms(numRooms), address(streetAddress) { }
+UnitModel::UnitModel(QString streetAddress, const int numRooms,
+                     const int unitId, const int numMembers)
+ : IModel<UnitModel,select_from_view_tag>(unitId), num_rooms(numRooms),
+   num_members(numMembers), address(streetAddress)  { }
 
 /**
  * Return whether or not any units exist.
  */
 bool UnitModel::exists(void) {
     return Database::hasAny("SELECT * FROM unit");
-}
-
-/**
- * Load a unit by its address.
- */
-UnitModel *UnitModel::findByLocation(const int number, QString address) {
-    QSqlQuery q;
-    q.prepare("SELECT * FROM unit WHERE number=? AND address=?");
-    q << number << address;
-    if(!q.exec() || !q.first()) {
-        return 0;
-    }
-    return load(q, qcol<int>(q, "id"));
 }
 
 /**
@@ -39,7 +27,7 @@ UnitModel *UnitModel::load(QSqlQuery &q, const int id) {
         qcol<QString>(q, "address"),
         qcol<int>(q, "num_rooms"),
         id,
-        qcol<int>(q, "number")
+        0
     );
     return c;
 }
@@ -47,17 +35,18 @@ UnitModel *UnitModel::load(QSqlQuery &q, const int id) {
 /**
  * Create a new unit.
  */
-void UnitModel::create(QString addr, int nRooms, const int num) {
+UnitModel *UnitModel::create(QString addr, int nRooms, const int id) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO unit (address,num_rooms,number)"
+        "INSERT INTO unit (address,num_rooms,id)"
         "VALUES (?,?,?)"
     );
-    q << addr << nRooms << num;
+    q << addr << nRooms << id;
     if(!q.exec()) {
         Database::queryError("Unable to Add Unit", q);
     }
     q.finish();
+    return findById(id);
 }
 
 void UnitModel::save(void) {
@@ -68,7 +57,15 @@ void UnitModel::save(void) {
  * Return a string representation of this unit.
  */
 QString UnitModel::toString(void) {
-    return number + " " + address;
+    /*stringstream ss;
+    ss << id << "(" << address.toStdString() << ") ";
+    if(0 == num_members) {
+        ss << "[empty]";
+    } else {
+        ss << "[" << num_members << " tenants]";
+    }
+    return QString(ss.str().c_str());*/
+    return address;
 }
 
 UnitModel::~UnitModel() {

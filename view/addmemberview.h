@@ -25,6 +25,7 @@
 
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
+#include "model/unitmodel.h"
 
 /*
  * At any time, the Co-ordinator can trigger a New Member event, giving the
@@ -49,11 +50,13 @@ private:
     QRadioButton *assign_committee;
 
     ModelListWidget<CommitteeModel> *committee;
+    ModelListWidget<UnitModel> *unit;
 public:
     AddMemberView(QWidget *parent=0);
     ~AddMemberView(void);
 public slots:
-    void addMember(void);
+    void checkForm(void);
+    void accept(void);
     void cancelAdd(void);
 };
 

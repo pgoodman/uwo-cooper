@@ -1,12 +1,10 @@
 #ifndef COOPERDB_H
 #define COOPERDB_H
 
-#include <stdexcept>
-#include <iostream>
 #include <sstream>
 #include <utility>
 #include <cassert>
-#include <time.h>
+#include <ctime>
 
 #include <QSqlDatabase>
 #include <QString>
@@ -16,7 +14,6 @@
 #include <QVariant>
 #include <QSqlRecord>
 
-#include "conf.h"
 #include "lib/criticalerror.h"
 #include "lib/imodeliterator.h"
 

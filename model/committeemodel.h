@@ -14,13 +14,11 @@
 
 using namespace std;
 
-
 class MemberModel;
-class CommitteeModel;
 
-class CommitteeModel : public IModel<CommitteeModel> {
+class CommitteeModel : public IModel<CommitteeModel, select_from_table_tag> {
 
-    friend class IModel<CommitteeModel>;
+    MODEL_CLASS(CommitteeModel);
 
 public:
     static const char *table_name;

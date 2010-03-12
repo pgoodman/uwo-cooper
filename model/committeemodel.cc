@@ -11,7 +11,7 @@ CommitteeModel::CommitteeModel(QString n, const bool canDelete,
                      const PermissionModelSet memberPerms,
                      const int chairId, const int secretaryId,
                      const int committeeId)
- : IModel<CommitteeModel>(committeeId), name(n),
+ : IModel<CommitteeModel,select_from_table_tag>(committeeId), name(n),
    can_delete(canDelete), chair_perms(chairPerms),
    member_perms(memberPerms), chair_id(chairId), secretary_id(secretaryId) {
 }
