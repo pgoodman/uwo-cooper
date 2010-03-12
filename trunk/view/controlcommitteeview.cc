@@ -45,6 +45,7 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     layout->setWidget(0, QFormLayout::LabelRole, committee_list);
 
     populateCommittees();
+    committee_list->selectFirst();
 }
 
 /**
@@ -66,8 +67,9 @@ void ControlCommitteeView::addCommittee(){
 }
 
 void ControlCommitteeView::viewTasks() {
-     TaskListView viewTaskDialog;
-     if (viewTaskDialog.exec() == QDialog::Accepted) {
-         //populate tasks
-     }
+    CommitteeModel *committee(committee_list->getModel());
+    if(0 != committee) {
+        TaskListView viewTaskDialog(committee, this);
+        viewTaskDialog.exec();
+    }
 }

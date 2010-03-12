@@ -57,14 +57,14 @@ bool TaskModel::save(void) {
  * Create and return a task
  */
 bool TaskModel::create(QString name, QString descript,
-                       const QDateTime deadlineDate, const int committeeId) {
+                       const QDateTime deadlineDate,
+                       const int committeeId) {
     QSqlQuery q;
     q.prepare(
         "INSERT INTO task (name,description,status,committee_id,deadline) "
-        "VALUES (?,?,?,?,?)"
+        "VALUES (?,?,0,?,?)"
     );
-    q << name << descript << static_cast<int>(Pending)
-      << committeeId << deadlineDate;
+    q << name << descript << committeeId << deadlineDate;
     return q.exec();
 }
 
