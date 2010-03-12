@@ -51,10 +51,11 @@ bool MemberModel::hasPermission(const PermissionModel p) {
 /**
  * Remove a member from the database iff they are already marked deleted.
  */
-void MemberModel::remove(void) {
+bool MemberModel::remove(void) {
     if(isMarkedDeleted()) {
-        IModel<MemberModel,select_from_table_tag>::remove();
+        return IModel<MemberModel,select_from_table_tag>::remove();
     }
+    return false;
 }
 
 /**
@@ -238,7 +239,7 @@ MemberModel *MemberModel::createIncomplete(QString last_name, UnitModel *unit) {
 /**
  * Update the user's info in the db.
  */
-void MemberModel::save(void) {
+bool MemberModel::save(void) {
     QSqlQuery q;
     q.prepare(
         "UPDATE user SET first_name=?,last_name=?,name=?,password=?,"
@@ -250,10 +251,7 @@ void MemberModel::save(void) {
       << telephone_num << move_in_time << unit_id << address << is_marked
       << committee_id << money_owed << id;
 
-    if(!q.exec() || 0 == q.numRowsAffected()) {
-        Database::queryError("Unable to Update Member Information.", q);
-    }
-
+    return q.exec();
 }
 
 /**

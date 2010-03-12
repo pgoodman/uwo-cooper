@@ -78,48 +78,33 @@ bool Database::remove(const char *table, const char *cond) {
  * Connect to the database, or make it if it doesn't exist. If it needs to
  * create the database then it calls the function pointer make_db passed in.
  */
-void Database::connect(const char *db_name,
+bool Database::connect(const char *db_name,
                        const char *type,
                        install_func_t *make_db) {
     if(is_connected) {
-        return;
+        return true;
     }
 
     db = QSqlDatabase::addDatabase(type);
     if(!db.isValid()) {
-        throw CriticalError("Cannot open database.", "Unable to load SQLite.");
+        return false;
     }
     db.setDatabaseName(db_name);
     if(!db.open()) {
-        throw CriticalError(
-            "Cannot open database",
-            "Unable to establish a database connection."
-        );
+        return false;
     }
 
     // create the db tables
     if(!db.tables().count()) {
         QSqlQuery q;
-        make_db(q);
+        
+        if(!make_db(q)) {
+            return false;
+        }
     }
 
     is_connected = true;
-}
-
-/**
- * Throw a database error from a query.
- */
-void Database::queryError(string header, QSqlQuery &query) {
-    QString db_err(db.lastError().text() + query.executedQuery());
-    throw CriticalError(header, db_err.toStdString());
-}
-
-void Database::queryError(stringstream &header, QSqlQuery &query) {
-    queryError(header.str(), query);
-}
-
-void Database::queryError(const char *header, QSqlQuery &query) {
-    queryError(string(header), query);
+    return true;
 }
 
 /**

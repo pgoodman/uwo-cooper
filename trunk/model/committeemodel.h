@@ -23,7 +23,7 @@ class CommitteeModel : public IModel<CommitteeModel, select_from_table_tag> {
 public:
     static const char *table_name;
 
-    virtual void save(void);
+    virtual bool save(void);
     bool create(QString n, const bool canDelete,
                 const PermissionModelSet chairPerms,
                 const PermissionModelSet memberPerms,

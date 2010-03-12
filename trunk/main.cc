@@ -9,7 +9,6 @@
 #include "conf.h"
 
 #include "lib/database.h"
-#include "lib/criticalerror.h"
 
 #include "controller/setupcontroller.h"
 #include "controller/usercontroller.h"
@@ -21,7 +20,7 @@ using namespace std;
 /**
  * Install database tables.
  */
-static void install_tables(QSqlQuery &q) {
+static bool install_tables(QSqlQuery &q) {
 
     const char table_names[][20] = {
 #include "sql/tablenames.conf"
@@ -35,18 +34,16 @@ static void install_tables(QSqlQuery &q) {
 
     for(size_t i(0); i < num_tables; ++i) {
         if(!q.exec(tables[i])) {
-            error << "Error creating table '"
-                  << table_names[i]
-                  << "'.";
-            Database::queryError(error, q);
+            return false;
         }
     }
+    return true;
 }
 
 /**
  * Install default committees into the database.
  */
-static void install_committees(QSqlQuery &q) {
+static bool install_committees(QSqlQuery &q) {
     PermissionModelSet chair_perms(0
         | EDIT_COMMITTEE_CHAIR
         | EDIT_COMMITTEE_SECRETARY
@@ -96,15 +93,15 @@ static void install_committees(QSqlQuery &q) {
     );
     q << member_perms << chair_perms;
     q.exec();
+    return true;
 }
 
 
 /**
  * Install the database.
  */
-static void install_database(QSqlQuery &q) {
-    install_tables(q);
-    install_committees(q);
+static bool install_database(QSqlQuery &q) {
+    return install_tables(q) && install_committees(q);
 }
 
 /**
@@ -114,16 +111,18 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-    /*try {*/
-    Database::connect(DATABASE_FILE, DATABASE_DRIVER, &install_database);
+    if(!Database::connect(DATABASE_FILE, DATABASE_DRIVER, &install_database)) {
+        QMessageBox::critical(0,
+            "Unable to conntect to the database",
+            "Unable to conntect to the database"
+        );
+    }
 
     int go;
     if(!CoordinatorModel::exists() || !UnitModel::exists()) {
         go = SetupController::install();
-        cout << "Installed" << endl;
     } else {
         go = UserController::login();
-        cout << "Logged in." << endl;
     }
 
     if(QDialog::Accepted == go) {
@@ -131,19 +130,4 @@ int main(int argc, char *argv[]) {
     }
 
     return app.exec();
-
-    /*
-    } catch(CriticalError &e) {
-        cout << "Error: " << e.header() << endl << e.what() << endl;
-        QMessageBox::critical(
-            0,
-            QString(e.header()),
-            QString(e.what()),
-            QMessageBox::Cancel
-        );
-        return 0;
-    } catch(...) {
-        cout << "Unkown Error Occured." << endl;
-        return 0;
-    }*/
 }
