@@ -12,9 +12,10 @@
  * Constructor, build the add task form.
  */
 
-AddTaskView::AddTaskView(QWidget *parent) : QDialog(parent) {
+AddTaskView::AddTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
 
+    committee = comm;
     // Status Button Group
     QButtonGroup *status_group(new QButtonGroup);
     QRadioButton *completed_status(new QRadioButton("Completed"));
@@ -64,8 +65,7 @@ void AddTaskView::addTask(void) {
         return;
     }
 
-    TaskModel::create(name->text(), description->toPlainText(),deadline->dateTime(),1);
-
+    committee->addTask(name->text(), description->toPlainText(), deadline->dateTime());
     done(QDialog::Accepted);
 }
 

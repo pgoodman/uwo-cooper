@@ -1,14 +1,17 @@
-#ifndef ADDTASKVIEW_H
-#define ADDTASKVIEW_H
+#ifndef EDITTASKVIEW_H
+#define EDITTASKVIEW_H
+
+#include <ctime>
 
 #include <QWidget>
 #include <QDialog>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QComboBox>
 #include <QDateEdit>
+#include <QButtonGroup>
 #include <QRadioButton>
 #include <QPushButton>
-#include <QButtonGroup>
 #include <QMessageBox>
 
 #include "lib/gui/modellistwidget.h"
@@ -17,24 +20,28 @@
 #include "model/taskmodel.h"
 #include "model/committeemodel.h"
 
-class AddTaskView : public QDialog {
+#include "view/homeview.h"
+
+class EditTaskView : public QDialog
+{
     Q_OBJECT
+public:
+    EditTaskView(TaskModel *selectedtask, QWidget *parent=0);
+    ~EditTaskView(void);
+
 private:
     QLineEdit *name;
     QTextEdit *description;
     QRadioButton *pending_status;
     QDateEdit *deadline;
-    CommitteeModel *committee;
+    TaskModel *task;
 
-
-public:
-    AddTaskView(CommitteeModel *comm, QWidget *parent=0);
-    ~AddTaskView(void);
+    void dataInit(void);
 
 public slots:
-    void addTask(void);
+    void saveChange(void);
+    void okTask(void);
     void cancelTask(void);
-
 };
 
-#endif // ADDTASKVIEW_H
+#endif // EDITTASKVIEW_H

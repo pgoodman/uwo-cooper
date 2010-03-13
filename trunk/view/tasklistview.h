@@ -26,6 +26,7 @@
 #include "model/committeemodel.h"
 #include "model/taskmodel.h"
 
+#include "view/edittaskview.h"
 #include "view/addtaskview.h"
 
 class TaskListView : public QDialog {
