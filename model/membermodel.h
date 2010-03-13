@@ -27,7 +27,6 @@ public:
     static const char *table_name;
 
     //getters
-    int getCommitteeId(void);
     UnitModel *getUnit(void);
     double getMoneyOwed();
 
@@ -42,7 +41,7 @@ public:
     QString getUnitNo(void);
 
     QDateTime getMoveInTime(void);
-    CommitteeModel *getCommittee(void);
+    CommitteeModel *findCommittee(void);
 
     //setters
     void markDeleted(bool mark);
