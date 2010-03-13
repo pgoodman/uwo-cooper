@@ -121,3 +121,22 @@ int CommitteeModel::getCommitteeIDFromName(QString cname) {
 
     return qcol<int>(q, "id");
 }
+
+bool CommitteeModel::removeEntireCommittee()
+{
+    QSqlQuery q;
+    stringstream search;
+    search << "committee_id=" << id;
+
+    MemberModel::iterator_range it(MemberModel::findAll(search.str().c_str()));
+
+    q.prepare("DELETE FROM tasks WHERE committee_id = ?");
+    q << id;
+    if(!q.exec()) {
+        return false;
+    }
+
+    this->remove();
+
+    return true;
+}
