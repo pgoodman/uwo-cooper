@@ -360,3 +360,7 @@ MemberModel::iterator_range MemberModel::findAll(void) {
 }
 
 
+void MemberModel::setCommitteeID(int cid){
+    committee_id = cid;
+    //committee = CommitteeModel::findById(cid);
+}

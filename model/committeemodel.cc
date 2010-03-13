@@ -109,3 +109,15 @@ QString CommitteeModel::toString(void) {
 bool CommitteeModel::canRemove(void) const {
     return can_delete;
 }
+
+int CommitteeModel::getCommitteeIDFromName(QString cname) {
+
+    QSqlQuery q;
+    q.prepare("SELECT id FROM committee WHERE name=?");
+    q << cname;
+    if(!q.exec() || !q.first()) {
+        return -1;
+    }
+
+    return qcol<int>(q, "id");
+}

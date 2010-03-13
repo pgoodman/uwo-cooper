@@ -39,6 +39,7 @@ public:
 
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
+    static int getCommitteeIDFromName(QString cname);
     
     virtual ~CommitteeModel();
 
