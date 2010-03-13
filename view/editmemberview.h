@@ -24,6 +24,7 @@
 
 class EditMemberView : public QDialog
 {
+    Q_OBJECT
 public:
     EditMemberView(MemberModel *selectedmember, QWidget *parent=0);
     ~EditMemberView(void);
@@ -31,9 +32,6 @@ private:
     QLineEdit *first_name;
     QLineEdit *last_name;
     QLineEdit *phone_number;
-    //QLineEdit *unitno;
-//    QComboBox *unitno;
-    //QLineEdit *address;
     QComboBox *address;
     QLineEdit *password;
     QDateEdit *date_moved_in;
@@ -44,6 +42,7 @@ private:
 
     ModelListWidget<CommitteeModel> *committee;
     void dataInit(void);
+    bool dataCheck(void);
 
 public slots:
     void saveChange(void);
