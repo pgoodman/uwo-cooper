@@ -26,13 +26,15 @@ public:
     virtual bool save(void);
     virtual bool remove(void);
 
+    UnitModel *findByLocation(const int number, QString address);
+
     static UnitModel *create(QString address,
                              const int num_rooms,
                              const int id);
 
     static bool exists(void);
-    static QStringList *findAllAddrByUnitNumber(const int number);
-    static QStringList *findAllUnitNoByAddress(QString address);
+    static QStringList *findAllAddress(void);
+    //static QStringList *findAllUnitNoByAddress(QString address);
 
     QString toString(void);
 
@@ -40,6 +42,7 @@ public:
     const int num_rooms;
     int num_members;
     const QString address;
+    const int unitno;
 
 protected:
 

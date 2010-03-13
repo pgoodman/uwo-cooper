@@ -22,6 +22,7 @@
 #include "model/permissionmodel.h"
 
 #include "view/addmemberview.h"
+#include "view/editmemberview.h"
 
 class ControlMemberView : public QWidget {
     Q_OBJECT

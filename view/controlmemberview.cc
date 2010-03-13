@@ -96,7 +96,20 @@ void ControlMemberView::addMember() {
  */
 void ControlMemberView::editMember() {
 
+    MemberModel *member =  member_list->getModel();
+    if(member==0) {
+         return;
+    }
+
+    EditMemberView *editMemberDialog = new EditMemberView(member);
+    editMemberDialog->show();
+
+    if(editMemberDialog->exec() == QDialog::Accepted) {
+        populateMembers();
+    }
+    delete editMemberDialog;
 }
+
 
 /**
  * Completely delete a member from the database.
