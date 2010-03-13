@@ -29,6 +29,15 @@ public:
 
     QString toString(void);
 
+    void setName(QString n);
+    QString getName(void);
+    void setDescription(QString descript);
+    QString getDescription(void);
+    void setDeadline(QDateTime deadline_date);
+    QDateTime getDeadline(void);
+    void setStatus(bool newStatus);
+    bool getStatus(void);
+
     virtual ~TaskModel();
 
 protected:
@@ -43,12 +52,12 @@ private:
     } TaskStatus;
 
     explicit TaskModel(const int id, QString name, QString descript,
-                       const int status, const QDateTime deadlineDate,
+                       bool status, const QDateTime deadlineDate,
                        const int committeeId);
 
     QString name;
     QString description;
-    int status;
+    bool status;             // False = Pending, True = Complete
     QDateTime deadline;
     int committee_id;
 };
