@@ -18,7 +18,6 @@
 
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
-#include "model/unitmodel.h"
 #include "model/usermodel.h"
 #include "model/permissionmodel.h"
 

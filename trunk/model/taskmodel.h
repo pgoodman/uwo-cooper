@@ -25,6 +25,8 @@ public:
     static bool create(QString name, QString descript,
                        const QDateTime deadlineDate, const int committee_id);
 
+    bool isPending(void);
+
     QString toString(void);
 
     virtual ~TaskModel();
