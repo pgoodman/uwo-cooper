@@ -1,7 +1,9 @@
 #include "editmemberview.h"
 
 EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent) : QDialog(parent) {
+
     FormLayoutPtr layout(this);
+
     //get the currentmember
     member = selectedmember;
 
@@ -56,15 +58,11 @@ EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent) : Q
     setWindowTitle("Update Member Information");
 
     // signals / slots
-    connect(
-        assign_committee, SIGNAL(toggled(bool)),
-        committee, SLOT(setEnabled(bool))
-    );
-
-
-    connect(save, SIGNAL(clicked()), this, SLOT(addMember()));
+    connect(assign_committee, SIGNAL(toggled(bool)),
+            committee, SLOT(setEnabled(bool)));
+    connect(save, SIGNAL(clicked()), this, SLOT(saveChange()));
     connect(reset, SIGNAL(clicked()), this, SLOT(resetChange()));
-    connect(cancel, SIGNAL(clicked()), this, SLOT(cancelAdd()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEdit()));
 
     dataInit();
 }
@@ -72,7 +70,9 @@ EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent) : Q
 /**
  * Destructor.
  */
-EditMemberView::~EditMemberView(void) { }
+EditMemberView::~EditMemberView() {
+
+}
 
 void EditMemberView::dataInit(){
 
@@ -143,10 +143,23 @@ void EditMemberView::dataInit(){
 
 }
 
-void EditMemberView::resetChange(void){
+void EditMemberView::saveChange(){
+    if(!dataCheck()){
+        return;
+    }
+
 
 }
 
-void EditMemberView::cancelEdit(void) {
+void EditMemberView::resetChange(){
+    dataInit();
+}
+
+void EditMemberView::cancelEdit() {
     done(QDialog::Rejected);
+}
+
+bool dataCheck(){
+
+
 }
