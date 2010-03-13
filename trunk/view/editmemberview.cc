@@ -65,6 +65,7 @@ EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent) : Q
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEdit()));
 
     dataInit();
+    permissionFilter();
 }
 
 /**
@@ -143,6 +144,14 @@ void EditMemberView::dataInit(){
 
 }
 
+void EditMemberView::permissionFilter(){
+
+    if(active_user->hasPermission(EDIT_SELF_PASS)){
+
+    }
+
+}
+
 void EditMemberView::saveChange(){
     //invalid data or no change
     if(!dataCheck()){
@@ -157,8 +166,13 @@ void EditMemberView::saveChange(){
     member->setPassword(password->text());
     member->setAddress(address->currentText());
     member->setSharedTelephone(share_phone_number->isChecked());
-    QString cname = committee->selectedItems()[0]->text();
-    member->setCommitteeID(CommitteeModel::getCommitteeIDFromName(cname));
+    if(assign_committee->isChecked()){
+       QString cname = committee->selectedItems()[0]->text();
+       member->setCommitteeID(CommitteeModel::getCommitteeIDFromName(cname));
+   }else{
+       member->setCommitteeID(0);
+       member->setCommittee(0);
+   }
 
     QDateTime *mvtime = new QDateTime(date_moved_in->date());
     member->setMoveInTime(*mvtime);

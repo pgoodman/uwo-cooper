@@ -19,6 +19,8 @@
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
 #include "model/unitmodel.h"
+#include "model/usermodel.h"
+#include "model/permissionmodel.h"
 
 #include "view/homeview.h"
 
@@ -45,6 +47,7 @@ private:
     ModelListWidget<CommitteeModel> *committee;
     void dataInit(void);
     bool dataCheck(void);
+    void permissionFilter(void);
 
 public slots:
     void saveChange(void);
