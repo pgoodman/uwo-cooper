@@ -36,12 +36,14 @@ AddTaskView::AddTaskView(QWidget *parent) : QDialog(parent) {
 
     //Set up radio buttons
     pending_status->setChecked(true);
+    pending_status->setEnabled(false);
+    completed_status->setEnabled(false);
     deadline->setCalendarPopup(true);
     setModal(true);
     setWindowTitle("Add Task");
 
-    connect(add, SIGNAL(clicked()), this, SLOT(addMember()));
-    connect(cancel, SIGNAL(clicked()), this, SLOT(cancelAdd()));
+    connect(add, SIGNAL(clicked()), this, SLOT(addTask()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(cancelTask()));
 }
 
 
@@ -57,10 +59,13 @@ void AddTaskView::addTask(void) {
     if(!name->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
-            "Please enter a surname (family name)."
+            "Please enter a task name"
         );
         return;
-  }
+    }
+
+    TaskModel::create(name->text(), description->toPlainText(),deadline->dateTime(),1);
+
     done(QDialog::Accepted);
 }
 

@@ -14,6 +14,8 @@
 #include "lib/gui/modellistwidget.h"
 #include "lib/gui/formlayoutptr.h"
 
+#include "model/taskmodel.h"
+
 class AddTaskView : public QDialog {
     Q_OBJECT
 private:
