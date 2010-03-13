@@ -48,7 +48,7 @@ public slots:
     void addTasks();
     void editTasks();
     void deleteTasks();
-
+    void activateButtons(void);
 };
 
 #endif // TASKLISTVIEW_H
