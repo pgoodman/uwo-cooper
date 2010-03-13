@@ -39,6 +39,7 @@ public:
     QString getFirstName(void);
     QString getLastName(void);
     QString getAddress(void);
+    QString getUnitNo(void);
 
     QDateTime getMoveInTime(void);
     CommitteeModel *getCommittee(void);
