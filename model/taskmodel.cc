@@ -68,6 +68,12 @@ bool TaskModel::create(QString name, QString descript,
     return q.exec();
 }
 
+/**
+ * Return whether or not the status is pending.
+ */
+bool TaskModel::isPending(void) {
+    return Pending == status;
+}
 
 /**
  * Get the name of a committee.
