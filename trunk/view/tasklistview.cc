@@ -29,6 +29,8 @@ TaskListView::TaskListView(CommitteeModel *comm, QWidget *parent)
     layout << add_button | edit_button | delete_button | close_button;
 
     //misc
+    edit_button->setEnabled(false);
+    delete_button->setEnabled(false);
     setModal(true);
     setWindowTitle("Add Task");
     populateTaskList();
@@ -38,6 +40,10 @@ TaskListView::TaskListView(CommitteeModel *comm, QWidget *parent)
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editTasks()));
     connect(delete_button, SIGNAL(clicked()), this, SLOT(deleteTasks()));
     connect(close_button, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(
+        task_list, SIGNAL(itemSelectionChanged()),
+        this, SLOT(activateButtons())
+    );
 }
 
 /**
@@ -52,8 +58,24 @@ TaskListView::~TaskListView(void) {
  */
 void TaskListView::populateTaskList(void) {
     TaskModel::iterator_range tasks(committee->findTasks());
-    task_list->fill(tasks);
+    task_list->fill(&TaskModel::findAll);
 }
+
+/**
+ * De/activate the various control buttons depending on the task selected.
+ */
+void TaskListView::activateButtons() {
+    TaskModel *task(task_list->getModel());
+    if(0 == task) {
+        return;
+    }
+
+    edit_button->setEnabled(true);
+
+    // HOW WILL WE KEEP TRACK OF HOW IT CAN BE REMOVED?
+    //delete_button->setEnabled(task->canRemove());
+}
+
 
 /**
  * Pop up the add tasks view.
@@ -61,7 +83,7 @@ void TaskListView::populateTaskList(void) {
 void TaskListView::addTasks() {
     AddTaskView addTaskDialog(this);
     if(QDialog::Accepted == addTaskDialog.exec()) {
-
+        populateTaskList();
     }
 }
 
