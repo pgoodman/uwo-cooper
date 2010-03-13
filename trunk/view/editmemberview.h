@@ -34,7 +34,7 @@ private:
     QLineEdit *first_name;
     QLineEdit *last_name;
     QLineEdit *phone_number;
-    QComboBox *address;
+    QLineEdit *address;
     QLineEdit *password;
     QDateEdit *date_moved_in;
     QLineEdit *user_name;
@@ -45,15 +45,14 @@ private:
     MemberModel *member;
 
     ModelListWidget<CommitteeModel> *committee;
+
     void dataInit(void);
     bool dataCheck(void);
     void permissionFilter(void);
 
 public slots:
     void saveChange(void);
-    void cancelEdit(void);
     void resetChange(void);
-
 };
 
 #endif // EDITMEMBERVIEW_H

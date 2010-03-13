@@ -40,7 +40,7 @@ bool MemberModel::hasPermission(const PermissionModel p) {
     if(0 == committee_id) {
         return (EDIT_SELF_PASS == p);
     }
-    CommitteeModel *c = getCommittee();
+    CommitteeModel *c = findCommittee();
     if(0 == c) {
         committee_id = 0;
         return false;
@@ -61,7 +61,7 @@ bool MemberModel::remove(void) {
 /**
  * Get a member's committee.
  */
-CommitteeModel *MemberModel::getCommittee(void) {
+CommitteeModel *MemberModel::findCommittee(void) {
     if(0 == committee_id) {
         return 0;
     }
@@ -172,10 +172,6 @@ QString MemberModel::getAddress(){
 }
 void MemberModel::setAddress(QString addr){
     address=addr;
-}
-
-int MemberModel::getCommitteeId(){
-    return committee_id;
 }
 
 void MemberModel::setCommittee(CommitteeModel *comm) {

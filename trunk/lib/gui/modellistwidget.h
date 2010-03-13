@@ -44,6 +44,11 @@ public:
     T *getModel(void);
 
     /**
+     * Select a specific model.
+     */
+    void selectModel(T *model);
+
+    /**
      * Select the first item in the list. This forces at least one unit to
      * always be selected.
      */
@@ -66,6 +71,28 @@ ModelListWidget<T>::ModelListWidget(QWidget *parent) : QListWidget(parent) { }
 
 template <typename T>
 ModelListWidget<T>::~ModelListWidget() { }
+
+template <typename T>
+void ModelListWidget<T>::selectModel(T *model) {
+
+    if(0 == model) {
+        return;
+    }
+
+    QListWidgetItem *row(0);
+    ModelListWidgetItem<T> *model_row(0);
+    for(int i = 0; i < count(); ++i) {
+        row = item(i);
+        if(0 == row) {
+            continue;
+        }
+        model_row = static_cast<ModelListWidgetItem<T> *>(row);
+        if(model == model_row->getModel()) {
+            setItemSelected(row, true);
+            break;
+        }
+    }
+}
 
 template <typename T>
 T * ModelListWidget<T>::getModel(void) {

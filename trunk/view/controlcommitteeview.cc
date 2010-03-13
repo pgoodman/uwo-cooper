@@ -114,11 +114,12 @@ void ControlCommitteeView::deleteCommittee()
            committee->remove();
            populateCommittees();
         }
-    }
-    else
-    {
-        QMessageBox::information(this, "Can not delete",
-                                 "The committee you have chosen doesn't exist, or cannot be deleted");
+    } else {
+        QMessageBox::information(this,
+             "Can not delete",
+             "The committee you have chosen doesn't exist, or "
+             "cannot be deleted"
+        );
         return;
     }
 }
