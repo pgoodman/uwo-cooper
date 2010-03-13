@@ -65,9 +65,6 @@ CommitteeModel *MemberModel::findCommittee(void) {
     if(0 == committee_id) {
         return 0;
     }
-//    else if(0 != committee) {
-//        return committee;
-//    }
     committee = CommitteeModel::findById(committee_id);
     return committee;
 }
