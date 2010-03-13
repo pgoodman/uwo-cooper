@@ -31,6 +31,9 @@ using namespace std;
 class MemberModel;
 class CommitteeModel;
 
+/**
+ * Member model.
+ */
 class MemberModel : public UserModel,
                     public IModel<MemberModel,select_from_table_tag> {
     MODEL_CLASS(MemberModel);
@@ -67,7 +70,6 @@ public:
     void setLoginName(QString loginName);
     void setMoveInTime(QDateTime mvTime);
     void setCommittee(CommitteeModel *committee);
-    void setCommitteeID(int cid);
     void setFullName(QString firstName, QString lastName);
 
     virtual bool save(void);
@@ -129,6 +131,9 @@ private:
                          QString pass);
 };
 
+/**
+ * Committee Model.
+ */
 class CommitteeModel : public IModel<CommitteeModel, select_from_table_tag> {
 
     MODEL_CLASS(CommitteeModel);
@@ -145,13 +150,12 @@ public:
 
     bool addTask(QString name, QString description, QDateTime deadline) const;
     bool canRemove(void) const;
+    virtual bool remove(void);
 
     TaskModel::iterator_range findTasks(void);
 
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
-    static int getCommitteeIDFromName(QString cname);
-    bool removeEntireCommittee();
 
     virtual ~CommitteeModel();
 

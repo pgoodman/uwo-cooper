@@ -110,20 +110,15 @@ bool CommitteeModel::canRemove(void) const {
     return can_delete;
 }
 
-int CommitteeModel::getCommitteeIDFromName(QString cname) {
-
-    QSqlQuery q;
-    q.prepare("SELECT id FROM committee WHERE name=?");
-    q << cname;
-    if(!q.exec() || !q.first()) {
-        return -1;
+/**
+ * Remove the committee and all of its tasks and then update the members of the
+ * committee.
+ */
+bool CommitteeModel::remove() {
+    if(!IModel<CommitteeModel,select_from_table_tag>::remove()) {
+        return false;
     }
 
-    return qcol<int>(q, "id");
-}
-
-bool CommitteeModel::removeEntireCommittee()
-{
     QSqlQuery q;
     stringstream search;
     search << "committee_id=" << id;
@@ -132,11 +127,5 @@ bool CommitteeModel::removeEntireCommittee()
 
     q.prepare("DELETE FROM tasks WHERE committee_id = ?");
     q << id;
-    if(!q.exec()) {
-        return false;
-    }
-
-    this->remove();
-
-    return true;
+    return q.exec();
 }

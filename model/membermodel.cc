@@ -351,9 +351,3 @@ MemberModel *MemberModel::load(QSqlQuery &q, const int id) {
 MemberModel::iterator_range MemberModel::findAll(void) {
     return Database::selectAll<MemberModel>("user", "is_coordinator=0");
 }
-
-
-void MemberModel::setCommitteeID(int cid){
-    committee_id = cid;
-    //committee = CommitteeModel::findById(cid);
-}
