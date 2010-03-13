@@ -69,11 +69,8 @@ void TaskListView::activateButtons() {
     if(0 == task) {
         return;
     }
-
     edit_button->setEnabled(true);
-
-    // HOW WILL WE KEEP TRACK OF HOW IT CAN BE REMOVED?
-    //delete_button->setEnabled(task->canRemove());
+    delete_button->setEnabled(task->getStatus());
 }
 
 
@@ -81,7 +78,7 @@ void TaskListView::activateButtons() {
  * Pop up the add tasks view.
  */
 void TaskListView::addTasks() {
-    AddTaskView addTaskDialog(this);
+    AddTaskView addTaskDialog(committee, this);
     if(QDialog::Accepted == addTaskDialog.exec()) {
         populateTaskList();
     }
@@ -91,13 +88,29 @@ void TaskListView::addTasks() {
  * Pop up the edit tasks view.
  */
 void TaskListView::editTasks() {
-
+    TaskModel *task(task_list->getModel());
+    EditTaskView editTaskDialog(task, this);
+    if (QDialog::Accepted == editTaskDialog.exec()) {
+        populateTaskList();
+    }
 }
 
 /**
  * Delete a task.
  */
 void TaskListView::deleteTasks() {
-
+    TaskModel *task(task_list->getModel());
+    if(0 != task) {
+        int ret(QMessageBox::question(this,
+            "Please Confirm",
+            "Are you sure that you want to delete the task?",
+            QMessageBox::Yes,
+            QMessageBox::No
+        ));
+        if(QMessageBox::Yes == ret) {
+            task->remove();
+            populateTaskList();
+        }
+    }
 }
 
