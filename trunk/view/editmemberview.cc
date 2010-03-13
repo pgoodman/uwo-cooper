@@ -168,15 +168,6 @@ bool EditMemberView::dataCheck(){
         return false;
     }
 
-    if(date_moved_in->date() != member->getMoveInTime().date()){
-        isdirty = true;
-    }
-
-
-    if(address->text() != member->getAddress()){
-        isdirty = true;
-    }
-
     if(user_name->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",

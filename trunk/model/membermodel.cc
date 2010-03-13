@@ -351,3 +351,8 @@ MemberModel *MemberModel::load(QSqlQuery &q, const int id) {
 MemberModel::iterator_range MemberModel::findAll(void) {
     return Database::selectAll<MemberModel>("user", "is_coordinator=0");
 }
+MemberModel::iterator_range MemberModel::findAll(const char *cond) {
+    stringstream ss;
+    ss << "is_coordinator=0 AND " << cond;
+    return Database::selectAll<MemberModel>("user", ss.str().c_str());
+}
