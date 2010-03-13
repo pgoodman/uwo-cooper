@@ -9,7 +9,7 @@ EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent) : Q
 
     // make the yes/no buttons for the phone number
     QButtonGroup *share_phone_group(new QButtonGroup);
-    QRadioButton *dont_share_phone(new QRadioButton("No"));
+    dont_share_phone = new QRadioButton("No");
     share_phone_number = new QRadioButton("Yes");
     share_phone_group->addButton(share_phone_number);
     share_phone_group->addButton(dont_share_phone);
@@ -18,7 +18,7 @@ EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent) : Q
     // make yes/no buttons for assigning a committee
     QButtonGroup *assign_committee_group(new QButtonGroup);
     assign_committee = new QRadioButton("Yes");
-    QRadioButton *dont_assign_committee(new QRadioButton("No"));
+    dont_assign_committee = new QRadioButton("No");
     assign_committee_group->addButton(assign_committee);
     assign_committee_group->addButton(dont_assign_committee);
 
@@ -80,7 +80,7 @@ void EditMemberView::dataInit(){
     if(member->isTelephoneShared()) {
         share_phone_number->setChecked(true);
     }else{
-        share_phone_number->setChecked(false);
+        dont_share_phone->setChecked(true);
     }
 
     //Check permission
@@ -105,7 +105,7 @@ void EditMemberView::dataInit(){
             committee->setCurrentItem(ql.first());
         }
     }else{
-        assign_committee->setChecked(false);
+        dont_assign_committee->setChecked(true);
     }
 
     //check permission
@@ -144,11 +144,27 @@ void EditMemberView::dataInit(){
 }
 
 void EditMemberView::saveChange(){
+    //invalid data or no change
     if(!dataCheck()){
         return;
     }
 
+    //valid data and change exists
+    member->setFirstName(first_name->text());
+    member->setLastName(last_name->text());
+    member->setTelephoneNumber(phone_number->text());
+    member->setLoginName(user_name->text());
+    member->setPassword(password->text());
+    member->setAddress(address->currentText());
+    member->setSharedTelephone(share_phone_number->isChecked());
+    QString cname = committee->selectedItems()[0]->text();
+    member->setCommitteeID(CommitteeModel::getCommitteeIDFromName(cname));
 
+    QDateTime *mvtime = new QDateTime(date_moved_in->date());
+    member->setMoveInTime(*mvtime);
+
+    member->save();
+    done(QDialog::Accepted);
 }
 
 void EditMemberView::resetChange(){
@@ -159,7 +175,80 @@ void EditMemberView::cancelEdit() {
     done(QDialog::Rejected);
 }
 
-bool dataCheck(){
+bool EditMemberView::dataCheck(){
+    bool isdirty = false;
+    if(first_name->text() == "") {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a given name"
+        );
+        return false;
+    }else if(first_name->isModified()){
+        isdirty = true;
+    }
+
+    if(last_name->text() == "") {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a surname"
+        );
+        return false;
+    }else if(last_name->isModified()){
+        isdirty = true;
+    }
+
+    if(phone_number->text() == "") {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a telephone number."
+        );
+        return false;
+    }else if(phone_number->isModified()){
+        isdirty = true;
+    }
+
+    if(share_phone_number->isChecked()!=member->isTelephoneShared()){
+        isdirty = true;
+    }
+
+    if(assign_committee->isChecked()!= (member->getCommitteeId()==0?false:true)){
+        isdirty = true;
+    }
+
+    QString csel = committee->selectedItems()[0]->text();
+    QString mcom = member->getCommittee()->toString();
+    if(assign_committee->isChecked() && csel != mcom){
+        isdirty = true;
+    }
+
+    if(date_moved_in->date()!= member->getMoveInTime().date()){
+        isdirty = true;
+    }
 
 
+    if(address->currentText() != member->getAddress()){
+        isdirty = true;
+    }
+
+    if(user_name->text() == "") {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter an log in name."
+        );
+        return false;
+    }else if(user_name->isModified()){
+        isdirty = true;
+    }
+
+    if(password->text() == "") {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter an password."
+        );
+        return false;
+    }else if(password->isModified()){
+        isdirty = true;
+    }
+
+    return isdirty;
 }

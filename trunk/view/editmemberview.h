@@ -37,7 +37,9 @@ private:
     QDateEdit *date_moved_in;
     QLineEdit *user_name;
     QRadioButton *share_phone_number;
+    QRadioButton *dont_share_phone;
     QRadioButton *assign_committee;
+    QRadioButton *dont_assign_committee;
     MemberModel *member;
 
     ModelListWidget<CommitteeModel> *committee;

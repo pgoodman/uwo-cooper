@@ -56,6 +56,7 @@ public:
     void setLoginName(QString loginName);
     void setMoveInTime(QDateTime mvTime);
     void setCommittee(CommitteeModel *committee);
+    void setCommitteeID(int cid);
     void setFullName(QString firstName, QString lastName);
 
     virtual bool save(void);
