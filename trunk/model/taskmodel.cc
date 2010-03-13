@@ -14,7 +14,7 @@ const char *TaskModel::table_name("task");
  * Private constructor, initialize a new task from db info.
  */
 TaskModel::TaskModel(const int id, QString n, QString descript,
-                     const int the_status, QDateTime deadlineDate,
+                     bool the_status, QDateTime deadlineDate,
                      const int committeeId)
  : IModel<TaskModel,select_from_table_tag>(id), name(n),
    description(descript), status(the_status), deadline(deadlineDate),
@@ -94,4 +94,36 @@ QString TaskModel::toString(void) {
         }
     }
     return QString(ss.str().c_str());
+}
+
+void TaskModel::setName(QString n) {
+    name = n;
+}
+
+QString TaskModel::getName(void) {
+    return name;
+}
+
+void TaskModel::setDescription(QString descript) {
+    description = descript;
+}
+
+QString TaskModel::getDescription(void) {
+    return description;
+}
+
+void TaskModel::setDeadline(QDateTime deadline_date) {
+    deadline = deadline_date;
+}
+
+QDateTime TaskModel::getDeadline(void) {
+    return deadline;
+}
+
+void TaskModel::setStatus(bool newStatus) {
+    status = newStatus;
+}
+
+bool TaskModel::getStatus(void) {
+    return status;
 }
