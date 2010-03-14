@@ -42,6 +42,21 @@ DependantModel *DependantModel::load(QSqlQuery &q, const int id) {
 }
 
 /**
+ * Create a new dependant.
+ */
+DependantModel *DependantModel::create(QString fullName,
+                                       QDateTime bday,
+                                       const int memberId) {
+    QSqlQuery q;
+    q.prepare(
+        "INSERT INTO dependant (name, date_of_21st_bday, member_id) "
+        "VALUES (?, ?, ?)"
+    );
+    q << fullName << bday << memberId;
+    return findById(q.lastInsertId().toInt());
+}
+
+/**
  * Save the dependant.
  */
 bool DependantModel::save(void) {
