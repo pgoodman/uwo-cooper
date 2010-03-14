@@ -25,7 +25,7 @@ public:
 
     virtual bool save(void);
     virtual bool remove(void);
-
+    QString toString(void);
 
 
     static UnitModel *create(QString address,
@@ -34,11 +34,6 @@ public:
 
     static bool exists(void);
 
-    //UnitModel *findByLocation(const int number, QString address);
-    //static QStringList *findAllAddress(void);
-    //static QStringList *findAllUnitNoByAddress(QString address);
-
-    QString toString(void);
 
     // data
     const int num_rooms;
