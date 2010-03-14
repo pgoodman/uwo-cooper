@@ -13,7 +13,7 @@ class UserModel {
 public:
 
     virtual QString getUserName() = 0;
-    virtual bool hasPermission(const PermissionModel p) = 0;
+    virtual bool hasPermission(const PermissionModelSet p) = 0;
 
     virtual QString getPassword(void);
     virtual void setPassword(QString);

@@ -31,6 +31,10 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     del_button = new QPushButton("Delete Committee");
     task_button = new QPushButton("Manage Tasks");
 
+    if(!active_user->hasPermission(ADD_TASK | EDIT_TASK | DELETE_TASK)) {
+        task_button->hide();
+    }
+
     connect(add_button, SIGNAL(clicked()), this, SLOT(addCommittee()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editCommittee()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteCommittee()));

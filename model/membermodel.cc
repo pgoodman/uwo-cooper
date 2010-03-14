@@ -11,6 +11,7 @@ MemberModel::MemberModel(const int id,
                const int unitId,
                const bool sharePhone,
                const bool isMarked,
+               const bool hadCommittee,
                const double moneyOwed,
                const QDateTime moveInTime,
                QString phoneNum,
@@ -23,7 +24,8 @@ MemberModel::MemberModel(const int id,
  : UserModel(false, pass), IModel<MemberModel, select_from_table_tag>(id),
    committee_id(committeeId),
    unit_id(unitId), share_telephone(sharePhone), is_marked(isMarked),
-   money_owed(moneyOwed), move_in_time(moveInTime), telephone_num(phoneNum),
+   had_committee(hadCommittee), money_owed(moneyOwed),
+   move_in_time(moveInTime), telephone_num(phoneNum),
    user_name(userName), first_name(firstName), last_name(lastName),
    address(addr)
 { }
@@ -36,7 +38,7 @@ MemberModel::~MemberModel(void) { }
 /**
  * Check whether or not a coodinator has a permission.
  */
-bool MemberModel::hasPermission(const PermissionModel p) {
+bool MemberModel::hasPermission(const PermissionModelSet p) {
     if(0 == committee_id) {
         return (EDIT_SELF_PASS == p);
     }
@@ -208,14 +210,16 @@ MemberModel *MemberModel::create(const bool sharePhone,
     QSqlQuery q;
     q.prepare(
         "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
-        "telephone, move_in_time, unit_id, address, committee_id) VALUES "
-        "(?,?,?,?,?,?,?,?,?,?)"
+        "telephone, move_in_time, unit_id, address,committee_id,had_committee) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?)"
     );
-    const int committee_id = (0 == committee) ? 0 : committee->id;
-    const int unit_id = (0 == unit) ? 0 : unit->id;
+    const int committee_id((0 == committee) ? 0 : committee->id);
+    const int unit_id((0 == unit) ? 0 : unit->id);
+    const bool had_committee(0 != committee);
 
     q << firstName << lastName << userName << pass << sharePhone
-      << phoneNum << moveInTime << unit_id << addr << committee_id;
+      << phoneNum << moveInTime << unit_id << addr << committee_id
+      << had_committee;
 
     if(!q.exec()) {
         return 0;
@@ -292,12 +296,15 @@ bool MemberModel::save(void) {
     q.prepare(
         "UPDATE user SET first_name=?,last_name=?,name=?,password=?,"
         "share_telephone=?,telephone=?,move_in_time=?,unit_id=?,address=?,"
-        "is_marked=?,committee_id=?,money_owed=? "
+        "is_marked=?,committee_id=?,money_owed=?,had_committee=? "
         "WHERE id=? AND is_coordinator=0"
     );
+
+    bool did_have_committee(had_committee || 0 != committee);
+
     q << first_name << last_name << user_name << password << share_telephone
       << telephone_num << move_in_time << unit_id << address << is_marked
-      << committee_id << money_owed << id;
+      << committee_id << money_owed << did_have_committee << id;
 
     return q.exec();
 }
@@ -333,6 +340,7 @@ MemberModel *MemberModel::load(QSqlQuery &q, const int id) {
         qcol<int>(q, "unit_id"),
         qcol<bool>(q, "share_telephone"),
         qcol<bool>(q, "is_marked"),
+        qcol<bool>(q, "had_committee"),
         qcol<double>(q, "money_owed"),
         qcol<QDateTime>(q, "move_in_time"),
         qcol<QString>(q, "telephone"),
@@ -355,4 +363,13 @@ MemberModel::iterator_range MemberModel::findAll(const char *cond) {
     stringstream ss;
     ss << "is_coordinator=0 AND " << cond;
     return Database::selectAll<MemberModel>("user", ss.str().c_str());
+}
+
+/**
+ * Figure out if a member was ever assigned to a committee. This is important
+ * as chair of the education committee is only allowed to assign the committee
+ * to a new member who has never had their committee assigned.
+ */
+bool MemberModel::wasAssignedCommittee(void) {
+    return had_committee;
 }

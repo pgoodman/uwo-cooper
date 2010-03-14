@@ -40,4 +40,11 @@ typedef enum {
     EDIT_SELF_PASS          =(1<<23)
 } PermissionModel;
 
+/*
+PermissionModelSet operator|(PermissionModel,PermissionModel);
+PermissionModelSet operator|(PermissionModel,PermissionModelSet);
+PermissionModelSet operator|(PermissionModelSet,PermissionModel);
+PermissionModelSet operator|(PermissionModelSet,PermissionModelSet);
+*/
+
 #endif /* PERMISSION_H_ */

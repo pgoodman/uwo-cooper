@@ -28,6 +28,18 @@ TaskListView::TaskListView(CommitteeModel *comm, QWidget *parent)
 
     layout << add_button | edit_button | delete_button | close_button;
 
+    if(!active_user->hasPermission(ADD_TASK)) {
+        add_button->hide();
+    }
+
+    if(!active_user->hasPermission(EDIT_TASK)) {
+        edit_button->hide();
+    }
+
+    if(!active_user->hasPermission(DELETE_TASK)) {
+        delete_button->hide();
+    }
+
     //misc
     edit_button->setEnabled(false);
     delete_button->setEnabled(false);
@@ -58,7 +70,7 @@ TaskListView::~TaskListView(void) {
  */
 void TaskListView::populateTaskList(void) {
     TaskModel::iterator_range tasks(committee->findTasks());
-    task_list->fill(&TaskModel::findAll);
+    task_list->fill(tasks);
 }
 
 /**
@@ -70,7 +82,7 @@ void TaskListView::activateButtons() {
         return;
     }
     edit_button->setEnabled(true);
-    delete_button->setEnabled(task->getStatus());
+    delete_button->setEnabled(task->isCompleted());
 }
 
 
@@ -88,8 +100,7 @@ void TaskListView::addTasks() {
  * Pop up the edit tasks view.
  */
 void TaskListView::editTasks() {
-    TaskModel *task(task_list->getModel());
-    EditTaskView editTaskDialog(task, this);
+    EditTaskView editTaskDialog(task_list->getModel(), committee, this);
     if (QDialog::Accepted == editTaskDialog.exec()) {
         populateTaskList();
     }

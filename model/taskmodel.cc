@@ -14,10 +14,10 @@ const char *TaskModel::table_name("task");
  * Private constructor, initialize a new task from db info.
  */
 TaskModel::TaskModel(const int id, QString n, QString descript,
-                     bool the_status, QDateTime deadlineDate,
+                     bool isComplete, QDateTime deadlineDate,
                      const int committeeId)
  : IModel<TaskModel,select_from_table_tag>(id), name(n),
-   description(descript), status(the_status), deadline(deadlineDate),
+   description(descript), is_complete(isComplete), deadline(deadlineDate),
    committee_id(committeeId) {
 }
 
@@ -34,7 +34,7 @@ TaskModel *TaskModel::load(QSqlQuery &q, const int id) {
         id,
         qcol<QString>(q, "name"),
         qcol<QString>(q, "description"),
-        qcol<int>(q, "status"),
+        qcol<bool>(q, "status"),
         qcol<QDateTime>(q, "deadline"),
         qcol<int>(q, "committee_id")
     );
@@ -49,7 +49,7 @@ bool TaskModel::save(void) {
         "UPDATE task set name=?,description=?,status=?,"
         "deadline=? WHERE id=?"
     );
-    q << name << description << status << deadline << id;
+    q << name << description << is_complete << deadline << id;
     return q.exec();
 }
 
@@ -78,7 +78,7 @@ QString TaskModel::toString(void) {
     QDateTime now;
     now.setTime_t(time(0));
 
-    if(Complete == status) {
+    if(is_complete) {
         ss << " [completed]";
     } else {
         if(deadline < now) {
@@ -114,10 +114,10 @@ QDateTime TaskModel::getDeadline(void) {
     return deadline;
 }
 
-void TaskModel::setStatus(bool newStatus) {
-    status = newStatus;
+void TaskModel::setCompleted(bool newStatus) {
+    is_complete = newStatus;
 }
 
-bool TaskModel::getStatus(void) {
-    return status;
+bool TaskModel::isCompleted(void) {
+    return is_complete;
 }

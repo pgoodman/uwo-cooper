@@ -35,8 +35,8 @@ public:
     QString getDescription(void);
     void setDeadline(QDateTime deadline_date);
     QDateTime getDeadline(void);
-    void setStatus(bool newStatus);
-    bool getStatus(void);
+    void setCompleted(bool newStatus);
+    bool isCompleted(void);
 
     virtual ~TaskModel();
 
@@ -46,18 +46,13 @@ protected:
 
 private:
 
-    enum {
-        Complete=1,
-        Pending=0
-    } TaskStatus;
-
     explicit TaskModel(const int id, QString name, QString descript,
-                       bool status, const QDateTime deadlineDate,
+                       bool is_complete, const QDateTime deadlineDate,
                        const int committeeId);
 
     QString name;
     QString description;
-    bool status;             // False = Pending, True = Complete
+    bool is_complete;             // False = Pending, True = Complete
     QDateTime deadline;
     int committee_id;
 };
