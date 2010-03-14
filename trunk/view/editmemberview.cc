@@ -4,10 +4,13 @@
 #include "editmemberview.h"
 
 EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent)
- : AddMemberView(parent) {
-
+ : AddMemberView(0, parent) {
     member = selectedmember;
-    setWindowTitle("Update Member Information");
+    FormLayoutPtr layout(this);
+    buildForm(layout);
+    AddMemberView::finishForm(layout);
+    save_button->setText("Update Member");
+    setWindowTitle("Edit Member Information");
     initForm();
 }
 
@@ -22,6 +25,8 @@ bool EditMemberView::checkPerm(PermissionModelSet perm) {
  * Build the rest of the form that is not part of the add member form.
  */
 void EditMemberView::buildForm(FormLayoutPtr &layout) {
+    layout [2] << "If a field is disabled then either you are not allowed "
+                  "to edit the field \nor it can only be edited elsewhere.";
     AddMemberView::buildForm(layout);
 }
 
@@ -29,7 +34,6 @@ void EditMemberView::buildForm(FormLayoutPtr &layout) {
  * Initialize all of the fields.
  */
 void EditMemberView::initForm(void) {
-    committee->selectModel(member->findCommittee());
     share_phone_number->setChecked(member->isTelephoneShared());
     date_moved_in->setDate(member->getMoveInTime().date());
     first_name->setText(member->getFirstName());
@@ -39,6 +43,23 @@ void EditMemberView::initForm(void) {
     user_name->setText(member->getLoginName());
     password->setText(member->getPassword());
 
+    if(!checkPerm(EDIT_MEMBER_INFO)) {
+        share_phone_number->setDisabled(true);
+        date_moved_in->setDisabled(true);
+        first_name->setDisabled(true);
+        last_name->setDisabled(true);
+        phone_number->setDisabled(true);
+        address->setDisabled(true);
+        user_name->setDisabled(true);
+    }
+
+    // not allowed to edit self password
+    if(active_user == member && !checkPerm(EDIT_SELF_PASS)) {
+        password->setDisabled(true);
+    } else if(active_user != member && !checkPerm(EDIT_MEMBER_INFO)) {
+        password->setDisabled(true);
+    }
+
     // don't allow the committee to be changed, this is done elsewhere
     // under moving a member from one committee to another
     if(0 == member->findCommittee()) {
@@ -46,14 +67,24 @@ void EditMemberView::initForm(void) {
         || checkPerm(EDIT_MEMBER_COMMITTEE)) {
             committee->selectFirst();
         } else {
-            committee->clear();
-            committee->addModel(member->findCommittee());
             committee->setDisabled(true);
             assign_committee->setDisabled(true);
             dont_assign_committee->setDisabled(true);
         }
+    } else {
+        committee->clear();
+        committee->addModel(member->findCommittee());
+        committee->selectFirst();
+        committee->setDisabled(true);
+        assign_committee->setDisabled(true);
+        dont_assign_committee->setDisabled(true);
     }
 
+    // change the unit list somewhat
+    unit->clear();
+    unit->addModel(member->findUnit());
+    unit->selectFirst();
+    unit->setDisabled(true);
 }
 
 /**

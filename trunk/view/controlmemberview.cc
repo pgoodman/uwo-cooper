@@ -95,19 +95,14 @@ void ControlMemberView::addMember() {
  * Pop up the edit member form.
  */
 void ControlMemberView::editMember() {
-
     MemberModel *member =  member_list->getModel();
     if(member==0) {
          return;
     }
-
-    EditMemberView *editMemberDialog = new EditMemberView(member);
-    editMemberDialog->show();
-
-    if(editMemberDialog->exec() == QDialog::Accepted) {
+    EditMemberView editMemberDialog(member,this);
+    if(editMemberDialog.exec() == QDialog::Accepted) {
         populateMembers();
     }
-    delete editMemberDialog;
 }
 
 

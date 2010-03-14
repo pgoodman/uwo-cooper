@@ -146,18 +146,12 @@ void MemberModel::setLastName(QString lastName){
     last_name=lastName;
 }
 
-UnitModel *MemberModel::getUnit(void) {
+UnitModel *MemberModel::findUnit(void) {
     if(0 == unit_id) {
         return 0;
     }
     unit = UnitModel::findById(unit_id);
     return unit;
-}
-
-QString MemberModel::getUnitNo(){
-    QString uid;
-    uid.setNum(unit_id);
-    return uid;
 }
 
 void MemberModel::setUnit(UnitModel *unit_to_set) {

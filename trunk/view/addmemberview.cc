@@ -13,34 +13,11 @@
  */
 AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
-
     buildForm(layout);
-
-    // make and add in the buttons
-    QPushButton *add(new QPushButton("Add Member"));
-    QPushButton *cancel(new QPushButton("Cancel"));
-    layout << add | cancel;
-
-    // misc
-    assign_committee->setChecked(true);
-    share_phone_number->setChecked(true);
-    date_moved_in->setCalendarPopup(true);
-    committee->fill(&CommitteeModel::findAll);
-    unit->fill(&UnitModel::findAll);
-    committee->selectFirst();
-    unit->selectFirst();
-
-    setModal(true);
-    setWindowTitle("Add Member");
-
-    // signals / slots
-    connect(
-        assign_committee, SIGNAL(toggled(bool)),
-        committee, SLOT(setEnabled(bool))
-    );
-
-    connect(add, SIGNAL(clicked()), this, SLOT(tryAccept()));
-    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
+    finishForm(layout);
+}
+AddMemberView::AddMemberView(int *foo, QWidget *parent) : QDialog(parent) {
+    (void) foo;
 }
 
 /**
@@ -83,6 +60,37 @@ void AddMemberView::buildForm(FormLayoutPtr &layout) {
     unit = layout << "Unit: " |= new ModelListWidget<UnitModel>;
     user_name = layout << "Login Name: " |= new QLineEdit;
     password = layout << "Password: " |= new QLineEdit;
+}
+
+/**
+ * Finish building the form and connect the various parts of it.
+ */
+void AddMemberView::finishForm(FormLayoutPtr &layout) {
+    // make and add in the buttons
+    save_button = new QPushButton("Add Member");
+    QPushButton *cancel(new QPushButton("Cancel"));
+    layout << save_button | cancel;
+
+    // misc
+    assign_committee->setChecked(true);
+    share_phone_number->setChecked(true);
+    date_moved_in->setCalendarPopup(true);
+    committee->fill(&CommitteeModel::findAll);
+    unit->fill(&UnitModel::findAll);
+    committee->selectFirst();
+    unit->selectFirst();
+
+    setModal(true);
+    setWindowTitle("Add Member");
+
+    // signals / slots
+    connect(
+        assign_committee, SIGNAL(toggled(bool)),
+        committee, SLOT(setEnabled(bool))
+    );
+
+    connect(save_button, SIGNAL(clicked()), this, SLOT(tryAccept()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 /**
@@ -153,14 +161,14 @@ bool AddMemberView::checkForm(void) {
  * Check the user name of the member.
  */
 bool AddMemberView::checkUserName(QString name) {
-    return UserModel::nameExists(name);
+    return !UserModel::nameExists(name);
 }
 
 /**
  * Attempt to accept, i.e. attempt to add the user.
  */
 void AddMemberView::tryAccept(void) {
-    if(checkForm()) {
+    if(this->checkForm()) {
         emit accept();
     }
 }

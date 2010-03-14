@@ -16,8 +16,10 @@ class EditMemberView : public AddMemberView
 protected:
     MemberModel *member;
 
-    virtual void initForm(void);
-    virtual void buildForm(FormLayoutPtr &layout);
+    void initForm(void);
+    void buildForm(FormLayoutPtr &layout);
+    void finishForm(FormLayoutPtr &layout);
+
     virtual bool checkForm(void);
     virtual bool checkUserName(QString name);
     virtual bool checkPerm(PermissionModelSet perm);
