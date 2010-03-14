@@ -65,6 +65,10 @@ void AddTaskView::save(void) {
         return;
     }
 
-    committee->addTask(name->text(), description->toPlainText(), deadline->dateTime());
+    committee->addTask(
+        name->text(),
+        description->toPlainText(),
+        deadline->dateTime()
+    );
     done(QDialog::Accepted);
 }

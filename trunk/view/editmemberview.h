@@ -1,57 +1,32 @@
 #ifndef EDITMEMBERVIEW_H
 #define EDITMEMBERVIEW_H
 
-#include <ctime>
-
-#include <QWidget>
 #include <QDialog>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QDateEdit>
-#include <QButtonGroup>
-#include <QRadioButton>
-#include <QPushButton>
-#include <QMessageBox>
+#include <QWidget>
 
-#include "lib/gui/modellistwidget.h"
-#include "lib/gui/formlayoutptr.h"
-
-#include "model/membermodel.h"
-#include "model/committeemodel.h"
 #include "model/usermodel.h"
-#include "model/permissionmodel.h"
+#include "model/membermodel.h"
 
-#include "view/homeview.h"
+#include "view/addmemberview.h"
 
-class EditMemberView : public QDialog
+class EditMemberView : public AddMemberView
 {
     Q_OBJECT
-public:
-    EditMemberView(MemberModel *selectedmember, QWidget *parent=0);
-    ~EditMemberView(void);
-private:
-    QLineEdit *first_name;
-    QLineEdit *last_name;
-    QLineEdit *phone_number;
-    QLineEdit *address;
-    QLineEdit *password;
-    QDateEdit *date_moved_in;
-    QLineEdit *user_name;
-    QRadioButton *share_phone_number;
-    QRadioButton *dont_share_phone;
-    QRadioButton *assign_committee;
-    QRadioButton *dont_assign_committee;
+
+protected:
     MemberModel *member;
 
-    ModelListWidget<CommitteeModel> *committee;
+    virtual void initForm(void);
+    virtual void buildForm(FormLayoutPtr &layout);
+    virtual bool checkForm(void);
+    virtual bool checkUserName(QString name);
+    virtual bool checkPerm(PermissionModelSet perm);
 
-    void dataInit(void);
-    bool dataCheck(void);
-    void permissionFilter(void);
+public:
+    EditMemberView(MemberModel *memberToEdit, QWidget *parent=0);
 
 public slots:
-    void saveChange(void);
-    void resetChange(void);
+    virtual void accept(void);
 };
 
 #endif // EDITMEMBERVIEW_H

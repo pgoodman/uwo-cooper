@@ -60,6 +60,11 @@ public:
     void fill(iterator_range_func *f);
     void fill(iterator_range &its);
     void fill(iterator &it, iterator &end);
+
+    /**
+     * Add a model to the list.
+     */
+    void addModel(T *model);
 };
 
 /**
@@ -135,4 +140,8 @@ void ModelListWidget<T>::fill(iterator &it, iterator &end) {
     }
 }
 
+template <typename T>
+void ModelListWidget<T>::addModel(T *model) {
+    insertItem(count(), new ModelListWidgetItem<T>(model));
+}
 #endif /* MODELLIST_H_ */

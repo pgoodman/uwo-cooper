@@ -14,9 +14,50 @@
 AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
 
+    buildForm(layout);
+
+    // make and add in the buttons
+    QPushButton *add(new QPushButton("Add Member"));
+    QPushButton *cancel(new QPushButton("Cancel"));
+    layout << add | cancel;
+
+    // misc
+    assign_committee->setChecked(true);
+    share_phone_number->setChecked(true);
+    date_moved_in->setCalendarPopup(true);
+    committee->fill(&CommitteeModel::findAll);
+    unit->fill(&UnitModel::findAll);
+    committee->selectFirst();
+    unit->selectFirst();
+
+    setModal(true);
+    setWindowTitle("Add Member");
+
+    // signals / slots
+    connect(
+        assign_committee, SIGNAL(toggled(bool)),
+        committee, SLOT(setEnabled(bool))
+    );
+
+    connect(add, SIGNAL(clicked()), this, SLOT(tryAccept()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
+}
+
+/**
+ * Check to see if the active user has a permission set.
+ */
+bool AddMemberView::checkPerm(PermissionModelSet perm) {
+    (void) perm;
+    return true;
+}
+
+/**
+ * Build the form.
+ */
+void AddMemberView::buildForm(FormLayoutPtr &layout) {
     // make the yes/no buttons for the phone number
     QButtonGroup *share_phone_group(new QButtonGroup);
-    QRadioButton *dont_share_phone(new QRadioButton("No"));
+    dont_share_phone = new QRadioButton("No");
     share_phone_number = new QRadioButton("Yes");
     share_phone_group->addButton(share_phone_number);
     share_phone_group->addButton(dont_share_phone);
@@ -24,7 +65,7 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     // make yes/no buttons for assigning a committee
     QButtonGroup *assign_committee_group(new QButtonGroup);
     assign_committee = new QRadioButton("Yes");
-    QRadioButton *dont_assign_committee(new QRadioButton("No"));
+    dont_assign_committee = new QRadioButton("No");
     assign_committee_group->addButton(assign_committee);
     assign_committee_group->addButton(dont_assign_committee);
 
@@ -42,49 +83,19 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     unit = layout << "Unit: " |= new ModelListWidget<UnitModel>;
     user_name = layout << "Login Name: " |= new QLineEdit;
     password = layout << "Password: " |= new QLineEdit;
-
-    // make and add in the buttons
-    QPushButton *add(new QPushButton("Add Member"));
-    QPushButton *cancel(new QPushButton("Cancel"));
-    layout << add | cancel;
-
-    // misc
-    assign_committee->setChecked(true);
-    share_phone_number->setChecked(true);
-    date_moved_in->setCalendarPopup(true);
-    committee->fill(&CommitteeModel::findAll);
-    unit->fill(&UnitModel::findAll);
-    committee->selectFirst();
-    unit->selectFirst();
-    setModal(true);
-    setWindowTitle("Add Member");
-
-    // signals / slots
-    connect(
-        assign_committee, SIGNAL(toggled(bool)),
-        committee, SLOT(setEnabled(bool))
-    );
-
-    connect(add, SIGNAL(clicked()), this, SLOT(checkForm()));
-    connect(cancel, SIGNAL(clicked()), this, SLOT(cancelAdd()));
 }
 
 /**
- * Destructor.
+ * Attempt Check the form.
  */
-AddMemberView::~AddMemberView(void) { }
-
-/**
- * Attempt to add a member.
- */
-void AddMemberView::checkForm(void) {
+bool AddMemberView::checkForm(void) {
 
     if(!first_name->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter a given name (family name / last name)."
         );
-        return;
+        return false;
     }
 
     if(!last_name->isModified()) {
@@ -92,7 +103,7 @@ void AddMemberView::checkForm(void) {
             this, "Empty Field",
             "Please enter a surname (family name / last name)."
         );
-        return;
+        return false;
     }
 
     if(!phone_number->isModified()) {
@@ -100,7 +111,7 @@ void AddMemberView::checkForm(void) {
             this, "Empty Field",
             "Please enter a telephone number."
         );
-        return;
+        return false;
     }
 
     if(!address->isModified()) {
@@ -109,7 +120,7 @@ void AddMemberView::checkForm(void) {
             "Please enter an address for where the person lived before "
             "the co-op."
         );
-        return;
+        return false;
     }
 
     if(!user_name->isModified()) {
@@ -117,7 +128,14 @@ void AddMemberView::checkForm(void) {
             this, "Empty Field",
             "Please enter an log in name."
         );
-        return;
+        return false;
+    } else if(!checkUserName(user_name->text())) {
+        QMessageBox::information(
+            this, "Bad Login Name",
+            "Please enter an different log in name. The entered "
+            "login name is already in use."
+        );
+        return false;
     }
 
     if(!password->isModified()) {
@@ -125,10 +143,26 @@ void AddMemberView::checkForm(void) {
             this, "Empty Field",
             "Please enter an password."
         );
-        return;
+        return false;
     }
 
-    emit accept();
+    return true;
+}
+
+/**
+ * Check the user name of the member.
+ */
+bool AddMemberView::checkUserName(QString name) {
+    return UserModel::nameExists(name);
+}
+
+/**
+ * Attempt to accept, i.e. attempt to add the user.
+ */
+void AddMemberView::tryAccept(void) {
+    if(checkForm()) {
+        emit accept();
+    }
 }
 
 /**
@@ -152,9 +186,3 @@ void AddMemberView::accept(void) {
     QDialog::accept();
 }
 
-/**
- * Close the add member window, we cancelled the form.
- */
-void AddMemberView::cancelAdd(void) {
-    done(QDialog::Rejected);
-}
