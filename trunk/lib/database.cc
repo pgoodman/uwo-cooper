@@ -135,6 +135,10 @@ template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val) {
     q.addBindValue(QVariant());
     return q;
 }
+template <> QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val) {
+    q.addBindValue(QVariant(val ? 1 : 0));
+    return q;
+}
 
 /**
  * Quickly get the variant from the query given a column name.
@@ -204,7 +208,6 @@ const QVariant &operator>>(const QVariant &v, QString &x) {
 }
 
 // tell the compiler which template instantiations to make
-template QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
 template QSqlQuery &operator<< <int>(QSqlQuery &q, int val);
 template QSqlQuery &operator<< <double>(QSqlQuery &q, double val);
 template QSqlQuery &operator<< <unsigned int>(QSqlQuery &q, unsigned int val);

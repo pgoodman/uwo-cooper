@@ -62,9 +62,9 @@ static bool install_committees(QSqlQuery &q) {
     // chair can: everything
     q.prepare(
         "INSERT INTO committee (name,can_delete,member_perms,chair_perms) "
-        "VALUES ('Board',0,?,33554431)"
+        "VALUES ('Board',0,?,?)"
     );
-    q << member_perms;
+    q << member_perms << (~0);
     q.exec();
 
     q.prepare(
