@@ -24,6 +24,10 @@ public:
     virtual bool save(void);
     virtual bool remove(void);
 
+    static DependantModel *create(QString fullName,
+                                  QDateTime bday,
+                                  const int memberId);
+
 protected:
     static DependantModel *load(QSqlQuery &q, const int id);
 
