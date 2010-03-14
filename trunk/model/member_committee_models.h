@@ -47,6 +47,7 @@ public:
 
     bool isTelephoneShared();
     bool isMarkedDeleted();
+    bool wasAssignedCommittee(void);
 
     QString getTelephoneNum();
     QString getLoginName(void);
@@ -73,7 +74,7 @@ public:
     void setFullName(QString firstName, QString lastName);
 
     virtual bool save(void);
-    virtual bool hasPermission(const PermissionModel p);
+    virtual bool hasPermission(const PermissionModelSet p);
     virtual bool remove(void);
 
     virtual QString getUserName(void);
@@ -105,6 +106,7 @@ private:
     int unit_id;
     bool share_telephone;
     bool is_marked;
+    bool had_committee;
     double money_owed;
     QDateTime move_in_time;
     QString telephone_num;
@@ -122,6 +124,7 @@ private:
                          const int unitId,
                          const bool sharePhone,
                          const bool isMarked,
+                         const bool hadCommittee,
                          const double moneyOwed,
                          QDateTime moveInTime,
                          QString phoneNum,

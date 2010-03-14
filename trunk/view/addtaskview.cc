@@ -18,7 +18,7 @@ AddTaskView::AddTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent
     committee = comm;
     // Status Button Group
     QButtonGroup *status_group(new QButtonGroup);
-    QRadioButton *completed_status(new QRadioButton("Completed"));
+    completed_status = new QRadioButton("Completed");
     pending_status = new QRadioButton("Pending");
     status_group->addButton(pending_status);
     status_group->addButton(completed_status);
@@ -31,9 +31,9 @@ AddTaskView::AddTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent
     deadline = layout << "Deadline: " |= new QDateEdit;
 
     // Button Creation and Addition
-    QPushButton *add(new QPushButton("Add"));
+    save_button = new QPushButton("Add");
     QPushButton *cancel(new QPushButton("Cancel"));
-    layout << add | cancel;
+    layout << save_button | cancel;
 
     //Set up radio buttons
     pending_status->setChecked(true);
@@ -43,8 +43,8 @@ AddTaskView::AddTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent
     setModal(true);
     setWindowTitle("Add Task");
 
-    connect(add, SIGNAL(clicked()), this, SLOT(addTask()));
-    connect(cancel, SIGNAL(clicked()), this, SLOT(cancelTask()));
+    connect(save_button, SIGNAL(clicked()), this, SLOT(save()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 
@@ -56,7 +56,7 @@ AddTaskView::~AddTaskView(void) {}
 /**
  * Attempt to add a task.
  */
-void AddTaskView::addTask(void) {
+void AddTaskView::save(void) {
     if(!name->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
@@ -68,11 +68,3 @@ void AddTaskView::addTask(void) {
     committee->addTask(name->text(), description->toPlainText(), deadline->dateTime());
     done(QDialog::Accepted);
 }
-
-/**
- * Close the add task window.
- */
-void AddTaskView::cancelTask(void) {
-    done(QDialog::Rejected);
-}
-

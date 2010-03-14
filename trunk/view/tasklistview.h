@@ -1,30 +1,17 @@
 #ifndef TASKLISTVIEW_H
 #define TASKLISTVIEW_H
 
-#include <Qt>
-#include <QVariant>
-#include <QAction>
-#include <QApplication>
-#include <QButtonGroup>
-#include <QFormLayout>
-#include <QGridLayout>
-#include <QHeaderView>
-#include <QMainWindow>
-#include <QVBoxLayout>
+#include <QDialog>
+#include <QPushButton>
 #include <QWidget>
-#include <QtGui>
-#include <QListWidget>
-#include <QListWidgetItem>
-#include <QCloseEvent>
-
 
 #include "lib/database.h"
 #include "lib/gui/modellistwidget.h"
-#include "lib/gui/modellistwidgetitem.h"
 #include "lib/gui/formlayoutptr.h"
 
 #include "model/committeemodel.h"
 #include "model/taskmodel.h"
+#include "model/usermodel.h"
 
 #include "view/edittaskview.h"
 #include "view/addtaskview.h"

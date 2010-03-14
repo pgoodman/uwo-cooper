@@ -19,22 +19,22 @@
 
 class AddTaskView : public QDialog {
     Q_OBJECT
-private:
+
+protected:
+    QPushButton *save_button;
     QLineEdit *name;
     QTextEdit *description;
     QRadioButton *pending_status;
+    QRadioButton *completed_status;
     QDateEdit *deadline;
     CommitteeModel *committee;
-
 
 public:
     AddTaskView(CommitteeModel *comm, QWidget *parent=0);
     ~AddTaskView(void);
 
 public slots:
-    void addTask(void);
-    void cancelTask(void);
-
+    virtual void save(void);
 };
 
 #endif // ADDTASKVIEW_H

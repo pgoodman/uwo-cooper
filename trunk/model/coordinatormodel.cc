@@ -19,7 +19,7 @@ CoordinatorModel::~CoordinatorModel() { }
 /**
  * Check whether or not a coodinator has a permission.
  */
-bool CoordinatorModel::hasPermission(const PermissionModel p) {
+bool CoordinatorModel::hasPermission(const PermissionModelSet p) {
     (void) p;
     return true;
 }

@@ -25,7 +25,7 @@ public:
 
     virtual QString getUserName(void);
     virtual bool save(void);
-    virtual bool hasPermission(const PermissionModel p);
+    virtual bool hasPermission(const PermissionModelSet p);
     virtual ~CoordinatorModel();
 
 private:
