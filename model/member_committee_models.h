@@ -42,7 +42,7 @@ public:
     static const char *table_name;
 
     //getters
-    UnitModel *getUnit(void);
+    UnitModel *findUnit(void);
     double getMoneyOwed();
 
     bool isTelephoneShared();
@@ -54,7 +54,6 @@ public:
     QString getFirstName(void);
     QString getLastName(void);
     QString getAddress(void);
-    QString getUnitNo(void);
 
     QDateTime getMoveInTime(void);
     CommitteeModel *findCommittee(void);

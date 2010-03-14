@@ -51,14 +51,18 @@ protected:
     QRadioButton *dont_share_phone;
     QRadioButton *assign_committee;
     QRadioButton *dont_assign_committee;
+    QPushButton *save_button;
 
     ModelListWidget<CommitteeModel> *committee;
     ModelListWidget<UnitModel> *unit;
 
-    virtual void buildForm(FormLayoutPtr &layout);
+    void buildForm(FormLayoutPtr &layout);
+    void finishForm(FormLayoutPtr &layout);
     virtual bool checkForm(void);
     virtual bool checkUserName(QString name);
     virtual bool checkPerm(PermissionModelSet perm);
+
+    AddMemberView(int *, QWidget *parent=0);
 
 public:
     AddMemberView(QWidget *parent=0);
