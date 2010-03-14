@@ -71,6 +71,8 @@ TaskListView::~TaskListView(void) {
 void TaskListView::populateTaskList(void) {
     TaskModel::iterator_range tasks(committee->findTasks());
     task_list->fill(tasks);
+    edit_button->setEnabled(false);
+    delete_button->setEnabled(false);
 }
 
 /**
@@ -81,8 +83,9 @@ void TaskListView::activateButtons() {
     if(0 == task) {
         return;
     }
-    edit_button->setEnabled(true);
-    delete_button->setEnabled(task->isCompleted());
+    bool is_completed(task->isCompleted());
+    edit_button->setEnabled(!is_completed);
+    delete_button->setEnabled(is_completed);
 }
 
 

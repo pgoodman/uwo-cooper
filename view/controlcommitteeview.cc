@@ -35,6 +35,16 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
         task_button->hide();
     }
 
+    if(!active_user->hasPermission(ADD_COMMITTEE)) {
+        add_button->hide();
+    }
+    if(!active_user->hasPermission(EDIT_COMMITTEE)) {
+        edit_button->hide();
+    }
+    if(!active_user->hasPermission(DELETE_COMMITTEE)) {
+        del_button->hide();
+    }
+
     connect(add_button, SIGNAL(clicked()), this, SLOT(addCommittee()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editCommittee()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteCommittee()));

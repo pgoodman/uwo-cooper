@@ -34,7 +34,7 @@ void EditTaskView::dataInit(void) {
 }
 
 void EditTaskView::save(void) {
-   task->setCompleted(pending_status->isChecked());
+   task->setCompleted(completed_status->isChecked());
    task->save();
    emit accept();
 }
