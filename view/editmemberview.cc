@@ -27,11 +27,14 @@ bool EditMemberView::checkPerm(PermissionModelSet perm) {
 void EditMemberView::buildForm(FormLayoutPtr &layout) {
     layout [2] << "If a field is disabled then either you are not allowed "
                   "to edit the field \nor it can only be edited elsewhere.";
+    layout [2] << "If a field is missing then that information is private.";
+    layout << ""; // empty row
     AddMemberView::buildForm(layout);
 }
 
 /**
- * Initialize all of the fields.
+ * Initialize all of the fields. This deals with all of the scary corners of
+ * how the permissions interact.
  */
 void EditMemberView::initForm(void) {
     share_phone_number->setChecked(member->isTelephoneShared());
@@ -51,27 +54,53 @@ void EditMemberView::initForm(void) {
         phone_number->setDisabled(true);
         address->setDisabled(true);
         user_name->setDisabled(true);
+
+        // don't divulge this info!
+        user_name->hide();
+        password->hide();
+
+        // interesting interactions with the other permissions!
+        if((member != active_user && !checkPerm(VIEW_OTHER_INFO))
+        || !checkPerm(VIEW_SELF_INFO)) {
+            share_phone_number->hide();
+            date_moved_in->hide();
+            address->hide();
+
+            if(!checkPerm(PRINT_PUBLIC_LIST)) {
+                first_name->hide();
+                last_name->hide();
+                unit->hide();
+            }
+
+            if(!checkPerm(PRINT_COMMITTEE_LIST)) {
+                committee->hide();
+            }
+
+            if(!checkPerm(PRINT_PRIVATE_LIST)) {
+                phone_number->hide();
+            }
+        }
     }
 
     // not allowed to edit self password
-    if(active_user == member && !checkPerm(EDIT_SELF_PASS)) {
-        password->setDisabled(true);
-    } else if(active_user != member && !checkPerm(EDIT_MEMBER_INFO)) {
-        password->setDisabled(true);
-    }
+    password->setDisabled(
+        (active_user == member && !checkPerm(EDIT_SELF_PASS)) ||
+        (active_user != member && !checkPerm(EDIT_MEMBER_INFO))
+    );
 
     // don't allow the committee to be changed, this is done elsewhere
     // under moving a member from one committee to another
     if(0 == member->findCommittee()) {
         if((!member->wasAssignedCommittee() && checkPerm(INIT_MEMBER_COMMITTEE))
         || checkPerm(EDIT_MEMBER_COMMITTEE)) {
+            committee->show();
             committee->selectFirst();
         } else {
             committee->setDisabled(true);
             assign_committee->setDisabled(true);
             dont_assign_committee->setDisabled(true);
         }
-    } else {
+    } else if(!checkPerm(EDIT_MEMBER_COMMITTEE)) {
         committee->clear();
         committee->addModel(member->findCommittee());
         committee->selectFirst();
@@ -80,7 +109,8 @@ void EditMemberView::initForm(void) {
         dont_assign_committee->setDisabled(true);
     }
 
-    // change the unit list somewhat
+    // change the unit list somewhat, the unit cannot be edited here. That is,
+    // it must be changed through an internal move once set.
     unit->clear();
     unit->addModel(member->findUnit());
     unit->selectFirst();
@@ -100,7 +130,6 @@ void EditMemberView::accept() {
     member->setPassword(password->text());
     member->setAddress(address->text());
     member->setSharedTelephone(share_phone_number->isChecked());
-
     member->setMoveInTime(date_moved_in->dateTime());
 
     member->save();

@@ -1,28 +1,38 @@
 #ifndef DEPENDANT_H
 #define DEPENDANT_H
 
+#include <ctime>
+
 #include <QString>
 #include <QDateTime>
+#include <QSqlQuery>
 
-using namespace std;
+#include "lib/imodel.h"
 
-class DependantModel
+class DependantModel : public IModel<DependantModel, select_from_table_tag>
 {
+    MODEL_CLASS(DependantModel);
+
 public:
-    //Constructors
-    DependantModel(QString name, QDateTime bday);
-    ~DependantModel();
+    static const char *table_name;
 
-    //methods
-    bool isUnderAge(QDateTime currentTime);
+    bool isUnderAge(void);
+    QString getName(void);
+    QDateTime getBday(void);
+    QString toString(void);
 
-    //accessor methods
-    QString getName(){return fullName;}
-    QDateTime getBday(){return timeOf21stBday;}
+    virtual bool save(void);
+    virtual bool remove(void);
+
+protected:
+    static DependantModel *load(QSqlQuery &q, const int id);
 
 private:
-    QString fullName;
-    QDateTime timeOf21stBday;
+    DependantModel(const int id, QString name, QDateTime bday, const int mid);
+
+    QString name;
+    QDateTime bday_21;
+    const int member_id;
 };
 
 #endif // DEPENDANT_H

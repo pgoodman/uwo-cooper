@@ -3,9 +3,6 @@
 
 const char *UnitModel::table_name("unit");
 const char *UnitModel::view_name("unit_select");
-//const char *UnitModel::column_names[20] = {
-//    "id", "address", "num_rooms"
-//};
 
 /**
  * Construct a unit.
@@ -26,13 +23,12 @@ bool UnitModel::exists(void) {
  * Load a unit by query.
  */
 UnitModel *UnitModel::load(QSqlQuery &q, const int id) {
-    UnitModel *c = new UnitModel(
+    return new UnitModel(
         qcol<QString>(q, "address"),
         qcol<int>(q, "num_rooms"),
         id,
         qcol<int>(q, "num_members") // synthesized through unit_select view
     );
-    return c;
 }
 
 /**
