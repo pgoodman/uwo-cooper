@@ -22,6 +22,7 @@
 #include "lib/gui/modellistwidget.h"
 #include "lib/gui/formlayoutptr.h"
 
+#include "model/permissionmodel.h"
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
 #include "model/unitmodel.h"
@@ -38,7 +39,7 @@
  */
 class AddMemberView : public QDialog {
     Q_OBJECT
-private:
+protected:
     QLineEdit *first_name;
     QLineEdit *last_name;
     QLineEdit *phone_number;
@@ -47,17 +48,24 @@ private:
     QDateEdit *date_moved_in;
     QLineEdit *user_name;
     QRadioButton *share_phone_number;
+    QRadioButton *dont_share_phone;
     QRadioButton *assign_committee;
+    QRadioButton *dont_assign_committee;
 
     ModelListWidget<CommitteeModel> *committee;
     ModelListWidget<UnitModel> *unit;
+
+    virtual void buildForm(FormLayoutPtr &layout);
+    virtual bool checkForm(void);
+    virtual bool checkUserName(QString name);
+    virtual bool checkPerm(PermissionModelSet perm);
+
 public:
     AddMemberView(QWidget *parent=0);
-    ~AddMemberView(void);
+
 public slots:
-    void checkForm(void);
-    void accept(void);
-    void cancelAdd(void);
+    virtual void tryAccept(void);
+    virtual void accept(void);
 };
 
 #endif /* ADDMEMBER_H_ */
