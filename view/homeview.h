@@ -24,11 +24,18 @@ public:
     HomeView(void);
 
 private:
+    QAction *print_phone_public;
+    QAction *print_phone_all;
+    QAction *print_committee;
+    QAction *print_task;
     void makeMenuBar(void);
 
 protected:
     void closeEvent(QCloseEvent *event);
     void logout();
+
+public slots:
+     void pageChanged(int tabindex);
 };
 
 #endif // UI_COOPER_H
