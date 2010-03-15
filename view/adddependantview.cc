@@ -35,10 +35,15 @@ void AddDependantView::addDependant(void) {
         );
         return;
     }
+
+    // TODO: check that they are under 21
+
     DependantModel *dep(member->addDependant(
         name->text(),
         bday_21->dateTime()
     ));
     name->clear();
+
+    QMessageBox::information(this, "Dependant Added", "Dependant added.");
     emit dependantAdded(dep);
 }

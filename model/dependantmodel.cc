@@ -75,8 +75,22 @@ QString DependantModel::getName(void) {
 }
 
 /**
+ * Set the name of the dependant.
+ */
+void DependantModel::setName(QString n) {
+    name = n;
+}
+
+/**
  * Get the 21st birthday.
  */
 QDateTime DependantModel::getBirthday(void) {
     return bday_21;
+}
+
+/**
+ * Set the birthday of the dependant.
+ */
+void DependantModel::setBirthday(QDateTime t) {
+    bday_21 = t;
 }

@@ -21,6 +21,9 @@ public:
     QDateTime getBirthday(void);
     QString toString(void);
 
+    void setName(QString name);
+    void setBirthday(QDateTime bday);
+
     virtual bool save(void);
 
     static DependantModel *create(QString fullName,

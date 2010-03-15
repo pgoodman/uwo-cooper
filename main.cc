@@ -54,6 +54,7 @@ static bool install_committees(QSqlQuery &q) {
     PermissionModelSet member_perms(0
         | PRINT_PUBLIC_LIST
         | PRINT_COMMITTEE_LIST
+        | VIEW_SELF_INFO
     );
     PermissionModelSet education_chair_perms(chair_perms
         | INIT_MEMBER_COMMITTEE
