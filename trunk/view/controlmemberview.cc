@@ -35,13 +35,14 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     unmark_button = new QPushButton("Un-Mark Member As Deleted");
     del_button = new QPushButton("Delete Member");
     move_out_button = new QPushButton("Trigger Move Out Event");
-
+    internal_move_button = new QPushButton("Trigger Internal Move Event");
     connect(add_button, SIGNAL(clicked()), this, SLOT(addMember()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editMember()));
     connect(mark_button, SIGNAL(clicked()), this, SLOT(markMember()));
     connect(unmark_button, SIGNAL(clicked()), this, SLOT(unmarkMember()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
     connect(move_out_button, SIGNAL(clicked()), this, SLOT(triggerMoveOut()));
+    connect(internal_move_button, SIGNAL(clicked()), this, SLOT(triggerInternalMove()));
 
     connect(
         member_list, SIGNAL(itemSelectionChanged()),
@@ -65,6 +66,7 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     }
     // Add permission stuff
         column->addWidget(move_out_button);
+        column->addWidget(internal_move_button);
 
     layout->setLayout(0, QFormLayout::FieldRole, column);
     layout->setWidget(0, QFormLayout::LabelRole, member_list);
@@ -84,6 +86,7 @@ void ControlMemberView::populateMembers() {
     del_button->setDisabled(true);
     edit_button->setDisabled(true);
     move_out_button->setDisabled(true);
+    internal_move_button->setDisabled(true);
 }
 
 /**
@@ -170,6 +173,7 @@ void ControlMemberView::activateButtons() {
     del_button->setDisabled(!is_marked);
     edit_button->setDisabled(false);
     move_out_button->setDisabled(false);
+    internal_move_button->setDisabled(false);
 }
 
 void ControlMemberView::triggerMoveOut() {
@@ -180,5 +184,16 @@ void ControlMemberView::triggerMoveOut() {
 
     TriggerMoveOutView moveOutDialog(member,this);
     if(moveOutDialog.exec() == QDialog::Accepted) {
+    }
+}
+
+void ControlMemberView::triggerInternalMove() {
+    MemberModel *member(member_list->getModel());
+    if (0 == member) {
+        return;
+    }
+
+    TriggerInternalMoveView internalMoveDialog(member, this);
+    if (internalMoveDialog.exec() == QDialog::Accepted) {
     }
 }
