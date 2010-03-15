@@ -1,26 +1,35 @@
 /*
- * triggermoveoutview.cc
+ * triggerinternalmoveview.cc
  *
  *  Created on: Mar 14, 2010
  *      Author: Stephan Beltran
  *     Version: $Id$
  */
 
-#include "triggermoveoutview.h"
+#include "triggerinternalmoveview.h"
 
-TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
+TriggerInternalMoveView::TriggerInternalMoveView (MemberModel *chosenMember,
                                         QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
 
     member = chosenMember;
+
+    // Make button group for empty/occupied unit
+    QButtonGroup *occupied_unit_group(new QButtonGroup);
+    isEmpty = new QRadioButton;
+    withMembers = new QRadioButton;
+    occupied_unit_group->addButton(isEmpty);
+    occupied_unit_group->addButton(withMembers);
+
     // make the layout of the form
     first_name = layout << "First Name: " |= new QLineEdit;
     last_name = layout << "Last Name: " |= new QLineEdit;
     user_name = layout << "Login Name: " |= new QLineEdit;
-    unit = layout << "Unit: " |= new QLineEdit;
-    move_out_date = layout << "Move Out Date: " |= new QDateEdit;
-    notice_date = layout << "Notice Date: " |= new QDateEdit;
-    isEmpty = layout << "Empty Unit After Move?" |= new QCheckBox;
+    oldunit = layout << "Old Unit: " |= new QLineEdit;
+    newunit = layout << "New Unit: " |= new ModelListWidget<UnitModel>;
+    move_in_date = layout << "Move In Date: " |= new QDateEdit;
+    isEmpty = layout << "Moving Into Empty Unit?" |= new QRadioButton;
+    withMembers = layout << "Moving Into Occupied Unit?" |= new QRadioButton;
 
     // make and add in the buttons
     ok_button = new QPushButton("Ok");
@@ -35,23 +44,25 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
     user_name->setText(member->getUserName());
     user_name->setEnabled(false);
     unitNo = member->findUnit();
-    unit->setText(QVariant(unitNo->id).toString());
-    unit->setEnabled(false);
-    move_out_date->setCalendarPopup(true);
-    notice_date->setCalendarPopup(true);
+    oldunit->setText(QVariant(unitNo->id).toString());
+    oldunit->setEnabled(false);
+    newunit->fill(&UnitModel::findAll);
+    newunit->selectFirst();
+    move_in_date->setCalendarPopup(true);
+    isEmpty->setChecked(true);
 
     setModal(true);
-    setWindowTitle("Trigger Move Out event");
+    setWindowTitle("Trigger Internal Move event");
 
     // signals / slots
     connect(ok_button, SIGNAL(clicked()), this, SLOT(okEvent()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
 }
 
-void TriggerMoveOutView::okEvent(void) {
+void TriggerInternalMoveView::okEvent(void) {
 
-    QDateTime moveOutDate = move_out_date->dateTime();
-    QDateTime noticeDate = notice_date->dateTime();
+    QDateTime moveInDate = move_in_date->dateTime();
+    UnitModel *intoUnit = newunit->getModel();
 
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
@@ -60,31 +71,29 @@ void TriggerMoveOutView::okEvent(void) {
         if(member->isTelephoneShared()) {
             ss << "Telephone Number: " << member->getTelephoneNum() << "\n";
         }
-        ss << "Unit Number: " << unit->text() << "\n";
-        ss << "Move-out Date: " << moveOutDate.toString("MMMM d, yyyy") << "\n";
+        ss << "Unit Number: " << QVariant(intoUnit->id).toString() << "\n";
+        ss << "Move-in Date: " << moveInDate.toString("MMMM d, yyyy") << "\n";
 
         // Get the Inspections Committee
         CommitteeModel *ic(CommitteeModel::findById(
             CommitteeModel::INSPECTIONS_COMMITTEE_ID
         ));
-        // Send First Move-Out Inspection Task
-        QDateTime in_30_days(noticeDate);
+
+        // Send Move-In Inspection Task
+        QDateTime in_30_days(moveInDate);
         in_30_days.addDays(30);
-        ic->addTask(QString("Move-out Inspection 1"), *description, in_30_days);
+        ic->addTask(QString("Move-In Inspection"), *description, in_30_days);
 
-        // Send Second Move-Out Inspection Task
-        QDateTime one_week_before(moveOutDate);
-        one_week_before.addDays(-7);
-        ic->addTask(QString("Move-out Inspection 2"), *description, one_week_before);
+        //
+    }
 
-        // Send Third Move-Out Inspection Task
-        QDateTime dayOf(moveOutDate);
-        ic->addTask(QString("Move-out Inspection 3"), *description, dayOf);
+    else if (withMembers->isChecked()) {
+
     }
 
     done(QDialog::Accepted);
 }
 
-void TriggerMoveOutView::cancelEvent(void){
+void TriggerInternalMoveView::cancelEvent(void){
     done(QDialog::Rejected);
 }
