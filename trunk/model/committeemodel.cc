@@ -87,7 +87,7 @@ bool CommitteeModel::addTask(QString name,
 }
 
 /**
- * Ger all of a committee's tasks.
+ * Find all of a committee's tasks.
  */
 TaskModel::iterator_range CommitteeModel::findTasks(void) {
     stringstream ss;
@@ -95,6 +95,14 @@ TaskModel::iterator_range CommitteeModel::findTasks(void) {
     return TaskModel::findAll(ss.str().c_str());
 }
 
+/**
+ * Find all of a committee's members.
+ */
+MemberModel::iterator_range CommitteeModel::findMembers(void) {
+    stringstream ss;
+    ss << "is_coordinator=0 AND committee_id=" << id;
+    return MemberModel::findAll(ss.str().c_str());
+}
 
 /**
  * Get the name of a committee.

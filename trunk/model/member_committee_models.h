@@ -157,6 +157,7 @@ public:
     virtual bool remove(void);
 
     TaskModel::iterator_range findTasks(void);
+    MemberModel::iterator_range findMembers(void);
 
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
