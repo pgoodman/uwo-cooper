@@ -146,3 +146,17 @@ bool CommitteeModel::remove() {
     q << id;
     return q.exec();
 }
+
+/**
+  * Return the member's role at the committee based on its id.
+  */
+QString CommitteeModel::getMemberRoleByID(int m_id){
+    if(m_id == chair_id){
+        return "Chair";
+    }
+    else if(m_id == secretary_id){
+        return "Secretary";
+    }else{
+        return "Member";
+    }
+}
