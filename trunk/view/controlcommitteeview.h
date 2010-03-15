@@ -55,7 +55,6 @@ public slots:
     }
     void viewTasks();
 
-
     /**
      * Change the buttons depending on whether or not members have a
      * certain status.
