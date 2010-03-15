@@ -14,6 +14,7 @@
 #include <QList>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QScrollArea>
 
 #include "model/membermodel.h"
 #include "model/dependantmodel.h"
@@ -30,7 +31,7 @@ public:
 private:
     QList<DependantListItemView *> items;
     MemberModel *member;
-    QGridLayout *layout;
+    QGridLayout *list_layout;
 
 public slots:
     void removeDependantFromList(DependantListItemView *);

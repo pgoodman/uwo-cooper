@@ -388,5 +388,12 @@ DependantModel::iterator_range MemberModel::findDependants(void) {
   * Get member's role at committee, CHAIR, SECRETARY or MEMBER
   */
 QString MemberModel::getRoleAtCommittee() {
+    return QString("");
+}
 
+/**
+ * Add a dependant.
+ */
+DependantModel *MemberModel::addDependant(QString name, QDateTime bday) {
+    return DependantModel::create(name, bday, id);
 }

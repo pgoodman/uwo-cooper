@@ -18,15 +18,15 @@
 
 #include "model/dependantmodel.h"
 
-#include "view/adddependantview.h"
-
 /**
  * View for items in the dependant list.
  */
-class DependantListItemView : public AddDependantView {
+class DependantListItemView : public QWidget {
     Q_OBJECT
 private:
     DependantModel *dependant;
+    QLineEdit *name;
+    QDateEdit *bday_21;
 
 public:
     DependantListItemView(DependantModel *child, QWidget *parent = 0);

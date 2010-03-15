@@ -53,6 +53,7 @@ DependantModel *DependantModel::create(QString fullName,
         "VALUES (?, ?, ?)"
     );
     q << fullName << bday << memberId;
+    q.exec();
     return findById(q.lastInsertId().toInt());
 }
 
