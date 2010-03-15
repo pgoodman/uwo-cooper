@@ -57,6 +57,7 @@ public:
 
     QDateTime getMoveInTime(void);
     CommitteeModel *findCommittee(void);
+    QString getRoleAtCommittee();
     DependantModel::iterator_range findDependants(void);
 
     //setters
