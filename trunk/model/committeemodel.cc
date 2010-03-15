@@ -133,6 +133,15 @@ bool CommitteeModel::remove() {
 
     MemberModel::iterator_range it(MemberModel::findAll(search.str().c_str()));
 
+    MemberModel::iterator first(it.first);
+    MemberModel::iterator last(it.second);
+
+    while(first != last)
+    {
+        (*first)->setCommittee(0);
+        first++;
+    }
+
     q.prepare("DELETE FROM tasks WHERE committee_id = ?");
     q << id;
     return q.exec();
