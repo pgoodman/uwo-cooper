@@ -91,8 +91,7 @@ void EditMemberView::initForm(void) {
         (active_user != member && !checkPerm(EDIT_MEMBER_INFO))
     );
 
-    // don't allow the committee to be changed, this is done elsewhere
-    // under moving a member from one committee to another
+
     if(0 == member->findCommittee()) {
         if((!member->wasAssignedCommittee() && checkPerm(INIT_MEMBER_COMMITTEE))
         || checkPerm(EDIT_MEMBER_COMMITTEE)) {
@@ -103,7 +102,10 @@ void EditMemberView::initForm(void) {
             assign_committee->setDisabled(true);
             dont_assign_committee->setDisabled(true);
         }
-    } else if(!checkPerm(EDIT_MEMBER_COMMITTEE)) {
+
+    // don't allow the committee to be changed, this is done elsewhere
+    // under moving a member from one committee to another
+    } else {
         committee->clear();
         committee->addModel(member->findCommittee());
         committee->selectFirst();
@@ -115,9 +117,11 @@ void EditMemberView::initForm(void) {
     // change the unit list somewhat, the unit cannot be edited here. That is,
     // it must be changed through an internal move once set.
     unit->clear();
-    unit->addModel(member->findUnit());
-    unit->selectFirst();
-    unit->setDisabled(true);
+    if(0 != member->findUnit()) {
+        unit->addModel(member->findUnit());
+        unit->selectFirst();
+        unit->setDisabled(true);
+    }
 }
 
 /**

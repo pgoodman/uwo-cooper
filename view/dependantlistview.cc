@@ -17,16 +17,36 @@ DependantListView::DependantListView(MemberModel *user, QWidget *parent)
     setModal(true);
     setWindowTitle("Manage Dependants");
 
-    layout = new QGridLayout(this);
+    QGridLayout *layout(new QGridLayout(this));
     QPushButton *cancel(new QPushButton("Cancel", this));
     setLayout(layout);
 
+    // add in the add form
+    AddDependantView *adder(new AddDependantView(member, this));
+    layout->addWidget(adder);
+
+    connect(cancel, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(
+        adder, SIGNAL(dependantAdded(DependantModel *)),
+        this, SLOT(addDependantToList(DependantModel *))
+    );
+
+    QScrollArea *list(new QScrollArea(this));
+    QWidget *dependant_widget(new QWidget(list));
+    layout->addWidget(list);
+    list_layout = new QGridLayout(dependant_widget);
+    dependant_widget->setLayout(list_layout);
+
+    // add in the list of dependants
     DependantModel::iterator_range dependants(user->findDependants());
     DependantModel::iterator it(dependants.first), end(dependants.second);
     for(; it != end; it++) {
-        DependantListItemView *item(new DependantListItemView(*it, this));
+        DependantListItemView *item(new DependantListItemView(
+            *it,
+            dependant_widget
+        ));
         items.push_back(item);
-        layout->addWidget(item);
+        list_layout->addWidget(item);
 
         connect(
             item, SIGNAL(dependantRemoved(DependantListItemView *)),
@@ -34,21 +54,14 @@ DependantListView::DependantListView(MemberModel *user, QWidget *parent)
         );
     }
 
-    AddDependantView *adder(new AddDependantView(this));
-    layout->addWidget(adder);
+    list->setWidget(dependant_widget);
     layout->addWidget(cancel);
-
-    connect(cancel, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(
-        adder, SIGNAL(dependantAdded(DependantModel *)),
-        this, SLOT(addDependantToList(DependantModel *))
-    );
 }
 /**
  * Remove a dependant list item view from the list.
  */
 void DependantListView::removeDependantFromList(DependantListItemView *item) {
-    layout->removeWidget(item);
+    list_layout->removeWidget(item);
     delete item;
 }
 
@@ -56,5 +69,7 @@ void DependantListView::removeDependantFromList(DependantListItemView *item) {
  * Add a dependant to the list.
  */
 void DependantListView::addDependantToList(DependantModel *dep) {
-    (void) dep;
+    DependantListItemView *item(new DependantListItemView(dep, this));
+    items.push_back(item);
+    list_layout->addWidget(item);
 }

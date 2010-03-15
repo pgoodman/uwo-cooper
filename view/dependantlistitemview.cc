@@ -10,12 +10,16 @@
 
 DependantListItemView::DependantListItemView(DependantModel *child,
                                              QWidget *parent)
- : AddDependantView(parent), dependant(child) {
+ : QWidget(parent), dependant(child) {
+    FormLayoutPtr layout(this);
 
+    QPushButton *save_button(new QPushButton("Update"));
     QPushButton *remove(new QPushButton("Delete"));
-    layout | remove;
+    name = layout <<= new QLineEdit;
+    bday_21 = layout |= new QDateEdit;
 
-    save_button->setText("Update");
+    layout | save_button | remove;
+
     name->setText(dependant->getName());
     bday_21->setDateTime(dependant->getBirthday());
 }
@@ -31,6 +35,5 @@ void DependantListItemView::removeDependant(void) {
  * Update this dependant in the db.
  */
 void DependantListItemView::updateDependant(void) {
-
 
 }

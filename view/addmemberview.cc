@@ -98,7 +98,7 @@ void AddMemberView::finishForm(FormLayoutPtr &layout) {
  */
 bool AddMemberView::checkForm(void) {
 
-    if(!first_name->isModified()) {
+    if(first_name->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter a given name (family name / last name)."
@@ -106,7 +106,7 @@ bool AddMemberView::checkForm(void) {
         return false;
     }
 
-    if(!last_name->isModified()) {
+    if(last_name->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter a surname (family name / last name)."
@@ -114,7 +114,7 @@ bool AddMemberView::checkForm(void) {
         return false;
     }
 
-    if(!phone_number->isModified()) {
+    if(phone_number->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter a telephone number."
@@ -122,7 +122,7 @@ bool AddMemberView::checkForm(void) {
         return false;
     }
 
-    if(!address->isModified()) {
+    if(address->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter an address for where the person lived before "
@@ -131,7 +131,7 @@ bool AddMemberView::checkForm(void) {
         return false;
     }
 
-    if(!user_name->isModified()) {
+    if(user_name->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter an log in name."
@@ -146,7 +146,7 @@ bool AddMemberView::checkForm(void) {
         return false;
     }
 
-    if(!password->isModified()) {
+    if(password->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
             "Please enter an password."

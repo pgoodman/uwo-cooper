@@ -59,6 +59,7 @@ public:
     CommitteeModel *findCommittee(void);
     QString getRoleAtCommittee();
     DependantModel::iterator_range findDependants(void);
+    DependantModel *addDependant(QString name, QDateTime bday);
 
     //setters
     void markDeleted(bool mark);

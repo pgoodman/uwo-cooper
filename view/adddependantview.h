@@ -14,9 +14,11 @@
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QGridLayout>
+#include <QMessageBox>
 
 #include "lib/gui/formlayoutptr.h"
 
+#include "model/membermodel.h"
 #include "model/dependantmodel.h"
 
 /**
@@ -25,13 +27,15 @@
 class AddDependantView : public QWidget {
     Q_OBJECT
 protected:
+    MemberModel *member;
     QLineEdit *name;
     QDateEdit *bday_21;
-    QPushButton *save_button;
-    FormLayoutPtr layout;
 
 public:
-    AddDependantView(QWidget *parent = 0);
+    AddDependantView(MemberModel *m, QWidget *parent = 0);
+
+public slots:
+    void addDependant();
 
 signals:
     void dependantAdded(DependantModel *);
