@@ -3,11 +3,13 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QList>
 
-#include "model/usermodel.h"
 #include "model/membermodel.h"
+#include "model/dependantmodel.h"
 
 #include "view/addmemberview.h"
+#include "view/dependantlistview.h"
 
 class EditMemberView : public AddMemberView
 {

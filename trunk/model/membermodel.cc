@@ -55,8 +55,16 @@ bool MemberModel::hasPermission(const PermissionModelSet p) {
  */
 bool MemberModel::remove(void) {
     if(isMarkedDeleted()) {
+        QSqlQuery q;
+        q.prepare("DELETE FROM dependant WHERE member_id=?");
+        q << id;
+        q.exec();
+
+        // TODO: clean up any committee stuff
+
         return IModel<MemberModel,select_from_table_tag>::remove();
     }
+
     return false;
 }
 
@@ -366,4 +374,13 @@ MemberModel::iterator_range MemberModel::findAll(const char *cond) {
  */
 bool MemberModel::wasAssignedCommittee(void) {
     return had_committee;
+}
+
+/**
+ * Get all of a member's dependants.
+ */
+DependantModel::iterator_range MemberModel::findDependants(void) {
+    stringstream ss;
+    ss << "member_id=" << id;
+    return Database::selectAll<DependantModel>("dependant", ss.str().c_str());
 }
