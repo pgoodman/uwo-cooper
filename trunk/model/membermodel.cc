@@ -384,3 +384,9 @@ DependantModel::iterator_range MemberModel::findDependants(void) {
     ss << "member_id=" << id;
     return Database::selectAll<DependantModel>("dependant", ss.str().c_str());
 }
+/**
+  * Get member's role at committee, CHAIR, SECRETARY or MEMBER
+  */
+QString MemberModel::getRoleAtCommittee() {
+
+}
