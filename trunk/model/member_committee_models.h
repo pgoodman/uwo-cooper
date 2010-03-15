@@ -103,7 +103,7 @@ protected:
     static MemberModel *load(QSqlQuery &q, const int id);
 
 private:
-
+    int member_id;
     int committee_id;
     int unit_id;
     bool share_telephone;
@@ -163,6 +163,7 @@ public:
 
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
+    QString getMemberRoleByID(const int m_id);
 
     virtual ~CommitteeModel();
 
