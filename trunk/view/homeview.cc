@@ -16,12 +16,13 @@ HomeView::HomeView(void) {
 
     PermissionModelSet committee_tab_perms(
         ADD_TASK | EDIT_TASK | DELETE_TASK | ADD_COMMITTEE |
-        EDIT_COMMITTEE | DELETE_COMMITTEE
+        EDIT_COMMITTEE | DELETE_COMMITTEE | PRINT_COMMITTEE_LIST
     );
 
     PermissionModelSet member_tab_perms(
         ADD_MEMBER | MOVE_MEMBER | EDIT_MEMBER_INFO | EDIT_MEMBER_STATUS |
-        DELETE_MEMBER | INIT_MEMBER_COMMITTEE | EDIT_MEMBER_COMMITTEE
+        DELETE_MEMBER | INIT_MEMBER_COMMITTEE | EDIT_MEMBER_COMMITTEE |
+        PRINT_PUBLIC_LIST | PRINT_PRIVATE_LIST
     );
 
     if(active_user->hasPermission(member_tab_perms)) {

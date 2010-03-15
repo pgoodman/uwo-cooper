@@ -11,7 +11,7 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include <QFormLayout>
+#include <QGridLayout>
 #include <QVBoxLayout>
 #include <QLabel>
 
@@ -25,6 +25,7 @@
 #include "view/editmemberview.h"
 #include "view/triggermoveoutview.h"
 #include "view/triggerinternalmoveview.h"
+#include "view/dependantlistview.h"
 
 class ControlMemberView : public QWidget {
     Q_OBJECT
@@ -38,6 +39,7 @@ private:
     QPushButton *unmark_button;
     QPushButton *del_button;
     QPushButton *edit_button;
+    QPushButton *dependant_button;
     QPushButton *move_out_button;
     QPushButton *internal_move_button;
     void populateMembers();
@@ -50,6 +52,7 @@ public slots:
     void unmarkMember();
     void triggerMoveOut();
     void triggerInternalMove();
+    void manageDependants();
 
     /**
      * Change the buttons depending on whether or not members have a

@@ -14,20 +14,15 @@
 ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     member_list = new ModelListWidget<MemberModel>(this);
 
-    QFormLayout *layout = new QFormLayout(this);
-    QVBoxLayout *column = new QVBoxLayout();
+    QGridLayout *layout = new QGridLayout(this);
+    QVBoxLayout *column = new QVBoxLayout;
+
     setGeometry(QRect(20, 20, 441, 231));
 
     layout->setSpacing(6);
     layout->setContentsMargins(11, 11, 11, 11);
-    layout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-    layout->setContentsMargins(0, 0, 0, 0);
 
     column->setSpacing(0);
-
-    QLabel *help(new QLabel(
-        "Select a member from the list\nto toggle the controls"
-    ));
 
     QPushButton *add_button = new QPushButton("Add Member");
     edit_button = new QPushButton("Edit Member");
@@ -36,6 +31,8 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     del_button = new QPushButton("Delete Member");
     move_out_button = new QPushButton("Trigger Move Out Event");
     internal_move_button = new QPushButton("Trigger Internal Move Event");
+    dependant_button = new QPushButton("Manage Dependants");
+
     connect(add_button, SIGNAL(clicked()), this, SLOT(addMember()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editMember()));
     connect(mark_button, SIGNAL(clicked()), this, SLOT(markMember()));
@@ -43,6 +40,7 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
     connect(move_out_button, SIGNAL(clicked()), this, SLOT(triggerMoveOut()));
     connect(internal_move_button, SIGNAL(clicked()), this, SLOT(triggerInternalMove()));
+    connect(dependant_button, SIGNAL(clicked()), this, SLOT(manageDependants()));
 
     connect(
         member_list, SIGNAL(itemSelectionChanged()),
@@ -54,6 +52,9 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     }
     if(active_user->hasPermission(EDIT_MEMBER_INFO)) {
         column->addWidget(edit_button);
+        column->addWidget(dependant_button);
+        column->addWidget(move_out_button);
+        column->addWidget(internal_move_button);
     }
     if(active_user->hasPermission(EDIT_MEMBER_STATUS)) {
         column->addWidget(mark_button);
@@ -64,16 +65,15 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     if(active_user->hasPermission(DELETE_MEMBER)) {
         column->addWidget(del_button);
     }
-    // Add permission stuff
-        column->addWidget(move_out_button);
-        column->addWidget(internal_move_button);
 
-    layout->setLayout(0, QFormLayout::FieldRole, column);
-    layout->setWidget(0, QFormLayout::LabelRole, member_list);
+    layout->addWidget(
+        new QLabel("Select a member from the list to toggle the controls"),
+        1, 1, 1, 2
+    );
+    layout->addWidget(member_list, 2, 1, 1, 1);
+    layout->addLayout(column, 2, 2, 1, 1);
 
     populateMembers();
-
-    column->addWidget(help);
 }
 
 /*
@@ -85,6 +85,7 @@ void ControlMemberView::populateMembers() {
     unmark_button->setDisabled(true);
     del_button->setDisabled(true);
     edit_button->setDisabled(true);
+    dependant_button->setDisabled(true);
     move_out_button->setDisabled(true);
     internal_move_button->setDisabled(true);
 }
@@ -172,10 +173,14 @@ void ControlMemberView::activateButtons() {
     unmark_button->setDisabled(!is_marked);
     del_button->setDisabled(!is_marked);
     edit_button->setDisabled(false);
+    dependant_button->setDisabled(false);
     move_out_button->setDisabled(false);
     internal_move_button->setDisabled(false);
 }
 
+/**
+ * Launch the dialog to manage a move out event.
+ */
 void ControlMemberView::triggerMoveOut() {
     MemberModel *member(member_list->getModel());
     if (0 == member) {
@@ -183,10 +188,12 @@ void ControlMemberView::triggerMoveOut() {
     }
 
     TriggerMoveOutView moveOutDialog(member,this);
-    if(moveOutDialog.exec() == QDialog::Accepted) {
-    }
+    moveOutDialog.exec();
 }
 
+/**
+ * Launch the dialog to manage an internal move event.
+ */
 void ControlMemberView::triggerInternalMove() {
     MemberModel *member(member_list->getModel());
     if (0 == member) {
@@ -194,6 +201,17 @@ void ControlMemberView::triggerInternalMove() {
     }
 
     TriggerInternalMoveView internalMoveDialog(member, this);
-    if (internalMoveDialog.exec() == QDialog::Accepted) {
+    internalMoveDialog.exec();
+}
+
+/**
+ * Launch the dialog to manage a member's dependants.
+ */
+void ControlMemberView::manageDependants(void) {
+    MemberModel *member(member_list->getModel());
+    if (0 == member) {
+        return;
     }
+    DependantListView dep(member, this);
+    dep.exec();
 }

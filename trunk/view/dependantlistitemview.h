@@ -14,17 +14,19 @@
 #include <QLineEdit>
 #include <QDateEdit>
 
+#include "lib/gui/formlayoutptr.h"
+
 #include "model/dependantmodel.h"
+
+#include "view/adddependantview.h"
 
 /**
  * View for items in the dependant list.
  */
-class DependantListItemView : public QWidget {
+class DependantListItemView : public AddDependantView {
     Q_OBJECT
 private:
     DependantModel *dependant;
-    QLineEdit *name;
-    QDateEdit *bday_21;
 
 public:
     DependantListItemView(DependantModel *child, QWidget *parent = 0);

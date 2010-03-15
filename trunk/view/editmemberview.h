@@ -9,7 +9,6 @@
 #include "model/dependantmodel.h"
 
 #include "view/addmemberview.h"
-#include "view/dependantlistview.h"
 
 class EditMemberView : public AddMemberView
 {

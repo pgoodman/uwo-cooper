@@ -66,4 +66,16 @@ bool DependantModel::save(void) {
     return q.exec();
 }
 
+/**
+ * Get the name of the dependant.
+ */
+QString DependantModel::getName(void) {
+    return name;
+}
 
+/**
+ * Get the 21st birthday.
+ */
+QDateTime DependantModel::getBirthday(void) {
+    return bday_21;
+}

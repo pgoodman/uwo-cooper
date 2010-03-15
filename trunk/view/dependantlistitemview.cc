@@ -10,9 +10,14 @@
 
 DependantListItemView::DependantListItemView(DependantModel *child,
                                              QWidget *parent)
- : QWidget(parent), dependant(child) {
-    name = new QLineEdit;
+ : AddDependantView(parent), dependant(child) {
 
+    QPushButton *remove(new QPushButton("Delete"));
+    layout | remove;
+
+    save_button->setText("Update");
+    name->setText(dependant->getName());
+    bday_21->setDateTime(dependant->getBirthday());
 }
 
 /**

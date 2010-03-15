@@ -65,6 +65,11 @@ public:
      * Add a model to the list.
      */
     void addModel(T *model);
+
+    /**
+     * Remove one of the models from the list.
+     */
+    void removeModel(T *model);
 };
 
 /**
@@ -143,5 +148,10 @@ void ModelListWidget<T>::fill(iterator &it, iterator &end) {
 template <typename T>
 void ModelListWidget<T>::addModel(T *model) {
     insertItem(count(), new ModelListWidgetItem<T>(model));
+}
+
+template <typename T>
+void ModelListWidget<T>::removeModel(T *model) {
+
 }
 #endif /* MODELLIST_H_ */
