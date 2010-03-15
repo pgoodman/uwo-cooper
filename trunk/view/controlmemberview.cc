@@ -180,6 +180,5 @@ void ControlMemberView::triggerMoveOut() {
 
     TriggerMoveOutView moveOutDialog(member,this);
     if(moveOutDialog.exec() == QDialog::Accepted) {
-
     }
 }
