@@ -23,6 +23,7 @@
 
 #include "view/addmemberview.h"
 #include "view/editmemberview.h"
+#include "view/triggermoveoutview.h"
 
 class ControlMemberView : public QWidget {
     Q_OBJECT
@@ -36,6 +37,7 @@ private:
     QPushButton *unmark_button;
     QPushButton *del_button;
     QPushButton *edit_button;
+    QPushButton *move_out_button;
     void populateMembers();
 
 public slots:
@@ -44,6 +46,7 @@ public slots:
     void deleteMember();
     void markMember();
     void unmarkMember();
+    void triggerMoveOut();
 
     /**
      * Change the buttons depending on whether or not members have a
