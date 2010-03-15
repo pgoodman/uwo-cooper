@@ -35,7 +35,7 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
     user_name->setText(member->getUserName());
     user_name->setEnabled(false);
     unitNo = member->findUnit();
-    unit->setText((char*)unitNo->id);
+    unit->setText(QVariant(unitNo->id).toString());
     unit->setEnabled(false);
 
     setModal(true);
@@ -48,9 +48,9 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
 
 void TriggerMoveOutView::okEvent(void) {
 
-//    QDateTime moveOutDate = move_out_date->dateTime();
-  //  QDateTime noticeDate = notice_date->dateTime();
-/*
+    QDateTime moveOutDate = move_out_date->dateTime();
+    QDateTime noticeDate = notice_date->dateTime();
+
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
         QTextStream ss(description);
@@ -79,7 +79,7 @@ void TriggerMoveOutView::okEvent(void) {
         QDateTime dayOf(moveOutDate);
         ic->addTask(QString("Move-out Inspection 3"), *description, dayOf);
     }
-*/
+
     done(QDialog::Accepted);
 }
 
