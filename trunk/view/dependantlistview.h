@@ -11,7 +11,6 @@
 
 #include <QWidget>
 #include <QDialog>
-#include <QList>
 #include <QGridLayout>
 #include <QPushButton>
 #include <QScrollArea>
@@ -29,7 +28,6 @@ public:
     DependantListView(MemberModel *member, QWidget *parent = 0);
 
 private:
-    QList<DependantListItemView *> items;
     MemberModel *member;
     QGridLayout *list_layout;
 

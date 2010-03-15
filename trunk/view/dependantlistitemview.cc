@@ -22,12 +22,23 @@ DependantListItemView::DependantListItemView(DependantModel *child,
 
     name->setText(dependant->getName());
     bday_21->setDateTime(dependant->getBirthday());
+    bday_21->setCalendarPopup(true);
+
+    connect(remove, SIGNAL(clicked()), this, SLOT(removeDependant()));
+    connect(save_button, SIGNAL(clicked()), this, SLOT(updateDependant()));
 }
 
 /**
  * Remove this dependant.
  */
 void DependantListItemView::removeDependant(void) {
+    dependant->remove();
+
+    QMessageBox::information(
+        this, "Removed Dependant",
+        "Removed depedant."
+    );
+
     emit dependantRemoved(this);
 }
 
@@ -35,5 +46,22 @@ void DependantListItemView::removeDependant(void) {
  * Update this dependant in the db.
  */
 void DependantListItemView::updateDependant(void) {
+    if(name->text().isEmpty()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter the dependant's full name."
+        );
+        return;
+    }
 
+    // TODO: check that they are under 21
+
+    dependant->setName(name->text());
+    dependant->setBirthday(bday_21->dateTime());
+    dependant->save();
+
+    QMessageBox::information(
+        this, "Updated Dependant",
+        "Updated depedant."
+    );
 }

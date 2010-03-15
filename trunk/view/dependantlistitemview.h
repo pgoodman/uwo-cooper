@@ -13,6 +13,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QDateEdit>
+#include <QMessageBox>
 
 #include "lib/gui/formlayoutptr.h"
 

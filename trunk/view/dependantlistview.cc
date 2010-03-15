@@ -18,7 +18,7 @@ DependantListView::DependantListView(MemberModel *user, QWidget *parent)
     setWindowTitle("Manage Dependants");
 
     QGridLayout *layout(new QGridLayout(this));
-    QPushButton *cancel(new QPushButton("Cancel", this));
+    QPushButton *cancel(new QPushButton("Close", this));
     setLayout(layout);
 
     // add in the add form
@@ -32,6 +32,7 @@ DependantListView::DependantListView(MemberModel *user, QWidget *parent)
     );
 
     QScrollArea *list(new QScrollArea(this));
+    list->setWidgetResizable(true);
     QWidget *dependant_widget(new QWidget(list));
     layout->addWidget(list);
     list_layout = new QGridLayout(dependant_widget);
@@ -45,7 +46,6 @@ DependantListView::DependantListView(MemberModel *user, QWidget *parent)
             *it,
             dependant_widget
         ));
-        items.push_back(item);
         list_layout->addWidget(item);
 
         connect(
@@ -70,6 +70,5 @@ void DependantListView::removeDependantFromList(DependantListItemView *item) {
  */
 void DependantListView::addDependantToList(DependantModel *dep) {
     DependantListItemView *item(new DependantListItemView(dep, this));
-    items.push_back(item);
     list_layout->addWidget(item);
 }
