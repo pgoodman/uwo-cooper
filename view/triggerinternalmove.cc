@@ -8,8 +8,9 @@
 
 #include "triggerinternalmoveview.h"
 
-TriggerInternalMoveView::TriggerInternalMoveView (MemberModel *chosenMember,
-                                        QWidget *parent) : QDialog(parent) {
+TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
+                                                 QWidget *parent)
+ : QDialog(parent) {
     FormLayoutPtr layout(this);
 
     member = chosenMember;
@@ -36,6 +37,12 @@ TriggerInternalMoveView::TriggerInternalMoveView (MemberModel *chosenMember,
     QPushButton *cancel(new QPushButton("Cancel"));\
     layout << ok_button | cancel;
 
+    // TODO: does internal move report an error with only 1 unit in the system?
+    std::stringstream ss;
+    unitNo = member->findUnit();
+    ss << "id != " << (unitNo->id);
+    UnitModel::iterator_range new_units(UnitModel::findAll(ss.str().c_str()));
+
     // misc
     first_name->setText(member->getFirstName());
     first_name->setEnabled(false);
@@ -43,10 +50,9 @@ TriggerInternalMoveView::TriggerInternalMoveView (MemberModel *chosenMember,
     last_name->setEnabled(false);
     user_name->setText(member->getUserName());
     user_name->setEnabled(false);
-    unitNo = member->findUnit();
     oldunit->setText(QVariant(unitNo->id).toString());
     oldunit->setEnabled(false);
-    newunit->fill(&UnitModel::findAll);
+    newunit->fill(new_units);
     newunit->selectFirst();
     move_in_date->setCalendarPopup(true);
     isEmpty->setChecked(true);

@@ -3,6 +3,9 @@
 
 #include "editmemberview.h"
 
+/**
+ * Construct the view.
+ */
 EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent)
  : AddMemberView(0, parent) {
     member = selectedmember;

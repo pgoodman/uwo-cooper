@@ -69,10 +69,10 @@ IModelIterator<T, L>::IModelIterator(QSqlQuery q,
                                 const int off,
                                 const int query_id)
  : size(s), i(off), is_used(false), id(query_id) {
-    assert(q.isSelect());
     if(0 == off && 0 == size) {
         i = 1;
     } else if(off >= 0 && off < size) {
+        assert(q.isSelect());
         query = q;
         setCurrId();
     }

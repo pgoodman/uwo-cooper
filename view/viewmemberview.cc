@@ -25,4 +25,6 @@ ViewMemberView::ViewMemberView(MemberModel *member, QWidget *parent)
     layout << "Balance Owing to Co-op: " | QString(money_ss.str().c_str());
     layout << "Login Name: " | member->getLoginName();
     layout << "Password: " | member->getPassword();
+
+    // TODO: show info about dependants
 }

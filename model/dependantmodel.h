@@ -18,7 +18,7 @@ public:
 
     bool isUnderAge(void);
     QString getName(void);
-    QDateTime getBday(void);
+    QDateTime getBirthday(void);
     QString toString(void);
 
     virtual bool save(void);

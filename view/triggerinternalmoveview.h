@@ -1,6 +1,8 @@
 #ifndef TRIGGERINTERNALMOVEVIEW_H
 #define TRIGGERINTERNALMOVEVIEW_H
 
+#include <sstream>
+
 #include <QWidget>
 #include <QDialog>
 #include <QTextStream>

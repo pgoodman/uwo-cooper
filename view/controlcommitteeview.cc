@@ -14,16 +14,13 @@
 ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     committee_list = new ModelListWidget<CommitteeModel>(this);
 
-    QFormLayout *layout = new QFormLayout(this);
-    QVBoxLayout *column = new QVBoxLayout();
+    QGridLayout *layout = new QGridLayout(this);
+    QVBoxLayout *column = new QVBoxLayout;
 
     setGeometry(QRect(20, 20, 441, 231));
 
     layout->setSpacing(6);
     layout->setContentsMargins(11, 11, 11, 11);
-    layout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-    layout->setContentsMargins(0, 0, 0, 0);
-
     column->setSpacing(0);
 
     add_button = new QPushButton("Add Committee");
@@ -60,8 +57,12 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     column->addWidget(del_button);
     column->addWidget(task_button);
 
-    layout->setLayout(0, QFormLayout::FieldRole, column);
-    layout->setWidget(0, QFormLayout::LabelRole, committee_list);
+    layout->addWidget(
+        new QLabel("Select a committee from the list to toggle the controls."),
+        1, 1, 1, 2
+    );
+    layout->addWidget(committee_list, 2, 1, 1, 1);
+    layout->addLayout(column, 2, 2, 1, 1);
 
     populateCommittees();
 }

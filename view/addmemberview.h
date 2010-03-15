@@ -9,6 +9,7 @@
 #ifndef ADDMEMBER_H_
 #define ADDMEMBER_H_
 
+#include <Qt>
 #include <QWidget>
 #include <QDialog>
 #include <QLineEdit>
