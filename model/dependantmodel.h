@@ -22,7 +22,6 @@ public:
     QString toString(void);
 
     virtual bool save(void);
-    virtual bool remove(void);
 
     static DependantModel *create(QString fullName,
                                   QDateTime bday,

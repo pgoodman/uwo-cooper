@@ -60,14 +60,10 @@ DependantModel *DependantModel::create(QString fullName,
  * Save the dependant.
  */
 bool DependantModel::save(void) {
-    return true;
-}
-
-/**
- * Remove the dependant.
- */
-bool DependantModel::remove(void) {
-    return true;
+    QSqlQuery q;
+    q.prepare("UPDATE dependant SET name=?,date_of_21st_bday=? WHERE id=?");
+    q << name << bday_21;
+    return q.exec();
 }
 
 

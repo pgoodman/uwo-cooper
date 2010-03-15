@@ -57,6 +57,7 @@ public:
 
     QDateTime getMoveInTime(void);
     CommitteeModel *findCommittee(void);
+    DependantModel::iterator_range findDependants(void);
 
     //setters
     void markDeleted(bool mark);

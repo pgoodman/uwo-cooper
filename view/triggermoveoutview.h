@@ -24,7 +24,6 @@ class TriggerMoveOutView : public QDialog{
 
 public:
     TriggerMoveOutView(MemberModel *chosenMember, QWidget *parent = 0);
-    ~TriggerMoveOutView();
 
 protected:
     QLineEdit *first_name;

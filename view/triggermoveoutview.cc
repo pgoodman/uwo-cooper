@@ -8,7 +8,8 @@
 
 #include "triggermoveoutview.h"
 
-TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember, QWidget *parent) {
+TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
+                                        QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
 
     member = chosenMember;
@@ -44,8 +45,6 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember, QWidget *pare
     connect(ok_button, SIGNAL(clicked()), this, SLOT(okEvent()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
 }
-
-TriggerMoveOutView::~TriggerMoveOutView(void) {};
 
 void TriggerMoveOutView::okEvent(void) {
 
