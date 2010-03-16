@@ -87,7 +87,7 @@ void TriggerInternalMoveView::okEvent(void) {
 
         // Send Move-In Inspection Task
         QDateTime in_30_days(moveInDate);
-        in_30_days.addDays(30);
+        in_30_days = in_30_days.addDays(30);
         ic->addTask(QString("Move-In Inspection"), *description, in_30_days);
 
         //

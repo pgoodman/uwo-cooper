@@ -242,7 +242,7 @@ MemberModel *MemberModel::create(const bool sharePhone,
         ss << "Move-in Date: " << moveInTime.toString("MMMM d, yyyy") << "\n";
 
         QDateTime in_30_days(moveInTime);
-        in_30_days.addDays(30);
+        in_30_days = in_30_days.addDays(30);
 
         // If a unit has a new member moving into it, and it will be empty when
         // the new member moves into it, then a Move-In Inspection task must be

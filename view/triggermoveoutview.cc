@@ -69,12 +69,12 @@ void TriggerMoveOutView::okEvent(void) {
         ));
         // Send First Move-Out Inspection Task
         QDateTime in_30_days(noticeDate);
-        in_30_days.addDays(30);
+        in_30_days = in_30_days.addDays(30);
         ic->addTask(QString("Move-out Inspection 1"), *description, in_30_days);
 
         // Send Second Move-Out Inspection Task
         QDateTime one_week_before(moveOutDate);
-        one_week_before.addDays(-7);
+        one_week_before = one_week_before.addDays(-7);
         ic->addTask(QString("Move-out Inspection 2"), *description, one_week_before);
 
         // Send Third Move-Out Inspection Task
