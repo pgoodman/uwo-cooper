@@ -11,7 +11,7 @@
 #include <QRadioButton>
 #include <QPushButton>
 
-#include "lib/document.h"
+#include "model/documentmodel.h"
 #include "model/committeemodel.h"
 #include "model/member_committee_models.h"
 
