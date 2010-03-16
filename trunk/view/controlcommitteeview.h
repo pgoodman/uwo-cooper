@@ -26,7 +26,7 @@
 #include "view/addcommitteeview.h"
 #include "view/tasklistview.h"
 #include "controller/printcontroller.h"
-#include "lib/document.h"
+#include "model/documentmodel.h"
 
 using namespace std;
 

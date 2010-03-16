@@ -27,7 +27,7 @@
 #include "view/triggerinternalmoveview.h"
 #include "view/dependantlistview.h"
 #include "controller/printcontroller.h"
-#include "lib/document.h"
+#include "model/documentmodel.h"
 
 class ControlMemberView : public QWidget {
     Q_OBJECT
