@@ -12,6 +12,7 @@
 #include <QPushButton>
 
 #include "lib/document.h"
+#include "model/committeemodel.h"
 
 class PrintController : public QObject
 {
@@ -19,6 +20,7 @@ Q_OBJECT
 
 public:
     PrintController(int type);
+    PrintController(int type, CommitteeModel *committee);
     ~PrintController();
 
     void print();
