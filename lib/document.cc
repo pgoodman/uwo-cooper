@@ -47,8 +47,8 @@ void Document::generatePhoneList(bool isconfidential, int sort){
     QString html;
 
     html.append("<p><b>MEMBER PHONE LIST</b></p><br />");
-    html.append("<table border=0>");
-    html.append("<tr><td>Name</td><td>Unit</td><td>Phone Number</td></tr>");
+    html.append("<table border=0 cellpadding=10>");
+    html.append("<tr><td align=""left""><b>Name</b></td><td align=""left""><b>Unit</b></td><td align=""left""><b>Phone Number</b></td></tr>");
 
     const char *cond;
     if (sort == SORT_BY_LASTNAME) {
@@ -100,9 +100,9 @@ void Document::generateCommitteeList(){
         CommitteeModel *c = *cit;
 
         //committee member
-        html.append("<p>" + c->toString() + " Committee" + "</p><br />");
-        html.append("<table border=0>");
-        html.append("<tr><td>Member Name</td><td>Unit</td><td>Role</td></tr>");
+        html.append("<p><b>" + c->toString() + " Committee" + "</b></p>");
+        html.append("<table border=0 cellpadding=10>");
+        html.append("<tr><td align=""left"">Member Name</td><td align=""left"">Unit</td><td align=""left"">Role</td></tr>");
 
         //name | unit number | role
         MemberModel::iterator_range itr = c->findMembers();
@@ -130,8 +130,8 @@ void Document::generateTaskList(CommitteeModel *committee){
     QString html;
     if(committee != 0){
         html.append("<p><b>PENDING TASK LIST</b></p><br />");
-        html.append("<table border=0>");
-        html.append("<tr><td>Check</td><td>Task Name</td><td>Due Date</td></tr>");
+        html.append("<table border=0 cellpadding=10>");
+        html.append("<tr><td align=""left"">Check</td><td align=""left"">Task Name</td><td align=""left"">Due Date</td></tr>");
 
         TaskModel::iterator_range itr = committee->findTasks();
         TaskModel::iterator it = itr.first;
@@ -150,7 +150,7 @@ void Document::generateTaskList(CommitteeModel *committee){
                 cell3.append("<td>" + deadline.toString() + "</td>");
 
                 //highlight row if deadline passed
-                if(deadline > today) {
+                if(deadline < today) {
                     html.append("<tr style=""background-color:yellow"">");
                 }else{
                     html.append("<tr>");
