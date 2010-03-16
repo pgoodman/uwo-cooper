@@ -227,13 +227,9 @@ void ControlMemberView::manageDependants(void) {
 }
 
 void ControlMemberView::printPublic(){
-    PrintController *pctl = new PrintController();
-    pctl->print(PHONE_LIST_PUBLIC);
-    delete pctl;
+    new PrintController(PHONE_LIST_PUBLIC);
 }
 
 void ControlMemberView::printPrivate(){
-    PrintController *pctl = new PrintController();
-    pctl->print(PHONE_LIST_ALL);
-    delete pctl;
+    new PrintController(PHONE_LIST_ALL);
 }
