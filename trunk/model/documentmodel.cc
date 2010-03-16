@@ -1,6 +1,6 @@
-#include "document.h"
+#include "documentmodel.h"
 
-Document::Document(int doctype){
+DocumentModel::DocumentModel(int doctype){
 
     //cursor = new QTextCursor(this);
 
@@ -22,7 +22,7 @@ Document::Document(int doctype){
 }
 //generate document with sorting
 //valid for phone list only
-Document::Document(int doctype, int sort){
+DocumentModel::DocumentModel(int doctype, int sort){
 
     if(doctype == PHONE_LIST_PUBLIC) {
         generatePhoneList(false, sort);
@@ -30,7 +30,7 @@ Document::Document(int doctype, int sort){
         generatePhoneList(true, sort);
     }else {}
 }
-Document::Document(int doctype, CommitteeModel *committee){
+DocumentModel::DocumentModel(int doctype, CommitteeModel *committee){
     if(doctype == TASK_LIST){
         generateTaskList(committee);
     }else {
@@ -38,11 +38,11 @@ Document::Document(int doctype, CommitteeModel *committee){
     }
 }
 
-Document::~Document(){
+DocumentModel::~DocumentModel(){
 
 }
 
-void Document::generatePhoneList(bool isconfidential, int sort){
+void DocumentModel::generatePhoneList(bool isconfidential, int sort){
 
     QString html;
 
@@ -102,7 +102,7 @@ void Document::generatePhoneList(bool isconfidential, int sort){
     this->setHtml(html);
 }
 
-void Document::generateCommitteeList(){
+void DocumentModel::generateCommitteeList(){
     QString html;
     html.append("<p><b>COMMITTEE LIST</b></p><br />");
 
@@ -142,7 +142,7 @@ void Document::generateCommitteeList(){
     this->setHtml(html);
 }
 
-void Document::generateTaskList(CommitteeModel *committee){
+void DocumentModel::generateTaskList(CommitteeModel *committee){
     QString html;
     if(committee != 0){
         html.append("<p><b>PENDING TASK LIST</b></p><br />");

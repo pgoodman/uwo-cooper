@@ -50,7 +50,7 @@ void PrintController::print(){
             printer = new QPrinter(QPrinter::PrinterResolution);
             QPrintDialog *printDialog = new QPrintDialog(printer, 0);
             if(printDialog->exec() == QDialog::Accepted) {
-                  Document *doc = new Document(doctype, sort_method);
+                  DocumentModel *doc = new DocumentModel(doctype, sort_method);
                   doc->print(printer);
             }
         }
@@ -59,7 +59,7 @@ void PrintController::print(){
         printer = new QPrinter(QPrinter::PrinterResolution);
         QPrintDialog *printDialog = new QPrintDialog(printer, 0);
         if(printDialog->exec() == QDialog::Accepted) {
-              Document *doc = new Document(doctype, selcommittee);
+              DocumentModel *doc = new DocumentModel(doctype, selcommittee);
               doc->print(printer);
         }
     }

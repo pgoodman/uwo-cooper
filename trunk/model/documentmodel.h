@@ -1,5 +1,5 @@
-#ifndef DOCUMENT_H
-#define DOCUMENT_H
+#ifndef DOCUMENTMODEL_H
+#define DOCUMENTMODEL_H
 
 #define PHONE_LIST_PUBLIC   1
 #define PHONE_LIST_ALL      2
@@ -18,13 +18,13 @@
 #include "model/taskmodel.h"
 
 
-class Document : public QTextDocument
+class DocumentModel : public QTextDocument
 {
 public:
-    Document(int doctype);
-    Document(int doctype, int sort);
-    Document(int doctype, CommitteeModel *committee);
-    ~Document();
+    DocumentModel(int doctype);
+    DocumentModel(int doctype, int sort);
+    DocumentModel(int doctype, CommitteeModel *committee);
+    ~DocumentModel();
 
 private:
     QTextCursor *cursor;
@@ -37,4 +37,4 @@ private:
 
 };
 
-#endif // DOCUMENT_H
+#endif // DOCUMENTMODEL_H
