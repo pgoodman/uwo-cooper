@@ -14,6 +14,8 @@
 #include "lib/imodel.h"
 #include "model/member_committee_models.h"
 #include "controller/printcontroller.h"
+#include "view/controlcommitteeview.h"
+#include "model/taskmodel.h"
 
 
 class Document : public QTextDocument
@@ -21,6 +23,7 @@ class Document : public QTextDocument
 public:
     Document(int doctype);
     Document(int doctype, int sort);
+    Document(int doctype, CommitteeModel *committee);
     ~Document();
 
 private:
@@ -29,7 +32,7 @@ private:
 
     void generatePhoneList(bool isconfidential, int sort = SORT_BY_LASTNAME);
     void generateCommitteeList(void);
-    void generateTaskList(void);
+    void generateTaskList(CommitteeModel *committee);
 
 
 };
