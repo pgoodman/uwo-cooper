@@ -1,20 +1,37 @@
 
 #include "editmemberview.h"
 
-#include "editmemberview.h"
-
 /**
  * Construct the view.
  */
 EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent)
  : AddMemberView(0, parent) {
     member = selectedmember;
+/*
+    QWidget *main(new QWidget);
+    FormLayoutPtr layout;
+    main->setLayout(layout);
+*/
     FormLayoutPtr layout(this);
     buildForm(layout);
     AddMemberView::finishForm(layout);
+    initForm();
+/*
+    QScrollArea *scroll_area(new QScrollArea(this));
+    QGridLayout *main_layout(new QGridLayout(this));
+    setLayout(main_layout);
+    main_layout->addWidget(scroll_area);
+
+    scroll_area->setWidget(main);
+    //scroll_area->setWidgetResizable(true);
+*/
     save_button->setText("Update Member");
     setWindowTitle("Edit Member Information");
-    initForm();
+/*
+    setSizeGripEnabled(false);
+    scroll_area->setContentsMargins(0, 0, 0, 0);
+    scroll_area->setBaseSize(600, 600);
+*/
 }
 
 /**
@@ -33,6 +50,7 @@ void EditMemberView::buildForm(FormLayoutPtr &layout) {
     layout [2] << "If a field is missing then that information is private.";
     layout << ""; // empty row
     AddMemberView::buildForm(layout);
+    balance_due = layout << "Balance Owing: " |= new QLineEdit(this);
 }
 
 /**
@@ -48,6 +66,7 @@ void EditMemberView::initForm(void) {
     address->setText(member->getAddress());
     user_name->setText(member->getLoginName());
     password->setText(member->getPassword());
+    balance_due->setText(QVariant(member->getMoneyOwed()).toString());
 
     if(!checkPerm(EDIT_MEMBER_INFO)) {
         share_phone_number->setDisabled(true);
@@ -138,6 +157,15 @@ void EditMemberView::accept() {
     member->setAddress(address->text());
     member->setSharedTelephone(share_phone_number->isChecked());
     member->setMoveInTime(date_moved_in->dateTime());
+    member->setMoneyOwed(QVariant(balance_due->text()).toFloat());
+
+    // assign the committee
+    if(assign_committee->isChecked()
+    && committee->isEnabled()
+    && 0 != committee->getModel()) {
+
+        member->setCommittee(committee->getModel());
+    }
 
     member->save();
 

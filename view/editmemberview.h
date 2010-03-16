@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QWidget>
 #include <QList>
+#include <QLineEdit>
+#include <QVariant>
 
 #include "model/membermodel.h"
 #include "model/dependantmodel.h"
@@ -16,6 +18,8 @@ class EditMemberView : public AddMemberView
 
 protected:
     MemberModel *member;
+
+    QLineEdit *balance_due;
 
     void initForm(void);
     void buildForm(FormLayoutPtr &layout);
