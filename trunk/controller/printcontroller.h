@@ -11,7 +11,9 @@ public:
     PrintController();
     ~PrintController();
 
-    static void print(int doctype);
+    void print(int doctype);
+private:
+    QPrinter *printer;
 };
 
 #endif // PRINTCONTROLLER_H

@@ -27,6 +27,8 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     edit_button = new QPushButton("Edit Committee");
     del_button = new QPushButton("Delete Committee");
     task_button = new QPushButton("Manage Tasks");
+    print_committee_button = new QPushButton("Print Committee List");
+    print_task_button = new QPushButton("Pring Pending Tasks");
 
     if(!active_user->hasPermission(ADD_TASK | EDIT_TASK | DELETE_TASK)) {
         task_button->hide();
@@ -41,11 +43,18 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     if(!active_user->hasPermission(DELETE_COMMITTEE)) {
         del_button->hide();
     }
-
+    if(!active_user->hasPermission(PRINT_COMMITTEE_LIST)){
+        print_committee_button->hide();
+    }
+    if(!active_user->hasPermission(PRINT_TASK_LIST)){
+        print_task_button->hide();
+    }
     connect(add_button, SIGNAL(clicked()), this, SLOT(addCommittee()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editCommittee()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteCommittee()));
     connect(task_button, SIGNAL(clicked()), this, SLOT(viewTasks()));
+    connect(print_task_button,SIGNAL(clicked()), this, SLOT(printTask()));
+    connect(print_committee_button, SIGNAL(clicked()), this, SLOT(printCommittee()));
 
     connect(
         committee_list, SIGNAL(itemSelectionChanged()),
@@ -56,6 +65,8 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     column->addWidget(edit_button);
     column->addWidget(del_button);
     column->addWidget(task_button);
+    column->addWidget(print_committee_button);
+    column->addWidget(print_task_button);
 
     layout->addWidget(
         new QLabel("Select a committee from the list to toggle the controls."),
@@ -75,6 +86,7 @@ void ControlCommitteeView::populateCommittees() {
     edit_button->setDisabled(true);
     del_button->setDisabled(true);
     task_button->setDisabled(true);
+    print_task_button->setDisabled(true);
 }
 
 
@@ -110,6 +122,7 @@ void ControlCommitteeView::activateButtons() {
 
     edit_button->setDisabled(false);
     task_button->setDisabled(false);
+    print_task_button->setDisabled(false);
     del_button->setDisabled(!committee->canRemove());
 }
 
@@ -137,4 +150,16 @@ void ControlCommitteeView::deleteCommittee()
         );
         return;
     }
+}
+
+void ControlCommitteeView::printCommittee(){
+    PrintController *pctl = new PrintController();
+    pctl->print(COMMITTEE_LIST);
+    delete pctl;
+}
+
+void ControlCommitteeView::printTask(){
+    PrintController *pctl = new PrintController();
+    pctl->print(TASK_LIST);
+    delete pctl;
 }

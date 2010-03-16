@@ -32,6 +32,8 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     move_out_button = new QPushButton("Trigger Move Out Event");
     internal_move_button = new QPushButton("Trigger Internal Move Event");
     dependant_button = new QPushButton("Manage Dependants");
+    print_public_button = new QPushButton("Print Public Phone List");
+    print_private_button = new QPushButton("Print Full Phone List");
 
     connect(add_button, SIGNAL(clicked()), this, SLOT(addMember()));
     connect(edit_button, SIGNAL(clicked()), this, SLOT(editMember()));
@@ -41,6 +43,8 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     connect(move_out_button, SIGNAL(clicked()), this, SLOT(triggerMoveOut()));
     connect(internal_move_button, SIGNAL(clicked()), this, SLOT(triggerInternalMove()));
     connect(dependant_button, SIGNAL(clicked()), this, SLOT(manageDependants()));
+    connect(print_public_button, SIGNAL(clicked()), this, SLOT(printPublic()));
+    connect(print_private_button, SIGNAL(clicked()), this, SLOT(printPrivate()));
 
     connect(
         member_list, SIGNAL(itemSelectionChanged()),
@@ -64,6 +68,12 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     }
     if(active_user->hasPermission(DELETE_MEMBER)) {
         column->addWidget(del_button);
+    }
+
+    column->addWidget(print_public_button);
+
+    if(active_user->hasPermission(PRINT_PRIVATE_LIST)) {
+       column->addWidget(print_private_button);
     }
 
     layout->addWidget(
@@ -214,4 +224,16 @@ void ControlMemberView::manageDependants(void) {
     }
     DependantListView dep(member, this);
     dep.exec();
+}
+
+void ControlMemberView::printPublic(){
+    PrintController *pctl = new PrintController();
+    pctl->print(PHONE_LIST_PUBLIC);
+    delete pctl;
+}
+
+void ControlMemberView::printPrivate(){
+    PrintController *pctl = new PrintController();
+    pctl->print(PHONE_LIST_ALL);
+    delete pctl;
 }
