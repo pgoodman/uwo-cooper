@@ -152,6 +152,6 @@ void ModelListWidget<T>::addModel(T *model) {
 
 template <typename T>
 void ModelListWidget<T>::removeModel(T *model) {
-
+    (void) model;
 }
 #endif /* MODELLIST_H_ */
