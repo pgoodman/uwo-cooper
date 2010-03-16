@@ -14,6 +14,7 @@
 SetupView::SetupView(QWidget *parent)
  : QWizard(parent), page1(0), page2(0) {
     setWindowTitle("Cooper Setup");
+    this->setWizardStyle(QWizard::ModernStyle);
 
     setOptions(QWizard::CancelButtonOnLeft);
     setOptions(QWizard::NoBackButtonOnLastPage);
@@ -38,11 +39,16 @@ void SetupView::coordinator(void) {
     QGridLayout *layout = new QGridLayout;
     page1->setLayout(layout);
 
-    page1->setTitle("Step 1 of 2: Coordinator Account");
-    page1->setSubTitle(
-        "Please create the account name and password for the coordinator."
-    );
-
+    //page1->setTitle("Step 1 of 2: Coordinator Account");
+    page1->setTitle("Setup Wizard");
+    page1->setSubTitle("Step 1 of 2: Coordinator Account");
+   //     "Please create the account name and password for the coordinator."
+   // );
+    setPixmap(QWizard::WatermarkPixmap, QPixmap("../images/watermark.jpg"));
+    setPixmap(QWizard::BannerPixmap, QPixmap("../images/flower.jpg"));
+    
+    QLabel *intro = new QLabel ("Please create the account name and password for the coordinator.");
+    intro->setWordWrap(true);
     QLabel *nameLabel = new QLabel("Account &Name: ");
     QLabel *passLabel = new QLabel("&Password: ");
     QLineEdit *nameLineEdit = new QLineEdit;
@@ -55,10 +61,16 @@ void SetupView::coordinator(void) {
     nameLabel->setBuddy(nameLineEdit);
     passLabel->setBuddy(coord_pass);
 
-    layout->addWidget(nameLabel, 0, 0);
+    layout->addWidget(intro,0,0,1,2);
+    layout->addWidget(nameLabel, 1,0,1,1);
+    layout->addWidget(nameLineEdit,1,1,1,1);
+    layout->addWidget(passLabel, 2,0,1,1);
+    layout->addWidget(coord_pass,2,1,1,1);
+    /*layout->addWidget(nameLabel, 0, 0);
     layout->addWidget(nameLineEdit, 0, 1);
     layout->addWidget(passLabel, 1, 0);
-    layout->addWidget(coord_pass, 1, 1);
+    layout->addWidget(coord_pass, 1, 1);*/
+
 
     addPage(page1);
 }
@@ -68,21 +80,28 @@ void SetupView::coordinator(void) {
  */
 void SetupView::units(void) {
     page2 = new QWizardPage;
-    page2->setTitle("Step 2 of 2: Initial Data File");
-    page2->setSubTitle("Please specify the initial data file name.");
+    page2->setTitle("Setup Wizard");
+    page2->setSubTitle("Step 2 of 2: Initial Data File");
+    //page2->setSubTitle("Please specify the initial data file name.");
+
+    setPixmap(QWizard::WatermarkPixmap, QPixmap("../images/watermark.jpg"));
+    setPixmap(QWizard::BannerPixmap, QPixmap("../images/flower.jpg"));
 
     QGridLayout *layout = new QGridLayout;
     page2->setLayout(layout);
 
+    QLabel *intro = new QLabel("Please specify the initial data file name.");
+    intro->setWordWrap(true);
     QLabel *fileNameLabel = new QLabel("Data &File:");
     file_name = new QLineEdit;
     QPushButton *browseFileButton = new QPushButton("Browse");
 
     fileNameLabel->setBuddy(file_name);
 
-    layout->addWidget(fileNameLabel, 0, 0);
-    layout->addWidget(file_name, 1, 0);
-    layout->addWidget(browseFileButton, 1, 1);
+    layout->addWidget(intro,0,0,1,2);
+    layout->addWidget(fileNameLabel, 1,0,1,1);
+    layout->addWidget(file_name, 1,1,1,1);
+    layout->addWidget(browseFileButton, 2,0,1,1);
 
     connect(browseFileButton, SIGNAL(clicked()), this, SLOT(browseDataFile()));
 
