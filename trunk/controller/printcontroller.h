@@ -2,17 +2,19 @@
 #define PRINTCONTROLLER_H
 
 #include <QPrinter>
+#include <QPrintDialog>
 
 #include "lib/document.h"
 
 class PrintController
 {
 public:
-    PrintController();
+    PrintController(int type);
     ~PrintController();
 
-    void print(int doctype);
+    void print();
 private:
+    int doctype;
     QPrinter *printer;
 };
 
