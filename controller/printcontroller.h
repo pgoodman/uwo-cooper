@@ -13,6 +13,7 @@
 
 #include "lib/document.h"
 #include "model/committeemodel.h"
+#include "model/member_committee_models.h"
 
 class PrintController : public QObject
 {
@@ -29,6 +30,7 @@ private:
     int doctype;
     int sort_method;
     QPrinter *printer;
+    CommitteeModel *selcommittee;
 
 public slots:
     void sortingChanged(int sort);
