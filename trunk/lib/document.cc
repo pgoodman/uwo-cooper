@@ -51,7 +51,7 @@ void Document::generatePhoneList(bool isconfidential){
                 cell1 = "";
                 cell2 = "";
                 cell3 = "";
-                cell1.append("<td>" + m->getUserName() + "</td>");
+                cell1.append("<td>" + m->getLastName() + "," + m->getFirstName() + "</td>");
                 cell2.append("<td>" + QString::number(m->findUnit()->id) + "-" + m->findUnit()->address + "</td>");
                 cell3.append("<td>" + m->getTelephoneNum() + "</td>");
                 html.append("<tr>" + cell1 + cell2 + cell3 + "</tr>");
@@ -66,7 +66,6 @@ void Document::generatePhoneList(bool isconfidential){
 void Document::generateCommitteeList(){
     QString html;
     html.append("<p><b>COMMITTEE LIST</b></p><br />");
-    html.append("<table border=0>");
 
     CommitteeModel::iterator_range citr = CommitteeModel::findAll();
     CommitteeModel::iterator cit = citr.first;
@@ -78,7 +77,7 @@ void Document::generateCommitteeList(){
         CommitteeModel *c = *cit;
 
         //committee member
-        html.append("<p>" + c->toString() + "</p><br />");
+        html.append("<p>" + c->toString() + " Committee" + "</p><br />");
         html.append("<table border=0>");
         html.append("<tr><td>Member Name</td><td>Unit</td><td>Role</td></tr>");
 
@@ -87,17 +86,21 @@ void Document::generateCommitteeList(){
         MemberModel::iterator it = itr.first;
         MemberModel::iterator end = itr.second;
 
-        MemberModel *m = *it;
-        if(!m->isMarkedDeleted()){
-            QString cell1 = "";
-            QString cell2 = "";
-            QString cell3 = "";
-            cell1.append("<td>" + m->getUserName() + "</td>");
-            cell2.append("<td>" + QString::number(m->findUnit()->id) + "-" + m->findUnit()->address + "</td>");
-            cell3.append("<td>" + m->getRoleAtCommittee() + "</td>");
-            html.append("<tr>" + cell1 + cell2 + cell3 + "</tr>");
+        for(; it != end; it++){
+            MemberModel *m = *it;
+            if(!m->isMarkedDeleted()){
+                QString cell1 = "";
+                QString cell2 = "";
+                QString cell3 = "";
+                cell1.append("<td>" + m->getUserName() + "</td>");
+                cell2.append("<td>" + QString::number(m->findUnit()->id) + "-" + m->findUnit()->address + "</td>");
+                cell3.append("<td>" + m->getRoleAtCommittee() + "</td>");
+                html.append("<tr>" + cell1 + cell2 + cell3 + "</tr>");
+            }
         }
+        html.append("</table><br />");
     }
+    this->setHtml(html);
 }
 
 void Document::generateTaskList(){
