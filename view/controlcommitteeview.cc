@@ -153,13 +153,9 @@ void ControlCommitteeView::deleteCommittee()
 }
 
 void ControlCommitteeView::printCommittee(){
-    PrintController *pctl = new PrintController();
-    pctl->print(COMMITTEE_LIST);
-    delete pctl;
+    new PrintController(COMMITTEE_LIST);
 }
 
 void ControlCommitteeView::printTask(){
-    PrintController *pctl = new PrintController();
-    pctl->print(TASK_LIST);
-    delete pctl;
+    new PrintController(TASK_LIST);
 }
