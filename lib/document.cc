@@ -2,7 +2,7 @@
 
 Document::Document(int doctype){
 
-    cursor = new QTextCursor(this);
+    //cursor = new QTextCursor(this);
 
     switch(doctype){
 
@@ -20,12 +20,22 @@ Document::Document(int doctype){
         break;
     }
 }
+//generate document with sorting
+//valid for phone list only
+Document::Document(int doctype, int sort){
+
+    if(doctype == PHONE_LIST_PUBLIC) {
+        generatePhoneList(false, sort);
+    }else if(doctype == PHONE_LIST_ALL) {
+        generatePhoneList(true, sort);
+    }else {}
+}
 
 Document::~Document(){
 
 }
 
-void Document::generatePhoneList(bool isconfidential){
+void Document::generatePhoneList(bool isconfidential, int sort){
 
     QString html;
 
@@ -33,9 +43,15 @@ void Document::generatePhoneList(bool isconfidential){
     html.append("<table border=0>");
     html.append("<tr><td>Name</td><td>Unit</td><td>Phone Number</td></tr>");
 
+    const char *cond;
+    if (sort == SORT_BY_LASTNAME) {
+        cond = "1=1 ORDER BY last_name ASC";
+    }else if(sort == SORT_BY_UNIT){
+        cond = "1=1 ORDER BY unit_id ASC";
+    }else{}
 
 
-    MemberModel::iterator_range itr = MemberModel::findAll();
+    MemberModel::iterator_range itr = MemberModel::findAll(cond);
     MemberModel::iterator it = itr.first;
     MemberModel::iterator end = itr.second;
 
