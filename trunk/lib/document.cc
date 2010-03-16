@@ -51,7 +51,7 @@ void Document::generatePhoneList(bool isconfidential){
                 cell1 = "";
                 cell2 = "";
                 cell3 = "";
-                cell1.append("<td>" + m->getUserName() + "</td");
+                cell1.append("<td>" + m->getUserName() + "</td>");
                 cell2.append("<td>" + QString::number(m->findUnit()->id) + "-" + m->findUnit()->address + "</td>");
                 cell3.append("<td>" + m->getTelephoneNum() + "</td>");
                 html.append("<tr>" + cell1 + cell2 + cell3 + "</tr>");
