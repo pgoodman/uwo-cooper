@@ -14,10 +14,14 @@
 #include <QWidget>
 #include <QDateTime>
 #include <QString>
+#include <QTextStream>
 
 #include "lib/gui/formlayoutptr.h"
 
 #include "model/membermodel.h"
+#include "model/committeemodel.h"
+#include "model/dependantmodel.h"
+#include "model/unitmodel.h"
 
 class ViewMemberView : public QWidget {
 public:

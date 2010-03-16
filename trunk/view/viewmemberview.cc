@@ -10,10 +10,9 @@
 
 ViewMemberView::ViewMemberView(MemberModel *member, QWidget *parent)
  : QWidget(parent) {
+
     FormLayoutPtr layout(this);
-
     QDateTime date(member->getMoveInTime());
-
     stringstream money_ss;
     money_ss << "$" << member->getMoneyOwed();
 
@@ -26,5 +25,27 @@ ViewMemberView::ViewMemberView(MemberModel *member, QWidget *parent)
     layout << "Login Name: " | member->getLoginName();
     layout << "Password: " | member->getPassword();
 
-    // TODO: show info about dependants
+    CommitteeModel *comm(member->findCommittee());
+    if(0 != comm) {
+        layout << "Committee: " | comm->toString();
+    }
+
+    UnitModel *unit(member->findUnit());
+    if(0 != unit) {
+        layout << "Unit: " | unit->toString();
+    }
+
+    DependantModel::iterator_range deps(member->findDependants());
+    DependantModel::iterator it(deps.first), end(deps.second);
+    QString *dependants(new QString);
+    QTextStream ss(dependants);
+    bool has_any(false);
+    for(QString sep(""); it != end; sep = ", ", has_any = true, it++) {
+        ss << sep << (*it)->toString();
+    }
+
+    if(has_any) {
+        layout << "Dependants: " | *dependants;
+    }
+    delete dependants;
 }
