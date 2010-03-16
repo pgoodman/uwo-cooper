@@ -37,7 +37,17 @@ void PrintController::print(){
     pdialog->setLayout(layout);
     pdialog->setModal(true);
 
-    if(pdialog->exec() == QDialog::Accepted) {
+    if(doctype == PHONE_LIST_PUBLIC || doctype == PHONE_LIST_ALL){
+        if(pdialog->exec() == QDialog::Accepted) {
+            printer = new QPrinter(QPrinter::PrinterResolution);
+            QPrintDialog *printDialog = new QPrintDialog(printer, 0);
+            if(printDialog->exec() == QDialog::Accepted) {
+                  Document *doc = new Document(doctype);
+                  doc->print(printer);
+            }
+        }
+    }else {
+        delete pdialog;
         printer = new QPrinter(QPrinter::PrinterResolution);
         QPrintDialog *printDialog = new QPrintDialog(printer, 0);
         if(printDialog->exec() == QDialog::Accepted) {
@@ -45,6 +55,7 @@ void PrintController::print(){
               doc->print(printer);
         }
     }
+
 }
 
 void PrintController::sortingChanged(int sort){
