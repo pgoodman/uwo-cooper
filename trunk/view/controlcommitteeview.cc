@@ -157,5 +157,9 @@ void ControlCommitteeView::printCommittee(){
 }
 
 void ControlCommitteeView::printTask(){
-    new PrintController(TASK_LIST);
+    CommitteeModel *committee(committee_list->getModel());
+    if(committee != 0){
+        new PrintController(TASK_LIST, committee);
+    }
+    return;
 }

@@ -16,7 +16,7 @@ Document::Document(int doctype){
         generateCommitteeList();
         break;
     case TASK_LIST:
-        generateTaskList();
+        generateTaskList(0);
         break;
     }
 }
@@ -29,6 +29,13 @@ Document::Document(int doctype, int sort){
     }else if(doctype == PHONE_LIST_ALL) {
         generatePhoneList(true, sort);
     }else {}
+}
+Document::Document(int doctype, CommitteeModel *committee){
+    if(doctype == TASK_LIST){
+        generateTaskList(committee);
+    }else {
+        generateCommitteeList();
+    }
 }
 
 Document::~Document(){
@@ -119,10 +126,38 @@ void Document::generateCommitteeList(){
     this->setHtml(html);
 }
 
-void Document::generateTaskList(){
+void Document::generateTaskList(CommitteeModel *committee){
     QString html;
-    html.append("<p><b>PENDING TASK LIST</b></p><br />");
-    html.append("<table border=0>");
+    if(committee != 0){
+        html.append("<p><b>PENDING TASK LIST</b></p><br />");
+        html.append("<table border=0>");
+        html.append("<tr><td>Check</td><td>Task Name</td><td>Due Date</td></tr>");
 
+        TaskModel::iterator_range itr = committee->findTasks();
+        TaskModel::iterator it = itr.first;
+        TaskModel::iterator end = itr.second;
 
+        for(; it != end; it++){
+            TaskModel *t = *it;
+            QDate today = QDate::currentDate();
+            if(t->isPending()) {
+                QString cell1 = "";
+                QString cell2 = "";
+                QString cell3 = "";
+                QDate deadline = t->getDeadline().date();
+                cell1.append("<td><img src=""../checkbox.gif"" width=""15"" height=""15""></img></td>");
+                cell2.append("<td>" + t->getName() + "</td>");
+                cell3.append("<td>" + deadline.toString() + "</td>");
+
+                //highlight row if deadline passed
+                if(deadline > today) {
+                    html.append("<tr style=""background-color:yellow"">");
+                }else{
+                    html.append("<tr>");
+                }
+                html.append(cell1 + cell2 + cell3 + "</tr>");
+            }
+        }
+        this->setHtml(html);
+    }
 }

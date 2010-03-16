@@ -5,6 +5,13 @@ PrintController::PrintController(int type){
     sort_method = SORT_BY_LASTNAME;
     print();
 }
+PrintController::PrintController(int type, CommitteeModel *committee){
+    doctype = type;
+    sort_method = SORT_BY_LASTNAME;
+    selcommittee = committee;
+    print();
+}
+
 PrintController::~PrintController(){
 }
 
@@ -52,7 +59,7 @@ void PrintController::print(){
         printer = new QPrinter(QPrinter::PrinterResolution);
         QPrintDialog *printDialog = new QPrintDialog(printer, 0);
         if(printDialog->exec() == QDialog::Accepted) {
-              Document *doc = new Document(doctype);
+              Document *doc = new Document(doctype, selcommittee);
               doc->print(printer);
         }
     }

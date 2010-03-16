@@ -121,3 +121,7 @@ void TaskModel::setCompleted(bool newStatus) {
 bool TaskModel::isCompleted(void) {
     return is_complete;
 }
+
+bool TaskModel::isPending(void) {
+    return !is_complete;
+}
