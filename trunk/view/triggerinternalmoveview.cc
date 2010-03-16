@@ -68,7 +68,10 @@ TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
 void TriggerInternalMoveView::okEvent(void) {
 
     QDateTime moveInDate = move_in_date->dateTime();
+    QDateTime moveOutDate = moveInDate;
+    QDateTime noticeDate = QDateTime::currentDateTime();
     UnitModel *intoUnit = newunit->getModel();
+    UnitModel *outOfUnit = member->findUnit();
 
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
@@ -86,11 +89,34 @@ void TriggerInternalMoveView::okEvent(void) {
         ));
 
         // Send Move-In Inspection Task
-        QDateTime in_30_days(moveInDate);
-        in_30_days = in_30_days.addDays(30);
-        ic->addTask(QString("Move-In Inspection"), *description, in_30_days);
+        QDateTime MoveIn_in_30_days(moveInDate);
+        MoveIn_in_30_days = MoveIn_in_30_days.addDays(30);
+        ic->addTask(QString("Move-In Inspection"), *description, MoveIn_in_30_days);
 
-        //
+        // SEND MOVE OUT EVENTS FOR OLD UNIT
+
+        QString *descript2(new QString);
+        QTextStream ss2(descript2);
+        ss2 << "Member Name: " << member->getFirstName() << " " << member->getLastName() << "\n";
+        if(member->isTelephoneShared()) {
+            ss2 << "Telephone Number: " << member->getTelephoneNum() << "\n";
+        }
+        ss2 << "Unit Number: " << QVariant(outOfUnit->id).toString() << "\n";
+        ss2 << "Move-in Date: " << moveInDate.toString("MMMM d, yyyy") << "\n";
+
+        // Send First Move-Out Inspection Task
+        QDateTime MoveOut_in_30_days(noticeDate);
+        MoveOut_in_30_days = MoveOut_in_30_days.addDays(30);
+        ic->addTask(QString("Move-out Inspection 1"), *description, MoveOut_in_30_days);
+
+        // Send Second Move-Out Inspection Task
+        QDateTime one_week_before(moveOutDate);
+        one_week_before = one_week_before.addDays(-7);
+        ic->addTask(QString("Move-out Inspection 2"), *description, one_week_before);
+
+        // Send Third Move-Out Inspection Task
+        QDateTime dayOf(moveOutDate);
+        ic->addTask(QString("Move-out Inspection 3"), *description, dayOf);
     }
 
     else if (withMembers->isChecked()) {
