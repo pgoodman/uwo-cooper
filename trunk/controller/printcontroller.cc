@@ -38,11 +38,12 @@ void PrintController::print(){
     pdialog->setModal(true);
 
     if(doctype == PHONE_LIST_PUBLIC || doctype == PHONE_LIST_ALL){
+
         if(pdialog->exec() == QDialog::Accepted) {
             printer = new QPrinter(QPrinter::PrinterResolution);
             QPrintDialog *printDialog = new QPrintDialog(printer, 0);
             if(printDialog->exec() == QDialog::Accepted) {
-                  Document *doc = new Document(doctype);
+                  Document *doc = new Document(doctype, sort_method);
                   doc->print(printer);
             }
         }

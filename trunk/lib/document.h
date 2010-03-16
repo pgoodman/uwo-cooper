@@ -13,19 +13,21 @@
 
 #include "lib/imodel.h"
 #include "model/member_committee_models.h"
+#include "controller/printcontroller.h"
 
 
 class Document : public QTextDocument
 {
 public:
     Document(int doctype);
+    Document(int doctype, int sort);
     ~Document();
 
 private:
     QTextCursor *cursor;
 
 
-    void generatePhoneList(bool isconfidential);
+    void generatePhoneList(bool isconfidential, int sort = SORT_BY_LASTNAME);
     void generateCommitteeList(void);
     void generateTaskList(void);
 
