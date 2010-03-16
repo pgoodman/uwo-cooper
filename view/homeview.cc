@@ -45,7 +45,6 @@ HomeView::HomeView(void) {
     makeMenuBar();
     setContentsMargins(11, 11, 11, 11);
     setCentralWidget(tabs);
-    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged()));
 }
 
 /**
@@ -54,11 +53,6 @@ HomeView::HomeView(void) {
 void HomeView::makeMenuBar(void) {
     QMenu *file_menu = menuBar()->addMenu("&File");
     (void) file_menu;
-    QMenu *print_menu = menuBar()->addMenu("&Print");
-    print_phone_public = print_menu->addAction("Print Public Phone List");
-    print_phone_all = print_menu->addAction("Print Full Phone List");
-    print_committee = print_menu->addAction("Print Committee List");
-    print_task = print_menu->addAction("Print Pending Tasks");
 }
 
 /**
@@ -69,33 +63,4 @@ void HomeView::closeEvent(QCloseEvent *event) {
     QMainWindow::closeEvent(event);
 }
 
-void HomeView::pageChanged(int index){
-
-    QTabWidget *tab = dynamic_cast<QTabWidget *>(QObject::sender());
-    QString labeltxt = tab->tabText(index);
-    if(labeltxt == "Member"){
-        print_phone_public->setVisible(true);
-        print_phone_all->setVisible(true);
-        print_committee->setVisible(false);
-        print_task->setVisible(false);
-        if(active_user->hasPermission(PRINT_PRIVATE_LIST)){
-            print_phone_public->setVisible(true);
-            print_phone_all->setVisible(true);
-        }else if(active_user->hasPermission(PRINT_PUBLIC_LIST)) {
-            print_phone_public->setVisible(true);
-            print_phone_all->setVisible(false);
-        }else {
-            print_phone_public->setVisible(false);
-            print_phone_all->setVisible(false);
-        }
-    }
-    if(labeltxt == "Committee"){
-        print_phone_public->setVisible(false);
-        print_phone_all->setVisible(false);
-        print_committee->setVisible(true);
-        print_task->setVisible(true);
-    }
-
-
-}
 

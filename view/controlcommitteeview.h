@@ -25,6 +25,8 @@
 
 #include "view/addcommitteeview.h"
 #include "view/tasklistview.h"
+#include "controller/printcontroller.h"
+#include "lib/document.h"
 
 using namespace std;
 
@@ -39,6 +41,8 @@ private:
     QPushButton *edit_button;
     QPushButton *del_button;
     QPushButton *task_button;
+    QPushButton *print_committee_button;
+    QPushButton *print_task_button;
     ModelListWidget<CommitteeModel> *committee_list;
     void populateCommittees();
 
@@ -54,6 +58,8 @@ public slots:
         cout << "show view committee." << endl;
     }
     void viewTasks();
+    void printCommittee();
+    void printTask();
 
     /**
      * Change the buttons depending on whether or not members have a
