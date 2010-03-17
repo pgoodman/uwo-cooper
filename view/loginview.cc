@@ -3,9 +3,17 @@
 
 LoginView::LoginView() : QDialog(0) {
     setModal(true);
+    this->setFixedSize(300,150);
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QPixmap(QString("../images/flowershort.jpg")));
+    this->setPalette(palette);
+    this->setAutoFillBackground(true);
 
     FormLayoutPtr layout(this);
     titleLabel = layout [2] <<= "Please enter login name and password.";
+    //logo = new QLabel();
+    //logo->setPixmap(QPixmap("../images/flowershort.jpg"));
+    //layout |= logo;
     nameLineEdit = layout << "Login Name: " |= new QLineEdit;
     pwdLineEdit = layout << "Password: " |= new QLineEdit;
     QPushButton *okPushButton(layout <<= new QPushButton("Login"));

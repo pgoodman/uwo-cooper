@@ -17,6 +17,7 @@ public:
     LoginView();
 private:
     QLabel *titleLabel;
+    QLabel *logo;
     QLineEdit *nameLineEdit;
     QLineEdit *pwdLineEdit;
 private slots:
