@@ -131,6 +131,7 @@ int main(int argc, char *argv[]) {
         UserController::home();
     } else {
         Database::disconnect();
+        app.quit();
     }
 
     return app.exec();
