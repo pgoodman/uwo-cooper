@@ -13,7 +13,8 @@
  */
 //HomeView::HomeView(QWidget *parent):QMainWindow(parent) {
 HomeView::HomeView(QWidget *parent):QDialog(parent) {
-    QTabWidget *tabs(new QTabWidget);
+    QTabWidget *tabs = new QTabWidget();
+    setTabFormat(tabs);
 
     PermissionModelSet committee_tab_perms(
         ADD_TASK | EDIT_TASK | DELETE_TASK | ADD_COMMITTEE |
@@ -48,6 +49,7 @@ HomeView::HomeView(QWidget *parent):QDialog(parent) {
     //setCentralWidget(tabs);
     QLayout *layout = new QVBoxLayout();
     layout->addWidget(tabs);
+    this->setFixedSize(430,400);
     this->setLayout(layout);
 }
 
@@ -69,4 +71,29 @@ HomeView::HomeView(QWidget *parent):QDialog(parent) {
     QMainWindow::closeEvent(event);
 }*/
 
-
+void HomeView::setTabFormat(QTabWidget *qtab){
+    qtab->setFixedSize(400,320);
+    qtab->setStyleSheet("QTabWidget::pane {"
+                        "border-top: 2px solid #C2C7CB;}"
+                        "QTabWidget::tab-bar {left: 2px;}"
+                        "QTabBar::tab {"
+                        "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                        "stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,"
+                        "stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);"
+                        "border: 1px solid #C4C4C3;"
+                        "border-bottom-color: #C2C7CB;"
+                        "border-top-left-radius: 4px;"
+                        "border-top-right-radius: 4px;"
+                        "min-width: 20ex;min-height: 5ex;padding: 2px;}"
+                        "QTabBar::tab:selected, QTabBar::tab:hover {"
+                        "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                        "stop: 0 #fafafa, stop: 0.4 #f4f4f4,"
+                        "stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);}"
+                        "QTabBar::tab:selected {border-color: #9B9B9B;"
+                        "border-bottom-color: #C2C7CB;}"
+                        "QTabBar::tab:!selected {margin-top: 2px;}"
+                        "QTabBar::tab:selected {margin-left: -2px;margin-right: -2px;}"
+                        "QTabBar::tab:first:selected {margin-left: 0;}"
+                        "QTabBar::tab:last:selected {margin-right: 0;}"
+                        "QTabBar::tab:only-one {margin: 0;}");
+}

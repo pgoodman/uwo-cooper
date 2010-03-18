@@ -16,6 +16,8 @@ public:
     MainUI();
 
 private:
+    QLabel *userstatus;
+    QFont font;
     void makeMenuBar(void);
     void makeStatusBar(void);
     void setCenter(void);

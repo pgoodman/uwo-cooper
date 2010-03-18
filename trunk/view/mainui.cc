@@ -3,10 +3,14 @@
 MainUI::MainUI()
 {
     this->setWindowTitle("UWO COOPER");
+    //this->setWindowOpacity(0.8);
     setCenter();
-    //add a clock widget to the far right
-    Clock *clock = new Clock();
-    statusBar()->addPermanentWidget(clock);
+
+    font.setPointSize(8);
+    font.setBold(true);
+
+    makeStatusBar();
+
     connect(this,SIGNAL(logoff()),this,SLOT(appLogoff()));
     connect(this,SIGNAL(appExit()),this,SLOT(closeMainUI()));
 
@@ -20,12 +24,17 @@ void MainUI::showApp(){
         makeMenuBar();
     }
 
+    userstatus = new QLabel("Logged in User:   " + active_user->getUserName());
+    userstatus->setFont(font);
+    //userstatus->setAutoFillBackground(true);
+
+    statusBar()->addWidget(userstatus);
     statusBar()->show();
-    statusBar()->showMessage("Logged in User:   " + active_user->getUserName());
 
     delete this->centralWidget();
 
     HomeView *view = new HomeView();
+
     this->setCentralWidget(view);
     this->setFixedSize(view->size().width(),view->size().height());
     setCenter();
@@ -43,6 +52,8 @@ void MainUI::closeMainUI(){
 void MainUI::appLogoff(){
     this->menuBar()->hide();
     this->statusBar()->hide();
+    this->statusBar()->removeWidget(userstatus);
+
     delete this->centralWidget();
 
     LoginView *login = new LoginView();
@@ -58,9 +69,14 @@ void MainUI::appLogoff(){
  */
 void MainUI::makeMenuBar(void) {
     QMenu *file_menu = menuBar()->addMenu("&System");
+    QMenu *help_menu = menuBar()->addMenu("&Help");
     //(void) file_menu;
     file_menu->addAction("Logoff",this,"&logoff()");
     file_menu->addAction("Exit",this,"&appExit()");
+
+   QAction *a= help_menu->addAction("Manual");
+    help_menu->addAction("About COOPER");
+   a->setIcon(QIcon("../images/help_icon.gif"));
 }
 
 
@@ -72,4 +88,31 @@ void MainUI::setCenter(){
     int y = (screenheight - this->size().height()) / 2;
     //move the main ui to the middle
     this->move(x,y);
+
+    //set background image
+    QPalette palette;
+    QPixmap bgimage = QPixmap(QString("../images/mainbg.jpg"));
+    bgimage.scaledToWidth(this->size().width());
+    bgimage.scaledToHeight(this->size().height());
+    palette.setBrush(QPalette::Window,bgimage);
+    this->setPalette(palette);
+    this->setAutoFillBackground(true);
+
+}
+
+void MainUI::makeStatusBar(){
+
+    statusBar()->setStyleSheet("QStatusBar {"
+                               "background: lightgrey;"
+                               "border-top: 1px solid #C2C7CB;"
+                               "border-top-left-radius: 4px;"
+                               "border-top-right-radius: 4px;}"
+                               "QStatusBar::item {"
+                               "border: 0px solid black;"
+                               "border-radius: 3px;}");
+    statusBar()->setSizeGripEnabled(false);
+
+    //add a clock widget to the far right
+    Clock *clock = new Clock();
+    statusBar()->addPermanentWidget(clock);
 }
