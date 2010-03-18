@@ -14,7 +14,11 @@
 #include "controller/setupcontroller.h"
 #include "controller/usercontroller.h"
 
+#include "model/usermodel.h"
 #include "model/permissionmodel.h"
+
+#include "view/setupview.h"
+#include "view/mainui.h"
 
 using namespace std;
 
@@ -120,7 +124,9 @@ int main(int argc, char *argv[]) {
         );
     }
 
-    int go;
+    MainUI *appwin = new MainUI();
+
+    /*int go;
     if(!CoordinatorModel::exists() || !UnitModel::exists()) {
         go = SetupController::install();
     } else {
@@ -132,7 +138,27 @@ int main(int argc, char *argv[]) {
     } else {
         Database::disconnect();
         app.quit();
-    }
+    }*/
 
-    return app.exec();
+    if(!CoordinatorModel::exists() || !UnitModel::exists()) {
+            SetupView *setup = new SetupView();
+
+            appwin->setCentralWidget(setup);
+            appwin->setFixedSize(setup->size().width(),setup->size().height());
+            QObject::connect(setup,SIGNAL(rejected()),appwin,SLOT(closeMainUI()));
+            QObject::connect(setup,SIGNAL(accepted()),appwin,SLOT(showApp()));
+            appwin->show();
+        } else {
+            LoginView *login = new LoginView();
+            appwin->setCentralWidget(login);
+            appwin->setFixedSize(login->size().width(),login->size().height());
+            QObject::connect(login,SIGNAL(rejected()),appwin,SLOT(closeMainUI()));
+            QObject::connect(login,SIGNAL(accepted()),appwin,SLOT(showApp()));
+            appwin->show();
+        }
+
+    //return app.exec();
+    int _ret = app.exec();
+    Database::disconnect();
+    return _ret;
 }
