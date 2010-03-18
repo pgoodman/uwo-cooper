@@ -208,7 +208,8 @@ MemberModel *MemberModel::create(const bool sharePhone,
                        QString addr,
                        QString pass,
                        CommitteeModel *committee,
-                       UnitModel *unit) {
+                       UnitModel *unit,
+                       const bool unit_will_be_empty) {
     QSqlQuery q;
     q.prepare(
         "INSERT INTO user (first_name,last_name,name,password,share_telephone,"
@@ -229,7 +230,6 @@ MemberModel *MemberModel::create(const bool sharePhone,
 
     // add this member to the the number of tenants for this unit.
     if(0 != unit) {
-        bool unit_was_empty(unit->isEmpty());
         unit->updateNumTenants(1);
 
         QString *task_desc(new QString);
@@ -253,7 +253,7 @@ MemberModel *MemberModel::create(const bool sharePhone,
         // confidential, and the number of the unit they are moving into. The
         // deadline for the inspection must be one month after the member’s
         // move-in date.
-        if(unit_was_empty) {
+        if(unit_will_be_empty) {
             CommitteeModel *ic(CommitteeModel::findById(
                 CommitteeModel::INSPECTIONS_COMMITTEE_ID
             ));

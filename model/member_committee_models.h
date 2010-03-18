@@ -92,7 +92,8 @@ public:
                           QString addr,
                           QString pass,
                           CommitteeModel *committee,
-                          UnitModel *unit);
+                          UnitModel *unit,
+                          const bool unit_is_empty);
     static MemberModel *createIncomplete(QString lastName, UnitModel *unit);
     static iterator_range findAll();
     static iterator_range findAll(const char *);
