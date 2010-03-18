@@ -38,10 +38,11 @@ HomeView::HomeView(QWidget *parent):QDialog(parent) {
     // such "feature testing" should not be done often
     if(!active_user->is_coordinator
     && active_user->hasPermission(VIEW_SELF_INFO)) {
-        tabs->addTab(new ViewMemberView(
-            static_cast<MemberModel *>(active_user),
-            tabs
-        ), "My Info");
+        ViewMemberView * myinfo = new ViewMemberView(
+                static_cast<MemberModel *>(active_user),
+                tabs);
+
+        tabs->addTab(myinfo, "My Info");
     }
 
     //makeMenuBar();
@@ -49,7 +50,7 @@ HomeView::HomeView(QWidget *parent):QDialog(parent) {
     //setCentralWidget(tabs);
     QLayout *layout = new QVBoxLayout();
     layout->addWidget(tabs);
-    this->setFixedSize(430,400);
+    this->setFixedSize(tabs->size().width(),tabs->size().height());
     this->setLayout(layout);
 }
 
@@ -72,7 +73,7 @@ HomeView::HomeView(QWidget *parent):QDialog(parent) {
 }*/
 
 void HomeView::setTabFormat(QTabWidget *qtab){
-    qtab->setFixedSize(400,320);
+    //qtab->setFixedSize(400,320);
     qtab->setStyleSheet("QTabWidget::pane {"
                         "border-top: 2px solid #C2C7CB;}"
                         "QTabWidget::tab-bar {left: 2px;}"

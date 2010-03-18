@@ -36,7 +36,9 @@ void MainUI::showApp(){
     HomeView *view = new HomeView();
 
     this->setCentralWidget(view);
-    this->setFixedSize(view->size().width(),view->size().height());
+    int uiwidth = view->size().width();
+    int uiheight = view->size().height() + this->statusBar()->height() + this->menuBar()->height() + 5;
+    this->setFixedSize(uiwidth,uiheight);
     setCenter();
     //QObject::connect(view,SIGNAL(accepted()),this,SLOT(closeMainUI()));
     //QObject::connect(view,SIGNAL(userLogoff()),this,SLOT(appLogoff()));
@@ -93,10 +95,10 @@ void MainUI::setCenter(){
     QPalette palette;
     QPixmap bgimage = QPixmap(QString("../images/mainbg.jpg"));
     bgimage.scaledToWidth(this->size().width());
-    bgimage.scaledToHeight(this->size().height());
+    //bgimage.scaledToHeight(this->size().height());
     palette.setBrush(QPalette::Window,bgimage);
     this->setPalette(palette);
-    this->setAutoFillBackground(true);
+    //this->setAutoFillBackground(true);
 
 }
 
