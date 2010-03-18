@@ -11,7 +11,8 @@
 /**
  * Constructor, make the UI.
  */
-HomeView::HomeView(void) {
+//HomeView::HomeView(QWidget *parent):QMainWindow(parent) {
+HomeView::HomeView(QWidget *parent):QDialog(parent) {
     QTabWidget *tabs(new QTabWidget);
 
     PermissionModelSet committee_tab_perms(
@@ -42,25 +43,30 @@ HomeView::HomeView(void) {
         ), "My Info");
     }
 
-    makeMenuBar();
-    setContentsMargins(11, 11, 11, 11);
-    setCentralWidget(tabs);
+    //makeMenuBar();
+    //setContentsMargins(11, 11, 11, 11);
+    //setCentralWidget(tabs);
+    QLayout *layout = new QVBoxLayout();
+    layout->addWidget(tabs);
+    this->setLayout(layout);
 }
 
 /**
  * Create the menu bar.
  */
-void HomeView::makeMenuBar(void) {
-    QMenu *file_menu = menuBar()->addMenu("&File");
-    (void) file_menu;
-}
+/*void HomeView::makeMenuBar(void) {
+    QMenu *file_menu = menuBar()->addMenu("&System");
+    //(void) file_menu;
+    file_menu->addAction("Logoff",this,"&userLogoff()");
+    file_menu->addAction("Exit",this,"&accept()");
+}*/
 
 /**
  * Close evebt for the home window.
  */
-void HomeView::closeEvent(QCloseEvent *event) {
+/*void HomeView::closeEvent(QCloseEvent *event) {
     Database::disconnect();
     QMainWindow::closeEvent(event);
-}
+}*/
 
 
