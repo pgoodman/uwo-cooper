@@ -43,6 +43,9 @@ AddCommitteeView::~AddCommitteeView(){}
 
 void AddCommitteeView::addCommittee()
 {
+    int chairID;
+    int secID;
+
     if(!committeeName->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
@@ -50,9 +53,27 @@ void AddCommitteeView::addCommittee()
         );
         return;
     }
+    if(selectChair->getModel() == 0)
+    {
+        chairID = 0;
+    }
+    else
+    {
+        chairID = selectChair->getModel()->id;
+    }
+
+    if(selectSecretary->getModel() == 0)
+    {
+        secID = 0;
+    }
+    else
+    {
+        secID = selectSecretary->getModel()->id;
+    }
+
     CommitteeModel::create(committeeName->text(), canDelete->isChecked(),
-                           NULL, NULL, selectChair->getModel()->id,
-                           selectSecretary->getModel()->id);
+                           NULL, NULL, chairID,
+                           secID);
     done(QDialog::Accepted);
 }
 

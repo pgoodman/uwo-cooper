@@ -165,6 +165,9 @@ public:
     QString toString(void);
     QString getMemberRoleByID(const int m_id);
 
+    PermissionModelSet getChairPerms(){return chair_perms;}
+    PermissionModelSet getMemPerms(){return member_perms;}
+
     virtual ~CommitteeModel();
 
     static const int BOARD_COMMITTEE_ID = 1;
