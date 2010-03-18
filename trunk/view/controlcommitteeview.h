@@ -25,6 +25,7 @@
 
 #include "view/addcommitteeview.h"
 #include "view/tasklistview.h"
+#include "view/editcommitteeview.h"
 #include "controller/printcontroller.h"
 #include "model/documentmodel.h"
 
@@ -48,9 +49,7 @@ private:
 
 public slots:
 
-    void editCommittee() {
-        cout << "show edit committee form." << endl;
-    }
+    void editCommittee();
     void addCommittee();
 
     void deleteCommittee();

@@ -100,6 +100,14 @@ void ControlCommitteeView::addCommittee(){
     }
 }
 
+void ControlCommitteeView::editCommittee()
+{
+    EditCommitteeView editCommitteeDialog(committee_list->getModel());
+    if(editCommitteeDialog.exec() == QDialog::Accepted) {
+        populateCommittees();
+    }
+}
+
 /**
  * Pop up a window to manage the tasks of a committee.
  */
