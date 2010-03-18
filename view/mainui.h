@@ -13,6 +13,14 @@ class MainUI : public QMainWindow
 public:
     MainUI();
 
+private:
+    void makeMenuBar(void);
+    void setCenter(void);
+
+signals:
+    void logoff();
+    void appExit();
+
 public slots:
     void showApp(void);
     void closeMainUI(void);

@@ -109,6 +109,19 @@ static bool install_committees(QSqlQuery &q) {
 static bool install_database(QSqlQuery &q) {
     return install_tables(q) && install_committees(q);
 }
+/**
+  * Set the window to screen center
+  */
+void setCenter(QWidget *widget){
+    //get current screen size
+    int screenwidth = QApplication::desktop()->availableGeometry().width();
+    int screenheight = QApplication::desktop()->availableGeometry().height();
+    int x = (screenwidth - widget->size().width()) / 2;
+    int y = (screenheight - widget->size().height()) / 2;
+
+    //move the window to the middle
+    widget->move(x,y);
+}
 
 /**
  * Run the program.
@@ -145,15 +158,21 @@ int main(int argc, char *argv[]) {
 
             appwin->setCentralWidget(setup);
             appwin->setFixedSize(setup->size().width(),setup->size().height());
+            setCenter(appwin);
+
             QObject::connect(setup,SIGNAL(rejected()),appwin,SLOT(closeMainUI()));
             QObject::connect(setup,SIGNAL(accepted()),appwin,SLOT(showApp()));
+
             appwin->show();
         } else {
             LoginView *login = new LoginView();
             appwin->setCentralWidget(login);
             appwin->setFixedSize(login->size().width(),login->size().height());
+            setCenter(appwin);
+
             QObject::connect(login,SIGNAL(rejected()),appwin,SLOT(closeMainUI()));
             QObject::connect(login,SIGNAL(accepted()),appwin,SLOT(showApp()));
+
             appwin->show();
         }
 

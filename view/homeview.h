@@ -3,6 +3,7 @@
 #define UI_COOPER_H
 
 #include <QMainWindow>
+#include <QDialog>
 #include <QCloseEvent>
 #include <QMenu>
 #include <QMenuBar>
@@ -17,18 +18,22 @@
 #include "view/controlcommitteeview.h"
 #include "view/viewmemberview.h"
 
-class HomeView : public QMainWindow {
+//class HomeView : public QMainWindow {
+class HomeView : public QDialog {
     Q_OBJECT
 
 public:
-    HomeView(void);
+    HomeView(QWidget *parent = 0);
 
 private:
-    void makeMenuBar(void);
+    //void makeMenuBar(void);
 
 protected:
-    void closeEvent(QCloseEvent *event);
-    void logout();
+    //void closeEvent(QCloseEvent *event);
+    //void logout();
+
+signals:
+    void userLogoff(void);
 
 };
 
