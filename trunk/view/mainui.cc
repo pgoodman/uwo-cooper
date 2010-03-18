@@ -2,6 +2,7 @@
 
 MainUI::MainUI()
 {
+    this->setWindowTitle("UWO COOPER");
     setCenter();
     connect(this,SIGNAL(logoff()),this,SLOT(appLogoff()));
     connect(this,SIGNAL(appExit()),this,SLOT(closeMainUI()));
@@ -13,6 +14,12 @@ void MainUI::showApp(){
         this->menuBar()->show();
     }else{
         makeMenuBar();
+    }
+
+    if(this->statusBar()->isHidden()){
+        this->statusBar()->show();
+    }else {
+        makeStatusBar();
     }
     delete this->centralWidget();
 
@@ -33,6 +40,7 @@ void MainUI::closeMainUI(){
 //destory main app ui and reload login ui
 void MainUI::appLogoff(){
     this->menuBar()->hide();
+    this->statusBar()->hide();
     delete this->centralWidget();
 
     LoginView *login = new LoginView();
@@ -51,6 +59,16 @@ void MainUI::makeMenuBar(void) {
     //(void) file_menu;
     file_menu->addAction("Logoff",this,"&logoff()");
     file_menu->addAction("Exit",this,"&appExit()");
+}
+/**
+ * Create the status bar
+ */
+void MainUI::makeStatusBar(void) {
+    QLayout * layout = new QHBoxLayout();
+    QLabel * userstatus = new QLabel("User Logged In: " + active_user->getUserName());
+    //QClock
+    //layout->addWidget();
+    //this->statusBar()->addWidget();
 }
 
 void MainUI::setCenter(){

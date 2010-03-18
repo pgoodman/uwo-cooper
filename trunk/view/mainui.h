@@ -15,7 +15,9 @@ public:
 
 private:
     void makeMenuBar(void);
+    void makeStatusBar(void);
     void setCenter(void);
+
 
 signals:
     void logoff();
