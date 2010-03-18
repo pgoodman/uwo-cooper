@@ -10,7 +10,14 @@ LoginView::LoginView() : QDialog(0) {
     this->setAutoFillBackground(true);
 
     FormLayoutPtr layout(this);
+
     titleLabel = layout [2] <<= "Please enter login name and password.";
+    QFont font;
+    font.setPointSize(8);
+    font.setBold(true);
+    titleLabel->setFont(font);
+    titleLabel->setAutoFillBackground(true);
+
     //logo = new QLabel();
     //logo->setPixmap(QPixmap("../images/flowershort.jpg"));
     //layout |= logo;
@@ -18,7 +25,7 @@ LoginView::LoginView() : QDialog(0) {
     pwdLineEdit = layout << "Password: " |= new QLineEdit;
     QPushButton *okPushButton(layout <<= new QPushButton("Login"));
     QPushButton *cancelPushButton(layout |= new QPushButton("Cancel"));
-
+    okPushButton->setDefault(true);
     connect(
         okPushButton, SIGNAL(clicked()),
         this, SLOT(tryLogin())
