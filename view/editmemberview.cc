@@ -47,7 +47,8 @@ bool EditMemberView::checkPerm(PermissionModelSet perm) {
 void EditMemberView::buildForm(FormLayoutPtr &layout) {
     layout [2] << "If a field is disabled then either you are not allowed "
                   "to edit the field \nor it can only be edited elsewhere.";
-    layout [2] << "If a field is missing then that information is private.";
+    layout [2] << "If a field is missing then that information is private "
+                  "or must be edited elsewhere.";
     layout << ""; // empty row
     AddMemberView::buildForm(layout);
     balance_due = layout << "Balance Owing: " |= new QLineEdit(this);
@@ -131,6 +132,9 @@ void EditMemberView::initForm(void) {
         committee->setDisabled(true);
         assign_committee->setDisabled(true);
         dont_assign_committee->setDisabled(true);
+        committee->hide();
+        assign_committee->hide();
+        dont_assign_committee->hide();
     }
 
     // change the unit list somewhat, the unit cannot be edited here. That is,
@@ -140,6 +144,7 @@ void EditMemberView::initForm(void) {
         unit->addModel(member->findUnit());
         unit->selectFirst();
         unit->setDisabled(true);
+        unit->hide();
         unit_is_empty->hide();
         unit_not_empty->hide();
     }
