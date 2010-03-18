@@ -6,6 +6,7 @@
 #include <QtGui>
 #include <QGridLayout>
 #include <QDialog>
+#include <QPixmap>
 
 #include "lib/gui/formlayoutptr.h"
 #include "controller/usercontroller.h"

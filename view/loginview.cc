@@ -5,7 +5,10 @@ LoginView::LoginView() : QDialog(0) {
     setModal(true);
     this->setFixedSize(300,150);
     QPalette palette;
-    palette.setBrush(QPalette::Window, QPixmap(QString("../images/flowershort.jpg")));
+    QPixmap bgimage = QPixmap(QString("../images/flowershort.jpg"));
+    bgimage.scaledToWidth(300);
+    bgimage.scaledToHeight(150);
+    palette.setBrush(QPalette::Window,bgimage);
     this->setPalette(palette);
     this->setAutoFillBackground(true);
 
@@ -15,6 +18,7 @@ LoginView::LoginView() : QDialog(0) {
     QFont font;
     font.setPointSize(8);
     font.setBold(true);
+    titleLabel->setFixedSize(225,25);
     titleLabel->setFont(font);
     titleLabel->setAutoFillBackground(true);
 

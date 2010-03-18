@@ -8,6 +8,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QCloseEvent>
+#include <QTabWidget>
 
 #include "lib/database.h"
 
@@ -27,6 +28,7 @@ public:
 
 private:
     //void makeMenuBar(void);
+    void setTabFormat(QTabWidget *qtab);
 
 protected:
     //void closeEvent(QCloseEvent *event);
