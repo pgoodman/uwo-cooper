@@ -1,1 +1,3 @@
-// todo
+cooper          (executable)
+cooper.sqlite   (auto generated on first startup)
+images/*        (all files in the images directory)
