@@ -6,12 +6,38 @@
 
 3.2.1 - Every member + coordinator can log in.
 3.2.2 - Certain member info is stored in the db.
+3.2.3 - Each member can see their own info
+3.2.4 - Coordinator can change any info
 3.2.5 - Mark a member as no longer in the coop.
 3.2.6 - Delete a marked member.
+3.2.7 - Assign a committee to someone who never was part of a committee
 
 3.3.1 - Initial committees in the system
+3.3.2 - Add a new committee
+3.3.3 - All non-initial committees can be deleted
+3.3.5 - Committee might not have an assigned chair
+3.3.6 - Committee might not have an assigned secretary
+
+3.4.1 - Coordinator can print private list
+3.4.2 - Print public phone list
+3.4.3 - Print committee list
+
+3.5.1 - Tasks have certain info
+3.5.2 - Add tasks
+3.5.3 - Print pending task list
+3.5.4 - Change status of task
+3.5.5 - Delete completed task
 
 3.6.1 - Add member, Sort of.
+3.6.2 - Add tasks when member moves in
+3.6.3 - Add orientation task for new members
+
+3.7.1 - Trigger move-out
+3.7.2 - Add tasks is unit will be empty after move out
+
+3.8.1 - Trigger internal move
+3.8.2 - Add task on internal move
+3.8.3 - Internal move does not add an orientation task
 
 3.10.1 - The Chair of the board can do what the coordinator can
 

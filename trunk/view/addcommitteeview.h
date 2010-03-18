@@ -6,8 +6,6 @@
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QDateTime>
-#include <QButtonGroup>
-#include <QRadioButton>
 #include <QPushButton>
 #include <QMessageBox>
 
@@ -30,7 +28,6 @@ public slots:
 
 private:
     QLineEdit *committeeName;
-    QRadioButton *canDelete;
 
     ModelListWidget<MemberModel> *selectChair;
     ModelListWidget<MemberModel> *selectSecretary;
