@@ -104,9 +104,9 @@ void MainUI::makeStatusBar(){
 
     statusBar()->setStyleSheet("QStatusBar {"
                                "background: lightgrey;"
-                               "border-top: 1px solid #C2C7CB;"
-                               "border-top-left-radius: 4px;"
-                               "border-top-right-radius: 4px;}"
+                               "border-top: 2px groove #979797;}"
+                               //"border-top-left-radius: 4px;"
+                               //"border-top-right-radius: 4px;}"
                                "QStatusBar::item {"
                                "border: 0px solid black;"
                                "border-radius: 3px;}");
