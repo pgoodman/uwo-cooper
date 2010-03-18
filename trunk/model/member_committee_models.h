@@ -168,6 +168,8 @@ public:
     PermissionModelSet getChairPerms(){return chair_perms;}
     PermissionModelSet getMemPerms(){return member_perms;}
 
+    QString getName(){return name;}
+
     virtual ~CommitteeModel();
 
     static const int BOARD_COMMITTEE_ID = 1;
