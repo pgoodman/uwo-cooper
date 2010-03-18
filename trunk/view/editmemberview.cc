@@ -140,6 +140,8 @@ void EditMemberView::initForm(void) {
         unit->addModel(member->findUnit());
         unit->selectFirst();
         unit->setDisabled(true);
+        unit_is_empty->hide();
+        unit_not_empty->hide();
     }
 }
 

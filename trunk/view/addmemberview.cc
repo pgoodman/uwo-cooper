@@ -46,6 +46,15 @@ void AddMemberView::buildForm(FormLayoutPtr &layout) {
     assign_committee_group->addButton(assign_committee);
     assign_committee_group->addButton(dont_assign_committee);
 
+    // make the button group for whether or not the unit will be empty when
+    // the person moves in.
+    QButtonGroup *unit_empty_group(new QButtonGroup);
+    unit_is_empty = new QRadioButton("Yes");
+    unit_not_empty = new QRadioButton("No");
+    unit_empty_group->addButton(unit_is_empty);
+    unit_empty_group->addButton(unit_not_empty);
+    unit_is_empty->setChecked(true);
+
     // make the layout of the form
     first_name = layout << "First Name: " |= new QLineEdit;
     last_name = layout << "Last Name: " |= new QLineEdit;
@@ -58,6 +67,8 @@ void AddMemberView::buildForm(FormLayoutPtr &layout) {
     layout << "" | dont_assign_committee;
     committee = layout << "Committee: " |= new ModelListWidget<CommitteeModel>;
     unit = layout << "Unit: " |= new ModelListWidget<UnitModel>;
+    layout << "Unit is Empty?: " | unit_is_empty;
+    layout << "" | unit_not_empty;
     user_name = layout << "Login Name: " |= new QLineEdit;
     password = layout << "Password: " |= new QLineEdit;
 }
@@ -188,7 +199,8 @@ void AddMemberView::accept(void) {
         address->text(),
         password->text(),
         assign_committee->isChecked() ? committee->getModel() : 0,
-        unit->getModel()
+        unit->getModel(),
+        unit_is_empty->isChecked()
     );
 
     QDialog::accept();

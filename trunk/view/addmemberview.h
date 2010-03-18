@@ -51,6 +51,8 @@ protected:
     QRadioButton *dont_share_phone;
     QRadioButton *assign_committee;
     QRadioButton *dont_assign_committee;
+    QRadioButton *unit_is_empty;
+    QRadioButton *unit_not_empty;
     QPushButton *save_button;
 
     ModelListWidget<CommitteeModel> *committee;
