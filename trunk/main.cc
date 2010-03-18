@@ -158,6 +158,7 @@ int main(int argc, char *argv[]) {
 
             appwin->setCentralWidget(setup);
             appwin->setFixedSize(setup->size().width(),setup->size().height());
+            appwin->statusBar()->hide();
             setCenter(appwin);
 
             QObject::connect(setup,SIGNAL(rejected()),appwin,SLOT(closeMainUI()));
