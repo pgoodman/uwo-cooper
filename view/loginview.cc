@@ -29,6 +29,7 @@ LoginView::LoginView() : QDialog(0) {
     pwdLineEdit = layout << "Password: " |= new QLineEdit;
     QPushButton *okPushButton(layout <<= new QPushButton("Login"));
     QPushButton *cancelPushButton(layout |= new QPushButton("Cancel"));
+    nameLineEdit->setFocus();
     okPushButton->setDefault(true);
     connect(
         okPushButton, SIGNAL(clicked()),

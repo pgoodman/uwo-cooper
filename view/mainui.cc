@@ -93,12 +93,18 @@ void MainUI::setCenter(){
 
     //set background image
     QPalette palette;
-    QPixmap bgimage = QPixmap(QString("../images/mainbg.jpg"));
-    bgimage.scaledToWidth(this->size().width());
+    QPixmap bgimage;
+    //QImage image = QImage(QString("../images/mainbg.jpg"));
+    //image.scaled();
+
+    //bgimage.fromImage(image);
+    bgimage = QPixmap(QString("../images/mainbg.jpg"));
+    bgimage = bgimage.scaled(this->size(),Qt::IgnoreAspectRatio);
+    //bgimage.scaledToWidth(this->size().width());
     //bgimage.scaledToHeight(this->size().height());
     palette.setBrush(QPalette::Window,bgimage);
     this->setPalette(palette);
-    //this->setAutoFillBackground(true);
+    this->setAutoFillBackground(true);
 
 }
 
