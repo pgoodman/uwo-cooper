@@ -15,6 +15,7 @@ SetupView::SetupView(QWidget *parent)
  : QWizard(parent), page1(0), page2(0) {
     setWindowTitle("Cooper Setup");
     this->setWizardStyle(QWizard::ModernStyle);
+    this->setFixedSize(400,250);
 
     setOptions(QWizard::CancelButtonOnLeft);
     setOptions(QWizard::NoBackButtonOnLastPage);
