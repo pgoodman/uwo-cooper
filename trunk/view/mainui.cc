@@ -4,8 +4,12 @@ MainUI::MainUI()
 {
     this->setWindowTitle("UWO COOPER");
     setCenter();
+    //add a clock widget to the far right
+    Clock *clock = new Clock();
+    statusBar()->addPermanentWidget(clock);
     connect(this,SIGNAL(logoff()),this,SLOT(appLogoff()));
     connect(this,SIGNAL(appExit()),this,SLOT(closeMainUI()));
+
 }
 
 void MainUI::showApp(){
@@ -16,11 +20,9 @@ void MainUI::showApp(){
         makeMenuBar();
     }
 
-    if(this->statusBar()->isHidden()){
-        this->statusBar()->show();
-    }else {
-        makeStatusBar();
-    }
+    statusBar()->show();
+    statusBar()->showMessage("Logged in User:   " + active_user->getUserName());
+
     delete this->centralWidget();
 
     HomeView *view = new HomeView();
@@ -60,16 +62,7 @@ void MainUI::makeMenuBar(void) {
     file_menu->addAction("Logoff",this,"&logoff()");
     file_menu->addAction("Exit",this,"&appExit()");
 }
-/**
- * Create the status bar
- */
-void MainUI::makeStatusBar(void) {
-    QLayout * layout = new QHBoxLayout();
-    QLabel * userstatus = new QLabel("User Logged In: " + active_user->getUserName());
-    //QClock
-    //layout->addWidget();
-    //this->statusBar()->addWidget();
-}
+
 
 void MainUI::setCenter(){
     //get current screen size

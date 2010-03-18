@@ -2,10 +2,12 @@
 #define MAINUI_H
 
 #include <QMainWindow>
+#include <QLayout>
 
 #include "view/homeview.h"
 #include "view/loginview.h"
 #include "lib/database.h"
+#include "lib/clock.h"
 
 class MainUI : public QMainWindow
 {
