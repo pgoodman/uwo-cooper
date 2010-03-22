@@ -23,8 +23,9 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     selectChair = layout << "Select a Chair" |= new ModelListWidget<MemberModel>;
     selectSecretary = layout << "Select a Secretary" |= new ModelListWidget<MemberModel>;
 
-     setUpPermissionButtons(&layout);
-
+ //    setUpPermissionButtons(&layout);
+     memList = new PermListWidget(QString("Member Permissions"));
+     layout << "" | memList;
 
     //Add / cancel buttons
     QPushButton *editButton = new QPushButton("Edit Committee");
