@@ -29,6 +29,7 @@ private:
        void setUpRadioButtons();
        void setUpButton(QString name, int permNum);
        void setUpLayout();
+       void setPermissions(PermissionModelSet list);
 
        QGridLayout *layout;
        QGroupBox *boxGroup;

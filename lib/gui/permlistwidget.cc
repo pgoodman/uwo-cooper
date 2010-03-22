@@ -3,12 +3,14 @@
 
 
 PermListWidget::PermListWidget(QWidget *parent)
+    : QScrollArea(parent)
 {
     boxGroup = new QGroupBox("Permssions");
     setUpLayout();
 }
 
 PermListWidget::PermListWidget(QString name, QWidget *parent)
+    : QScrollArea(parent)
 {
     boxGroup = new QGroupBox(name);
     setUpLayout();
