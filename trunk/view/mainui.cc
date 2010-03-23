@@ -78,7 +78,7 @@ void MainUI::makeMenuBar(void) {
 
    QAction *a= help_menu->addAction("Manual");
     help_menu->addAction("About COOPER");
-   a->setIcon(QIcon("../images/help_icon.gif"));
+   a->setIcon(QIcon("images/help_icon.gif"));
 }
 
 
@@ -94,11 +94,11 @@ void MainUI::setCenter(){
     //set background image
     QPalette palette;
     QPixmap bgimage;
-    //QImage image = QImage(QString("../images/mainbg.jpg"));
+    //QImage image = QImage(QString("images/mainbg.jpg"));
     //image.scaled();
 
     //bgimage.fromImage(image);
-    bgimage = QPixmap(QString("../images/mainbg.jpg"));
+    bgimage = QPixmap(QString("images/mainbg.jpg"));
     bgimage = bgimage.scaled(this->size(),Qt::IgnoreAspectRatio);
     //bgimage.scaledToWidth(this->size().width());
     //bgimage.scaledToHeight(this->size().height());

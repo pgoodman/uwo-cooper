@@ -15,10 +15,10 @@ const char *TaskModel::table_name("task");
  */
 TaskModel::TaskModel(const int id, QString n, QString descript,
                      bool isComplete, QDateTime deadlineDate,
-                     const int committeeId)
+                     const int committeeId, const bool isAnnual)
  : IModel<TaskModel,select_from_table_tag>(id), name(n),
-   description(descript), is_complete(isComplete), deadline(deadlineDate),
-   committee_id(committeeId) {
+   description(descript), is_complete(isComplete), is_annual(isAnnual),
+   deadline(deadlineDate), committee_id(committeeId) {
 }
 
 /**
@@ -36,7 +36,8 @@ TaskModel *TaskModel::load(QSqlQuery &q, const int id) {
         qcol<QString>(q, "description"),
         qcol<bool>(q, "status"),
         qcol<QDateTime>(q, "deadline"),
-        qcol<int>(q, "committee_id")
+        qcol<int>(q, "committee_id"),
+        qcol<bool>(q, "is_annual")
     );
 }
 
@@ -58,13 +59,13 @@ bool TaskModel::save(void) {
  */
 bool TaskModel::create(QString name, QString descript,
                        const QDateTime deadlineDate,
-                       const int committeeId) {
+                       const int committeeId, const bool isAnnual) {
     QSqlQuery q;
     q.prepare(
-        "INSERT INTO task (name,description,status,committee_id,deadline) "
-        "VALUES (?,?,0,?,?)"
+        "INSERT INTO task (name,description,status,committee_id,deadline,"
+        "is_annual) VALUES (?,?,0,?,?,?)"
     );
-    q << name << descript << committeeId << deadlineDate;
+    q << name << descript << committeeId << deadlineDate << isAnnual;
     return q.exec();
 }
 
@@ -124,4 +125,8 @@ bool TaskModel::isCompleted(void) {
 
 bool TaskModel::isPending(void) {
     return !is_complete;
+}
+
+bool TaskModel::isSpec(void) {
+    return is_annual;
 }

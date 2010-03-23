@@ -156,6 +156,9 @@ public:
                 const int chairId, const int secretaryId);
 
     bool addTask(QString name, QString description, QDateTime deadline) const;
+    bool addTaskSpec(QString name, QString description,
+                     QDateTime month_day) const;
+
     bool canRemove(void) const;
     virtual bool remove(void);
 
