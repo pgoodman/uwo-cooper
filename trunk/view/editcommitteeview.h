@@ -10,6 +10,7 @@
 #include <QRadioButton>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QTabWidget>
 
 #include "lib/gui/modellistwidget.h"
 #include "lib/gui/permlistwidget.h"
@@ -38,38 +39,7 @@ private:
     ModelListWidget<MemberModel> *selectChair;
     ModelListWidget<MemberModel> *selectSecretary;
     PermListWidget *memList;
-
-    QRadioButton *addMemPerm;
-    QRadioButton *moveMemPerm;
-    QRadioButton *editMemInfoPerm;
-    QRadioButton *editMemStatus;
-    QRadioButton *deleteMemPerm;
-    QRadioButton *initMemCommPerm;
-    QRadioButton *editMemCommPerm;
-    QRadioButton *addCommPerm;
-    QRadioButton *editCommPerm;
-    QRadioButton *deleteCommPerm;
-    QRadioButton *printPrivListPerm;
-    QRadioButton *printPubListPerm;
-    QRadioButton *printCommListPerm;
-    QRadioButton *addTaskPerm;
-    QRadioButton *editTaskPerm;
-    QRadioButton *deleteTaskPerm;
-    QRadioButton *printTaskListPerm;
-    QRadioButton *addTaskSpec;
-    QRadioButton *editTaskSpecPerm;
-    QRadioButton *deleteTaskSpecPerm;
-    QRadioButton *actTaskSpecPerm;
-    QRadioButton *editCommChairPerm;
-    QRadioButton *editCommSecPerm;
-    QRadioButton *viewSelfInfoPerm;
-    QRadioButton *viewOhterInfoPerm;
-    QRadioButton *editSelfPassPerm;
-
-
-
-    void setUpPermissionButtons(FormLayoutPtr *layout);
-    void setUpPermButton(QRadioButton *perm, const char *mess, FormLayoutPtr *layout);
+    PermListWidget *chairList;
 
    CommitteeModel *selCommittee;
 
