@@ -44,14 +44,13 @@ void PermListWidget::setUpRadioButtons()
     setUpButton(QString("Delete Task Permission?:"), 15);
     setUpButton(QString("Print Task List Permission?:"), 16);
     setUpButton(QString("Add Task Spec Permission?:"), 17);
-    setUpButton(QString("Edit Task Spec Permission?:"), 18);
-    setUpButton(QString("Delete Task Spec Permission?:"), 19);
-    setUpButton(QString("Activate Task Spec Permission?:"), 20);
-    setUpButton(QString("Edit Committee Chair Permission?:"), 21);
-    setUpButton(QString("Edit Committee Secretary Permission?:"), 22);
-    setUpButton(QString("View Self Info Permission?:"), 23);
-    setUpButton(QString("View Others Info Permission?:"), 24);
-    setUpButton(QString("Edit Self Password Permission?:"), 25);
+    setUpButton(QString("Delete Task Spec Permission?:"), 18);
+    setUpButton(QString("Activate Task Spec Permission?:"), 19);
+    setUpButton(QString("Edit Committee Chair Permission?:"), 20);
+    setUpButton(QString("Edit Committee Secretary Permission?:"), 21);
+    setUpButton(QString("View Self Info Permission?:"), 22);
+    setUpButton(QString("View Others Info Permission?:"), 23);
+    setUpButton(QString("Edit Self Password Permission?:"), 24);
 }
 
 void PermListWidget::setUpButton(QString name, int permNum)

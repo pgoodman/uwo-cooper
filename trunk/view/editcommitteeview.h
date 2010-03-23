@@ -34,7 +34,6 @@ public slots:
 
 private:
     QLineEdit *committeeName;
-    QRadioButton *canDelete;
 
     ModelListWidget<MemberModel> *selectChair;
     ModelListWidget<MemberModel> *selectSecretary;
