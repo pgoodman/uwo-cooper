@@ -9,7 +9,6 @@
 #include <QButtonGroup>
 #include <QLabel>
 
-#include <cmath>
 #include <vector>
 
 #include "model/permissionmodel.h"
