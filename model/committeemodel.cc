@@ -83,7 +83,16 @@ PermissionModelSet CommitteeModel::getPermissions(const int member_id) {
 bool CommitteeModel::addTask(QString name,
                              QString description,
                              QDateTime deadline) const {
-    return TaskModel::create(name, description, deadline, id);
+    return TaskModel::create(name, description, deadline, id, false);
+}
+
+/**
+ * Add an annual task specification to this committee.
+ */
+bool CommitteeModel::addTaskSpec(QString name,
+                                 QString description,
+                                 QDateTime deadline) const {
+    return TaskModel::create(name, description, deadline, id, true);
 }
 
 /**

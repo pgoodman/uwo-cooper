@@ -23,7 +23,8 @@ public:
 
     virtual bool save(void);
     static bool create(QString name, QString descript,
-                       const QDateTime deadlineDate, const int committee_id);
+                       const QDateTime deadlineDate, const int committee_id,
+                       const bool isAnnual);
 
     bool isPending(void);
 
@@ -37,6 +38,7 @@ public:
     QDateTime getDeadline(void);
     void setCompleted(bool newStatus);
     bool isCompleted(void);
+    bool isSpec(void);
 
     virtual ~TaskModel();
 
@@ -48,11 +50,12 @@ private:
 
     explicit TaskModel(const int id, QString name, QString descript,
                        bool is_complete, const QDateTime deadlineDate,
-                       const int committeeId);
+                       const int committeeId, bool isAnnual);
 
     QString name;
     QString description;
     bool is_complete;             // False = Pending, True = Complete
+    bool is_annual;
     QDateTime deadline;
     int committee_id;
 };

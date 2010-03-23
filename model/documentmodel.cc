@@ -162,7 +162,7 @@ void DocumentModel::generateTaskList(CommitteeModel *committee){
                 QString cell2 = "";
                 QString cell3 = "";
                 QDate deadline = t->getDeadline().date();
-                cell1.append("<td><img src=""../images/checkbox.gif"" width=""15"" height=""15""></img></td>");
+                cell1.append("<td><img src=""images/checkbox.gif"" width=""15"" height=""15""></img></td>");
                 cell2.append("<td>" + t->getName() + "</td>");
                 cell3.append("<td>" + deadline.toString() + "</td>");
 

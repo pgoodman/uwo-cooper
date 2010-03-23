@@ -45,8 +45,8 @@ void SetupView::coordinator(void) {
     page1->setSubTitle("Step 1 of 2: Coordinator Account");
    //     "Please create the account name and password for the coordinator."
    // );
-    setPixmap(QWizard::WatermarkPixmap, QPixmap("../images/watermark.jpg"));
-    setPixmap(QWizard::BannerPixmap, QPixmap("../images/flower.jpg"));
+    setPixmap(QWizard::WatermarkPixmap, QPixmap("images/watermark.jpg"));
+    setPixmap(QWizard::BannerPixmap, QPixmap("images/flower.jpg"));
     
     QLabel *intro = new QLabel ("Please create the account name and password for the coordinator.");
     intro->setWordWrap(true);
@@ -85,8 +85,8 @@ void SetupView::units(void) {
     page2->setSubTitle("Step 2 of 2: Initial Data File");
     //page2->setSubTitle("Please specify the initial data file name.");
 
-    setPixmap(QWizard::WatermarkPixmap, QPixmap("../images/watermark.jpg"));
-    setPixmap(QWizard::BannerPixmap, QPixmap("../images/flower.jpg"));
+    setPixmap(QWizard::WatermarkPixmap, QPixmap("images/watermark.jpg"));
+    setPixmap(QWizard::BannerPixmap, QPixmap("images/flower.jpg"));
 
     QGridLayout *layout = new QGridLayout;
     page2->setLayout(layout);
