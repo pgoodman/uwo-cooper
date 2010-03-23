@@ -48,7 +48,7 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     selectSecretary->fill(&MemberModel::findAll);
 
     //Connect slots/signals
-    connect(editButton, SIGNAL(clicked()), this, SLOT(addCommittee()));
+    connect(editButton, SIGNAL(clicked()), this, SLOT(editCommittee()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelCommittee()));
 
 }

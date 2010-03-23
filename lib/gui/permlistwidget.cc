@@ -65,7 +65,7 @@ void PermListWidget::setUpButton(QString name, int permNum)
    buttonGroup->addButton(options[permNum]);
    buttonGroup->addButton(no);
 
-   if((list & (int)pow(2, permNum)) != 0)
+   if((list & 1 << permNum) != 0)
    {
        options[permNum]->setChecked(true);
    }
@@ -87,7 +87,7 @@ PermissionModelSet PermListWidget::getPermissions()
     {
         if(options[i]->isChecked())
         {
-            result = result | (int)pow(2, i);
+            result |= 1 << i;
         }
     }
 
