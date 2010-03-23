@@ -7,19 +7,8 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
 
     selCommittee = selectedCommittee;
 
-    //Make yes/no for can delete
-    QButtonGroup *canDeleteGroup(new QButtonGroup);
-    QRadioButton *cantDelete(new QRadioButton("No"));
-    canDelete = new QRadioButton("Yes");
-    canDeleteGroup->addButton(canDelete);
-    canDeleteGroup->addButton(cantDelete);
-
-
-
     //layout
     committeeName = layout << "Committee Name: " |= new QLineEdit(selCommittee->getName());
-    layout << "Is this Committee deleteable?" | canDelete;
-    layout << "" | cantDelete;
     selectChair = layout << "Select a Chair" |= new ModelListWidget<MemberModel>;
     selectSecretary = layout << "Select a Secretary" |= new ModelListWidget<MemberModel>;
 
@@ -40,8 +29,6 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
 
     layout << editButton | cancelButton;
 
-    //misc
-    canDelete->setChecked(true);
     setModal(true);
     setWindowTitle("Edit Committee");
     selectChair->fill(&MemberModel::findAll);
