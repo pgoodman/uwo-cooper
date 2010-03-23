@@ -14,17 +14,10 @@
 
 using namespace std;
 
-class TaskModel : public IModel<TaskModel, select_from_table_tag> {
-
-    MODEL_CLASS(TaskModel);
-
+class TaskModelBase {
 public:
-    static const char *table_name;
 
-    virtual bool save(void);
-    static bool create(QString name, QString descript,
-                       const QDateTime deadlineDate, const int committee_id,
-                       const bool isAnnual);
+    static const char *table_name;
 
     bool isPending(void);
 
@@ -36,21 +29,23 @@ public:
     QString getDescription(void);
     void setDeadline(QDateTime deadline_date);
     QDateTime getDeadline(void);
-    void setCompleted(bool newStatus);
-    bool isCompleted(void);
     bool isSpec(void);
 
-    virtual ~TaskModel();
+    virtual ~TaskModelBase();
 
 protected:
 
-    static TaskModel *load(QSqlQuery &q, const int id);
+    static bool create(QString name,
+                       QString descript,
+                       const QDateTime deadlineDate,
+                       const int committee_id,
+                       const bool isAnnual);
 
-private:
+    TaskModelBase(QString name, QString descript,
+                  bool is_complete, const QDateTime deadlineDate,
+                  const int committeeId, bool isAnnual);
 
-    explicit TaskModel(const int id, QString name, QString descript,
-                       bool is_complete, const QDateTime deadlineDate,
-                       const int committeeId, bool isAnnual);
+    bool save(const int id);
 
     QString name;
     QString description;
@@ -58,6 +53,52 @@ private:
     bool is_annual;
     QDateTime deadline;
     int committee_id;
+};
+
+/**
+ * Tasks.
+ */
+class TaskModel : public TaskModelBase,
+                  public IModel<TaskModel, select_from_table_tag> {
+    MODEL_CLASS(TaskModel);
+public:
+    static TaskModel::iterator_range findAll(void);
+    static TaskModel::iterator_range findAll(const char *);
+
+    static bool create(QString name,
+                       QString descript,
+                       const QDateTime deadlineDate,
+                       const int committee_id);
+    virtual bool save(void);
+    void setCompleted(bool newStatus);
+    bool isCompleted(void);
+protected:
+    TaskModel(const int id, QString n, QString desc,
+              bool isComplete, QDateTime deadlineDate,
+              const int committeeId);
+    static TaskModel *load(QSqlQuery &q, const int id);
+};
+
+/**
+ * Annual Task Specs.
+ */
+class TaskSpecModel : public TaskModelBase,
+                      public IModel<TaskSpecModel, select_from_table_tag> {
+    MODEL_CLASS(TaskSpecModel);
+public:
+    static TaskSpecModel::iterator_range findAll(void);
+    static TaskSpecModel::iterator_range findAll(const char *);
+
+    static bool create(QString name,
+                       QString descript,
+                       const QDateTime deadlineDate,
+                       const int committee_id);
+    virtual bool save(void);
+protected:
+    TaskSpecModel(const int id, QString n, QString desc,
+                  QDateTime deadlineDate,
+                  const int committeeId);
+    static TaskSpecModel *load(QSqlQuery &q, const int id);
 };
 
 #endif // TASKMODEL_H

@@ -36,7 +36,7 @@ public:
     static bool remove(const char *table, const char *cond);
 
     template <typename T>
-    static pair<IModelIterator<T,T>, IModelIterator<T,T> >
+    static pair<IModelIterator<T>, IModelIterator<T> >
     selectAll(const char *table, const char *cond="1=1");
 
     static void disconnect(void);
@@ -82,7 +82,7 @@ template <> QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
  * Linkage stuff.
  */
 template <typename T>
-pair<IModelIterator<T,T>, IModelIterator<T,T> >
+pair<IModelIterator<T>, IModelIterator<T> >
 Database::selectAll(const char *table, const char *conditions) {
     stringstream ss;
     ss << "SELECT COUNT(id) as c FROM " << table << " WHERE " << conditions;
@@ -91,7 +91,7 @@ Database::selectAll(const char *table, const char *conditions) {
     count.finish();
     ss.str(string(""));
     ss << "SELECT id FROM " << table << " WHERE " << conditions;
-    return IModelIterator<T,T>::make(QSqlQuery(ss.str().c_str()), size);
+    return IModelIterator<T>::make(QSqlQuery(ss.str().c_str()), size);
 }
 
 

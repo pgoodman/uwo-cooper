@@ -1,5 +1,5 @@
 /*
- * taskmodel.cc
+ * TaskModelBase.cc
  *
  *  Created on: Mar 12, 2010
  *      Author: Stephan Beltran
@@ -8,43 +8,27 @@
 
 #include "model/taskmodel.h"
 
-const char *TaskModel::table_name("task");
+const char *TaskModelBase::table_name("task");
 
 /**
- * Private constructor, initialize a new task from db info.
+ * Protected constructor, initialize a new task from db info.
  */
-TaskModel::TaskModel(const int id, QString n, QString descript,
-                     bool isComplete, QDateTime deadlineDate,
-                     const int committeeId, const bool isAnnual)
- : IModel<TaskModel,select_from_table_tag>(id), name(n),
-   description(descript), is_complete(isComplete), is_annual(isAnnual),
-   deadline(deadlineDate), committee_id(committeeId) {
+TaskModelBase::TaskModelBase(QString n, QString descript,
+                             bool isComplete, QDateTime deadlineDate,
+                             const int committeeId, const bool isAnnual)
+ : name(n), description(descript), is_complete(isComplete),
+   is_annual(isAnnual), deadline(deadlineDate), committee_id(committeeId) {
 }
 
 /**
  * Destructor.
  */
-TaskModel::~TaskModel() { }
-
-/**
- * Load a task by its id.
- */
-TaskModel *TaskModel::load(QSqlQuery &q, const int id) {
-    return new TaskModel(
-        id,
-        qcol<QString>(q, "name"),
-        qcol<QString>(q, "description"),
-        qcol<bool>(q, "status"),
-        qcol<QDateTime>(q, "deadline"),
-        qcol<int>(q, "committee_id"),
-        qcol<bool>(q, "is_annual")
-    );
-}
+TaskModelBase::~TaskModelBase() { }
 
 /**
  * Save a task to the database.
  */
-bool TaskModel::save(void) {
+bool TaskModelBase::save(const int id) {
     QSqlQuery q;
     q.prepare(
         "UPDATE task set name=?,description=?,status=?,"
@@ -57,7 +41,7 @@ bool TaskModel::save(void) {
 /**
  * Create and return a task
  */
-bool TaskModel::create(QString name, QString descript,
+bool TaskModelBase::create(QString name, QString descript,
                        const QDateTime deadlineDate,
                        const int committeeId, const bool isAnnual) {
     QSqlQuery q;
@@ -73,46 +57,99 @@ bool TaskModel::create(QString name, QString descript,
 /**
  * Get the name of a committee.
  */
-QString TaskModel::toString(void) {
+QString TaskModelBase::toString(void) {
     stringstream ss;
     ss << name.toStdString();
     QDateTime now;
     now.setTime_t(time(0));
 
-    if(is_complete) {
-        ss << " [completed]";
-    } else {
-        if(deadline < now) {
-            ss << " [overdue]";
+    if(!is_annual) {
+        if(is_complete) {
+            ss << " [completed]";
         } else {
-            ss << " [pending]";
+            if(deadline < now) {
+                ss << " [overdue]";
+            } else {
+                ss << " [pending]";
+            }
         }
     }
     return QString(ss.str().c_str());
 }
 
-void TaskModel::setName(QString n) {
+void TaskModelBase::setName(QString n) {
     name = n;
 }
 
-QString TaskModel::getName(void) {
+QString TaskModelBase::getName(void) {
     return name;
 }
 
-void TaskModel::setDescription(QString descript) {
+void TaskModelBase::setDescription(QString descript) {
     description = descript;
 }
 
-QString TaskModel::getDescription(void) {
+QString TaskModelBase::getDescription(void) {
     return description;
 }
 
-void TaskModel::setDeadline(QDateTime deadline_date) {
+void TaskModelBase::setDeadline(QDateTime deadline_date) {
     deadline = deadline_date;
 }
 
-QDateTime TaskModel::getDeadline(void) {
+QDateTime TaskModelBase::getDeadline(void) {
     return deadline;
+}
+
+bool TaskModelBase::isPending(void) {
+    return !is_complete;
+}
+
+bool TaskModelBase::isSpec(void) {
+    return is_annual;
+}
+
+// ---------------------------------------------------------------------------
+
+TaskModel::iterator_range TaskModel::findAll(const char *cond) {
+    stringstream ss;
+    ss << "is_annual=0 AND " << cond;
+    return IModel<TaskModel, select_from_table_tag>::findAll(cond);
+}
+
+TaskModel::iterator_range TaskModel::findAll(void) {
+    return findAll("1=1");
+}
+
+TaskModel *TaskModel::load(QSqlQuery &q, const int id) {
+    return new TaskModel(
+        id,
+        qcol<QString>(q, "name"),
+        qcol<QString>(q, "description"),
+        qcol<bool>(q, "status"),
+        qcol<QDateTime>(q, "deadline"),
+        qcol<int>(q, "committee_id")
+    );
+}
+
+TaskModel::TaskModel(const int id, QString n, QString desc,
+                     bool isComplete, QDateTime deadlineDate,
+                     const int committeeId)
+ : TaskModelBase(n,desc,isComplete,deadlineDate,committeeId,false),
+   IModel<TaskModel, select_from_table_tag>(id) {
+}
+
+bool TaskModel::save(void) {
+    return TaskModelBase::save(id);
+}
+
+bool TaskModel::create(QString name,
+                       QString descript,
+                       const QDateTime deadlineDate,
+                       const int committee_id) {
+    return TaskModelBase::create(
+        name, descript, deadlineDate,committee_id,false
+    );
 }
 
 void TaskModel::setCompleted(bool newStatus) {
@@ -123,10 +160,44 @@ bool TaskModel::isCompleted(void) {
     return is_complete;
 }
 
-bool TaskModel::isPending(void) {
-    return !is_complete;
+// ---------------------------------------------------------------------------
+
+TaskSpecModel::iterator_range TaskSpecModel::findAll(const char *cond) {
+    stringstream ss;
+    ss << "is_annual=1 AND " << cond;
+    return IModel<TaskSpecModel, select_from_table_tag>::findAll(cond);
 }
 
-bool TaskModel::isSpec(void) {
-    return is_annual;
+TaskSpecModel::iterator_range TaskSpecModel::findAll(void) {
+    return findAll("1=1");
+}
+
+TaskSpecModel *TaskSpecModel::load(QSqlQuery &q, const int id) {
+    return new TaskSpecModel(
+        id,
+        qcol<QString>(q, "name"),
+        qcol<QString>(q, "description"),
+        qcol<QDateTime>(q, "deadline"),
+        qcol<int>(q, "committee_id")
+    );
+}
+
+TaskSpecModel::TaskSpecModel(const int id, QString n, QString desc,
+                     QDateTime deadlineDate,
+                     const int committeeId)
+ : TaskModelBase(n,desc,false,deadlineDate,committeeId,true),
+   IModel<TaskSpecModel, select_from_table_tag>(id) {
+}
+
+bool TaskSpecModel::save(void) {
+    return TaskModelBase::save(id);
+}
+
+bool TaskSpecModel::create(QString name,
+                       QString descript,
+                       const QDateTime deadlineDate,
+                       const int committee_id) {
+    return TaskModelBase::create(
+        name, descript, deadlineDate,committee_id,true
+    );
 }

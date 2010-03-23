@@ -22,7 +22,7 @@
 template <typename T>
 class ModelListWidget : public QListWidget {
 
-    typedef IModelIterator<T,T> iterator;
+    typedef IModelIterator<T> iterator;
     typedef std::pair<iterator,iterator> iterator_range;
     typedef iterator_range (iterator_range_func)(void);
 

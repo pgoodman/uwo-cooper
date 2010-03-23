@@ -15,10 +15,6 @@
 #include <sstream>
 #include <utility>
 
-//#include <QMap>
-//#include <QString>
-//#include <QVariant>
-
 #include "lib/imodeliterator.h"
 #include "lib/database.h"
 
@@ -47,10 +43,11 @@ class select_from_view_tag { };
  */
 template <typename T>
 class IModelBase {
-
-    //typedef QMap<QString, QVariant> column_map_t;
-
 public:
+
+    typedef IModelIterator<T> iterator;
+    typedef std::pair<iterator, iterator> iterator_range;
+
     virtual bool save(void) = 0;
     virtual bool remove(void);
 
@@ -71,17 +68,12 @@ protected:
 
 private:
     static std::map<int, T *> elms;
-
-    //column_map_t dirty;
-    //column_map_t saved;
 };
 
 #define IMODEL_CLASS public: \
     IModel(const int); \
-    typedef IModelIterator<T,T> iterator; \
-    typedef std::pair<iterator, iterator > iterator_range; \
-    static iterator_range findAll(void); \
-    static iterator_range findAll(const char *cond); \
+    static typename IModelBase<T>::iterator_range findAll(void); \
+    static typename IModelBase<T>::iterator_range findAll(const char *cond); \
     static T *findById(const int id); \
 
 /**
@@ -172,23 +164,23 @@ bool IModelBase<T>::isRemembered(const int model_id) {
  * Return an iterator range of all models in the db for a table.
  */
 template <typename T, typename S>
-std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
+typename IModelBase<T>::iterator_range
 IModel<T,S>::findAll(void) {
     return Database::selectAll<T>(T::table_name, "1=1");
 }
 template <typename T, typename S>
-std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
+typename IModelBase<T>::iterator_range
 IModel<T,S>::findAll(const char *cond) {
     return Database::selectAll<T>(T::table_name, cond);
 }
 
 template <typename T>
-std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
+typename IModelBase<T>::iterator_range
 IModel<T,select_from_view_tag>::findAll(void) {
     return Database::selectAll<T>(T::view_name, "1=1");
 }
 template <typename T>
-std::pair<IModelIterator<T,T>, IModelIterator<T,T> >
+typename IModelBase<T>::iterator_range
 IModel<T,select_from_view_tag>::findAll(const char *cond) {
     return Database::selectAll<T>(T::view_name, cond);
 }

@@ -24,19 +24,19 @@ using namespace std;
 /**
  * IModelIterator for going over result sets of users.
  */
-template <typename T, typename L>
+template <typename T>
 class IModelIterator : public iterator<input_iterator_tag, T> {
 
 public:
     ~IModelIterator();
 
     T *operator*();
-    IModelIterator<T,L> &operator++ ();
-    IModelIterator<T,L> operator++ (int);
-    bool operator!=(const IModelIterator<T,L> &other);
-    bool operator==(const IModelIterator<T,L> &other);
+    IModelIterator<T> &operator++ ();
+    IModelIterator<T> operator++ (int);
+    bool operator!=(const IModelIterator<T> &other);
+    bool operator==(const IModelIterator<T> &other);
 
-    static pair<IModelIterator<T,L>, IModelIterator<T,L> >
+    static pair<IModelIterator<T>, IModelIterator<T> >
     make(QSqlQuery q, const int size);
 
 private:
@@ -63,8 +63,8 @@ private:
 /**
  * Constructor.
  */
-template <typename T, typename L>
-IModelIterator<T, L>::IModelIterator(QSqlQuery q,
+template <typename T>
+IModelIterator<T>::IModelIterator(QSqlQuery q,
                                 const int s,
                                 const int off,
                                 const int query_id)
@@ -81,19 +81,19 @@ IModelIterator<T, L>::IModelIterator(QSqlQuery q,
 /**
  * Destructor.
  */
-template <typename T, typename L>
-IModelIterator<T, L>::~IModelIterator() { }
+template <typename T>
+IModelIterator<T>::~IModelIterator() { }
 
 /**
  *
  */
-template <typename T, typename L>
-T *IModelIterator<T, L>::operator*() {
-    return L::findById(curr_id);
+template <typename T>
+T *IModelIterator<T>::operator*() {
+    return T::findById(curr_id);
 }
 
-template <typename T, typename L>
-IModelIterator<T, L> &IModelIterator<T, L>::operator++ () {
+template <typename T>
+IModelIterator<T> &IModelIterator<T>::operator++ () {
     ++i;
     if(i < size) {
         query.next();
@@ -104,38 +104,38 @@ IModelIterator<T, L> &IModelIterator<T, L>::operator++ () {
     return *this;
 }
 
-template <typename T, typename L>
-IModelIterator<T, L> IModelIterator<T, L>::operator++ (int) {
-    IModelIterator<T, L> tmp(*this);
+template <typename T>
+IModelIterator<T> IModelIterator<T>::operator++ (int) {
+    IModelIterator<T> tmp(*this);
     ++(*this);
     return tmp;
 }
 
-template <typename T, typename L>
-bool IModelIterator<T, L>::operator!=(const IModelIterator<T, L> &other) {
+template <typename T>
+bool IModelIterator<T>::operator!=(const IModelIterator<T> &other) {
     return id != other.id || i != other.i;
 }
 
-template <typename T, typename L>
-bool IModelIterator<T, L>::operator==(const IModelIterator<T, L> &other) {
+template <typename T>
+bool IModelIterator<T>::operator==(const IModelIterator<T> &other) {
     return id == other.id && i == other.i;
 }
 
 /**
  * Set the current record id.
  */
-template <typename T, typename L>
-void IModelIterator<T, L>::setCurrId(void) {
+template <typename T>
+void IModelIterator<T>::setCurrId(void) {
     curr_id = query.value(0).toInt();
 }
 
-template <typename T, typename L>
-pair<IModelIterator<T,L>, IModelIterator<T,L> >
-IModelIterator<T, L>::make(QSqlQuery query, const int size) {
+template <typename T>
+pair<IModelIterator<T>, IModelIterator<T> >
+IModelIterator<T>::make(QSqlQuery query, const int size) {
     static int id = 0;
     query.first();
-    IModelIterator<T, L> start(query, size, 0, id);
-    IModelIterator<T, L> end(query, size, size + 1, id++);
+    IModelIterator<T> start(query, size, 0, id);
+    IModelIterator<T> end(query, size, size + 1, id++);
     return make_pair(start, end);
 }
 
