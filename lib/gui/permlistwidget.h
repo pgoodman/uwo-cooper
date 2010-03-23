@@ -9,6 +9,7 @@
 #include <QButtonGroup>
 #include <QLabel>
 
+#include <cmath>
 #include <vector>
 
 #include "model/permissionmodel.h"
@@ -19,9 +20,9 @@ class PermListWidget : public QScrollArea{
 Q_OBJECT
 public:
     PermListWidget(QWidget *parent = 0);
-    PermListWidget(QString name, QWidget *parent = 0);
+    PermListWidget(QString name, PermissionModelSet list, QWidget *parent = 0);
 
-    int getPerm(int perm);
+    PermissionModelSet getPermissions();
 
     ~PermListWidget();
 
@@ -29,10 +30,10 @@ private:
        void setUpRadioButtons();
        void setUpButton(QString name, int permNum);
        void setUpLayout();
-       void setPermissions(PermissionModelSet list);
 
        QGridLayout *layout;
        QGroupBox *boxGroup;
+       PermissionModelSet list;
        vector<QRadioButton *> options;
 
 };

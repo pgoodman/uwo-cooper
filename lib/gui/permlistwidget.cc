@@ -5,14 +5,13 @@
 PermListWidget::PermListWidget(QWidget *parent)
     : QScrollArea(parent)
 {
-    boxGroup = new QGroupBox("Permssions");
-    setUpLayout();
 }
 
-PermListWidget::PermListWidget(QString name, QWidget *parent)
+PermListWidget::PermListWidget(QString name, PermissionModelSet list, QWidget *parent)
     : QScrollArea(parent)
 {
     boxGroup = new QGroupBox(name);
+    this->list = list;
     setUpLayout();
 }
 
@@ -66,9 +65,33 @@ void PermListWidget::setUpButton(QString name, int permNum)
    buttonGroup->addButton(options[permNum]);
    buttonGroup->addButton(no);
 
+   if((list & (int)pow(2, permNum)) != 0)
+   {
+       options[permNum]->setChecked(true);
+   }
+   else
+   {
+       no->setChecked(true);
+   }
+
    layout->addWidget(label, permNum, 0);
    layout->addWidget(options[permNum], permNum, 1);
    layout->addWidget(no, permNum, 2);
+}
+
+PermissionModelSet PermListWidget::getPermissions()
+{
+    PermissionModelSet result = 0;
+
+    for(int i = 0; i < (int)options.size(); i++)
+    {
+        if(options[i]->isChecked())
+        {
+            result = result | (int)pow(2, i);
+        }
+    }
+
+    return result;
 }
 
 PermListWidget::~PermListWidget()
