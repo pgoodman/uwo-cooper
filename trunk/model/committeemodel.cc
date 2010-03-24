@@ -105,6 +105,17 @@ TaskModel::iterator_range CommitteeModel::findTasks(void) {
 }
 
 /**
+  * Find all of a committee's task specs
+  */
+
+TaskSpecModel::iterator_range CommitteeModel::findTaskSpecs(void) {
+    stringstream ss;
+    ss << "committee_id=" << id;
+    return TaskSpecModel::findAll(ss.str().c_str());
+}
+
+
+/**
  * Find all of a committee's members.
  */
 MemberModel::iterator_range CommitteeModel::findMembers(void) {

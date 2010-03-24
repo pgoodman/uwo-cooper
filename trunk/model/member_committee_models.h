@@ -163,6 +163,7 @@ public:
     virtual bool remove(void);
 
     TaskModel::iterator_range findTasks(void);
+    TaskSpecModel::iterator_range findTaskSpecs(void);
     MemberModel::iterator_range findMembers(void);
 
     PermissionModelSet getPermissions(const int member_id);
