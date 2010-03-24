@@ -114,7 +114,7 @@ bool TaskModelBase::isSpec(void) {
 TaskModel::iterator_range TaskModel::findAll(const char *cond) {
     stringstream ss;
     ss << "is_annual=0 AND " << cond;
-    return IModel<TaskModel, select_from_table_tag>::findAll(cond);
+    return IModel<TaskModel, select_from_table_tag>::findAll(ss.str().c_str());
 }
 
 TaskModel::iterator_range TaskModel::findAll(void) {
@@ -165,7 +165,9 @@ bool TaskModel::isCompleted(void) {
 TaskSpecModel::iterator_range TaskSpecModel::findAll(const char *cond) {
     stringstream ss;
     ss << "is_annual=1 AND " << cond;
-    return IModel<TaskSpecModel, select_from_table_tag>::findAll(cond);
+    return IModel<TaskSpecModel, select_from_table_tag>::findAll(
+        ss.str().c_str()
+    );
 }
 
 TaskSpecModel::iterator_range TaskSpecModel::findAll(void) {

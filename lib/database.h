@@ -82,7 +82,7 @@ template <> QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
  * Linkage stuff.
  */
 template <typename T>
-pair<IModelIterator<T>, IModelIterator<T> >
+std::pair<IModelIterator<T>, IModelIterator<T> >
 Database::selectAll(const char *table, const char *conditions) {
     stringstream ss;
     ss << "SELECT COUNT(id) as c FROM " << table << " WHERE " << conditions;
