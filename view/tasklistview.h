@@ -15,6 +15,7 @@
 
 #include "view/edittaskview.h"
 #include "view/addtaskview.h"
+#include "view/addannualtaskview.h"
 
 class TaskListView : public QDialog {
     Q_OBJECT
@@ -25,18 +26,27 @@ public:
 
 private:
     ModelListWidget<TaskModel> *task_list;
+    ModelListWidget<TaskSpecModel> *annualTask_list;
     QPushButton *add_button;
     QPushButton *edit_button;
     QPushButton *delete_button;
+    QPushButton *add_annual_button;
+    QPushButton *delete_annual_button;
+    QPushButton *activate_annual_button;
     CommitteeModel *committee;
 
     void populateTaskList(void);
+    void populateAnnualTaskList(void);
 
 public slots:
     void addTasks();
+    void addAnnualTasks();
+    void deleteAnnualTasks();
+    void activateAnnualTasks();
     void editTasks();
     void deleteTasks();
     void activateButtons(void);
+    void activateSpecButtons(void);
 };
 
 #endif // TASKLISTVIEW_H
