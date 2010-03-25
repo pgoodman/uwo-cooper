@@ -16,6 +16,7 @@
 #include "view/edittaskview.h"
 #include "view/addtaskview.h"
 #include "view/addannualtaskview.h"
+#include "view/activateannualtaskview.h"
 
 class TaskListView : public QDialog {
     Q_OBJECT
