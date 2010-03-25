@@ -206,5 +206,10 @@ void TaskListView::deleteAnnualTasks() {
 }
 
 void TaskListView::activateAnnualTasks() {
+    ActivateAnnualTaskView activateTaskDialog(committee, this);
+    if (QDialog::Accepted == activateTaskDialog.exec()) {
 
+        //Populate task list with new task
+
+    }
 }

@@ -54,11 +54,6 @@ void AddAnnualTaskView::save(void) {
         return;
     }
 
-    QMessageBox::information(
-        this, "Date Month and Year",
-        deadline->dateTime().toString()
-    );
-
     committee->addTaskSpec(
         name->text(),
         description->toPlainText(),
