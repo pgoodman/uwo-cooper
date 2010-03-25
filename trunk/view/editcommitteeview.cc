@@ -44,7 +44,24 @@ EditCommitteeView::~EditCommitteeView(){}
 
 void EditCommitteeView::editCommittee()
 {
+    MemberModel *chairModel = selectChair->getModel();
+    MemberModel *secModel = selectSecretary->getModel();
 
+    selCommittee->setName(committeeName->text());
+    selCommittee->setChairPerms(chairList->getPermissions());
+    selCommittee->setMemberPerms(memList->getPermissions());
+    selCommittee->setChair(chairModel->getMemberId());
+    selCommittee->setSecretary(secModel->getMemberId());
+
+    selCommittee->save();
+
+    chairModel->setCommittee(selCommittee);
+    chairModel->save();
+
+    secModel->setCommittee(selCommittee);
+    secModel->save();
+
+    done(QDialog::Accepted);
 }
 
 void EditCommitteeView::cancelCommittee()
