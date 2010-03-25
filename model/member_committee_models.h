@@ -54,6 +54,7 @@ public:
     QString getFirstName(void);
     QString getLastName(void);
     QString getAddress(void);
+    int     getMemberId() { return member_id; }
 
     QDateTime getMoveInTime(void);
     CommitteeModel *findCommittee(void);
@@ -172,6 +173,12 @@ public:
 
     PermissionModelSet getChairPerms(){return chair_perms;}
     PermissionModelSet getMemPerms(){return member_perms;}
+
+    void setChairPerms(PermissionModelSet newPerms);
+    void setMemberPerms(PermissionModelSet newPerms);
+    void setName(QString newName);
+    void setChair(int chairID);
+    void setSecretary(int secID);
 
     QString getName(){return name;}
 

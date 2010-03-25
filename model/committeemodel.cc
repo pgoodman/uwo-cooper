@@ -180,3 +180,28 @@ QString CommitteeModel::getMemberRoleByID(int m_id){
         return "Member";
     }
 }
+
+void CommitteeModel::setChairPerms(PermissionModelSet newPerms)
+{
+    chair_perms = newPerms;
+}
+
+void CommitteeModel::setMemberPerms(PermissionModelSet newPerms)
+{
+    member_perms = newPerms;
+}
+
+void CommitteeModel::setName(QString newName)
+{
+    name = newName;
+}
+
+void CommitteeModel::setChair(int chairID)
+{
+    chair_id = chairID;
+}
+
+void CommitteeModel::setSecretary(int secID)
+{
+    secretary_id = secID;
+}
