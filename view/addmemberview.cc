@@ -125,10 +125,10 @@ bool AddMemberView::checkForm(void) {
         return false;
     }
 
-    if(phone_number->text().isEmpty()) {
+    if(!Validator::isValidPhoneNo(phone_number->text())) {
         QMessageBox::information(
-            this, "Empty Field",
-            "Please enter a telephone number."
+            this, "Invalid Field",
+            "Please enter a valid telephone number."
         );
         return false;
     }

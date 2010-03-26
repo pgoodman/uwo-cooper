@@ -12,6 +12,8 @@
 
 #include "view/addmemberview.h"
 
+#include "lib/validator.h"
+
 class EditMemberView : public AddMemberView
 {
     Q_OBJECT
