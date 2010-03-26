@@ -156,6 +156,48 @@ void EditMemberView::initForm(void) {
 void EditMemberView::accept() {
 
     //valid data and change exists
+    if(first_name->text().isEmpty()) {
+        QMessageBox::information(
+            this, "Invalid Field",
+            "Please enter a given name."
+        );
+        return;
+    }
+    if(last_name->text().isEmpty()) {
+        QMessageBox::information(
+            this, "Invalid Field",
+            "Please enter a surname (family name / last name)."
+        );
+        return;
+    }
+    if(!Validator::isValidPhoneNo(phone_number->text())) {
+        QMessageBox::information(
+            this, "Invalid Field",
+            "Please enter a valid phone number."
+        );
+        return;
+    }
+    if(user_name->text().isEmpty()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a user login name."
+        );
+        return;
+    }
+    if(password->text().isEmpty()) {
+        QMessageBox::information(
+            this, "Empty Field",
+            "Please enter a password."
+        );
+        return;
+    }
+    if(!Validator::isValidDigit(balance_due->text())) {
+        QMessageBox::information(
+            this, "Invalid Field",
+            "Please enter a valid owning number."
+        );
+        return;
+    }
     member->setFirstName(first_name->text());
     member->setLastName(last_name->text());
     member->setTelephoneNumber(phone_number->text());

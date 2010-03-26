@@ -21,6 +21,7 @@
 
 #include "lib/gui/modellistwidget.h"
 #include "lib/gui/formlayoutptr.h"
+#include "lib/validator.h"
 
 #include "model/permissionmodel.h"
 #include "model/membermodel.h"

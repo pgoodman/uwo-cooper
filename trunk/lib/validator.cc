@@ -5,21 +5,27 @@ Validator::Validator()
 }
 
 //check whether the input is a valid Canadian phone number.
+//9 digits
 bool Validator::isValidPhoneNo(QString inStr){
     bool ok;
-    long pno;
+    long long pno;
     if(inStr == "") {
         return false;
     } else {
-        pno = inStr.toLong(&ok, 10);
+        pno = inStr.toLongLong(&ok, 10);
         if(ok) {
-              return(pno > PHONE_UP_EDGE || pno < PHONE_LOW_EDGE);
+            if(pno < PHONE_UP_EDGE && pno > PHONE_LOW_EDGE){
+                return true;
+            }else {
+                return false;
+            }
         }else {
             return ok;
         }
     }
 }
 
+//check whether the input is digit.
 bool Validator::isValidDigit(QString inStr){
     bool ok;
 
