@@ -26,7 +26,8 @@ protected:
 public:
     ActivateAnnualTaskView(CommitteeModel *comm, QWidget *parent=0);
     ~ActivateAnnualTaskView(void);
-
+    void ActivateTaskToList(TaskSpecModel *task);
+    
 public slots:
     virtual void save(void);
 };

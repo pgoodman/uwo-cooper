@@ -109,11 +109,14 @@ void TaskListView::populateTaskList(void) {
   * Populate the annual task list
   */
 void TaskListView::populateAnnualTaskList(void) {
-    // Perhaps find annualTasks?
     TaskSpecModel::iterator_range annualTasks(committee->findTaskSpecs());
     annualTask_list->fill(annualTasks);
     delete_annual_button->setEnabled(false);
-    activate_annual_button->setEnabled(true);
+
+    if (annualTask_list->size().isEmpty())  // CHECK IF LIST IS EMPTY
+        activate_annual_button->setEnabled(false);
+    else
+        activate_annual_button->setEnabled(true);
 }
 
 /**
@@ -134,12 +137,10 @@ void TaskListView::activateButtons() {
 
 void TaskListView::activateSpecButtons() {
     TaskSpecModel *annualTask(annualTask_list->getModel());
-
-    if(0 == annualTask) {
+    if(0 == annualTask)
         return;
-    }
-
-    delete_annual_button->setEnabled(true);
+    else
+        delete_annual_button->setEnabled(true);
 }
 
 /**
@@ -208,8 +209,6 @@ void TaskListView::deleteAnnualTasks() {
 void TaskListView::activateAnnualTasks() {
     ActivateAnnualTaskView activateTaskDialog(committee, this);
     if (QDialog::Accepted == activateTaskDialog.exec()) {
-
-        //Populate task list with new task
-
+        populateTaskList();
     }
 }
