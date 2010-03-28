@@ -8,11 +8,18 @@
 
 #include "triggermoveoutview.h"
 
+/**
+  * Constructor
+  */
+
 TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
                                         QWidget *parent) : QDialog(parent) {
+    // Set up the form layout
     FormLayoutPtr layout(this);
 
+    // Get the member that is moving
     member = chosenMember;
+
     // make the layout of the form
     first_name = layout << "First Name: " |= new QLineEdit;
     last_name = layout << "Last Name: " |= new QLineEdit;
@@ -48,11 +55,17 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
 }
 
+/**
+  * Causes the function to trigger a move out event
+  */
+
 void TriggerMoveOutView::okEvent(void) {
 
+    // Get the information on the move out date and the notice date
     QDateTime moveOutDate = move_out_date->dateTime();
     QDateTime noticeDate = notice_date->dateTime();
 
+    // If the unit will be empty upon move in, send approprate move tasks to the inspections committee
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
         QTextStream ss(description);
@@ -84,6 +97,10 @@ void TriggerMoveOutView::okEvent(void) {
 
     done(QDialog::Accepted);
 }
+
+/**
+  * If options are all cancelled
+  */
 
 void TriggerMoveOutView::cancelEvent(void){
     done(QDialog::Rejected);
