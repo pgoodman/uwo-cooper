@@ -13,8 +13,10 @@
  */
 
 AddAnnualTaskView::AddAnnualTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent) {
+    // Set up the form layout
     FormLayoutPtr layout(this);
 
+    // Get the committee we're working with
     committee = comm;
 
     // Form Layout
@@ -32,6 +34,7 @@ AddAnnualTaskView::AddAnnualTaskView(CommitteeModel *comm, QWidget *parent) : QD
     setModal(true);
     setWindowTitle("Add Annual Task Spec");
 
+    // Connect the buttons to respective functions
     connect(save_button, SIGNAL(clicked()), this, SLOT(save()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
@@ -46,6 +49,7 @@ AddAnnualTaskView::~AddAnnualTaskView(void) {}
  * Attempt to add a task.
  */
 void AddAnnualTaskView::save(void) {
+    // Check to see that the task at least has a name
     if(!name->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
@@ -54,6 +58,7 @@ void AddAnnualTaskView::save(void) {
         return;
     }
 
+    // Add the annual task spec to the committee
     committee->addTaskSpec(
         name->text(),
         description->toPlainText(),

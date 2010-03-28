@@ -9,18 +9,21 @@
 #include "view/tasklistview.h"
 
 /**
- * Initialize the popup for managing a committee's tasks.
+ * Constructor: Initialize the popup for managing a committee's tasks.
  */
 TaskListView::TaskListView(CommitteeModel *comm, QWidget *parent)
  : QDialog(parent) {
 
-    committee = comm;
+    // Set up the form layout
     FormLayoutPtr layout(this);
+
+    // Get the committee that we're working with
+    committee = comm;
 
     //Add layout
     task_list = layout << "Select a Task" |= new ModelListWidget<TaskModel>;
 
-    //Button Creation and Additions
+    //Button Creation and Additions to Layout
     add_button = new QPushButton("Add Task");
     edit_button = new QPushButton("Edit task");
     delete_button = new QPushButton("Delete Task");
@@ -35,6 +38,7 @@ TaskListView::TaskListView(CommitteeModel *comm, QWidget *parent)
     layout << add_annual_button | delete_annual_button | activate_annual_button;
     layout << close_button;
 
+    // Check for permissions that the user has on each possible choice on the task list form
     if(!active_user->hasPermission(ADD_TASK)) {
         add_button->hide();
     }
@@ -126,15 +130,19 @@ void TaskListView::populateAnnualTaskList(void) {
 void TaskListView::activateButtons() {
     TaskModel *task(task_list->getModel());
 
-    if(0 == task) {
+    if(0 == task) {                     // If there is no choice made
         return;
     }
 
+    // Depending on whether or not its completed, it can be edited or deleted
     bool is_completed(task->isCompleted());
     edit_button->setEnabled(!is_completed);
     delete_button->setEnabled(is_completed);
 }
 
+/**
+  *  De/activate the various control buttons depending on the annual task selected.
+  */
 void TaskListView::activateSpecButtons() {
     TaskSpecModel *annualTask(annualTask_list->getModel());
     if(0 == annualTask)
@@ -152,6 +160,10 @@ void TaskListView::addTasks() {
         populateTaskList();
     }
 }
+
+/**
+  * Pop up the add annual tasks view.
+  */
 
 void TaskListView::addAnnualTasks() {
     AddAnnualTaskView addAnnualTaskDialog(committee, this);
@@ -190,6 +202,10 @@ void TaskListView::deleteTasks() {
     }
 }
 
+/**
+  * Delete an annual task.
+  */
+
 void TaskListView::deleteAnnualTasks() {
     TaskSpecModel *annualTask(annualTask_list->getModel());
     if(0 != annualTask) {
@@ -205,6 +221,10 @@ void TaskListView::deleteAnnualTasks() {
         }
     }
 }
+
+/**
+  * Pop up the activate annual task view
+  */
 
 void TaskListView::activateAnnualTasks() {
     ActivateAnnualTaskView activateTaskDialog(committee, this);

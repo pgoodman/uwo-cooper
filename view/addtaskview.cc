@@ -13,9 +13,12 @@
  */
 
 AddTaskView::AddTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent) {
+    // Set up the form layout
     FormLayoutPtr layout(this);
 
+    // Get the committee that we're working with
     committee = comm;
+
     // Status Button Group
     QButtonGroup *status_group(new QButtonGroup);
     completed_status = new QRadioButton("Completed");
@@ -43,6 +46,7 @@ AddTaskView::AddTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent
     setModal(true);
     setWindowTitle("Add Task");
 
+    // Connect the buttons to their respective functions
     connect(save_button, SIGNAL(clicked()), this, SLOT(save()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
@@ -57,6 +61,8 @@ AddTaskView::~AddTaskView(void) {}
  * Attempt to add a task.
  */
 void AddTaskView::save(void) {
+
+    // Check to see that the added task at least has a name
     if(!name->isModified()) {
         QMessageBox::information(
             this, "Empty Field",
@@ -65,6 +71,7 @@ void AddTaskView::save(void) {
         return;
     }
 
+    // Add the task to the given committee
     committee->addTask(
         name->text(),
         description->toPlainText(),

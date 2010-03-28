@@ -8,11 +8,17 @@
 
 #include "triggerinternalmoveview.h"
 
+/**
+  * Constructor
+  */
+
 TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
                                                  QWidget *parent)
  : QDialog(parent) {
+    // Set up the form layout
     FormLayoutPtr layout(this);
 
+    // Get the particular member that is moving
     member = chosenMember;
 
     // Make button group for empty/occupied unit
@@ -65,14 +71,21 @@ TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
 }
 
+/**
+  * Causes the function to trigger an Internal Move Event
+  */
+
 void TriggerInternalMoveView::okEvent(void) {
 
+    // Recieve all the given information about move dates and notice dates, as well as the unit being moved into.
     QDateTime moveInDate = move_in_date->dateTime();
     QDateTime moveOutDate = moveInDate;
     QDateTime noticeDate = QDateTime::currentDateTime();
     UnitModel *intoUnit = newunit->getModel();
     UnitModel *outOfUnit = member->findUnit();
 
+    // If the unit being moved into will be empty upon move in,
+    // Set up move in inspection tasks according to the specifications
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
         QTextStream ss(description);
@@ -119,12 +132,18 @@ void TriggerInternalMoveView::okEvent(void) {
         ic->addTask(QString("Move-out Inspection 3"), *description, dayOf);
     }
 
+    // Else if there will be people remaining in the unit when being moved into,
+    // FINISH THIS!!
     else if (withMembers->isChecked()) {
 
     }
 
     done(QDialog::Accepted);
 }
+
+/**
+  * When the options are cancelled
+  */
 
 void TriggerInternalMoveView::cancelEvent(void){
     done(QDialog::Rejected);
