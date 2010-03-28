@@ -116,11 +116,7 @@ void TaskListView::populateAnnualTaskList(void) {
     TaskSpecModel::iterator_range annualTasks(committee->findTaskSpecs());
     annualTask_list->fill(annualTasks);
     delete_annual_button->setEnabled(false);
-
-    if (annualTask_list->size().isEmpty())  // CHECK IF LIST IS EMPTY
-        activate_annual_button->setEnabled(false);
-    else
-        activate_annual_button->setEnabled(true);
+    activate_annual_button->setEnabled(annualTasks.first != annualTasks.second);
 }
 
 /**
@@ -130,7 +126,7 @@ void TaskListView::populateAnnualTaskList(void) {
 void TaskListView::activateButtons() {
     TaskModel *task(task_list->getModel());
 
-    if(0 == task) {                     // If there is no choice made
+    if(0 == task) {
         return;
     }
 
@@ -141,14 +137,15 @@ void TaskListView::activateButtons() {
 }
 
 /**
-  *  De/activate the various control buttons depending on the annual task selected.
+  * De/activate the various control buttons depending on the annual task
+  * selected.
   */
 void TaskListView::activateSpecButtons() {
     TaskSpecModel *annualTask(annualTask_list->getModel());
-    if(0 == annualTask)
+    if(0 == annualTask) {
         return;
-    else
-        delete_annual_button->setEnabled(true);
+    }
+    delete_annual_button->setEnabled(true);
 }
 
 /**

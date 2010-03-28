@@ -1,39 +1,31 @@
+
 #include "validator.h"
 
-Validator::Validator()
-{
-}
+const quint64 Validator::PHONE_UP_EDGE = Q_UINT64_C(9999999999);
+const quint64 Validator::PHONE_LOW_EDGE = Q_UINT64_C(1000000000);
+
+Validator::Validator() { }
 
 //check whether the input is a valid Canadian phone number.
 //9 digits
 bool Validator::isValidPhoneNo(QString inStr){
     bool ok;
-    long long pno;
+    quint64 pno;
     if(inStr == "") {
         return false;
     } else {
-        pno = inStr.toLongLong(&ok, 10);
-        if(ok) {
-            if(pno < PHONE_UP_EDGE && pno > PHONE_LOW_EDGE){
-                return true;
-            }else {
-                return false;
-            }
-        }else {
-            return ok;
-        }
+        pno = inStr.toULongLong(&ok, 10);
+        return ok && pno < PHONE_UP_EDGE && pno > PHONE_LOW_EDGE;
     }
 }
 
 //check whether the input is digit.
 bool Validator::isValidDigit(QString inStr){
-    bool ok;
-
     if(inStr == "") {
         return false;
-    } else {
-        inStr.toLong(&ok, 10);
-        return ok;
     }
 
+    bool ok;
+    inStr.toLong(&ok, 10);
+    return ok;
 }
