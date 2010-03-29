@@ -58,7 +58,7 @@ void AddMemberView::buildForm(FormLayoutPtr &layout) {
     // make the layout of the form
     first_name = layout << "First Name: " |= new QLineEdit;
     last_name = layout << "Last Name: " |= new QLineEdit;
-    phone_number = layout << "Telephone Number: " |= new QLineEdit;
+    phone_number = layout << "Telephone Number: (numbers only)" |= new QLineEdit;
     layout << "Share Telephone Number?: " | share_phone_number;
     layout << "" | dont_share_phone;
     address =  layout << "Address: " |= new QLineEdit;

@@ -76,8 +76,8 @@ void HomeView::setTabFormat(QTabWidget *qtab){
     //qtab->setFixedSize(400,320);
     qtab->setStyleSheet(
         "QTabWidget::pane {"
-        "border-top: 2px solid #C2C7CB;}"
-        "QTabWidget::tab-bar {left: 2px;}"
+        "border-top: 0px solid #C2C7CB;}"
+        "QTabWidget::tab-bar {left: 2px}"
         "QTabBar::tab {"
         "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
         "stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,"

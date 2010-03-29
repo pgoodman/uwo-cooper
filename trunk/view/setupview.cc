@@ -54,6 +54,7 @@ void SetupView::coordinator(void) {
     QLabel *passLabel = new QLabel("&Password: ");
     QLineEdit *nameLineEdit = new QLineEdit;
     coord_pass = new QLineEdit;
+    coord_pass->setEchoMode(QLineEdit::Password);
 
 
     nameLineEdit->setText(QString(COORDINATOR_USER_NAME));

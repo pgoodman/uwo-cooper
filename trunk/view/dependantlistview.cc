@@ -31,7 +31,7 @@ DependantListView::DependantListView(MemberModel *user, QWidget *parent)
         this, SLOT(addDependantToList(DependantModel *))
     );
 
-    QScrollArea *list(new QScrollArea(this));
+    list = new QScrollArea(this);
     list->setWidgetResizable(true);
     QWidget *dependant_widget(new QWidget(list));
     layout->addWidget(list);
@@ -71,4 +71,5 @@ void DependantListView::removeDependantFromList(DependantListItemView *item) {
 void DependantListView::addDependantToList(DependantModel *dep) {
     DependantListItemView *item(new DependantListItemView(dep, this));
     list_layout->addWidget(item);
+    this->setFixedSize(list->width() + 50, list->height() + 150);
 }
