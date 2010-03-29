@@ -30,6 +30,7 @@ public:
 private:
     MemberModel *member;
     QGridLayout *list_layout;
+    QScrollArea *list;
 
 public slots:
     void removeDependantFromList(DependantListItemView *);

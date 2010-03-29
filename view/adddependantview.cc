@@ -15,12 +15,14 @@ AddDependantView::AddDependantView(MemberModel *mem, QWidget *parent)
  : QWidget(parent), member(mem) {
     FormLayoutPtr layout(this);
 
+    layout <<= new QLabel("Dependant Full Name");
+    layout |= new QLabel("Dependant Birthday");
     name = layout <<= new QLineEdit;
     bday_21 = layout |= new QDateEdit;
     QPushButton *save_button = layout |= new QPushButton("Add");
 
     bday_21->setCalendarPopup(true);
-
+    this->setWindowModality(Qt::ApplicationModal);
     connect(save_button, SIGNAL(clicked()), this, SLOT(addDependant()));
 }
 
