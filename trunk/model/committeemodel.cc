@@ -13,7 +13,8 @@ CommitteeModel::CommitteeModel(QString n, const bool canDelete,
                      const int committeeId)
  : IModel<CommitteeModel,select_from_table_tag>(committeeId), name(n),
    can_delete(canDelete), chair_perms(chairPerms),
-   member_perms(memberPerms), chair_id(chairId), secretary_id(secretaryId) {
+   member_perms(memberPerms), chair_id(chairId), secretary_id(secretaryId),
+   chair(0), secretary(0) {
 }
 
 /**
@@ -198,12 +199,50 @@ void CommitteeModel::setName(QString newName)
 
 void CommitteeModel::setChair(MemberModel *newChair)
 {
-    chair = newChair;
-    chair_id = newChair->getMemberId();
+    if(0 != newChair) {
+        chair = newChair;
+        chair_id = newChair->id;
+    } else {
+        chair = 0;
+        chair_id = 0;
+    }
 }
 
 void CommitteeModel::setSecretary(MemberModel *newSec)
 {
-    secretary = newSec;
-    secretary_id = newSec->getMemberId();
+    if(0 != newSec) {
+        secretary = newSec;
+        secretary_id = newSec->id;
+    } else {
+        secretary = 0;
+        secretary_id = 0;
+    }
+}
+
+MemberModel *CommitteeModel::findChair(void) {
+    if(0 != chair_id) {
+        if(0 == chair) {
+            chair = MemberModel::findById(chair_id);
+        }
+        if(0 == chair) { // self-repair
+            chair_id = 0;
+            save();
+        }
+    }
+
+    return chair;
+}
+
+MemberModel *CommitteeModel::findSecretary(void) {
+    if(0 != secretary_id) {
+        if(0 == secretary) {
+            secretary = MemberModel::findById(secretary_id);
+        }
+        if(0 == chair) { // self-repair
+            secretary_id = 0;
+            save();
+        }
+    }
+
+    return secretary;
 }

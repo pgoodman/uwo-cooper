@@ -167,8 +167,8 @@ public:
     TaskSpecModel::iterator_range findTaskSpecs(void);
     MemberModel::iterator_range findMembers(void);
 
-    MemberModel* getChair(){ return chair;}
-    MemberModel* getSec(){ return secretary;}
+    MemberModel* findChair(void);
+    MemberModel* findSecretary(void);
 
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
@@ -207,14 +207,14 @@ private:
     QString name;
     bool can_delete;
 
-    MemberModel *chair;
-    MemberModel *secretary;
-
     PermissionModelSet chair_perms;
     PermissionModelSet member_perms;
 
     int chair_id;
     int secretary_id;
+
+    MemberModel *chair;
+    MemberModel *secretary;
 };
 
 #endif /* MEMBER_COMMITTEE_H_ */
