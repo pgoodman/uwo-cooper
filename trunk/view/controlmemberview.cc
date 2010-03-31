@@ -54,8 +54,10 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     if(active_user->hasPermission(ADD_MEMBER)) {
         column->addWidget(add_button);
     }
-    if(active_user->hasPermission(EDIT_MEMBER_INFO)) {
+    if(active_user->hasPermission(EDIT_SELF_PASS)) {
         column->addWidget(edit_button);
+    }
+    if(active_user->hasPermission(EDIT_MEMBER_INFO)) {
         column->addWidget(dependant_button);
         column->addWidget(move_out_button);
         column->addWidget(internal_move_button);

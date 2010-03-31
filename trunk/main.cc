@@ -54,11 +54,13 @@ static bool install_committees(QSqlQuery &q) {
         | EDIT_COMMITTEE_SECRETARY
         | ADD_TASK
         | PRINT_TASK_LIST
+        | EDIT_SELF_PASS
     );
     PermissionModelSet member_perms(0
         | PRINT_PUBLIC_LIST
         | PRINT_COMMITTEE_LIST
         | VIEW_SELF_INFO
+        | EDIT_SELF_PASS
     );
     PermissionModelSet education_chair_perms(chair_perms
         | INIT_MEMBER_COMMITTEE

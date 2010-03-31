@@ -70,17 +70,18 @@ void EditMemberView::initForm(void) {
     balance_due->setText(QVariant(member->getMoneyOwed()).toString());
 
     if(!checkPerm(EDIT_MEMBER_INFO)) {
-        share_phone_number->setDisabled(true);
-        date_moved_in->setDisabled(true);
-        first_name->setDisabled(true);
-        last_name->setDisabled(true);
-        phone_number->setDisabled(true);
-        address->setDisabled(true);
-        user_name->setDisabled(true);
+        share_phone_number->setCheckable(false);
+        dont_share_phone->setCheckable(false);
+        date_moved_in->setReadOnly(true);
+        first_name->setReadOnly(true);
+        last_name->setReadOnly(true);
+        phone_number->setReadOnly(true);
+        address->setReadOnly(true);
+        user_name->setReadOnly(true);
 
         // don't divulge this info!
-        user_name->hide();
-        password->hide();
+        //user_name->hide();
+        //password->hide();
 
         // interesting interactions with the other permissions!
         if((member != active_user && !checkPerm(VIEW_OTHER_INFO))
