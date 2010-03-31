@@ -44,6 +44,9 @@ HomeView::HomeView(QWidget *parent):QDialog(parent) {
 
         tabs->addTab(myinfo, "My Info");
     }
+    if(active_user->is_coordinator) {
+        tabs->addTab(new ControlUnitView(tabs), "Units");
+    }
 
     //makeMenuBar();
     //setContentsMargins(11, 11, 11, 11);

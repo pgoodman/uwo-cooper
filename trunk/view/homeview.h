@@ -17,6 +17,7 @@
 
 #include "view/controlmemberview.h"
 #include "view/controlcommitteeview.h"
+#include "view/controlunitview.h"
 #include "view/viewmemberview.h"
 
 //class HomeView : public QMainWindow {
