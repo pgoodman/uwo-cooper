@@ -70,47 +70,48 @@ void EditMemberView::initForm(void) {
     balance_due->setText(QVariant(member->getMoneyOwed()).toString());
 
     if(!checkPerm(EDIT_MEMBER_INFO)) {
-        share_phone_number->setCheckable(false);
-        dont_share_phone->setCheckable(false);
+        share_phone_number->setDisabled(true);
+        dont_share_phone->setDisabled(true);
         date_moved_in->setReadOnly(true);
         first_name->setReadOnly(true);
         last_name->setReadOnly(true);
         phone_number->setReadOnly(true);
         address->setReadOnly(true);
         user_name->setReadOnly(true);
+        balance_due->setReadOnly(true);
 
         // don't divulge this info!
         //user_name->hide();
         //password->hide();
 
         // interesting interactions with the other permissions!
-        if((member != active_user && !checkPerm(VIEW_OTHER_INFO))
-        || !checkPerm(VIEW_SELF_INFO)) {
-            share_phone_number->hide();
-            date_moved_in->hide();
-            address->hide();
+        // this control is done through the controlmemberview by whether enabling the edit button
+        // also, active_user and member are different class instances.
+        // the comparison here is not effective. Use id to compare
+        /*
+            if((member != active_user && !checkPerm(VIEW_OTHER_INFO))
+            || !checkPerm(VIEW_SELF_INFO)) {
+                share_phone_number->hide();
+                date_moved_in->hide();
+                address->hide();
 
-            if(!checkPerm(PRINT_PUBLIC_LIST)) {
-                first_name->hide();
-                last_name->hide();
-                unit->hide();
-            }
+                if(!checkPerm(PRINT_PUBLIC_LIST)) {
+                    first_name->hide();
+                    last_name->hide();
+                    unit->hide();
+                }
 
-            if(!checkPerm(PRINT_COMMITTEE_LIST)) {
-                committee->hide();
-            }
+                if(!checkPerm(PRINT_COMMITTEE_LIST)) {
+                    committee->hide();
+                }
 
-            if(!checkPerm(PRINT_PRIVATE_LIST)) {
-                phone_number->hide();
-            }
-        }
+                if(!checkPerm(PRINT_PRIVATE_LIST)) {
+                    phone_number->hide();
+                }
+            }*/
     }
 
-    // not allowed to edit self password
-    password->setDisabled(
-        (active_user == member && !checkPerm(EDIT_SELF_PASS)) ||
-        (active_user != member && !checkPerm(EDIT_MEMBER_INFO))
-    );
+    password->setDisabled(false);
 
 
     if(0 == member->findCommittee()) {
@@ -133,9 +134,9 @@ void EditMemberView::initForm(void) {
         committee->setDisabled(true);
         assign_committee->setDisabled(true);
         dont_assign_committee->setDisabled(true);
-        committee->hide();
-        assign_committee->hide();
-        dont_assign_committee->hide();
+        //committee->hide();
+        //assign_committee->hide();
+        //dont_assign_committee->hide();
     }
 
     // change the unit list somewhat, the unit cannot be edited here. That is,
@@ -145,9 +146,9 @@ void EditMemberView::initForm(void) {
         unit->addModel(member->findUnit());
         unit->selectFirst();
         unit->setDisabled(true);
-        unit->hide();
-        unit_is_empty->hide();
-        unit_not_empty->hide();
+        //unit->hide();
+        unit_is_empty->setDisabled(true);
+        unit_not_empty->setDisabled(true);
     }
 }
 
