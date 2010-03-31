@@ -196,12 +196,14 @@ void CommitteeModel::setName(QString newName)
     name = newName;
 }
 
-void CommitteeModel::setChair(int chairID)
+void CommitteeModel::setChair(MemberModel *newChair)
 {
-    chair_id = chairID;
+    chair = newChair;
+    chair_id = newChair->getMemberId();
 }
 
-void CommitteeModel::setSecretary(int secID)
+void CommitteeModel::setSecretary(MemberModel *newSec)
 {
-    secretary_id = secID;
+    secretary = newSec;
+    secretary_id = newSec->getMemberId();
 }

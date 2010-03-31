@@ -167,6 +167,9 @@ public:
     TaskSpecModel::iterator_range findTaskSpecs(void);
     MemberModel::iterator_range findMembers(void);
 
+    MemberModel* getChair(){ return chair;}
+    MemberModel* getSec(){ return secretary;}
+
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
     QString getMemberRoleByID(const int m_id);
@@ -177,8 +180,8 @@ public:
     void setChairPerms(PermissionModelSet newPerms);
     void setMemberPerms(PermissionModelSet newPerms);
     void setName(QString newName);
-    void setChair(int chairID);
-    void setSecretary(int secID);
+    void setChair(MemberModel *newChair);
+    void setSecretary(MemberModel *newSec);
 
     QString getName(){return name;}
 
