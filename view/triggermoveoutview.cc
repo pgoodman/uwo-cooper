@@ -61,7 +61,8 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
 
 void TriggerMoveOutView::okEvent(void) {
 
-    bool taskexisted = false;
+    //bool taskexisted = false;
+
     // Get the information on the move out date and the notice date
     QDateTime moveOutDate = move_out_date->dateTime();
     QDateTime noticeDate = notice_date->dateTime();
