@@ -176,8 +176,13 @@ void MemberModel::setAddress(QString addr){
 }
 
 void MemberModel::setCommittee(CommitteeModel *comm) {
-    committee_id = comm->id;
-    committee = comm;
+    if(0 == comm) {
+        committee_id = 0;
+        committee = 0;
+    } else {
+        committee_id = comm->id;
+        committee = comm;
+    }
 }
 
 QString MemberModel::getLoginName(){
