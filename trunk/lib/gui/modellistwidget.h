@@ -12,6 +12,7 @@
 #include <utility>
 
 #include <QWidget>
+#include <QAbstractItemView>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QList>
@@ -42,6 +43,7 @@ public:
      * Get the currently selected item.
      */
     T *getModel(void);
+    QList<T *> getModels(void);
 
     /**
      * Select a specific model.
@@ -70,6 +72,11 @@ public:
      * Remove one of the models from the list.
      */
     void removeModel(T *model);
+
+    /**
+     * Toggle allowing multiple selection.
+     */
+    void setMultipleSelect(const bool yes);
 };
 
 /**
@@ -119,6 +126,22 @@ T * ModelListWidget<T>::getModel(void) {
 }
 
 template <typename T>
+QList<T *> ModelListWidget<T>::getModels(void) {
+    QList<T *> list;
+    ModelListWidgetItem<T> *row;
+    QListWidgetItem *item;
+    QList<QListWidgetItem *> items(selectedItems());
+
+    while(!items.isEmpty()) {
+        item = items.removeLast();
+        row = static_cast<ModelListWidgetItem<T> *>(item);
+        list.append(row->getModel());
+    }
+
+    return list;
+}
+
+template <typename T>
 void ModelListWidget<T>::selectFirst(void) {
     if(0 < count()) {
         setItemSelected(item(0), true);
@@ -154,4 +177,12 @@ template <typename T>
 void ModelListWidget<T>::removeModel(T *model) {
     (void) model;
 }
+
+template <typename T>
+void ModelListWidget<T>::setMultipleSelect(const bool set_it) {
+    setSelectionMode(set_it ?
+        QAbstractItemView::MultiSelection : QAbstractItemView::SingleSelection
+    );
+}
+
 #endif /* MODELLIST_H_ */
