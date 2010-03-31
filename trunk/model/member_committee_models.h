@@ -54,7 +54,7 @@ public:
     QString getFirstName(void);
     QString getLastName(void);
     QString getAddress(void);
-    int     getMemberId() { return member_id; }
+    int     getMemberId() { return id; }
 
     QDateTime getMoveInTime(void);
     CommitteeModel *findCommittee(void);
