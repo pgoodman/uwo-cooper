@@ -61,6 +61,7 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
 
 void TriggerMoveOutView::okEvent(void) {
 
+    bool taskexisted = false;
     // Get the information on the move out date and the notice date
     QDateTime moveOutDate = move_out_date->dateTime();
     QDateTime noticeDate = notice_date->dateTime();
@@ -80,6 +81,8 @@ void TriggerMoveOutView::okEvent(void) {
         CommitteeModel *ic(CommitteeModel::findById(
             CommitteeModel::INSPECTIONS_COMMITTEE_ID
         ));
+
+
         // Send First Move-Out Inspection Task
         QDateTime in_30_days(noticeDate);
         in_30_days = in_30_days.addDays(30);
@@ -93,6 +96,7 @@ void TriggerMoveOutView::okEvent(void) {
         // Send Third Move-Out Inspection Task
         QDateTime dayOf(moveOutDate);
         ic->addTask(QString("Move-out Inspection 3"), *description, dayOf);
+
     }
 
     done(QDialog::Accepted);
