@@ -24,7 +24,7 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     layout << "" | tabs;
 
     //Add / cancel buttons
-    QPushButton *editButton = new QPushButton("Edit Committee");
+    QPushButton *editButton = new QPushButton("Update Committee");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     layout << editButton | cancelButton;
@@ -34,17 +34,17 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     selectChair->fill(&MemberModel::findAll);
     selectSecretary->fill(&MemberModel::findAll);
 
-    if(selCommittee->getChair() != 0)
+    if(selCommittee->findChair() != 0)
     {
-    selectChair->selectModel(selCommittee->getChair());
+        selectChair->selectModel(selCommittee->findChair());
     }
     else
     {
         selectChair->selectFirst();
     }
 
-    if(selCommittee->getSec() != 0){
-        selectSecretary->selectModel(selCommittee->getSec());
+    if(selCommittee->findSecretary() != 0){
+        selectSecretary->selectModel(selCommittee->findSecretary());
     }
     else
     {
@@ -80,10 +80,9 @@ void EditCommitteeView::editCommittee()
     secModel->setCommittee(selCommittee);
     secModel->save();
 
-    done(QDialog::Accepted);
+    emit accept();
 }
 
-void EditCommitteeView::cancelCommittee()
-{
-    done(QDialog::Rejected);
+void EditCommitteeView::cancelCommittee() {
+    emit reject();
 }
