@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QSqlQuery>
+#include <QTime>
 
 #include "lib/imodel.h"
 

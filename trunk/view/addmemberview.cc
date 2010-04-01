@@ -15,9 +15,47 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
     buildForm(layout);
     finishForm(layout);
+
+    connect(unit, SIGNAL(itemSelectionChanged()), this, SLOT(checkTask()));
+    connect(
+        date_moved_in, SIGNAL(dateTimeChanged(const QDateTime &)),
+        this, SLOT(checkTask(const QDateTime &))
+    );
 }
+
 AddMemberView::AddMemberView(int *foo, QWidget *parent) : QDialog(parent) {
     (void) foo;
+}
+
+/**
+ * A unit has been selected.
+ */
+void AddMemberView::checkTask(void) {
+    checkTask(date_moved_in->dateTime());
+}
+
+/**
+ * The date has been changed.
+ */
+void AddMemberView::checkTask(const QDateTime &date) {
+    UnitModel *unit_model(unit->getSelectedModel());
+    if(0 != unit_model) {
+        lookForExistingMoveInTask(unit_model, date);
+    }
+}
+
+/**
+ * Go look for an existing task for the move-in-event and ask the user adding
+ * the member whether or not they want to update that task.
+ */
+void AddMemberView::lookForExistingMoveInTask(UnitModel *model,
+                                              const QDateTime t) {
+    QList<MoveInEventModel *> events(MoveInEventModel::findAll(model->id, t));
+    while(!events.isEmpty()) {
+        MoveInEventModel *event(events.takeLast());
+
+        std::cout << event->task_description.toStdString() << '\n';
+    }
 }
 
 /**
@@ -32,6 +70,10 @@ bool AddMemberView::checkPerm(PermissionModelSet perm) {
  * Build the form.
  */
 void AddMemberView::buildForm(FormLayoutPtr &layout) {
+
+    today = QDateTime::currentDateTime();
+    today.setTime(QTime());
+
     // make the yes/no buttons for the phone number
     QButtonGroup *share_phone_group(new QButtonGroup);
     dont_share_phone = new QRadioButton("No");
@@ -71,6 +113,8 @@ void AddMemberView::buildForm(FormLayoutPtr &layout) {
     layout << "" | unit_not_empty;
     user_name = layout << "Login Name: " |= new QLineEdit;
     password = layout << "Password: " |= new QLineEdit;
+
+    date_moved_in->setDate(QDate::currentDate());
 }
 
 /**
@@ -112,7 +156,7 @@ bool AddMemberView::checkForm(void) {
     if(first_name->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
-            "Please enter a given name (family name / last name)."
+            "Please enter a given name (first name)."
         );
         return false;
     }
@@ -120,7 +164,7 @@ bool AddMemberView::checkForm(void) {
     if(last_name->text().isEmpty()) {
         QMessageBox::information(
             this, "Empty Field",
-            "Please enter a surname (family name / last name)."
+            "Please enter a surname (last name)."
         );
         return false;
     }
@@ -139,6 +183,14 @@ bool AddMemberView::checkForm(void) {
             this, "Empty Field",
             "Please enter an address for where the person lived before "
             "the co-op."
+        );
+        return false;
+    }
+
+    if(date_moved_in->dateTime() < today) {
+        QMessageBox::information(
+            this, "Invalid Field",
+            "Please enter a move in date that is not in the past."
         );
         return false;
     }

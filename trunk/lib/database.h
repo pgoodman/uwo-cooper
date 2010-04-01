@@ -76,6 +76,7 @@ template <> QSqlQuery &operator<< <string>(QSqlQuery &q, string val);
 template <> QSqlQuery &operator<< <time_t>(QSqlQuery &q, time_t val);
 template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val);
 template <> QSqlQuery &operator<< <QDateTime>(QSqlQuery &q, QDateTime val);
+template <> QSqlQuery &operator<< <const QDateTime>(QSqlQuery &q, const QDateTime val);
 template <> QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val);
 
 /**

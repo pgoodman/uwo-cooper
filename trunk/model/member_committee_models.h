@@ -156,7 +156,7 @@ public:
                 const PermissionModelSet memberPerms,
                 const int chairId, const int secretaryId);
 
-    bool addTask(QString name, QString description, QDateTime deadline) const;
+    TaskModel *addTask(QString name, QString description, QDateTime deadline) const;
     bool addTaskSpec(QString name, QString description,
                      QDateTime month_day) const;
 
@@ -173,18 +173,16 @@ public:
     PermissionModelSet getPermissions(const int member_id);
     QString toString(void);
     QString getMemberRoleByID(const int m_id);
+    QString getName(void);
 
     PermissionModelSet getChairPerms(){return chair_perms;}
     PermissionModelSet getMemPerms(){return member_perms;}
-    int getCommitteeId() {return id;}
 
     void setChairPerms(PermissionModelSet newPerms);
     void setMemberPerms(PermissionModelSet newPerms);
     void setName(QString newName);
     void setChair(MemberModel *newChair);
     void setSecretary(MemberModel *newSec);
-
-    QString getName(){return name;}
 
     virtual ~CommitteeModel();
 

@@ -130,6 +130,10 @@ template <> QSqlQuery &operator<< <QDateTime>(QSqlQuery &q, QDateTime val) {
     q.addBindValue(QVariant(val.toTime_t()));
     return q;
 }
+template <> QSqlQuery &operator<< <const QDateTime>(QSqlQuery &q, const QDateTime val) {
+    q.addBindValue(QVariant(val.toTime_t()));
+    return q;
+}
 template <> QSqlQuery &operator<< <void *>(QSqlQuery &q, void *val) {
     (void) val;
     q.addBindValue(QVariant());

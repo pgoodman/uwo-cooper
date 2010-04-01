@@ -262,7 +262,11 @@ MemberModel *MemberModel::create(const bool sharePhone,
             CommitteeModel *ic(CommitteeModel::findById(
                 CommitteeModel::INSPECTIONS_COMMITTEE_ID
             ));
-            ic->addTask(QString("Move-in Event"), *task_desc, in_30_days);
+            TaskModel *move_in_task(
+                ic->addTask(QString("Move-in Event"), *task_desc, in_30_days)
+            );
+
+            MoveInEventModel::create(unit->id, move_in_task->id, moveInTime);
         }
 
         // Every New Member event must add an Orientation task to the task

@@ -82,7 +82,7 @@ void MemberSwapWidget::updateListModels()
 {
     stringstream searchForIn;
     stringstream searchForNot;
-    int id = committee->getCommitteeId();
+    int id = committee->id;
 
     searchForIn << "committee_id=" << id;
     searchForNot << "committee_id!=" << id;
