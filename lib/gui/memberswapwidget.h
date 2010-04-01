@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QGroupBox>
-#include <QScrollArea>
+#include <QStackedWidget>
 #include <QPushButton>
 #include <QMessageBox>
 #include <QLabel>
@@ -13,7 +13,7 @@
 #include "model/committeemodel.h"
 #include "modellistwidget.h"
 
-class MemberSwapWidget : public QScrollArea{
+class MemberSwapWidget : public QStackedWidget{
 Q_OBJECT
 
 public:

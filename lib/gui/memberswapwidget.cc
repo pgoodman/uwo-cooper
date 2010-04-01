@@ -1,7 +1,7 @@
 #include "memberswapwidget.h"
 
 MemberSwapWidget::MemberSwapWidget(CommitteeModel *currentCommittee, QWidget *parent)
-    : QScrollArea(parent)
+    : QStackedWidget(parent)
 {
     boxGroup = new QGroupBox("Member Swaping");
     committee = currentCommittee;
@@ -12,7 +12,7 @@ MemberSwapWidget::MemberSwapWidget(CommitteeModel *currentCommittee, QWidget *pa
     updateListModels();
 
     boxGroup->setLayout(layout);
-    setWidget(boxGroup);
+    addWidget(boxGroup);
 }
 
 void MemberSwapWidget::setUpLayout()
