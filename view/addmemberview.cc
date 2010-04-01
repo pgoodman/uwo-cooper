@@ -128,7 +128,8 @@ bool AddMemberView::checkForm(void) {
     if(!Validator::isValidPhoneNo(phone_number->text())) {
         QMessageBox::information(
             this, "Invalid Field",
-            "Please enter a valid telephone number."
+            "Please enter a valid phone number Phone numbers must be 10 "
+            "digits long and be all numbers."
         );
         return false;
     }

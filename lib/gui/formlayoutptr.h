@@ -40,6 +40,8 @@ public:
 
     FormLayoutPtr &operator[](const int);
 
+    void replaceItem(QWidget *, QWidget *);
+
     /**
      * Add in a widget to a new line and return the widget.
      */

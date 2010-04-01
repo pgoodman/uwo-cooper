@@ -11,7 +11,7 @@ EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent)
     FormLayoutPtr layout(this);
     buildForm(layout);
     AddMemberView::finishForm(layout);
-    initForm();
+    initForm(layout);
 
     save_button->setText("Update Member");
     setWindowTitle("Edit Member Information");
@@ -41,7 +41,7 @@ void EditMemberView::buildForm(FormLayoutPtr &layout) {
  * Initialize all of the fields. This deals with all of the scary corners of
  * how the permissions interact.
  */
-void EditMemberView::initForm(void) {
+void EditMemberView::initForm(FormLayoutPtr &layout) {
     share_phone_number->setChecked(member->isTelephoneShared());
     date_moved_in->setDate(member->getMoveInTime().date());
     first_name->setText(member->getFirstName());
@@ -117,22 +117,17 @@ void EditMemberView::initForm(void) {
         committee->setDisabled(true);
         assign_committee->setDisabled(true);
         dont_assign_committee->setDisabled(true);
-        //committee->hide();
         //assign_committee->hide();
         //dont_assign_committee->hide();
+
+        committee->hide();
+        layout.replaceItem(committee, new QLabel(member->findCommittee()->toString()));
     }
 
     // change the unit list somewhat, the unit cannot be edited here. That is,
     // it must be changed through an internal move once set.
-    unit->clear();
-    if(0 != member->findUnit()) {
-        unit->addModel(member->findUnit());
-        unit->selectFirst();
-        unit->setDisabled(true);
-        //unit->hide();
-        unit_is_empty->setDisabled(true);
-        unit_not_empty->setDisabled(true);
-    }
+    layout.replaceItem(unit, new QLabel(member->findUnit()->toString()));
+    delete unit;
 }
 
 /**
@@ -140,49 +135,6 @@ void EditMemberView::initForm(void) {
  */
 void EditMemberView::accept() {
 
-    //valid data and change exists
-    if(first_name->text().isEmpty()) {
-        QMessageBox::information(
-            this, "Invalid Field",
-            "Please enter a given name."
-        );
-        return;
-    }
-    if(last_name->text().isEmpty()) {
-        QMessageBox::information(
-            this, "Invalid Field",
-            "Please enter a surname (family name / last name)."
-        );
-        return;
-    }
-    if(!Validator::isValidPhoneNo(phone_number->text())) {
-        QMessageBox::information(
-            this, "Invalid Field",
-            "Please enter a valid phone number."
-        );
-        return;
-    }
-    if(user_name->text().isEmpty()) {
-        QMessageBox::information(
-            this, "Empty Field",
-            "Please enter a user login name."
-        );
-        return;
-    }
-    if(password->text().isEmpty()) {
-        QMessageBox::information(
-            this, "Empty Field",
-            "Please enter a password."
-        );
-        return;
-    }
-    if(!Validator::isValidDigit(balance_due->text())) {
-        QMessageBox::information(
-            this, "Invalid Field",
-            "Please enter a valid owning number."
-        );
-        return;
-    }
     member->setFirstName(first_name->text());
     member->setLastName(last_name->text());
     member->setTelephoneNumber(phone_number->text());
@@ -199,6 +151,10 @@ void EditMemberView::accept() {
     && 0 != committee->getSelectedModel()) {
 
         member->setCommittee(committee->getSelectedModel());
+    }
+
+    if(!assign_committee->isEnabled() && !committee->isEnabled()) {
+        delete committee;
     }
 
     member->save();

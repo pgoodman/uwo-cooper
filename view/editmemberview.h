@@ -23,7 +23,7 @@ protected:
 
     QLineEdit *balance_due;
 
-    void initForm(void);
+    void initForm(FormLayoutPtr &layout);
     void buildForm(FormLayoutPtr &layout);
     void finishForm(FormLayoutPtr &layout);
 
