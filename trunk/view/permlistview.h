@@ -15,15 +15,15 @@
 
 using namespace std;
 
-class PermListWidget : public QScrollArea{
+class PermListView : public QScrollArea{
 Q_OBJECT
 public:
-    PermListWidget(QWidget *parent = 0);
-    PermListWidget(QString name, PermissionModelSet list, QWidget *parent = 0);
+    PermListView(QWidget *parent = 0);
+    PermListView(QString name, PermissionModelSet list, QWidget *parent = 0);
 
     PermissionModelSet getPermissions();
 
-    ~PermListWidget();
+    ~PermListView();
 
 private:
        void setUpRadioButtons();
