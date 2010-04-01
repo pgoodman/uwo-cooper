@@ -29,7 +29,7 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
 
     MemberSwapWidget *swap = new MemberSwapWidget(selCommittee);
 
-    layout << "stf" |= swap;
+    layout << "Member Swaping:" |= swap;
 
     layout << editButton | cancelButton;
 
