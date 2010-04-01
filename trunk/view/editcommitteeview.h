@@ -15,6 +15,7 @@
 #include "lib/gui/modellistwidget.h"
 #include "lib/gui/permlistwidget.h"
 #include "lib/gui/formlayoutptr.h"
+#include "lib/gui/memberswapwidget.h"
 
 #include "model/membermodel.h"
 #include "model/committeemodel.h"

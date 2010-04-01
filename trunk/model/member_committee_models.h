@@ -176,6 +176,7 @@ public:
 
     PermissionModelSet getChairPerms(){return chair_perms;}
     PermissionModelSet getMemPerms(){return member_perms;}
+    int getCommitteeId() {return id;}
 
     void setChairPerms(PermissionModelSet newPerms);
     void setMemberPerms(PermissionModelSet newPerms);

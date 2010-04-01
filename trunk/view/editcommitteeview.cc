@@ -27,6 +27,10 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     QPushButton *editButton = new QPushButton("Update Committee");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
+    MemberSwapWidget *swap = new MemberSwapWidget(selCommittee);
+
+    layout << "stf" |= swap;
+
     layout << editButton | cancelButton;
 
     setModal(true);
