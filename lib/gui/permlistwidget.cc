@@ -26,31 +26,31 @@ void PermListWidget::setUpLayout()
 
 void PermListWidget::setUpRadioButtons()
 {
-    setUpButton(QString("Add Member Permission?:"), 0);
-    setUpButton(QString("Move Member Permission?:"), 1);
-    setUpButton(QString("Edit Member Permission?:"), 2);
-    setUpButton(QString("Edit Member Status Permission?:"), 3);
-    setUpButton(QString("Delete Member Permission?:"), 4);
-    setUpButton(QString("Initialize Member Committee Permission?:"), 5);
-    setUpButton(QString("Edit Member Committee Permission?:"), 6);
-    setUpButton(QString("Add Committee Permission?:"), 7);
-    setUpButton(QString("Edit Committee Permission?:"), 8);
-    setUpButton(QString("Delete Committee Permission?:"), 9);
-    setUpButton(QString("Print Private ListPermission?:"), 10);
-    setUpButton(QString("Print Public ListPermission?:"), 11);
-    setUpButton(QString("Print Committee List Permission?:"), 12);
-    setUpButton(QString("Add Task Permission?:"), 13);
-    setUpButton(QString("Edit Task Permission?:"), 14);
-    setUpButton(QString("Delete Task Permission?:"), 15);
-    setUpButton(QString("Print Task List Permission?:"), 16);
-    setUpButton(QString("Add Task Spec Permission?:"), 17);
-    setUpButton(QString("Delete Task Spec Permission?:"), 18);
-    setUpButton(QString("Activate Task Spec Permission?:"), 19);
-    setUpButton(QString("Edit Committee Chair Permission?:"), 20);
-    setUpButton(QString("Edit Committee Secretary Permission?:"), 21);
-    setUpButton(QString("View Self Info Permission?:"), 22);
-    setUpButton(QString("View Others Info Permission?:"), 23);
-    setUpButton(QString("Edit Self Password Permission?:"), 24);
+    setUpButton(QString("Can Add Member:"), 0);
+    setUpButton(QString("Can Move Member:"), 1);
+    setUpButton(QString("Can Edit Member:"), 2);
+    setUpButton(QString("Can Edit Member:"), 3);
+    setUpButton(QString("Can Delete Member:"), 4);
+    setUpButton(QString("Can Initialize Member:"), 5);
+    setUpButton(QString("Can Edit Member Committee:"), 6);
+    setUpButton(QString("Can Add Committee:"), 7);
+    setUpButton(QString("Can Edit Committee:"), 8);
+    setUpButton(QString("Can Delete Committee:"), 9);
+    setUpButton(QString("Can Print Private:"), 10);
+    setUpButton(QString("Can Print Public:"), 11);
+    setUpButton(QString("Can Print Committee:"), 12);
+    setUpButton(QString("Can Add Task:"), 13);
+    setUpButton(QString("Can Edit Task:"), 14);
+    setUpButton(QString("Can Delete Task:"), 15);
+    setUpButton(QString("Can Print Task:"), 16);
+    setUpButton(QString("Can Add Task Spec:"), 17);
+    setUpButton(QString("Can Delete Task Spec:"), 18);
+    setUpButton(QString("Can Activate Task Spec:"), 19);
+    setUpButton(QString("Can Edit Committee Chair:"), 20);
+    setUpButton(QString("Can Edit Committee Secretary:"), 21);
+    setUpButton(QString("Can View Self Info:"), 22);
+    setUpButton(QString("Can View Others Info:"), 23);
+    setUpButton(QString("Can Edit Self Password:"), 24);
 }
 
 void PermListWidget::setUpButton(QString name, int permNum)
