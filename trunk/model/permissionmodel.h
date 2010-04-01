@@ -25,20 +25,28 @@ typedef enum {
     PRINT_PRIVATE_LIST      =(1<<10),
     PRINT_PUBLIC_LIST       =(1<<11),
     PRINT_COMMITTEE_LIST    =(1<<12),
-    ADD_TASK                =(1<<13),
-    EDIT_TASK               =(1<<14),
-    DELETE_TASK             =(1<<15),
-    PRINT_TASK_LIST         =(1<<16),
-    ADD_TASK_SPEC           =(1<<17),
-    DELETE_TASK_SPEC        =(1<<18),
-    ACTIVATE_TASK_SPEC      =(1<<19),
+    ADD_SELF_TASK           =(1<<13),
+    EDIT_SELF_TASK          =(1<<14),
+    DELETE_SELF_TASK        =(1<<15),
+    PRINT_SLEF_TASK_LIST    =(1<<16),
+    ADD_SELF_TASK_SPEC      =(1<<17),
+    DELETE_SELF_TASK_SPEC   =(1<<18),
+    ACTIVATE_SELF_TASK_SPEC =(1<<19),
 
     EDIT_COMMITTEE_CHAIR    =(1<<20),
     EDIT_COMMITTEE_SECRETARY=(1<<21),
 
     VIEW_SELF_INFO          =(1<<22),
     VIEW_OTHER_INFO         =(1<<23),
-    EDIT_SELF_PASS          =(1<<24)
+    EDIT_SELF_PASS          =(1<<24),
+    ADD_TASK                =(1<<25),
+    EDIT_TASK               =(1<<26),
+    DELETE_TASK             =(1<<27),
+    PRINT_TASK_LIST         =(1<<28),
+    ADD_TASK_SPEC           =(1<<29),
+    DELETE_TASK_SPEC        =(1<<30),
+    ACTIVATE_TASK           =(1<<31)
+
 } PermissionModel;
 
 /*

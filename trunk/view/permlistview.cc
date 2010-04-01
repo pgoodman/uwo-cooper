@@ -38,18 +38,25 @@ void PermListView::setUpRadioButtons()
     setUpButton(QString("Can Print Private:"), 10);
     setUpButton(QString("Can Print Public:"), 11);
     setUpButton(QString("Can Print Committee:"), 12);
-    setUpButton(QString("Can Add Task:"), 13);
-    setUpButton(QString("Can Edit Task:"), 14);
-    setUpButton(QString("Can Delete Task:"), 15);
-    setUpButton(QString("Can Print Task:"), 16);
-    setUpButton(QString("Can Add Task Spec:"), 17);
-    setUpButton(QString("Can Delete Task Spec:"), 18);
-    setUpButton(QString("Can Activate Task Spec:"), 19);
+    setUpButton(QString("Can Add Self Committe Task:"), 13);
+    setUpButton(QString("Can Edit Self Committe Task:"), 14);
+    setUpButton(QString("Can Delete Self Committe Task:"), 15);
+    setUpButton(QString("Can Print Self Committe Task:"), 16);
+    setUpButton(QString("Can Add Self Committe Task Spec:"), 17);
+    setUpButton(QString("Can Delete Self Committe Task Spec:"), 18);
+    setUpButton(QString("Can Activate Self Committe Task Spec:"), 19);
     setUpButton(QString("Can Edit Committee Chair:"), 20);
     setUpButton(QString("Can Edit Committee Secretary:"), 21);
     setUpButton(QString("Can View Self Info:"), 22);
     setUpButton(QString("Can View Others Info:"), 23);
     setUpButton(QString("Can Edit Self Password:"), 24);
+    setUpButton(QString("Can Add Task:"), 25);
+    setUpButton(QString("Can Edit Task:"), 26);
+    setUpButton(QString("Can Delete Task:"), 27);
+    setUpButton(QString("Can Print Task:"), 28);
+    setUpButton(QString("Can Add Task Spec:"), 29);
+    setUpButton(QString("Can Delete Task Spec:"), 30);
+    setUpButton(QString("Can Activate Task Spec:"), 31);
 }
 
 void PermListView::setUpButton(QString name, int permNum)
