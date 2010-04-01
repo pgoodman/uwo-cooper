@@ -1,7 +1,9 @@
+
 #include "controlunitview.h"
 
 ControlUnitView::ControlUnitView(QWidget *parent) :QWidget(parent) {
     unit_list = new ModelListWidget<UnitModel>(this);
+    unit_list->setMultipleSelect(true);
 
     QGridLayout *layout = new QGridLayout(this);
     QVBoxLayout *column = new QVBoxLayout;
@@ -21,13 +23,13 @@ ControlUnitView::ControlUnitView(QWidget *parent) :QWidget(parent) {
     connect(
         unit_list, SIGNAL(itemSelectionChanged()),
         this, SLOT(activateButtons())
-        );
+    );
 
     column->addWidget(move_out_button);
     column->addWidget(internal_move_button);
 
     layout->addWidget(
-        new QLabel("Select a unit from the list to trigger the controls"),
+        new QLabel("Select unit(s) from the list to trigger the controls"),
         1, 1, 1, 2
     );
     layout->addWidget(unit_list, 2, 1, 1, 1);
@@ -35,10 +37,14 @@ ControlUnitView::ControlUnitView(QWidget *parent) :QWidget(parent) {
 
     populateUnits();
 }
+
 ControlUnitView::~ControlUnitView() {
 
 }
 
+/**
+ * Update the units list.
+ */
 void ControlUnitView::populateUnits() {
      unit_list->fill(&UnitModel::findAll);
      move_out_button->setDisabled(true);
@@ -49,19 +55,17 @@ void ControlUnitView::populateUnits() {
  * De/activate the various control buttons depending on the unit selected.
  */
 void ControlUnitView::activateButtons() {
-    UnitModel *unit(unit_list->getModel());
-    if(0 == unit) {
-        return;
-    }
-    move_out_button->setDisabled(false);
-    internal_move_button->setDisabled(false);
+    QList<UnitModel *> units(unit_list->getSelectedModels());
+    const int num_selected(units.size());
+    move_out_button->setDisabled(num_selected != 1);
+    internal_move_button->setDisabled(num_selected != 2);
 }
 
 /**
  * Launch the dialog to manage a move out event.
  */
 void ControlUnitView::triggerMoveOut() {
-    UnitModel *unit(unit_list->getModel());
+    UnitModel *unit(unit_list->getSelectedModel());
     if (0 == unit) {
         return;
     }
@@ -74,8 +78,8 @@ void ControlUnitView::triggerMoveOut() {
  * Launch the dialog to manage an internal move event.
  */
 void ControlUnitView::triggerInternalMove() {
-    UnitModel *unit(unit_list->getModel());
-    if (0 == unit) {
+    QList<UnitModel *> units(unit_list->getSelectedModels());
+    if (units.isEmpty()) {
         return;
     }
 

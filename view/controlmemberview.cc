@@ -29,8 +29,6 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     mark_button = new QPushButton("Mark Member As Deleted");
     unmark_button = new QPushButton("Un-Mark Member As Deleted");
     del_button = new QPushButton("Delete Member");
-    move_out_button = new QPushButton("Trigger Move Out Event");
-    internal_move_button = new QPushButton("Trigger Internal Move Event");
     dependant_button = new QPushButton("Manage Dependants");
     print_public_button = new QPushButton("Print Public Phone List");
     print_private_button = new QPushButton("Print Full Phone List");
@@ -40,8 +38,6 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
     connect(mark_button, SIGNAL(clicked()), this, SLOT(markMember()));
     connect(unmark_button, SIGNAL(clicked()), this, SLOT(unmarkMember()));
     connect(del_button, SIGNAL(clicked()), this, SLOT(deleteMember()));
-    connect(move_out_button, SIGNAL(clicked()), this, SLOT(triggerMoveOut()));
-    connect(internal_move_button, SIGNAL(clicked()), this, SLOT(triggerInternalMove()));
     connect(dependant_button, SIGNAL(clicked()), this, SLOT(manageDependants()));
     connect(print_public_button, SIGNAL(clicked()), this, SLOT(printPublic()));
     connect(print_private_button, SIGNAL(clicked()), this, SLOT(printPrivate()));
@@ -61,8 +57,6 @@ ControlMemberView::ControlMemberView(QWidget *parent) : QWidget(parent) {
 
     if(active_user->hasPermission(EDIT_MEMBER_INFO)) {
         column->addWidget(dependant_button);
-        column->addWidget(move_out_button);
-        column->addWidget(internal_move_button);
     }
     if(active_user->hasPermission(EDIT_MEMBER_STATUS)) {
         column->addWidget(mark_button);
@@ -100,8 +94,6 @@ void ControlMemberView::populateMembers() {
     del_button->setDisabled(true);
     edit_button->setDisabled(true);
     dependant_button->setDisabled(true);
-    move_out_button->setDisabled(true);
-    internal_move_button->setDisabled(true);
 }
 
 /**
@@ -118,7 +110,7 @@ void ControlMemberView::addMember() {
  * Pop up the edit member form.
  */
 void ControlMemberView::editMember() {
-    MemberModel *member =  member_list->getModel();
+    MemberModel *member =  member_list->getSelectedModel();
     if(member==0) {
          return;
     }
@@ -133,7 +125,7 @@ void ControlMemberView::editMember() {
  * Completely delete a member from the database.
  */
 void ControlMemberView::deleteMember() {
-    MemberModel *m(member_list->getModel());
+    MemberModel *m(member_list->getSelectedModel());
     if(0 != m) {
         int ret(QMessageBox::question(this,
             "Please Confirm",
@@ -152,7 +144,7 @@ void ControlMemberView::deleteMember() {
  * Mark a member as deleted.
  */
 void ControlMemberView::markMember() {
-    MemberModel *m(member_list->getModel());
+    MemberModel *m(member_list->getSelectedModel());
     if(0 != m) {
         m->markDeleted(true);
         m->save();
@@ -164,7 +156,7 @@ void ControlMemberView::markMember() {
  * Unmark the selected member as marked deleted.
  */
 void ControlMemberView::unmarkMember() {
-    MemberModel *m(member_list->getModel());
+    MemberModel *m(member_list->getSelectedModel());
     if(0 != m) {
         m->markDeleted(false);
         m->save();
@@ -176,7 +168,7 @@ void ControlMemberView::unmarkMember() {
  * De/activate the various control buttons depending on the member selected.
  */
 void ControlMemberView::activateButtons() {
-    MemberModel *member(member_list->getModel());
+    MemberModel *member(member_list->getSelectedModel());
     if(0 == member) {
         return;
     }
@@ -189,7 +181,7 @@ void ControlMemberView::activateButtons() {
         if(!curmember->hasPermission(EDIT_MEMBER_INFO) && !curmember->hasPermission(VIEW_OTHER_INFO)) {
             if(curmember->getMemberId() == member->getMemberId()) {
                 edit_button->setDisabled(false);
-            }else {
+            } else {
                 edit_button->setDisabled(true);
             }
             return;
@@ -200,41 +192,13 @@ void ControlMemberView::activateButtons() {
     del_button->setDisabled(!is_marked);
     edit_button->setDisabled(false);
     dependant_button->setDisabled(false);
-    move_out_button->setDisabled(false);
-    internal_move_button->setDisabled(false);
-}
-
-/**
- * Launch the dialog to manage a move out event.
- */
-void ControlMemberView::triggerMoveOut() {
-    MemberModel *member(member_list->getModel());
-    if (0 == member) {
-        return;
-    }
-
-    TriggerMoveOutView moveOutDialog(member,this);
-    moveOutDialog.exec();
-}
-
-/**
- * Launch the dialog to manage an internal move event.
- */
-void ControlMemberView::triggerInternalMove() {
-    MemberModel *member(member_list->getModel());
-    if (0 == member) {
-        return;
-    }
-
-    TriggerInternalMoveView internalMoveDialog(member, this);
-    internalMoveDialog.exec();
 }
 
 /**
  * Launch the dialog to manage a member's dependants.
  */
 void ControlMemberView::manageDependants(void) {
-    MemberModel *member(member_list->getModel());
+    MemberModel *member(member_list->getSelectedModel());
     if (0 == member) {
         return;
     }
