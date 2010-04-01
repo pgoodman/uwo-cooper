@@ -1,13 +1,12 @@
-#include "lib/gui/permlistwidget.h"
 
+#include "view/permlistview.h"
 
-
-PermListWidget::PermListWidget(QWidget *parent)
+PermListView::PermListView(QWidget *parent)
     : QScrollArea(parent)
 {
 }
 
-PermListWidget::PermListWidget(QString name, PermissionModelSet list, QWidget *parent)
+PermListView::PermListView(QString name, PermissionModelSet list, QWidget *parent)
     : QScrollArea(parent)
 {
     boxGroup = new QGroupBox(name);
@@ -15,7 +14,7 @@ PermListWidget::PermListWidget(QString name, PermissionModelSet list, QWidget *p
     setUpLayout();
 }
 
-void PermListWidget::setUpLayout()
+void PermListView::setUpLayout()
 {
     layout = new QGridLayout;
     setUpRadioButtons();
@@ -24,7 +23,7 @@ void PermListWidget::setUpLayout()
     setWidget(boxGroup);
 }
 
-void PermListWidget::setUpRadioButtons()
+void PermListView::setUpRadioButtons()
 {
     setUpButton(QString("Can Add Member:"), 0);
     setUpButton(QString("Can Move Member:"), 1);
@@ -53,7 +52,7 @@ void PermListWidget::setUpRadioButtons()
     setUpButton(QString("Can Edit Self Password:"), 24);
 }
 
-void PermListWidget::setUpButton(QString name, int permNum)
+void PermListView::setUpButton(QString name, int permNum)
 {
     QLabel *label = new QLabel(name);
     QRadioButton *no = new QRadioButton("No");
@@ -78,7 +77,7 @@ void PermListWidget::setUpButton(QString name, int permNum)
    layout->addWidget(no, permNum, 2);
 }
 
-PermissionModelSet PermListWidget::getPermissions()
+PermissionModelSet PermListView::getPermissions()
 {
     PermissionModelSet result = 0;
 
@@ -93,7 +92,7 @@ PermissionModelSet PermListWidget::getPermissions()
     return result;
 }
 
-PermListWidget::~PermListWidget()
+PermListView::~PermListView()
 {
     delete layout;
     delete boxGroup;
