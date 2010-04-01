@@ -12,7 +12,6 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     selectChair = layout << "Select a Chair" |= new ModelListWidget<MemberModel>;
     selectSecretary = layout << "Select a Secretary" |= new ModelListWidget<MemberModel>;
 
-
     memList = new PermListView(QString("Member Permissions"), selCommittee->getMemPerms());
     chairList = new PermListView(QString("Chair Permissions"), selCommittee->getChairPerms());
 

@@ -101,3 +101,20 @@ FormLayoutPtr &FormLayoutPtr::operator[](const int span) {
     next_span = span;
     return *this;
 }
+
+void FormLayoutPtr::replaceItem(QWidget *find, QWidget *replace) {
+    if(0 == find || 0 == replace) {
+        return;
+    }
+
+    const int index = ptr->indexOf(find);
+    if(-1 == index) {
+        return;
+    }
+
+    int row, column, row_span, col_span;
+    ptr->getItemPosition(index, &row, &column, &row_span, &col_span);
+    ptr->removeWidget(find);
+    ptr->addWidget(replace, row, column, row_span, col_span);
+    ptr->update();
+}
