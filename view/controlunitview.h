@@ -6,7 +6,6 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QList>
 
 #include "lib/gui/modellistwidget.h"
 
