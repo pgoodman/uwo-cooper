@@ -13,8 +13,8 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     selectSecretary = layout << "Select a Secretary" |= new ModelListWidget<MemberModel>;
 
 
-    memList = new PermListWidget(QString("Member Permissions"), selCommittee->getMemPerms());
-    chairList = new PermListWidget(QString("Chair Permissions"), selCommittee->getChairPerms());
+    memList = new PermListView(QString("Member Permissions"), selCommittee->getMemPerms());
+    chairList = new PermListView(QString("Chair Permissions"), selCommittee->getChairPerms());
 
     QTabWidget *tabs = new QTabWidget;
 
