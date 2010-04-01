@@ -39,9 +39,9 @@ void MemberSwapWidget::setUpLayout()
 
 void MemberSwapWidget::addMember()
 {
-    if(membersNot->getModel() != 0)
+    if(membersNot->getSelectedModel() != 0)
     {
-        MemberModel *member = membersNot->getModel();
+        MemberModel *member = membersNot->getSelectedModel();
 
         member->setCommittee(committee);
         member->save();
@@ -56,7 +56,7 @@ void MemberSwapWidget::addMember()
 
 void MemberSwapWidget::removeMember()
 {
-    if(membersIn->getModel() != 0)
+    if(membersIn->getSelectedModel() != 0)
     {
         int ret(QMessageBox::question(this,
             "Please Confirm",
@@ -65,7 +65,7 @@ void MemberSwapWidget::removeMember()
             QMessageBox::No
         ));
         if(QMessageBox::Yes == ret) {
-            MemberModel *member = membersIn->getModel();
+            MemberModel *member = membersIn->getSelectedModel();
 
             member->setCommittee(0);
             member->save();
