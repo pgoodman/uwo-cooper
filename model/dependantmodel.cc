@@ -17,8 +17,8 @@ DependantModel::DependantModel(const int id,
  * Check whether this dependent is under age.
  */
 bool DependantModel::isUnderAge(void) {
-    QDateTime now;
-    now.setTime_t(time(0));
+    QDateTime now(QDateTime::currentDateTime());
+    now.setTime(QTime());
 	return bday_21 < now;
 }
 

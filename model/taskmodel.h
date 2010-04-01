@@ -35,7 +35,7 @@ public:
 
 protected:
 
-    static bool create(QString name,
+    static int create(QString name,
                        QString descript,
                        const QDateTime deadlineDate,
                        const int committee_id,
@@ -65,10 +65,10 @@ public:
     static TaskModel::iterator_range findAll(void);
     static TaskModel::iterator_range findAll(const char *);
 
-    static bool create(QString name,
-                       QString descript,
-                       const QDateTime deadlineDate,
-                       const int committee_id);
+    static TaskModel *create(QString name,
+                             QString descript,
+                             const QDateTime deadlineDate,
+                             const int committee_id);
     virtual bool save(void);
     void setCompleted(bool newStatus);
     bool isCompleted(void);

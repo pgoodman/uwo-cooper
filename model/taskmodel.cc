@@ -41,7 +41,7 @@ bool TaskModelBase::save(const int id) {
 /**
  * Create and return a task
  */
-bool TaskModelBase::create(QString name, QString descript,
+int TaskModelBase::create(QString name, QString descript,
                        const QDateTime deadlineDate,
                        const int committeeId, const bool isAnnual) {
     QSqlQuery q;
@@ -50,7 +50,10 @@ bool TaskModelBase::create(QString name, QString descript,
         "is_annual) VALUES (?,?,0,?,?,?)"
     );
     q << name << descript << committeeId << deadlineDate << isAnnual;
-    return q.exec();
+    if(q.exec()) {
+        return q.lastInsertId().toInt();
+    }
+    return 0;
 }
 
 
@@ -60,8 +63,9 @@ bool TaskModelBase::create(QString name, QString descript,
 QString TaskModelBase::toString(void) {
     stringstream ss;
     ss << name.toStdString();
-    QDateTime now;
-    now.setTime_t(time(0));
+    
+    QDateTime now(QDateTime::currentDateTime());
+    now.setTime(QTime());
 
     if(!is_annual) {
         if(is_complete) {
@@ -143,13 +147,13 @@ bool TaskModel::save(void) {
     return TaskModelBase::save(id);
 }
 
-bool TaskModel::create(QString name,
+TaskModel *TaskModel::create(QString name,
                        QString descript,
                        const QDateTime deadlineDate,
                        const int committee_id) {
-    return TaskModelBase::create(
+    return TaskModel::findById(TaskModelBase::create(
         name, descript, deadlineDate,committee_id,false
-    );
+    ));
 }
 
 void TaskModel::setCompleted(bool newStatus) {
@@ -199,7 +203,7 @@ bool TaskSpecModel::create(QString name,
                        QString descript,
                        const QDateTime deadlineDate,
                        const int committee_id) {
-    return TaskModelBase::create(
+    return 0 != TaskModelBase::create(
         name, descript, deadlineDate,committee_id,true
     );
 }

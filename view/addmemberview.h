@@ -14,6 +14,7 @@
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QDateTime>
+#include <QTime>
 #include <QButtonGroup>
 #include <QRadioButton>
 #include <QPushButton>
@@ -28,6 +29,7 @@
 #include "model/committeemodel.h"
 #include "model/unitmodel.h"
 #include "model/taskmodel.h"
+#include "model/moveineventmodel.h"
 
 /*
  * At any time, the Co-ordinator can trigger a New Member event, giving the
@@ -41,6 +43,8 @@
 class AddMemberView : public QDialog {
     Q_OBJECT
 protected:
+    QDateTime today;
+
     QLineEdit *first_name;
     QLineEdit *last_name;
     QLineEdit *phone_number;
@@ -67,12 +71,18 @@ protected:
 
     AddMemberView(int *, QWidget *parent=0);
 
+private:
+    void lookForExistingMoveInTask(UnitModel *model, const QDateTime);
+
 public:
     AddMemberView(QWidget *parent=0);
 
 public slots:
     virtual void tryAccept(void);
     virtual void accept(void);
+
+    virtual void checkTask(void);
+    virtual void checkTask(const QDateTime &date);
 };
 
 #endif /* ADDMEMBER_H_ */

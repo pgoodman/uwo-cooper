@@ -81,7 +81,7 @@ PermissionModelSet CommitteeModel::getPermissions(const int member_id) {
 /**
  * Add a task to this committee.
  */
-bool CommitteeModel::addTask(QString name,
+TaskModel *CommitteeModel::addTask(QString name,
                              QString description,
                              QDateTime deadline) const {
     return TaskModel::create(name, description, deadline, id);
@@ -133,6 +133,14 @@ QString CommitteeModel::toString(void) {
 }
 
 /**
+ * Get the name of a committee.
+ */
+QString CommitteeModel::getName(void) {
+    return name;
+}
+
+
+/**
  * Return whether or not the committee can be removed.
  */
 bool CommitteeModel::canRemove(void) const {
@@ -157,10 +165,8 @@ bool CommitteeModel::remove() {
     MemberModel::iterator first(it.first);
     MemberModel::iterator last(it.second);
 
-    while(first != last)
-    {
+    for(; first != last; ++first) {
         (*first)->setCommittee(0);
-        first++;
     }
 
     q.prepare("DELETE FROM tasks WHERE committee_id = ?");
