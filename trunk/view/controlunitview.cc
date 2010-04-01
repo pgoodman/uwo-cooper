@@ -3,7 +3,7 @@
 
 ControlUnitView::ControlUnitView(QWidget *parent) :QWidget(parent) {
     unit_list = new ModelListWidget<UnitModel>(this);
-    unit_list->setMultipleSelect(true);
+    //unit_list->setMultipleSelect(true);
 
     QGridLayout *layout = new QGridLayout(this);
     QVBoxLayout *column = new QVBoxLayout;
@@ -29,7 +29,7 @@ ControlUnitView::ControlUnitView(QWidget *parent) :QWidget(parent) {
     column->addWidget(internal_move_button);
 
     layout->addWidget(
-        new QLabel("Select unit(s) from the list to trigger the controls"),
+        new QLabel("Select a unit from the list to trigger the controls"),
         1, 1, 1, 2
     );
     layout->addWidget(unit_list, 2, 1, 1, 1);
@@ -55,10 +55,9 @@ void ControlUnitView::populateUnits() {
  * De/activate the various control buttons depending on the unit selected.
  */
 void ControlUnitView::activateButtons() {
-    QList<UnitModel *> units(unit_list->getSelectedModels());
-    const int num_selected(units.size());
-    move_out_button->setDisabled(num_selected != 1);
-    internal_move_button->setDisabled(num_selected != 2);
+    UnitModel *unit(unit_list->getSelectedModel());
+    move_out_button->setDisabled(unit == 0);
+    internal_move_button->setDisabled(unit == 0);
 }
 
 /**
@@ -78,8 +77,8 @@ void ControlUnitView::triggerMoveOut() {
  * Launch the dialog to manage an internal move event.
  */
 void ControlUnitView::triggerInternalMove() {
-    QList<UnitModel *> units(unit_list->getSelectedModels());
-    if (units.isEmpty()) {
+    UnitModel *unit(unit_list->getSelectedModel());
+    if (0 == unit) {
         return;
     }
 

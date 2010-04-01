@@ -7,31 +7,14 @@
 EditMemberView::EditMemberView(MemberModel *selectedmember, QWidget *parent)
  : AddMemberView(0, parent) {
     member = selectedmember;
-/*
-    QWidget *main(new QWidget);
-    FormLayoutPtr layout;
-    main->setLayout(layout);
-*/
+
     FormLayoutPtr layout(this);
     buildForm(layout);
     AddMemberView::finishForm(layout);
     initForm();
-/*
-    QScrollArea *scroll_area(new QScrollArea(this));
-    QGridLayout *main_layout(new QGridLayout(this));
-    setLayout(main_layout);
-    main_layout->addWidget(scroll_area);
 
-    scroll_area->setWidget(main);
-    //scroll_area->setWidgetResizable(true);
-*/
     save_button->setText("Update Member");
     setWindowTitle("Edit Member Information");
-/*
-    setSizeGripEnabled(false);
-    scroll_area->setContentsMargins(0, 0, 0, 0);
-    scroll_area->setBaseSize(600, 600);
-*/
 }
 
 /**
