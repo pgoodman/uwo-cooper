@@ -81,7 +81,7 @@ void TriggerInternalMoveView::okEvent(void) {
     QDateTime moveInDate = move_in_date->dateTime();
     QDateTime moveOutDate = moveInDate;
     QDateTime noticeDate = QDateTime::currentDateTime();
-    UnitModel *intoUnit = newunit->getModel();
+    UnitModel *intoUnit = newunit->getSelectedModel();
     UnitModel *outOfUnit = member->findUnit();
 
     // If the unit being moved into will be empty upon move in,

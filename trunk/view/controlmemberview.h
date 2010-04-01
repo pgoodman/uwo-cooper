@@ -42,8 +42,6 @@ private:
     QPushButton *del_button;
     QPushButton *edit_button;
     QPushButton *dependant_button;
-    QPushButton *move_out_button;
-    QPushButton *internal_move_button;
     QPushButton *print_public_button;
     QPushButton *print_private_button;
     void populateMembers();
@@ -54,8 +52,6 @@ public slots:
     void deleteMember();
     void markMember();
     void unmarkMember();
-    void triggerMoveOut();
-    void triggerInternalMove();
     void manageDependants();
     void printPublic();
     void printPrivate();

@@ -124,7 +124,7 @@ void TaskListView::populateAnnualTaskList(void) {
  */
 
 void TaskListView::activateButtons() {
-    TaskModel *task(task_list->getModel());
+    TaskModel *task(task_list->getSelectedModel());
 
     if(0 == task) {
         return;
@@ -141,7 +141,7 @@ void TaskListView::activateButtons() {
   * selected.
   */
 void TaskListView::activateSpecButtons() {
-    TaskSpecModel *annualTask(annualTask_list->getModel());
+    TaskSpecModel *annualTask(annualTask_list->getSelectedModel());
     if(0 == annualTask) {
         return;
     }
@@ -174,7 +174,7 @@ void TaskListView::addAnnualTasks() {
  * Pop up the edit tasks view.
  */
 void TaskListView::editTasks() {
-    EditTaskView editTaskDialog(task_list->getModel(), committee, this);
+    EditTaskView editTaskDialog(task_list->getSelectedModel(), committee, this);
     if (QDialog::Accepted == editTaskDialog.exec()) {
         populateTaskList();
     }
@@ -184,7 +184,7 @@ void TaskListView::editTasks() {
  * Delete a task.
  */
 void TaskListView::deleteTasks() {
-    TaskModel *task(task_list->getModel());
+    TaskModel *task(task_list->getSelectedModel());
     if(0 != task) {
         int ret(QMessageBox::question(this,
             "Please Confirm",
@@ -204,7 +204,7 @@ void TaskListView::deleteTasks() {
   */
 
 void TaskListView::deleteAnnualTasks() {
-    TaskSpecModel *annualTask(annualTask_list->getModel());
+    TaskSpecModel *annualTask(annualTask_list->getSelectedModel());
     if(0 != annualTask) {
         int ret(QMessageBox::question(this,
             "Please Confirm",

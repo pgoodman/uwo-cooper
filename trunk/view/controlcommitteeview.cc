@@ -102,7 +102,7 @@ void ControlCommitteeView::addCommittee(){
 
 void ControlCommitteeView::editCommittee()
 {
-    EditCommitteeView editCommitteeDialog(committee_list->getModel());
+    EditCommitteeView editCommitteeDialog(committee_list->getSelectedModel());
     if(editCommitteeDialog.exec() == QDialog::Accepted) {
         populateCommittees();
     }
@@ -112,7 +112,7 @@ void ControlCommitteeView::editCommittee()
  * Pop up a window to manage the tasks of a committee.
  */
 void ControlCommitteeView::viewTasks() {
-    CommitteeModel *committee(committee_list->getModel());
+    CommitteeModel *committee(committee_list->getSelectedModel());
     if(0 != committee) {
         TaskListView viewTaskDialog(committee, this);
         viewTaskDialog.exec();
@@ -123,7 +123,7 @@ void ControlCommitteeView::viewTasks() {
  * De/activate the various control buttons depending on the committee selected.
  */
 void ControlCommitteeView::activateButtons() {
-    CommitteeModel *committee(committee_list->getModel());
+    CommitteeModel *committee(committee_list->getSelectedModel());
     if(0 == committee) {
         return;
     }
@@ -136,7 +136,7 @@ void ControlCommitteeView::activateButtons() {
 
 void ControlCommitteeView::deleteCommittee()
 {
-    CommitteeModel *committee(committee_list->getModel());
+    CommitteeModel *committee(committee_list->getSelectedModel());
 
     if(committee != 0 && committee->canRemove())
     {
@@ -165,7 +165,7 @@ void ControlCommitteeView::printCommittee(){
 }
 
 void ControlCommitteeView::printTask(){
-    CommitteeModel *committee(committee_list->getModel());
+    CommitteeModel *committee(committee_list->getSelectedModel());
     if(committee != 0){
         new PrintController(TASK_LIST, committee);
     }

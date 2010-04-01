@@ -42,22 +42,22 @@ void AddCommitteeView::addCommittee()
         );
         return;
     }
-    if(selectChair->getModel() == 0)
+    if(selectChair->getSelectedModel() == 0)
     {
         chairID = 0;
     }
     else
     {
-        chairID = selectChair->getModel()->id;
+        chairID = selectChair->getSelectedModel()->id;
     }
 
-    if(selectSecretary->getModel() == 0)
+    if(selectSecretary->getSelectedModel() == 0)
     {
         secID = 0;
     }
     else
     {
-        secID = selectSecretary->getModel()->id;
+        secID = selectSecretary->getSelectedModel()->id;
     }
 
     CommitteeModel::create(

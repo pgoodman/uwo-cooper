@@ -42,8 +42,8 @@ public:
     /**
      * Get the currently selected item.
      */
-    T *getModel(void);
-    QList<T *> getModels(void);
+    T *getSelectedModel(void);
+    QList<T *> getSelectedModels(void);
 
     /**
      * Select a specific model.
@@ -112,7 +112,7 @@ void ModelListWidget<T>::selectModel(T *model) {
 }
 
 template <typename T>
-T * ModelListWidget<T>::getModel(void) {
+T * ModelListWidget<T>::getSelectedModel(void) {
     QList<QListWidgetItem *> items(selectedItems());
     if(0 == items.count()) {
         return 0;
@@ -126,14 +126,14 @@ T * ModelListWidget<T>::getModel(void) {
 }
 
 template <typename T>
-QList<T *> ModelListWidget<T>::getModels(void) {
+QList<T *> ModelListWidget<T>::getSelectedModels(void) {
     QList<T *> list;
     ModelListWidgetItem<T> *row;
     QListWidgetItem *item;
     QList<QListWidgetItem *> items(selectedItems());
 
     while(!items.isEmpty()) {
-        item = items.removeLast();
+        item = items.takeLast();
         row = static_cast<ModelListWidgetItem<T> *>(item);
         list.append(row->getModel());
     }

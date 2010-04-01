@@ -198,8 +198,8 @@ void AddMemberView::accept(void) {
         last_name->text(),
         address->text(),
         password->text(),
-        assign_committee->isChecked() ? committee->getModel() : 0,
-        unit->getModel(),
+        assign_committee->isChecked() ? committee->getSelectedModel() : 0,
+        unit->getSelectedModel(),
         unit_is_empty->isChecked()
     );
 

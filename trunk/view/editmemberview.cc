@@ -213,9 +213,9 @@ void EditMemberView::accept() {
     // assign the committee
     if(assign_committee->isChecked()
     && committee->isEnabled()
-    && 0 != committee->getModel()) {
+    && 0 != committee->getSelectedModel()) {
 
-        member->setCommittee(committee->getModel());
+        member->setCommittee(committee->getSelectedModel());
     }
 
     member->save();

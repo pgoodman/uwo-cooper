@@ -6,20 +6,14 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QList>
 
 #include "lib/gui/modellistwidget.h"
 
-#include "model/usermodel.h"
-#include "model/membermodel.h"
-#include "model/permissionmodel.h"
+#include "model/unitmodel.h"
 
-#include "view/addmemberview.h"
-#include "view/editmemberview.h"
 #include "view/triggermoveoutview.h"
 #include "view/triggerinternalmoveview.h"
-#include "view/dependantlistview.h"
-#include "controller/printcontroller.h"
-#include "model/documentmodel.h"
 
 class ControlUnitView : public QWidget
 {

@@ -63,8 +63,8 @@ EditCommitteeView::~EditCommitteeView(){}
 //Function called when edit committee button is pushed
 void EditCommitteeView::editCommittee()
 {
-    MemberModel *chairModel = selectChair->getModel();
-    MemberModel *secModel = selectSecretary->getModel();
+    MemberModel *chairModel = selectChair->getSelectedModel();
+    MemberModel *secModel = selectSecretary->getSelectedModel();
 
     selCommittee->setName(committeeName->text());
     selCommittee->setChairPerms(chairList->getPermissions());
