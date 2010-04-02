@@ -33,10 +33,13 @@ protected:
     QLineEdit *user_name;
     ModelListWidget<MemberModel> *membersMoving;
     ModelListWidget<UnitModel> *newunit;
+    QList<MemberModel*> memberList1;
+    QList<MemberModel*> memberList2;
     QDateEdit *move_in_date;
     QPushButton *ok_button;
     QRadioButton *isEmpty;
     QRadioButton *withMembers;
+    bool oldUnitEmpty;
 
     TaskModel *task;
     CommitteeModel *committee;
@@ -44,6 +47,7 @@ protected:
     UnitModel *unitNo;
 
 public slots:
+    void activateEmptyUnit (void);
     void okEvent(void);
     void cancelEvent(void);
 
