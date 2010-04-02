@@ -15,6 +15,7 @@
 TriggerInternalMoveView::TriggerInternalMoveView(UnitModel *chosenUnit,
                                                  QWidget *parent)
  : QDialog(parent) {
+
     // Set up the form layout
     FormLayoutPtr layout(this);
 
@@ -29,10 +30,8 @@ TriggerInternalMoveView::TriggerInternalMoveView(UnitModel *chosenUnit,
     occupied_unit_group->addButton(withMembers);
 
     // make the layout of the form
-    first_name = layout << "First Name: " |= new QLineEdit;
-    last_name = layout << "Last Name: " |= new QLineEdit;
-    user_name = layout << "Login Name: " |= new QLineEdit;
     newunit = layout << "New Unit: " |= new ModelListWidget<UnitModel>;
+    membersMoving = layout << "Choose members who are moving: " |= new ModelListWidget<MemberModel>;
     move_in_date = layout << "Move In Date: " |= new QDateEdit;
     isEmpty = layout << "Moving Into Empty Unit?" |= new QRadioButton;
     withMembers = layout << "Moving Into Occupied Unit?" |= new QRadioButton;
@@ -44,19 +43,19 @@ TriggerInternalMoveView::TriggerInternalMoveView(UnitModel *chosenUnit,
 
     // TODO: does internal move report an error with only 1 unit in the system?
     std::stringstream ss;
-    unitNo = member->findUnit();
     ss << "id != " << (unitNo->id);
     UnitModel::iterator_range new_units(UnitModel::findAll(ss.str().c_str()));
-
-    // misc
-    first_name->setText(member->getFirstName());
-    first_name->setEnabled(false);
-    last_name->setText(member->getLastName());
-    last_name->setEnabled(false);
-    user_name->setText(member->getUserName());
-    user_name->setEnabled(false);
     newunit->fill(new_units);
     newunit->selectFirst();
+
+    std::stringstream ss2;
+    ss2 << "id != " << (unitNo->id);
+    MemberModel::iterator_range memberList(MemberModel::findAll(ss2.str().c_str()));
+    membersMoving->setMultipleSelect(true);
+    membersMoving->fill(memberList);
+    membersMoving->selectFirst();
+
+    // misc
     move_in_date->setCalendarPopup(true);
     isEmpty->setChecked(true);
 
@@ -66,6 +65,19 @@ TriggerInternalMoveView::TriggerInternalMoveView(UnitModel *chosenUnit,
     // signals / slots
     connect(ok_button, SIGNAL(clicked()), this, SLOT(okEvent()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
+    connect(
+        membersMoving, SIGNAL(itemSelectionChanged()),
+        this, SLOT(activateEmptyUnit())
+    );
+
+}
+
+/**
+ * De/activate the check box depending on whether all members are chosen or not
+ */
+void TriggerInternalMoveView::activateEmptyUnit () {
+    QList<MemberModel*> members(membersMoving->getSelectedModels());
+    oldUnitEmpty = (membersMoving->count() == members.count());
 }
 
 /**
@@ -79,17 +91,25 @@ void TriggerInternalMoveView::okEvent(void) {
     QDateTime moveOutDate = moveInDate;
     QDateTime noticeDate = QDateTime::currentDateTime();
     UnitModel *intoUnit = newunit->getSelectedModel();
-    UnitModel *outOfUnit = member->findUnit();
+    UnitModel *outOfUnit = unitNo;
+    memberList1 = membersMoving->getSelectedModels();
+    memberList2 = memberList1;
 
     // If the unit being moved into will be empty upon move in,
     // Set up move in inspection tasks according to the specifications
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
         QTextStream ss(description);
-        ss << "Member Name: " << member->getFirstName() << " " << member->getLastName() << "\n";
-        if(member->isTelephoneShared()) {
-            ss << "Telephone Number: " << member->getTelephoneNum() << "\n";
+
+        while (!(memberList1.isEmpty())) {
+            MemberModel *temp = memberList1.first();
+            ss << "Member Name: " << temp->getFirstName() << " " << temp->getLastName() << "\n";
+            if(temp->isTelephoneShared()) {
+                ss << "Telephone Number: " << temp->getTelephoneNum() << "\n";
+            }
+            memberList1.removeFirst();
         }
+
         ss << "Unit Number: " << QVariant(intoUnit->id).toString() << "\n";
         ss << "Move-in Date: " << moveInDate.toString("MMMM d, yyyy") << "\n";
 
@@ -102,36 +122,45 @@ void TriggerInternalMoveView::okEvent(void) {
         QDateTime MoveIn_in_30_days(moveInDate);
         MoveIn_in_30_days = MoveIn_in_30_days.addDays(30);
         ic->addTask(QString("Move-In Inspection"), *description, MoveIn_in_30_days);
+    }
 
+    if (oldUnitEmpty == true) {
         // SEND MOVE OUT EVENTS FOR OLD UNIT
 
         QString *descript2(new QString);
         QTextStream ss2(descript2);
-        ss2 << "Member Name: " << member->getFirstName() << " " << member->getLastName() << "\n";
-        if(member->isTelephoneShared()) {
-            ss2 << "Telephone Number: " << member->getTelephoneNum() << "\n";
+
+        memberList2 = membersMoving->getSelectedModels();
+
+        while (!(memberList2.isEmpty())) {
+            MemberModel *temp = memberList2.first();
+            ss2 << "Member Name: " << temp->getFirstName() << " " << temp->getLastName() << "\n";
+            if(temp->isTelephoneShared()) {
+                ss2 << "Telephone Number: " << temp->getTelephoneNum() << "\n";
+            }
+            memberList2.removeFirst();
         }
         ss2 << "Unit Number: " << QVariant(outOfUnit->id).toString() << "\n";
         ss2 << "Move-in Date: " << moveInDate.toString("MMMM d, yyyy") << "\n";
 
+        // Get the Inspections Committee
+        CommitteeModel *ic(CommitteeModel::findById(
+            CommitteeModel::INSPECTIONS_COMMITTEE_ID
+        ));
+
         // Send First Move-Out Inspection Task
         QDateTime MoveOut_in_30_days(noticeDate);
         MoveOut_in_30_days = MoveOut_in_30_days.addDays(30);
-        ic->addTask(QString("Move-out Inspection 1"), *description, MoveOut_in_30_days);
+        ic->addTask(QString("Move-out Inspection 1"), *descript2, MoveOut_in_30_days);
 
         // Send Second Move-Out Inspection Task
         QDateTime one_week_before(moveOutDate);
         one_week_before = one_week_before.addDays(-7);
-        ic->addTask(QString("Move-out Inspection 2"), *description, one_week_before);
+        ic->addTask(QString("Move-out Inspection 2"), *descript2, one_week_before);
 
         // Send Third Move-Out Inspection Task
         QDateTime dayOf(moveOutDate);
-        ic->addTask(QString("Move-out Inspection 3"), *description, dayOf);
-    }
-
-    // Else if there will be people remaining in the unit when being moved into,
-    // FINISH THIS!!
-    else if (withMembers->isChecked()) {
+        ic->addTask(QString("Move-out Inspection 3"), *descript2, dayOf);
 
     }
 

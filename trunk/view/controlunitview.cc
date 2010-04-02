@@ -89,6 +89,6 @@ void ControlUnitView::triggerInternalMove() {
         return;
     }
 
-    //TriggerInternalMoveView internalMoveDialog(unit, this);
-    //internalMoveDialog.exec();
+    TriggerInternalMoveView internalMoveDialog(unit, this);
+    internalMoveDialog.exec();
 }
