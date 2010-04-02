@@ -39,27 +39,27 @@ TaskListView::TaskListView(CommitteeModel *comm, QWidget *parent)
     layout << close_button;
 
     // Check for permissions that the user has on each possible choice on the task list form
-    if(!active_user->hasPermission(ADD_TASK)) {
+    if(!active_user->hasPermission(ADD_SELF_TASK)) {
         add_button->hide();
     }
 
-    if(!active_user->hasPermission(EDIT_TASK)) {
+    if(!active_user->hasPermission(EDIT_SELF_TASK)) {
         edit_button->hide();
     }
 
-    if(!active_user->hasPermission(DELETE_TASK)) {
+    if(!active_user->hasPermission(DELETE_SELF_TASK)) {
         delete_button->hide();
     }
 
-    if (!active_user->hasPermission(ADD_TASK_SPEC)) {
+    if (!active_user->hasPermission(ADD_SELF_TASK_SPEC)) {
         add_annual_button->hide();
     }
 
-    if (!active_user->hasPermission(DELETE_TASK_SPEC)) {
+    if (!active_user->hasPermission(DELETE_SELF_TASK_SPEC)) {
         delete_annual_button->hide();
     }
 
-    if (!active_user->hasPermission(ACTIVATE_TASK_SPEC)){
+    if (!active_user->hasPermission(ACTIVATE_SELF_TASK_SPEC)){
         activate_annual_button->hide();
     }
 

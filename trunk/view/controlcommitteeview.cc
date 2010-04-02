@@ -28,9 +28,12 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     del_button = new QPushButton("Delete Committee");
     task_button = new QPushButton("Manage Tasks");
     print_committee_button = new QPushButton("Print Committee List");
-    print_task_button = new QPushButton("Pring Pending Tasks");
+    print_task_button = new QPushButton("Print Pending Tasks");
 
-    if(!active_user->hasPermission(ADD_TASK | EDIT_TASK | DELETE_TASK)) {
+    if(committee_list->getSelectedModel() != 0 && !active_user->is_coordinator &&
+       !active_user->hasPermission(ADD_SELF_TASK | EDIT_SELF_TASK | DELETE_SELF_TASK) &&
+       (committee_list->getSelectedModel()->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId())){
         task_button->hide();
     }
 
@@ -43,10 +46,16 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
     if(!active_user->hasPermission(DELETE_COMMITTEE)) {
         del_button->hide();
     }
-    if(!active_user->hasPermission(PRINT_COMMITTEE_LIST)){
+    if(committee_list->getSelectedModel() != 0 && !active_user->is_coordinator && 
+       !active_user->hasPermission(PRINT_COMMITTEE_LIST) &&
+       (committee_list->getSelectedModel()->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId())){
         print_committee_button->hide();
     }
-    if(!active_user->hasPermission(PRINT_TASK_LIST)){
+    if(committee_list->getSelectedModel() != 0 && !active_user->is_coordinator && 
+       !active_user->hasPermission(PRINT_TASK_LIST) &&
+       (committee_list->getSelectedModel()->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId())){
         print_task_button->hide();
     }
     connect(add_button, SIGNAL(clicked()), this, SLOT(addCommittee()));
@@ -58,8 +67,7 @@ ControlCommitteeView::ControlCommitteeView(QWidget *parent) : QWidget(parent) {
 
     connect(
         committee_list, SIGNAL(itemSelectionChanged()),
-        this, SLOT(activateButtons())
-    );
+        this, SLOT(activateButtons()));
 
     column->addWidget(add_button);
     column->addWidget(edit_button);
@@ -128,10 +136,19 @@ void ControlCommitteeView::activateButtons() {
         return;
     }
 
-    edit_button->setDisabled(false);
-    task_button->setDisabled(false);
-    print_task_button->setDisabled(false);
-    del_button->setDisabled(!committee->canRemove());
+    edit_button->setDisabled(true);
+    task_button->setDisabled(true);
+    print_task_button->setDisabled(true);
+
+    if(!active_user->is_coordinator &&
+       !active_user->hasPermission(ADD_SELF_TASK | EDIT_SELF_TASK | DELETE_SELF_TASK) &&
+       (committee->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId())){
+        edit_button->setDisabled(false);
+        task_button->setDisabled(false);
+        print_task_button->setDisabled(false);
+        del_button->setDisabled(!committee->canRemove());
+    }
 }
 
 void ControlCommitteeView::deleteCommittee()
