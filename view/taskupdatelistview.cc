@@ -8,7 +8,7 @@ TaskUpdateListView::TaskUpdateListView(QWidget *parent,
                                        QList<MoveInEventModel *> &events,
                                        QString fn,
                                        QString pn)
- : QDialog(parent), full_name(fn), phone_number(pn) {
+ : QDialog(parent), full_name(fn), phone_number(pn), selected_task_id(0) {
 
     FormLayoutPtr layout(this);
 
@@ -20,7 +20,12 @@ TaskUpdateListView::TaskUpdateListView(QWidget *parent,
     do_nothing = layout << "Update Task:" |= new QRadioButton("None");
 
     while(!events.isEmpty()) {
-        layout << "" | new QRadioButton(events.takeLast()->task_description);
+        MoveInEventModel *event(events.takeLast());
+        layout << "" | new TaskRadioButton(
+            event->task_description,
+            this,
+            event->task_id
+        );
     }
 
     QPushButton *cont(layout [2] <<= new QPushButton("Continue"));
@@ -38,5 +43,35 @@ void TaskUpdateListView::updateTask(void) {
         return;
     }
 
+    if(0 != selected_task_id) {
+        TaskModel *task(TaskModel::findById(selected_task_id));
+        QString new_desc("Member Name: ");
+        new_desc += full_name;
+        new_desc += "\n";
+
+        if(!phone_number.isEmpty()) {
+            new_desc += "Phone Number: ";
+            new_desc += phone_number;
+            new_desc += "\n";
+        }
+
+        new_desc += task->getDescription();
+
+        task->setDescription(new_desc);
+        task->save();
+    }
+
     emit reject();
 }
+
+TaskRadioButton::TaskRadioButton(QString s, TaskUpdateListView *v, int id)
+ : QRadioButton(s), parent(v), task_id(id) {
+    connect(this, SIGNAL(toggled(bool)), this, SLOT(updateTask(bool)));
+}
+
+void TaskRadioButton::updateTask(bool on) {
+    if(on) {
+        parent->selected_task_id = task_id;
+    }
+}
+

@@ -151,6 +151,7 @@ bool SetupView::validateCurrentPage(void) {
         }
         
         UserModel::setActive(CoordinatorModel::load());
+        UnitModel::flush();
     }
 
     return true;

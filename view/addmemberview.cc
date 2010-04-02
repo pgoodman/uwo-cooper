@@ -236,6 +236,6 @@ void AddMemberView::accept(void) {
         unit_will_be_empty
     );
 
-    emit accept();
+    QDialog::accept();
 }
 

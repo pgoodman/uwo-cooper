@@ -58,6 +58,8 @@ public:
     static bool removeAll(void);
     static bool removeAll(const char *cond);
 
+    static void flush(void);
+
 protected:
     IModelBase(const int model_id);
 
@@ -128,6 +130,18 @@ bool IModelBase<T>::removeAll(void) {
 template <typename T>
 bool IModelBase<T>::removeAll(const char *cond) {
     return Database::remove(T::table_name, cond);
+}
+
+/**
+ * Flush everything from the cache.
+ */
+template <typename T>
+void IModelBase<T>::flush(void) {
+    typename std::map<int, T *>::iterator it(elms.begin()), end(elms.end());
+    for(; it != end; it++) {
+        delete (*it).second;
+    }
+    elms.clear();
 }
 
 /**
