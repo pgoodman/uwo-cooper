@@ -60,12 +60,7 @@ TriggerMoveOutView::TriggerMoveOutView (UnitModel *chosenUnit,
  */
 void TriggerMoveOutView::activateEmptyUnit () {
     QList<MemberModel*> members(membersMoving->getSelectedModels());
-    int checkSizeA = QVariant(membersMoving->size()).toInt();
-    int checkSizeB = QVariant(members.size()).toInt();
-    if ((checkSizeA == checkSizeB))
-        isEmpty->setChecked(true);
-    else
-        isEmpty->setChecked(false);
+    isEmpty->setChecked(membersMoving->count() == members.count());
 }
 
 /**

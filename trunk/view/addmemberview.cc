@@ -15,47 +15,10 @@ AddMemberView::AddMemberView(QWidget *parent) : QDialog(parent) {
     FormLayoutPtr layout(this);
     buildForm(layout);
     finishForm(layout);
-
-    connect(unit, SIGNAL(itemSelectionChanged()), this, SLOT(checkTask()));
-    connect(
-        date_moved_in, SIGNAL(dateTimeChanged(const QDateTime &)),
-        this, SLOT(checkTask(const QDateTime &))
-    );
 }
 
 AddMemberView::AddMemberView(int *foo, QWidget *parent) : QDialog(parent) {
     (void) foo;
-}
-
-/**
- * A unit has been selected.
- */
-void AddMemberView::checkTask(void) {
-    checkTask(date_moved_in->dateTime());
-}
-
-/**
- * The date has been changed.
- */
-void AddMemberView::checkTask(const QDateTime &date) {
-    UnitModel *unit_model(unit->getSelectedModel());
-    if(0 != unit_model) {
-        lookForExistingMoveInTask(unit_model, date);
-    }
-}
-
-/**
- * Go look for an existing task for the move-in-event and ask the user adding
- * the member whether or not they want to update that task.
- */
-void AddMemberView::lookForExistingMoveInTask(UnitModel *model,
-                                              const QDateTime t) {
-    QList<MoveInEventModel *> events(MoveInEventModel::findAll(model->id, t));
-    while(!events.isEmpty()) {
-        MoveInEventModel *event(events.takeLast());
-
-        std::cout << event->task_description.toStdString() << '\n';
-    }
 }
 
 /**
@@ -241,6 +204,23 @@ void AddMemberView::tryAccept(void) {
  * Add a member.
  */
 void AddMemberView::accept(void) {
+    UnitModel *unit_model(unit->getSelectedModel());
+    QList<MoveInEventModel *> events(
+        MoveInEventModel::findAll(unit_model->id, date_moved_in->dateTime())
+    );
+
+    bool unit_will_be_empty(unit_is_empty->isChecked());
+
+    if(!events.isEmpty()) {
+        TaskUpdateListView v(this, events,
+            (user_name->text() + " ") + first_name->text(),
+            share_phone_number->isChecked() ? phone_number->text() : QString("")
+        );
+
+        unit_will_be_empty = (
+            unit_will_be_empty && (v.exec() == QDialog::Accepted)
+        );
+    }
 
     MemberModel::create(
         share_phone_number->isChecked(),
@@ -252,10 +232,10 @@ void AddMemberView::accept(void) {
         address->text(),
         password->text(),
         assign_committee->isChecked() ? committee->getSelectedModel() : 0,
-        unit->getSelectedModel(),
-        unit_is_empty->isChecked()
+        unit_model,
+        unit_will_be_empty
     );
 
-    QDialog::accept();
+    emit accept();
 }
 

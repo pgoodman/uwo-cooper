@@ -46,6 +46,11 @@ public:
     QList<T *> getSelectedModels(void);
 
     /**
+     * Get all the models.
+     */
+    QList<T *> getModels(void);
+
+    /**
      * Select a specific model.
      */
     void selectModel(T *model);
@@ -142,6 +147,18 @@ QList<T *> ModelListWidget<T>::getSelectedModels(void) {
 }
 
 template <typename T>
+QList<T *> ModelListWidget<T>::getModels(void) {
+    QList<T *> list;
+    for(int i = 0; i < count(); ++i) {
+        list.append(
+            static_cast<ModelListWidgetItem<T> *>(item(i))->getModel()
+        );
+    }
+
+    return list;
+}
+
+template <typename T>
 void ModelListWidget<T>::selectFirst(void) {
     if(0 < count()) {
         setItemSelected(item(0), true);
@@ -175,7 +192,13 @@ void ModelListWidget<T>::addModel(T *model) {
 
 template <typename T>
 void ModelListWidget<T>::removeModel(T *model) {
-    (void) model;
+    ModelListWidgetItem<T> *item_widget;
+    for(int i = 0; i < count(); ++i) {
+        item_widget = static_cast<ModelListWidgetItem<T> *>(item(i));
+        if(item_widget->getModel() == model) {
+            takeItem(i);
+        }
+    }
 }
 
 template <typename T>

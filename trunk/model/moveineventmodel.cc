@@ -27,12 +27,16 @@ QList<MoveInEventModel *> MoveInEventModel::findAll(const int unit_id,
                                                     const QDateTime time) {
     QList<MoveInEventModel *> events;
     QSqlQuery q;
+
     q.prepare(
-        "SELECT t.id, t.description FROM move_in_event m, task t "
+        "SELECT t.id AS id, t.description AS description "
+        "FROM move_in_event m, task t "
         "WHERE m.move_in_time >= ? AND m.move_in_time <= ? AND m.unit_id=? "
         "AND m.task_id = t.id AND t.is_annual=0 AND t.status=0"
     );
+
     q << time.addDays(-30) << time.addDays(30) << unit_id;
+    q.exec();
     while(q.next()) {
         events.append(new MoveInEventModel(
             qcol<int>(q, "id"),
