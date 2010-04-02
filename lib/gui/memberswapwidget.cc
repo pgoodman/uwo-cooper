@@ -43,10 +43,9 @@ void MemberSwapWidget::addMember()
     {
         MemberModel *member = membersNot->getSelectedModel();
 
-        member->setCommittee(committee);
-        member->save();
-
-        updateListModels();
+        membersIn->addModel(member);
+        membersNot->removeModel(member);
+ //       updateListModels();
     }
     else
     {
@@ -58,25 +57,21 @@ void MemberSwapWidget::removeMember()
 {
     if(membersIn->getSelectedModel() != 0)
     {
-        int ret(QMessageBox::question(this,
-            "Please Confirm",
-            "Are you sure you want to remove this member from this committee?",
-            QMessageBox::Yes,
-            QMessageBox::No
-        ));
-        if(QMessageBox::Yes == ret) {
-            MemberModel *member = membersIn->getSelectedModel();
 
-            member->setCommittee(0);
-            member->save();
-            updateListModels();
-        }
+       MemberModel *member = membersIn->getSelectedModel();
+
+       membersIn->removeModel(member);
+       membersNot->addModel(member);
+
+//       updateListModels();
+
     }
     else
     {
         return;
     }
 }
+
 
 void MemberSwapWidget::updateListModels()
 {
@@ -92,4 +87,32 @@ void MemberSwapWidget::updateListModels()
 
     membersNot->fill(memNot);
     membersIn->fill(memIn);
+}
+
+void MemberSwapWidget::saveLists()
+{
+       QList<MemberModel *> membsIn = membersIn->getModels();
+       QList<MemberModel *> membsNot = membersNot->getModels();
+
+       MemberModel *mems;
+
+       while(membsIn.size() != 0)
+       {
+           mems = membsIn.takeLast();
+           if(mems->getCommitteeId() != committee->id)
+           {
+               mems->setCommittee(committee);
+               mems->save();
+           }
+       }
+
+       while(membsNot.size() != 0)
+       {
+           mems = membsNot.takeLast();
+           if(mems->getCommitteeId() == committee->id)
+           {
+               mems->setCommittee(0);
+               mems->save();
+           }
+       }
 }

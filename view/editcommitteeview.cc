@@ -26,7 +26,7 @@ EditCommitteeView::EditCommitteeView(CommitteeModel *selectedCommittee,
     QPushButton *editButton = new QPushButton("Update Committee");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
-    MemberSwapWidget *swap = new MemberSwapWidget(selCommittee);
+    swap = new MemberSwapWidget(selCommittee);
 
     layout << "Member Swaping:" |= swap;
 
@@ -82,6 +82,8 @@ void EditCommitteeView::editCommittee()
 
     secModel->setCommittee(selCommittee);
     secModel->save();
+
+    swap->saveLists();
 
     emit accept();
 }
