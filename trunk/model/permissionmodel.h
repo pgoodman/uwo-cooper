@@ -28,7 +28,7 @@ typedef enum {
     ADD_SELF_TASK           =(1<<13),
     EDIT_SELF_TASK          =(1<<14),
     DELETE_SELF_TASK        =(1<<15),
-    PRINT_SLEF_TASK_LIST    =(1<<16),
+    PRINT_SELF_TASK_LIST    =(1<<16),
     ADD_SELF_TASK_SPEC      =(1<<17),
     DELETE_SELF_TASK_SPEC   =(1<<18),
     ACTIVATE_SELF_TASK_SPEC =(1<<19),

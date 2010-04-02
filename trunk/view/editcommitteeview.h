@@ -41,6 +41,7 @@ private:
     ModelListWidget<MemberModel> *selectSecretary;
     PermListView *memList;
     PermListView *chairList;
+    MemberSwapWidget *swap;
 
    CommitteeModel *selCommittee;
 

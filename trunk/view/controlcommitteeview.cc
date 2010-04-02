@@ -136,19 +136,39 @@ void ControlCommitteeView::activateButtons() {
         return;
     }
 
-    edit_button->setDisabled(true);
-    task_button->setDisabled(true);
-    print_task_button->setDisabled(true);
+    edit_button->setDisabled(false);
+    task_button->setDisabled(false);
+    print_task_button->setDisabled(false);
 
-    if(!active_user->is_coordinator &&
-       !active_user->hasPermission(ADD_SELF_TASK | EDIT_SELF_TASK | DELETE_SELF_TASK) &&
-       (committee->id ==
-        static_cast<MemberModel *>(active_user)->getCommitteeId())){
-        edit_button->setDisabled(false);
-        task_button->setDisabled(false);
-        print_task_button->setDisabled(false);
-        del_button->setDisabled(!committee->canRemove());
+
+    if(!active_user->hasPermission(ADD_SELF_TASK) &&
+       !(committee->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId()))
+    {
+        task_button->setDisabled(true);
     }
+
+    if(!active_user->hasPermission(EDIT_SELF_TASK) &&
+       !(committee->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId()))
+    {
+        edit_button->setDisabled(true);
+    }
+
+    if(!active_user->hasPermission(PRINT_SELF_TASK_LIST) &&
+       !(committee->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId()))
+    {
+        print_task_button->setDisabled(true);
+    }
+
+    if(!active_user->hasPermission(DELETE_SELF_TASK) &&
+       !(committee->id ==
+        static_cast<MemberModel *>(active_user)->getCommitteeId()))
+    {
+        del_button->setDisabled(true);
+    }
+
 }
 
 void ControlCommitteeView::deleteCommittee()

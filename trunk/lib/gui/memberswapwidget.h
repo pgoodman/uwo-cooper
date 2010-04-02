@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QLabel>
+#include <QList>
 
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
@@ -18,6 +19,8 @@ Q_OBJECT
 
 public:
     MemberSwapWidget(CommitteeModel *curCommittee, QWidget *parent = 0);
+
+    void saveLists();
 
 public slots:
     void addMember();
