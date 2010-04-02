@@ -63,13 +63,39 @@ TriggerInternalMoveView::TriggerInternalMoveView(UnitModel *chosenUnit,
     setWindowTitle("Trigger Internal Move event");
 
     // signals / slots
-    connect(ok_button, SIGNAL(clicked()), this, SLOT(okEvent()));
+    connect(ok_button, SIGNAL(clicked()), this, SLOT(tryOK()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
     connect(
         membersMoving, SIGNAL(itemSelectionChanged()),
         this, SLOT(activateEmptyUnit())
     );
 
+}
+
+/**
+ * Attempt Check the date.
+ */
+bool TriggerInternalMoveView::checkDate(void) {
+    QDateTime today = QDateTime::currentDateTime();
+    today.setTime(QTime());
+
+    if(move_in_date->dateTime() < today) {
+       QMessageBox::information(
+           this, "Invalid Field",
+           "Please enter a move in date that is not in the past."
+       );
+       return false;
+   }
+    return true;
+}
+
+/**
+ * Attempt to accept the event
+ */
+void TriggerInternalMoveView::tryOK(void) {
+    if(this->checkDate()) {
+        emit okEvent();
+    }
 }
 
 /**
