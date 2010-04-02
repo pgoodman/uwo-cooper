@@ -31,6 +31,8 @@
 #include "model/taskmodel.h"
 #include "model/moveineventmodel.h"
 
+#include "view/taskupdatelistview.h"
+
 /*
  * At any time, the Co-ordinator can trigger a New Member event, giving the
  * name and phone number of the new member, their current (pre-Co-op) address,
@@ -71,18 +73,12 @@ protected:
 
     AddMemberView(int *, QWidget *parent=0);
 
-private:
-    void lookForExistingMoveInTask(UnitModel *model, const QDateTime);
-
 public:
     AddMemberView(QWidget *parent=0);
 
 public slots:
     virtual void tryAccept(void);
     virtual void accept(void);
-
-    virtual void checkTask(void);
-    virtual void checkTask(const QDateTime &date);
 };
 
 #endif /* ADDMEMBER_H_ */

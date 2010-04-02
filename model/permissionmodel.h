@@ -45,7 +45,7 @@ typedef enum {
     PRINT_TASK_LIST         =(1<<28),
     ADD_TASK_SPEC           =(1<<29),
     DELETE_TASK_SPEC        =(1<<30),
-    ACTIVATE_TASK           =(1<<31)
+    ACTIVATE_TASK_SPEC           =(1<<31)
 
 } PermissionModel;
 
