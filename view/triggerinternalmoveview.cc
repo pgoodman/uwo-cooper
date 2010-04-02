@@ -12,14 +12,14 @@
   * Constructor
   */
 
-TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
+TriggerInternalMoveView::TriggerInternalMoveView(UnitModel *chosenUnit,
                                                  QWidget *parent)
  : QDialog(parent) {
     // Set up the form layout
     FormLayoutPtr layout(this);
 
     // Get the particular member that is moving
-    member = chosenMember;
+    unitNo = chosenUnit;
 
     // Make button group for empty/occupied unit
     QButtonGroup *occupied_unit_group(new QButtonGroup);
@@ -32,7 +32,6 @@ TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
     first_name = layout << "First Name: " |= new QLineEdit;
     last_name = layout << "Last Name: " |= new QLineEdit;
     user_name = layout << "Login Name: " |= new QLineEdit;
-    oldunit = layout << "Old Unit: " |= new QLineEdit;
     newunit = layout << "New Unit: " |= new ModelListWidget<UnitModel>;
     move_in_date = layout << "Move In Date: " |= new QDateEdit;
     isEmpty = layout << "Moving Into Empty Unit?" |= new QRadioButton;
@@ -56,8 +55,6 @@ TriggerInternalMoveView::TriggerInternalMoveView(MemberModel *chosenMember,
     last_name->setEnabled(false);
     user_name->setText(member->getUserName());
     user_name->setEnabled(false);
-    oldunit->setText(QVariant(unitNo->id).toString());
-    oldunit->setEnabled(false);
     newunit->fill(new_units);
     newunit->selectFirst();
     move_in_date->setCalendarPopup(true);

@@ -25,13 +25,13 @@ class TriggerInternalMoveView : public QDialog{
     Q_OBJECT
 
 public:
-    TriggerInternalMoveView(MemberModel *chosenMember, QWidget *parent = 0);
+    TriggerInternalMoveView(UnitModel *chosenUnit, QWidget *parent = 0);
 
 protected:
     QLineEdit *first_name;
     QLineEdit *last_name;
     QLineEdit *user_name;
-    QLineEdit *oldunit;
+    ModelListWidget<MemberModel> *membersMoving;
     ModelListWidget<UnitModel> *newunit;
     QDateEdit *move_in_date;
     QPushButton *ok_button;

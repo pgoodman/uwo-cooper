@@ -23,13 +23,10 @@ class TriggerMoveOutView : public QDialog{
     Q_OBJECT
 
 public:
-    TriggerMoveOutView(MemberModel *chosenMember, QWidget *parent = 0);
+    TriggerMoveOutView(UnitModel *chosenUnit, QWidget *parent = 0);
 
 protected:
-    QLineEdit *first_name;
-    QLineEdit *last_name;
-    QLineEdit *user_name;
-    QLineEdit *unit;
+    ModelListWidget<MemberModel> *membersMoving;
     QDateEdit *notice_date;
     QDateEdit *move_out_date;
     QPushButton *ok_button;
@@ -37,10 +34,12 @@ protected:
 
     TaskModel *task;
     CommitteeModel *committee;
+    QList<MemberModel*> memberList;
     MemberModel *member;
     UnitModel *unitNo;
 
 public slots:
+    void activateEmptyUnit (void);
     void okEvent(void);
     void cancelEvent(void);
 

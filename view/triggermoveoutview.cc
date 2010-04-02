@@ -12,19 +12,16 @@
   * Constructor
   */
 
-TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
+TriggerMoveOutView::TriggerMoveOutView (UnitModel *chosenUnit,
                                         QWidget *parent) : QDialog(parent) {
     // Set up the form layout
     FormLayoutPtr layout(this);
 
-    // Get the member that is moving
-    member = chosenMember;
+    // Get the unit being moved out of
+    unitNo = chosenUnit;
 
     // make the layout of the form
-    first_name = layout << "First Name: " |= new QLineEdit;
-    last_name = layout << "Last Name: " |= new QLineEdit;
-    user_name = layout << "Login Name: " |= new QLineEdit;
-    unit = layout << "Unit: " |= new QLineEdit;
+    membersMoving = layout << "Choose the members moving out: " |= new ModelListWidget<MemberModel>;
     move_out_date = layout << "Move Out Date: " |= new QDateEdit;
     notice_date = layout << "Notice Date: " |= new QDateEdit;
     isEmpty = layout << "Empty Unit After Move?" |= new QCheckBox;
@@ -35,24 +32,40 @@ TriggerMoveOutView::TriggerMoveOutView (MemberModel *chosenMember,
     layout << ok_button | cancel;
 
     // misc
-    first_name->setText(member->getFirstName());
-    first_name->setEnabled(false);
-    last_name->setText(member->getLastName());
-    last_name->setEnabled(false);
-    user_name->setText(member->getUserName());
-    user_name->setEnabled(false);
-    unitNo = member->findUnit();
-    unit->setText(QVariant(unitNo->id).toString());
-    unit->setEnabled(false);
+    std::stringstream ss;
+    ss << "id != " << (unitNo->id);
+    MemberModel::iterator_range memberList(MemberModel::findAll(ss.str().c_str()));
+    membersMoving->setMultipleSelect(true);
+    membersMoving->fill(memberList);
+
+    // Note: if all members are moving, then unit automatically empty, check the box
     move_out_date->setCalendarPopup(true);
     notice_date->setCalendarPopup(true);
-
+    isEmpty->setDisabled(true);
     setModal(true);
     setWindowTitle("Trigger Move Out event");
 
     // signals / slots
     connect(ok_button, SIGNAL(clicked()), this, SLOT(okEvent()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
+    connect(
+        membersMoving, SIGNAL(itemSelectionChanged()),
+        this, SLOT(activateEmptyUnit())
+    );
+
+}
+
+/**
+ * De/activate the check box depending on whether all members are chosen or not
+ */
+void TriggerMoveOutView::activateEmptyUnit () {
+    QList<MemberModel*> members(membersMoving->getSelectedModels());
+    int checkSizeA = QVariant(membersMoving->size()).toInt();
+    int checkSizeB = QVariant(members.size()).toInt();
+    if ((checkSizeA == checkSizeB))
+        isEmpty->setChecked(true);
+    else
+        isEmpty->setChecked(false);
 }
 
 /**
@@ -66,16 +79,23 @@ void TriggerMoveOutView::okEvent(void) {
     // Get the information on the move out date and the notice date
     QDateTime moveOutDate = move_out_date->dateTime();
     QDateTime noticeDate = notice_date->dateTime();
+    memberList = membersMoving->getSelectedModels();
 
     // If the unit will be empty upon move in, send approprate move tasks to the inspections committee
     if (isEmpty->isChecked() == true) {
         QString *description(new QString);
         QTextStream ss(description);
-        ss << "Member Name: " << member->getFirstName() << " " << member->getLastName() << "\n";
-        if(member->isTelephoneShared()) {
-            ss << "Telephone Number: " << member->getTelephoneNum() << "\n";
+
+        while (!(memberList.isEmpty())) {
+            MemberModel *temp = memberList.first();
+            ss << "Member Name: " << temp->getFirstName() << " " << temp->getLastName() << "\n";
+            if(temp->isTelephoneShared()) {
+                ss << "Telephone Number: " << temp->getTelephoneNum() << "\n";
+            }
+            memberList.removeFirst();
         }
-        ss << "Unit Number: " << unit->text() << "\n";
+
+        ss << "Unit Number: " << unitNo->toString() << "\n";
         ss << "Move-out Date: " << moveOutDate.toString("MMMM d, yyyy") << "\n";
 
         // Get the Inspections Committee
