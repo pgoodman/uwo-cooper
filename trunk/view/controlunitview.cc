@@ -56,8 +56,15 @@ void ControlUnitView::populateUnits() {
  */
 void ControlUnitView::activateButtons() {
     UnitModel *unit(unit_list->getSelectedModel());
-    move_out_button->setDisabled(unit == 0);
-    internal_move_button->setDisabled(unit == 0);
+
+    if ((unit->num_members != 0) && (unit != 0)) {
+        move_out_button->setDisabled(false);
+        internal_move_button->setDisabled(false);
+    }
+    else {
+        move_out_button->setDisabled(true);
+        internal_move_button->setDisabled(true);
+    }
 }
 
 /**
@@ -69,8 +76,8 @@ void ControlUnitView::triggerMoveOut() {
         return;
     }
 
-    //TriggerMoveOutView moveOutDialog(member,this);
-    //moveOutDialog.exec();
+    TriggerMoveOutView moveOutDialog(unit,this);
+    moveOutDialog.exec();
 }
 
 /**
@@ -82,6 +89,6 @@ void ControlUnitView::triggerInternalMove() {
         return;
     }
 
-    //TriggerInternalMoveView internalMoveDialog(member, this);
+    //TriggerInternalMoveView internalMoveDialog(unit, this);
     //internalMoveDialog.exec();
 }
