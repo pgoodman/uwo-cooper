@@ -13,6 +13,19 @@
 
 #include "model/moveineventmodel.h"
 #include "model/membermodel.h"
+#include "model/taskmodel.h"
+
+class TaskUpdateListView;
+class TaskRadioButton : public QRadioButton {
+    Q_OBJECT
+
+    TaskUpdateListView *parent;
+    const int task_id;
+public:
+    TaskRadioButton(QString, TaskUpdateListView *, int);
+public slots:
+    virtual void updateTask(bool);
+};
 
 class TaskUpdateListView : public QDialog {
     Q_OBJECT
@@ -21,6 +34,9 @@ class TaskUpdateListView : public QDialog {
     QRadioButton *do_nothing;
     QString full_name;
     QString phone_number;
+    int selected_task_id;
+
+    friend class TaskRadioButton;
 
 public:
     TaskUpdateListView(QWidget *parent,
