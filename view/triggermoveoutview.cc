@@ -37,6 +37,7 @@ TriggerMoveOutView::TriggerMoveOutView (UnitModel *chosenUnit,
     MemberModel::iterator_range memberList(MemberModel::findAll(ss.str().c_str()));
     membersMoving->setMultipleSelect(true);
     membersMoving->fill(memberList);
+    membersMoving->selectFirst();
 
     // Note: if all members are moving, then unit automatically empty, check the box
     move_out_date->setCalendarPopup(true);
@@ -46,13 +47,45 @@ TriggerMoveOutView::TriggerMoveOutView (UnitModel *chosenUnit,
     setWindowTitle("Trigger Move Out event");
 
     // signals / slots
-    connect(ok_button, SIGNAL(clicked()), this, SLOT(okEvent()));
+    connect(ok_button, SIGNAL(clicked()), this, SLOT(tryOK()));
     connect(cancel, SIGNAL(clicked()), this, SLOT(cancelEvent()));
     connect(
         membersMoving, SIGNAL(itemSelectionChanged()),
         this, SLOT(activateEmptyUnit())
     );
 
+}
+
+/**
+ * Attempt Check the date.
+ */
+bool TriggerMoveOutView::checkDate(void) {
+    QDateTime today = QDateTime::currentDateTime();
+    today.setTime(QTime());
+    if(move_out_date->dateTime() < today) {
+       QMessageBox::information(
+           this, "Invalid Field",
+           "Please enter a move in date that is not in the past."
+       );
+       return false;
+    }
+    else if(notice_date->dateTime() < today) {
+        QMessageBox::information(
+            this, "Invalid Field",
+            "Please enter a move in date that is not in the past."
+        );
+        return false;
+     }
+    return true;
+}
+
+/**
+ * Attempt to accept the event
+ */
+void TriggerMoveOutView::tryOK(void) {
+    if(this->checkDate()) {
+        emit okEvent();
+    }
 }
 
 /**
@@ -68,8 +101,6 @@ void TriggerMoveOutView::activateEmptyUnit () {
   */
 
 void TriggerMoveOutView::okEvent(void) {
-
-    //bool taskexisted = false;
 
     // Get the information on the move out date and the notice date
     QDateTime moveOutDate = move_out_date->dateTime();

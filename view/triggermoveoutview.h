@@ -39,6 +39,8 @@ protected:
     UnitModel *unitNo;
 
 public slots:
+    bool checkDate(void);
+    void tryOK(void);
     void activateEmptyUnit (void);
     void okEvent(void);
     void cancelEvent(void);
