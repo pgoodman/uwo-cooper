@@ -15,11 +15,17 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 
+/**
+ * A single item in a model list widget.
+ */
 template <typename T>
 class ModelListWidgetItem : public QListWidgetItem {
 public:
     ModelListWidgetItem(T *m) : QListWidgetItem(m->toString()), model(m) { }
 
+    /**
+     * Return the model stored in the widget.
+     */
     T *getModel(void) {
         return model;
     }

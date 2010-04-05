@@ -14,11 +14,11 @@
 #include "model/committeemodel.h"
 #include "modellistwidget.h"
 
-class MemberSwapWidget : public QStackedWidget{
+class MemberSwapView : public QStackedWidget {
 Q_OBJECT
 
 public:
-    MemberSwapWidget(CommitteeModel *curCommittee, QWidget *parent = 0);
+    MemberSwapView(CommitteeModel *curCommittee, QWidget *parent = 0);
 
     void saveLists();
 

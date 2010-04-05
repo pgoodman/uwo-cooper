@@ -1,6 +1,6 @@
-#include "memberswapwidget.h"
+#include "view/memberswapview.h"
 
-MemberSwapWidget::MemberSwapWidget(CommitteeModel *currentCommittee, QWidget *parent)
+MemberSwapView::MemberSwapView(CommitteeModel *currentCommittee, QWidget *parent)
     : QStackedWidget(parent)
 {
     boxGroup = new QGroupBox("Member Swaping");
@@ -15,7 +15,7 @@ MemberSwapWidget::MemberSwapWidget(CommitteeModel *currentCommittee, QWidget *pa
     addWidget(boxGroup);
 }
 
-void MemberSwapWidget::setUpLayout()
+void MemberSwapView::setUpLayout()
 {
     QPushButton *addButton = new QPushButton("Add");
     QPushButton *removeButton = new QPushButton("Remove");
@@ -37,7 +37,7 @@ void MemberSwapWidget::setUpLayout()
 
 }
 
-void MemberSwapWidget::addMember()
+void MemberSwapView::addMember()
 {
     if(membersNot->getSelectedModel() != 0)
     {
@@ -53,7 +53,7 @@ void MemberSwapWidget::addMember()
     }
 }
 
-void MemberSwapWidget::removeMember()
+void MemberSwapView::removeMember()
 {
     if(membersIn->getSelectedModel() != 0)
     {
@@ -73,7 +73,7 @@ void MemberSwapWidget::removeMember()
 }
 
 
-void MemberSwapWidget::updateListModels()
+void MemberSwapView::updateListModels()
 {
     stringstream searchForIn;
     stringstream searchForNot;
@@ -89,7 +89,7 @@ void MemberSwapWidget::updateListModels()
     membersIn->fill(memIn);
 }
 
-void MemberSwapWidget::saveLists()
+void MemberSwapView::saveLists()
 {
        QList<MemberModel *> membsIn = membersIn->getModels();
        QList<MemberModel *> membsNot = membersNot->getModels();

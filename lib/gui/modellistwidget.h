@@ -20,6 +20,11 @@
 #include "lib/imodeliterator.h"
 #include "lib/gui/modellistwidgetitem.h"
 
+/**
+ * List item widget that takes in an iterator range of model pointers and
+ * then allows the user to select one (or many) of the widgets. The rows of
+ * the list item are the IModel::toString() of the model.
+ */
 template <typename T>
 class ModelListWidget : public QListWidget {
 
@@ -85,15 +90,21 @@ public:
 };
 
 /**
- * For linking purposes the definition must be in here.
+ * For linking purposes the definitions must be in here.
  */
 
+/**
+ * Constructor.
+ */
 template <typename T>
 ModelListWidget<T>::ModelListWidget(QWidget *parent) : QListWidget(parent) { }
 
 template <typename T>
 ModelListWidget<T>::~ModelListWidget() { }
 
+/**
+ * Select one of the models in the widget.
+ */
 template <typename T>
 void ModelListWidget<T>::selectModel(T *model) {
 
@@ -116,6 +127,9 @@ void ModelListWidget<T>::selectModel(T *model) {
     }
 }
 
+/**
+ * Return one of the selected rows as a model, if any.
+ */
 template <typename T>
 T * ModelListWidget<T>::getSelectedModel(void) {
     QList<QListWidgetItem *> items(selectedItems());
@@ -130,6 +144,10 @@ T * ModelListWidget<T>::getSelectedModel(void) {
     return row->getModel();
 }
 
+/**
+ * Return a QList of model pointers referring to the rows selected in the
+ * list widget.
+ */
 template <typename T>
 QList<T *> ModelListWidget<T>::getSelectedModels(void) {
     QList<T *> list;
@@ -146,6 +164,9 @@ QList<T *> ModelListWidget<T>::getSelectedModels(void) {
     return list;
 }
 
+/**
+ * Return all model pointers that are listed in the widget.
+ */
 template <typename T>
 QList<T *> ModelListWidget<T>::getModels(void) {
     QList<T *> list;
@@ -158,6 +179,10 @@ QList<T *> ModelListWidget<T>::getModels(void) {
     return list;
 }
 
+/**
+ * Select the first item in the widget. This is a convenience function for
+ * when we want to guarantee that /something/ is selected.
+ */
 template <typename T>
 void ModelListWidget<T>::selectFirst(void) {
     if(0 < count()) {
@@ -165,6 +190,9 @@ void ModelListWidget<T>::selectFirst(void) {
     }
 }
 
+/**
+ * Fill the widget with models.
+ */
 template <typename T>
 void ModelListWidget<T>::fill(iterator_range_func *f) {
     iterator_range its(f());
@@ -185,11 +213,17 @@ void ModelListWidget<T>::fill(iterator &it, iterator &end) {
     }
 }
 
+/**
+ * Add a single model to the list widget.
+ */
 template <typename T>
 void ModelListWidget<T>::addModel(T *model) {
     insertItem(count(), new ModelListWidgetItem<T>(model));
 }
 
+/**
+ * Remove a model from the widget.
+ */
 template <typename T>
 void ModelListWidget<T>::removeModel(T *model) {
     ModelListWidgetItem<T> *item_widget;
@@ -201,6 +235,9 @@ void ModelListWidget<T>::removeModel(T *model) {
     }
 }
 
+/**
+ * Enable/disable multiple selection of the items in the widget.
+ */
 template <typename T>
 void ModelListWidget<T>::setMultipleSelect(const bool set_it) {
     setSelectionMode(set_it ?
