@@ -6,8 +6,9 @@ const quint64 Validator::PHONE_LOW_EDGE = Q_UINT64_C(1000000000);
 
 Validator::Validator() { }
 
-//check whether the input is a valid Canadian phone number.
-//9 digits
+/**
+ * Check whether the input is a valid Canadian phone number.
+ */
 bool Validator::isValidPhoneNo(QString inStr){
     bool ok;
     quint64 pno;
@@ -19,7 +20,9 @@ bool Validator::isValidPhoneNo(QString inStr){
     }
 }
 
-//check whether the input is digit.
+/*
+ * Check whether the input is digit.
+ */
 bool Validator::isValidDigit(QString inStr){
     if(inStr == "") {
         return false;

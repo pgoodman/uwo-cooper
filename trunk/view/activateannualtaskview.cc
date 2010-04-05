@@ -11,8 +11,9 @@
 /**
  * Constructor, build the add task form.
  */
-
-ActivateAnnualTaskView::ActivateAnnualTaskView(CommitteeModel *comm, QWidget *parent) : QDialog(parent) {
+ActivateAnnualTaskView::ActivateAnnualTaskView(CommitteeModel *comm,
+                                               QWidget *parent)
+ : QDialog(parent) {
 
     // Set up the form layout
     FormLayoutPtr layout(this);
@@ -22,44 +23,18 @@ ActivateAnnualTaskView::ActivateAnnualTaskView(CommitteeModel *comm, QWidget *pa
 
     // Month Button Group and Layout
     QButtonGroup *month_group(new QButtonGroup);
-    Jan = new QRadioButton("Jan");
-    Feb = new QRadioButton("Feb");
-    Mar = new QRadioButton("Mar");
-    Apr = new QRadioButton("Apr");
-    May = new QRadioButton("May");
-    Jun = new QRadioButton("Jun");
-    Jul = new QRadioButton("Jul");
-    Aug = new QRadioButton("Aug");
-    Sep = new QRadioButton("Sep");
-    Oct = new QRadioButton("Oct");
-    Nov = new QRadioButton("Nov");
-    Dec = new QRadioButton("Dec");
-
-    month_group->addButton(Jan);
-    month_group->addButton(Feb);
-    month_group->addButton(Mar);
-    month_group->addButton(Apr);
-    month_group->addButton(May);
-    month_group->addButton(Jun);
-    month_group->addButton(Jul);
-    month_group->addButton(Aug);
-    month_group->addButton(Sep);
-    month_group->addButton(Oct);
-    month_group->addButton(Nov);
-    month_group->addButton(Dec);
-
-    layout << Jan;
-    layout << Feb;
-    layout << Mar;
-    layout << Apr;
-    layout << May;
-    layout << Jun;
-    layout << Jul;
-    layout << Aug;
-    layout << Sep;
-    layout << Oct;
-    layout << Nov;
-    layout << Dec;
+    Jan = layout <<= new QRadioButton("Jan");  month_group->addButton(Jan);
+    Feb = layout <<= new QRadioButton("Feb");  month_group->addButton(Feb);
+    Mar = layout <<= new QRadioButton("Mar");  month_group->addButton(Mar);
+    Apr = layout <<= new QRadioButton("Apr");  month_group->addButton(Apr);
+    May = layout <<= new QRadioButton("May");  month_group->addButton(May);
+    Jun = layout <<= new QRadioButton("Jun");  month_group->addButton(Jun);
+    Jul = layout <<= new QRadioButton("Jul");  month_group->addButton(Jul);
+    Aug = layout <<= new QRadioButton("Aug");  month_group->addButton(Aug);
+    Sep = layout <<= new QRadioButton("Sep");  month_group->addButton(Sep);
+    Oct = layout <<= new QRadioButton("Oct");  month_group->addButton(Oct);
+    Nov = layout <<= new QRadioButton("Nov");  month_group->addButton(Nov);
+    Dec = layout <<= new QRadioButton("Dec");  month_group->addButton(Dec);
 
     // Button Creation and Addition
     save_button = new QPushButton("Ok");

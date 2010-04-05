@@ -4,6 +4,9 @@
 #include <QtGlobal>
 #include <QString>
 
+/**
+ * Validate input according to some patterns.
+ */
 class Validator
 {
 public:

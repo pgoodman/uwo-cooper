@@ -40,7 +40,7 @@ MemberModel::~MemberModel(void) { }
  */
 bool MemberModel::hasPermission(const PermissionModelSet p) {
     if(0 == committee_id) {
-        return (EDIT_SELF_PASS == p);
+        return 0 != (EDIT_SELF_PASS & p);
     }
     CommitteeModel *c = findCommittee();
     if(0 == c) {
@@ -86,38 +86,68 @@ QString MemberModel::getUserName(void) {
     return user_name;
 }
 
+/**
+ * Return the telephone number.
+ */
 QString MemberModel::getTelephoneNum(){
     return telephone_num;
 }
+
+/**
+ * Set the telephone number.
+ */
 void MemberModel::setTelephoneNumber(QString newNumber)
 {
 	telephone_num = newNumber;
 }
 
+/**
+ * Get the money owed.
+ */
 double MemberModel::getMoneyOwed(){
     return money_owed;
 }
 
+/**
+ * Get the money owed.
+ */
 void MemberModel::setMoneyOwed(double money)
 {
 	money_owed = money;
 }
 
-bool MemberModel::isTelephoneShared(){
+/**
+ * Return whether or not the telephone number is being shared.
+ */
+bool MemberModel::isTelephoneShared() {
     return share_telephone;
 }
+
+/**
+ * Share the telephone number.
+ */
 void MemberModel::setSharedTelephone(bool share)
 {
 	share_telephone = share;
 }
 
+/**
+ * Check whether or not the member is marked deleted.
+ */
 bool MemberModel::isMarkedDeleted() {
     return is_marked;
 }
+
+/**
+ * Mark the member as deleted or not deleted.
+ */
 void MemberModel::markDeleted(bool mark) {
 	is_marked = mark;
 }
 
+/**
+ * Covert this member to a string representation.
+ */
 QString MemberModel::toString(void) {
     stringstream ss;
     if(!first_name.isEmpty()) {
@@ -133,27 +163,46 @@ QString MemberModel::toString(void) {
     return QString(ss.str().c_str());
 }
 
+/**
+ * Set the full name of the member.
+ */
 void MemberModel::setFullName(QString firstName, QString lastName)
 {
     first_name = firstName;
     last_name = lastName;
 }
 
+/**
+ * Get the first name.
+ */
 QString MemberModel::getFirstName(){
     return first_name;
 }
 
+/**
+ * Set the first name.
+ */
 void MemberModel::setFirstName(QString firstName){
-    first_name=firstName;
+    first_name = firstName;
 }
 
+/**
+ * Get the last name.
+ */
 QString MemberModel::getLastName(){
     return last_name;
 }
+
+/**
+ * Set the last name.
+ */
 void MemberModel::setLastName(QString lastName){
-    last_name=lastName;
+    last_name = lastName;
 }
 
+/**
+ * Return a pointer to the unit, or return 0.
+ */
 UnitModel *MemberModel::findUnit(void) {
     if(0 == unit_id) {
         return 0;
@@ -162,6 +211,9 @@ UnitModel *MemberModel::findUnit(void) {
     return unit;
 }
 
+/**
+ * Set the unit.
+ */
 void MemberModel::setUnit(UnitModel *unit_to_set) {
     unit_id = unit_to_set->id;
     address = unit_to_set->address;
