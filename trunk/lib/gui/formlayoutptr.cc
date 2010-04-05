@@ -36,26 +36,13 @@ static QLabel *add_label(QGridLayout *layout,
 }
 
 /**
- * Add a label to the layout.
+ * Add a label to the layout and return the label added.
  */
-FormLayoutPtr &FormLayoutPtr::operator<<(const char *label) {
-    add_label(ptr, QString(label), ++voffset, 0, next_span);
-    hoffset = 1;
-    next_span = 1;
-    return *this;
-}
 QLabel *FormLayoutPtr::operator<<=(const char *label) {
     QLabel *l(add_label(ptr, QString(label), ++voffset, 0, next_span));
     hoffset = 1;
     next_span = 1;
     return l;
-}
-
-FormLayoutPtr &FormLayoutPtr::operator<<(QString label) {
-    add_label(ptr, label, ++voffset, 0, next_span);
-    hoffset = 1;
-    next_span = 1;
-    return *this;
 }
 QLabel *FormLayoutPtr::operator<<=(QString label) {
     QLabel *l(add_label(ptr, label, ++voffset, 0, next_span));
@@ -65,20 +52,29 @@ QLabel *FormLayoutPtr::operator<<=(QString label) {
 }
 
 /**
- * Add in and return a label.
+ * Add a label but return back a reference to the layout frame pointer.
+ */
+FormLayoutPtr &FormLayoutPtr::operator<<(const char *label) {
+    add_label(ptr, QString(label), ++voffset, 0, next_span);
+    hoffset = 1;
+    next_span = 1;
+    return *this;
+}
+FormLayoutPtr &FormLayoutPtr::operator<<(QString label) {
+    add_label(ptr, label, ++voffset, 0, next_span);
+    hoffset = 1;
+    next_span = 1;
+    return *this;
+}
+
+/**
+ * Add in a QLabel and return a pointer to the label.
  */
 QLabel *FormLayoutPtr::operator|=(const char *label) {
     assert(voffset >= 0);
     QLabel *l(add_label(ptr, QString(label), voffset, hoffset++, next_span));
     next_span = 1;
     return l;
-}
-
-FormLayoutPtr &FormLayoutPtr::operator|(const char *label) {
-    assert(voffset >= 0);
-    add_label(ptr, QString(label), voffset, hoffset++, next_span);
-    next_span = 1;
-    return *this;
 }
 QLabel *FormLayoutPtr::operator|=(QString label) {
     assert(voffset >= 0);
@@ -87,6 +83,15 @@ QLabel *FormLayoutPtr::operator|=(QString label) {
     return l;
 }
 
+/**
+ * Add in and return a reference to the form layout ptr.
+ */
+FormLayoutPtr &FormLayoutPtr::operator|(const char *label) {
+    assert(voffset >= 0);
+    add_label(ptr, QString(label), voffset, hoffset++, next_span);
+    next_span = 1;
+    return *this;
+}
 FormLayoutPtr &FormLayoutPtr::operator|(QString label) {
     assert(voffset >= 0);
     add_label(ptr, label, voffset, hoffset++, next_span);
@@ -102,6 +107,10 @@ FormLayoutPtr &FormLayoutPtr::operator[](const int span) {
     return *this;
 }
 
+/**
+ * Replace a widget that has been laid out with a new widget. This function
+ * will not free the old widget.
+ */
 void FormLayoutPtr::replaceItem(QWidget *find, QWidget *replace) {
     if(0 == find || 0 == replace) {
         return;

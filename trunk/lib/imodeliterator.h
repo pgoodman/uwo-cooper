@@ -22,7 +22,8 @@
 using namespace std;
 
 /**
- * IModelIterator for going over result sets of users.
+ * IModelIterator for going over result sets of users. This is a STL-
+ * compatible iterator
  */
 template <typename T>
 class IModelIterator : public iterator<input_iterator_tag, T> {
@@ -85,13 +86,16 @@ template <typename T>
 IModelIterator<T>::~IModelIterator() { }
 
 /**
- *
+ * Return a pointer to the current item pointed to in the iterator.
  */
 template <typename T>
 T *IModelIterator<T>::operator*() {
     return T::findById(curr_id);
 }
 
+/**
+ * Advance the iterator.
+ */
 template <typename T>
 IModelIterator<T> &IModelIterator<T>::operator++ () {
     ++i;
@@ -103,7 +107,6 @@ IModelIterator<T> &IModelIterator<T>::operator++ () {
     }
     return *this;
 }
-
 template <typename T>
 IModelIterator<T> IModelIterator<T>::operator++ (int) {
     IModelIterator<T> tmp(*this);
@@ -111,11 +114,17 @@ IModelIterator<T> IModelIterator<T>::operator++ (int) {
     return tmp;
 }
 
+/**
+ * Compare two iterators.
+ */
 template <typename T>
 bool IModelIterator<T>::operator!=(const IModelIterator<T> &other) {
     return id != other.id || i != other.i;
 }
 
+/**
+ * Compare two iterators.
+ */
 template <typename T>
 bool IModelIterator<T>::operator==(const IModelIterator<T> &other) {
     return id == other.id && i == other.i;
@@ -129,6 +138,9 @@ void IModelIterator<T>::setCurrId(void) {
     curr_id = query.value(0).toInt();
 }
 
+/**
+ * Return a pair of (begin, end) iterators.
+ */
 template <typename T>
 pair<IModelIterator<T>, IModelIterator<T> >
 IModelIterator<T>::make(QSqlQuery query, const int size) {

@@ -56,7 +56,7 @@ public:
 };
 
 /**
- * Add in a widget to a new line and return the widget.
+ * Add in a widget to a new line and return a pointer to the widget.
  */
 template <typename T>
 T *FormLayoutPtr::operator<<=(T *widget) {
@@ -67,6 +67,10 @@ T *FormLayoutPtr::operator<<=(T *widget) {
     return widget;
 }
 
+/**
+ * Add in a widget to a new line and return a reference to the form layout
+ * ptr.
+ */
 template <typename T>
 FormLayoutPtr &FormLayoutPtr::operator<<(T *widget) {
     (*this) <<= widget;
@@ -74,7 +78,8 @@ FormLayoutPtr &FormLayoutPtr::operator<<(T *widget) {
 }
 
 /**
- * Add in a widget to the current line in current column.
+ * Add in a widget to the current line in current column and return a pointer
+ * to the widget added.
  */
 template <typename T>
 T *FormLayoutPtr::operator|=(T *widget) {
@@ -83,6 +88,11 @@ T *FormLayoutPtr::operator|=(T *widget) {
     next_span = 1;
     return widget;
 }
+
+/**
+ * Add in a widget to the current line in current column and return a
+ * reference to the form layout ptr.
+ */
 template <typename T>
 FormLayoutPtr &FormLayoutPtr::operator|(T *widget) {
     (*this) |= widget;

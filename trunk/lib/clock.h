@@ -3,6 +3,9 @@
 
 #include <QLCDNumber>
 
+/**
+ * An LCD clock.
+ */
 class Clock : public QLCDNumber
 {
     Q_OBJECT

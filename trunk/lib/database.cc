@@ -147,11 +147,6 @@ template <> QSqlQuery &operator<< <bool>(QSqlQuery &q, bool val) {
 /**
  * Quickly get the variant from the query given a column name.
  */
-
-/*QVariant qcol(const QSqlQuery &q, const char *index) {
-    return q.value(q.record().indexOf(index));
-}
-*/
 template<typename T> T qcol(const QSqlQuery &q, const char *index) {
     (void) q; (void) index;
     throw 0;

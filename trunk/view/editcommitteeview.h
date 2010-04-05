@@ -14,13 +14,13 @@
 
 #include "lib/gui/modellistwidget.h"
 #include "lib/gui/formlayoutptr.h"
-#include "lib/gui/memberswapwidget.h"
 
 #include "model/membermodel.h"
 #include "model/committeemodel.h"
 #include "model/permissionmodel.h"
 
 #include "view/permlistview.h"
+#include "view/memberswapview.h"
 
 class EditCommitteeView : public QDialog{
     Q_OBJECT
@@ -41,7 +41,7 @@ private:
     ModelListWidget<MemberModel> *selectSecretary;
     PermListView *memList;
     PermListView *chairList;
-    MemberSwapWidget *swap;
+    MemberSwapView *swap;
 
    CommitteeModel *selCommittee;
 
