@@ -1,0 +1,1 @@
+This is the Cooper co-op management program, made for UWO's CS3307 2010 project.
